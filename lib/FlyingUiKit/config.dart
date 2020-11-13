@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'dart:io';
-final double deviceWidth = 1080;
-final double deviceHeight = 1920;
+double deviceWidth = 1080;
+double deviceHeight = 1920;
 
 //色彩管理
 final Color colorMain = Color.fromARGB(255, 1,176,117).withAlpha(255);
+// final Color colorMain = Colors.pinkAccent;
 final Color colorSecond = Color.fromARGB(255, 228,247,241).withAlpha(255);
 final Color colorMainText = Color.fromARGB(255, 12, 21, 60);
 final Color colorIconBackground = Color.fromARGB(255, 244,245,249);
@@ -69,12 +70,12 @@ final Icon FlyIconRightGreyArrow = Icon(
   size: fontSizeTitle50,
 );
 //边距等配置
-final double spaceCardMarginBigTB = ScreenUtil().setWidth(60);
-final double spaceCardMarginTB = ScreenUtil().setHeight(10);//上下外边距
+final double spaceCardMarginBigTB = ScreenUtil().setSp(20);
+final double spaceCardMarginTB = ScreenUtil().setSp(15);//上下外边距
+final double spaceCardPaddingTB = ScreenUtil().setSp(15);//上下内边距
 final double spaceCardMarginRL = ScreenUtil().setWidth(30);//左右外边距
-final double spaceCardPaddingRL = ScreenUtil().setWidth(60);//左右内边距
-final double spaceCardPaddingTB = ScreenUtil().setHeight(25);//上下内边距
-final double paddingMain = fontSizeMini38;
+final double spaceCardPaddingRL = ScreenUtil().setWidth(50);//左右内边距
+
 //容器圆角值
 final double borderRadiusValue = fontSizeMini38;
 

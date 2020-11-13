@@ -23,6 +23,9 @@ import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
 import 'package:flying_kxz/NetRequest/login_post.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'navigator_page_child/myself_page_child/cumtLogin_view.dart';
 
 //跳转到当前页面
 void toLoginPage(BuildContext context) async {
@@ -43,8 +46,10 @@ class _LoginPageState extends State<LoginPage> {
   String _password; //密码
   GlobalKey<FormState> _formKey = GlobalKey<FormState>(); //表单状态
   bool _loading = false;
+  int loginCount = 1;//登陆次数,>=3则特别提示
   //点击登录后的行为
   _loginFunc() async {
+
     FocusScope.of(context).requestFocus(FocusNode());//收起键盘
     setState(() {_loading = true;});//开始加载
     //提取输入框数据
@@ -57,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
     //登录请求并决定是否跳转
-    if(await loginPost(context,username: _username, password: _password)){
+    if(await loginPost(context,loginCount++,username: _username, password: _password)){
       toNavigatorPage(context);
     }else{
       setState(() {_loading = false;});
@@ -180,15 +185,41 @@ class _LoginPageState extends State<LoginPage> {
                                     width: 1,
                                     color: Colors.black.withAlpha(60),
                                   ),
-                                  FlyGreyFlatButton("建议反馈",
+                                  FlyGreyFlatButton("校园网登录",
+                                      onPressed: () => FlyDialogDIYShow(context,content: CumtLoginView())),
+                                  Container(
+                                    height: ScreenUtil().setWidth(35),
+                                    width: 1,
+                                    color: Colors.black.withAlpha(60),
+                                  ),
+                                  FlyGreyFlatButton("无法登陆",
                                       onPressed: ()async{
                                         Clipboard.setData(ClipboardData(text: "839372371"));
                                         showToast(context,"已复制反馈QQ群号至剪切板");
-                                        String text = await FlyInputDialogShow(context,hintText: "感谢您提出宝贵的建议，这对我们非常重要！（完全匿名）\n*｡٩(ˊᗜˋ*)و*｡\n（如果有登陆不上的情况请及时联系我们！）");
-                                        if(text!=null){
-                                          await feedbackPost(context, text: text);
-                                        }
+                                        FlyDialogDIYShow(context, content: Wrap(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                FlyTextMini35("@建议先尝试如下解决方案：\n"
+                                                  "1.进入my.cumt.edu.cn网站成功登录自己的账号。\n"
+                                                  "2.重新登录矿小助。\n",maxLine: 10),
+                                                InkWell(
+                                                  onTap: ()=>launch("http://my.cumt.edu.cn"),
+                                                  child: FlyTextMini35("➡️点我跳转至my.cumt.edu.cn",color: Colors.blue),
+                                                ),
+                                                FlyTextMini35(
+                                                    "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）\n"
+                                                    ,maxLine: 10),
+                                                FlyTextTip30("失败原因：\n多次登录失败后，my.cumt.edu.cn会出现验证码\n在该网站中成功登录账号即可取消验证码\n我们正在解决这个问题～",maxLine: 5)
+                                              ],
+                                            ),
+
+                                          ],
+                                        ));
                                       }),
+
+
                                 ],
                               ),
                               FlyTextTip30('内测结束时间：2020年12月31日'),

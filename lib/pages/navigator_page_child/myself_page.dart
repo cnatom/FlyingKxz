@@ -11,13 +11,19 @@ import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
+import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
 import 'package:flying_kxz/FlyingUiKit/text.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/NetRequest/cumt_login.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
 import 'package:flying_kxz/NetRequest/power_get.dart';
 import 'package:flying_kxz/NetRequest/rank_get.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/about_page.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'myself_page_child/cumtLogin_view.dart';
 
 
 class MyselfPage extends StatefulWidget {
@@ -42,6 +48,7 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
     Global.clearPrefsData();
     toLoginPage(context);
   }
+
   //确定退出
   Future<bool> willSignOut(context) async {
     return await showDialog(
@@ -74,6 +81,7 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
         ),
       );
 
+
   Widget previewItem({@required String title,@required String subTitle})=>Container(
     alignment: Alignment.center,
     child: Wrap(
@@ -105,6 +113,7 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      backgroundColor: colorPageBackground,
       appBar: AppBar(
         brightness: Brightness.light,
         backgroundColor: Colors.white,
@@ -113,13 +122,15 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
           topIconButton(Entypo.logout,onPressed: ()=>willSignOut(context))
         ],
       ),
-      body: Container(
-        height: ScreenUtil().setHeight(deviceHeight),
-        child: Column(
+      body: SingleChildScrollView(
+        child: Wrap(
+          runSpacing: spaceCardMarginTB/2,
           children: <Widget>[
             //个人资料区域
             Container(
-                child: Column(
+              color: Colors.white,
+                child: Wrap(
+                  runSpacing: spaceCardMarginBigTB*2,
                   children: <Widget>[
                     FlyMyselfCard(
                         imageResource: 'images/avatar.png',
@@ -127,9 +138,6 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                         id: Global.prefs.getString(Global.prefsStr.username),
                         classs: Global.prefs.getString(Global.prefsStr.iClass),
                         college: Global.prefs.getString(Global.prefsStr.college)),
-                    SizedBox(
-                      height: spaceCardMarginBigTB,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -148,54 +156,48 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: spaceCardMarginBigTB,
-                    ),
+                    Container()
                   ],
                 )),
             //可滚动功能区
-            Expanded(
-              child: Container(
-                color: colorPageBackground,
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: spaceCardMarginTB,),
-                    FlyRowMyselfItemButton(
-                        imageResource: 'images/2.1.png',
-                        title: '关于我们',
-                        onTap: () => toAboutPage(context)
-                    ),
-                        Divider(height: 0,),
-                        FlyRowMyselfItemButton(
-                            imageResource: 'images/2.2.png',
-                            title: '反馈与建议',
-                            onTap: () async{
-                              String text = await FlyInputDialogShow(context,hintText: "感谢您提出宝贵的建议，这对我们非常重要！（完全匿名）\n*｡٩(ˊᗜˋ*)و*｡");
-                              if(text!=null){
-                                await feedbackPost(context, text: text);
-                              }
-                            }
-                        ),
-                    SizedBox(height: fontSizeMini38,),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          FlyTextTip30("矿小助-内测版 0.5.6  （暂无法预览校园卡余额）"),
-                          SizedBox(height: fontSizeMini38/2,),
-                          FlyTextTip30('内测结束时间：2020年12月31日，"内测会员"勋章可保留至公测',maxLine: 5),
-                          SizedBox(height: fontSizeMini38/2,),
-                          FlyTextTip30('内测期间的版本更新均在反馈群中进行',maxLine: 5),
-                          SizedBox(height: fontSizeMini38/2,),
+            Container(
+              color: colorPageBackground,
+              child: Column(
+                children: <Widget>[
+                  FlyRowMyselfItemButton(
+                      imageResource: 'images/aboutUs.png',
+                      title: '关于我们',
+                      onTap: () => toAboutPage(context)
+                  ),
+                  FlyRowMyselfItemButton(
+                      imageResource: 'images/feedback.png',
+                      title: '反馈与建议',
+                      onTap: () async{
+                        String text = await FlyDialogInputShow(context,hintText: "感谢您提出宝贵的建议，这对我们非常重要！\n*｡٩(ˊᗜˋ*)و*｡",maxLines: 10);
+                        if(text!=null){
+                          await feedbackPost(context, text: text);
+                        }
+                      }
+                  ),
+                  FlyRowMyselfItemButton(
+                      imageResource: 'images/netLogin.png',
+                      title: '校园网登录',
+                      onTap: () {
+                        // launch('http://10.2.5.251/');
+                        FlyDialogDIYShow(context,content: CumtLoginView());
+                      }
+                  ),
+                  SizedBox(height: fontSizeMini38,),
+                  FlyTextTip30("矿小助-内测版 0.6.2 "),
+                  SizedBox(height: fontSizeMini38/2,),
+                  FlyTextTip30('内测结束时间：2020年12月31日，',maxLine: 5),
+                  SizedBox(height: fontSizeMini38/2,),
+                  FlyTextTip30('内测会员"勋章可保留至公测',maxLine: 5),
+                  SizedBox(height: fontSizeMini38/2,),
+                  FlyTextTip30('（暂无法预览校园卡余额）',maxLine: 5),
+                  SizedBox(height: fontSizeMini38/2,),
 
-
-
-                        ],
-                      ),
-                    )
-
-                  ],
-                ),
+                ],
               ),
             )
           ],

@@ -1,19 +1,17 @@
-import 'package:connectivity/connectivity.dart';
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/null_page.dart';
-import 'package:mop/mop.dart';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_picker/PickerLocalizationsDelegate.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FlyingUiKit/config.dart';
 import 'Model/global.dart';
-
+import 'dart:io';
 void main() {
   if (Platform.isAndroid) {
     //设置android状态栏为透明的沉浸。
@@ -21,13 +19,14 @@ void main() {
     SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
+  //锁定竖屏
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown,DeviceOrientation.portraitUp]);
   runApp(MaterialApp(
     theme: ThemeData(
-      scaffoldBackgroundColor: scaffoldBackgroundColor,
-      backgroundColor: Colors.red,
-      fontFamily: "SY",
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent
+        scaffoldBackgroundColor: scaffoldBackgroundColor,
+        fontFamily: "SY",
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent
     ),
     localizationsDelegates: [
       PickerLocalizationsDelegate.delegate,
@@ -64,15 +63,15 @@ class _StartPageState extends State<StartPage> {
   @override
   void initState() {
     super.initState();
-    //锁定屏幕方向
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
     initFunc(context);
   }
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, height: deviceHeight, width: deviceWidth);//屏幕适配
+    if(MediaQuery.of(context).size.height/MediaQuery.of(context).size.width<1920/1080){
+      deviceHeight = 1080;
+      deviceWidth = 1920;
+    }
+    ScreenUtil.init(context, height: deviceHeight, width: deviceWidth);//初始化参考屏幕信息
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(),

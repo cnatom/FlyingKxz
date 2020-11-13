@@ -44,8 +44,8 @@ class _AboutPageState extends State<AboutPage> {
           child: Row(
             children: [
               Container(
-                width: ScreenUtil().setWidth(deviceWidth/12),
-                height: ScreenUtil().setWidth(deviceWidth/12),
+                width: fontSizeMini38*2.5,
+                height: fontSizeMini38*2.5,
                 child: ClipOval(
                   child: Image.asset(
                     imageResource,
@@ -82,7 +82,7 @@ class _AboutPageState extends State<AboutPage> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('images/logo.png',width: ScreenUtil().setWidth(deviceWidth*0.15),),
+                Image.asset('images/logo.png',height: fontSizeMini38*4,),
                 SizedBox(height: fontSizeMini38,),
                 Text('翔工作室出品',style: TextStyle(color: colorLoginPageMain,fontSize: fontSizeMain40,fontWeight: FontWeight.bold,letterSpacing: 3),)
               ],
@@ -160,7 +160,7 @@ class _AboutPageState extends State<AboutPage> {
                                 Wrap(
                                   children: [
                                     SizedBox(width: spaceCardMarginRL/2,),
-                                    funcButton(imageResource: 'images/jiaoliuqun.jpg', title: "校园App交流群", subTitle: "矿小助发布、反馈中心",qqNumber: "839372371"),
+                                    funcButton(imageResource: 'images/jiaoliuqun.jpg', title: "校园App交流群", subTitle: "发布、反馈中心",qqNumber: "839372371"),
                                     funcButton(imageResource: 'images/duiwai.jpg', title: "对外交流群", subTitle: "加群了解翔工作室",qqNumber: "957634136"),
                                   ],
                                 ),

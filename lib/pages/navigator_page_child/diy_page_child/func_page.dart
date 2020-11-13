@@ -7,7 +7,9 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
 import 'package:flying_kxz/FlyingUiKit/text.dart';
+import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/NetRequest/swiper_get.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/func_page_child/school_bus_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/func_page_child/school_calendar_page.dart';
 
@@ -74,11 +76,10 @@ class _FuncPageState extends State<FuncPage> {
     )
     ;
   }
-  Widget funcButton({@required String imageResource,@required String title,@required subTitle,@required GestureTapCallback onTap,Color color = Colors.grey}){
+  Widget funcButton({@required String imageResource,@required String title,@required subTitle,GestureTapCallback onTap,Color color = Colors.grey}){
     return Container(
-      width: ScreenUtil().setWidth(deviceWidth/2)-spaceCardPaddingTB/2,
+      width: ScreenUtil().setWidth(deviceWidth/2)-spaceCardMarginRL/2,
       padding: EdgeInsets.fromLTRB(0,spaceCardPaddingTB, spaceCardPaddingTB, 0),
-
       child: InkWell(
         onTap: onTap,
         child: Container(
@@ -90,16 +91,15 @@ class _FuncPageState extends State<FuncPage> {
           child: Row(
             children: [
               Container(
-                width: ScreenUtil().setWidth(deviceWidth/12),
-                height: ScreenUtil().setWidth(deviceWidth/12),
-                padding: EdgeInsets.all(ScreenUtil().setWidth(deviceWidth/60)),
+                width: fontSizeMini38*2.5,
+                height: fontSizeMini38*2.5,
+                padding: EdgeInsets.all(fontSizeMini38/2),
                 decoration: BoxDecoration(
                     color: color,
                     borderRadius: BorderRadius.circular(200)
                 ),
                 child: Image.asset(
                   imageResource,
-                  height: ScreenUtil().setWidth(160),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -128,44 +128,68 @@ class _FuncPageState extends State<FuncPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorPageBackground,
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child:Column(
-          children: [
-            Container(
-              color: Colors.white,
-              child:Column(
+      body: Column(
+        children: [
+          //轮播图
+          // Container(
+          //   color: Colors.white,
+          //   child:Column(
+          //     children: [
+          //       SizedBox(height: spaceCardMarginBigTB,),
+          //       AspectRatio(
+          //         aspectRatio: 2.43,
+          //         child: swiperWidget(),
+          //       ),
+          //       SizedBox(height: spaceCardMarginBigTB,),
+          //     ],
+          //   ),
+          // ),
+          Container(
+            width: double.infinity,
+            height: fontSizeMini38*3,
+            color: Colors.white.withAlpha(240),
+            padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                FlyTextMini35("${Global.prefs.getString(Global.prefsStr.schoolYear)}-${int.parse(Global.prefs.getString(Global.prefsStr.schoolYear))+1}"+" 学年   ",color: Colors.black38),
+                FlyTextMini35("第"+Global.prefs.getString(Global.prefsStr.schoolTerm)+"学期",color: Colors.black38)
+
+              ],
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Wrap(
+                runSpacing: spaceCardMarginBigTB,
                 children: [
-                  SizedBox(height: spaceCardMarginBigTB,),
-                  AspectRatio(
-                    aspectRatio: 2.43,
-                    child: swiperWidget(),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, 0, 0),
+                    child: Column(
+                      children: [
+                        Wrap(
+                          children: [
+                            funcButton(imageResource: 'images/tushuguan.png',title: '图书馆',color:colorFuncButton[0],subTitle: '馆藏查询、图书推荐',onTap: ()=>toBookPage(context)),
+                            funcButton(imageResource: 'images/xiaoche.png',title: '校车',color:colorFuncButton[3],subTitle: '通勤班车时间表',onTap: ()=>toSchoolBusPage(context)),
+                            funcButton(imageResource: 'images/xiaoli.png',title: '校历',color:colorFuncButton[2],subTitle: '本学年校历',onTap: ()=>toSchoolCalendarPage(context)),
+                            funcButton(imageResource: 'images/kongjiaoshi.png',title: '空教室',subTitle: '快速查找空教室'),
+                            funcButton(imageResource: 'images/tongxunlu.png',title: '通讯录',subTitle: '矿大黄页、联系你我'),
+                            funcButton(imageResource: 'images/ditu.png',title: '校园地图',subTitle: '拯救路痴的你'),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                  SizedBox(height: spaceCardMarginBigTB,),
+                  Container(),
+                  FlyTitle("考试倒计时"),
+                  ExamPage(),
                 ],
               ),
             ),
-
-            // FlyTitle('功能'),
-            Padding(
-              padding: EdgeInsets.fromLTRB(spaceCardPaddingTB, 0, 0, 0),
-              child: Column(
-                children: [
-                  Wrap(
-                    children: [
-                      funcButton(imageResource: 'images/tushuguan.png',title: '图书馆',color:colorFuncButton[0],subTitle: '馆藏查询、图书推荐',onTap: ()=>toBookPage(context)),
-                      funcButton(imageResource: 'images/xiaoche.png',title: '校车',color:colorFuncButton[3],subTitle: '通勤班车时间表',onTap: ()=>toSchoolBusPage(context)),
-                      funcButton(imageResource: 'images/xiaoli.png',title: '校历',color:colorFuncButton[2],subTitle: '本学年校历',onTap: ()=>toSchoolCalendarPage(context)),
-                      funcButton(imageResource: 'images/kongjiaoshi.png',title: '空教室',subTitle: '快速查找空教室',onTap: ()=>print("图书馆")),
-                      funcButton(imageResource: 'images/tongxunlu.png',title: '通讯录',subTitle: '生活学习、方方面面',onTap: ()=>print("图书馆")),
-
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

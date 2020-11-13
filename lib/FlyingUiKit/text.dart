@@ -23,7 +23,7 @@ Widget FlyTitle(String title) => Container(
         height: fontSizeTitle45,
         decoration: BoxDecoration(color: colorMain,borderRadius: BorderRadius.circular(borderRadiusValue)),
       ),
-      SizedBox(width: fontSizeMini38,),
+      SizedBox(width: ScreenUtil().setSp(35),),
       Text(
         title,
         style: TextStyle(

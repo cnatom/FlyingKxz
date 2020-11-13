@@ -9,7 +9,7 @@ import 'config.dart';
 
 void showToast(BuildContext context,String text,{int duration=2}){
   Toast.show(text, context,
-      backgroundRadius: 5, gravity: Toast.BOTTOM, duration: duration);
+      backgroundRadius: 5, gravity: Toast.TOP, duration: duration);
 }
 void showFlyDialog(BuildContext context,{@required Widget child}){
   showAnimatedDialog(
@@ -21,7 +21,7 @@ void showFlyDialog(BuildContext context,{@required Widget child}){
         child: child,
       );
     },
-    animationType: DialogTransitionType.fade,
+    animationType: DialogTransitionType.scale,
     duration: const Duration(milliseconds: 200)
   );
 }

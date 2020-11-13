@@ -94,6 +94,7 @@ class ApiUrl{
   String swiperUrl = "http://api.kxz.atcumt.com/daily/home_image";//轮播图
   String rankUrl = "https://api.kxz.atcumt.com/admin/user_id";//用户内测排名
   String feedbackUrl = "https://api.kxz.atcumt.com/admin/feedback";//反馈
+  String cumtLoginUrl = "http://10.2.5.251:801/eportal/";//校园网登陆
 
 }
 
@@ -112,4 +113,7 @@ class PrefsStr{
   String schoolYear = 'schoolYear';//当前学年
   String schoolTerm = 'schoolTerm';//当前学期
   String isFirstLogin = 'isFirstLogin';//是否初次登陆
+  String cumtLoginUsername = "cumtLoginUsername";//校园网账号
+  String cumtLoginPassword = "cumtLoginPassword";//校园网账号
+  String cumtLoginMethod = "cumtLoginMethod";//登录方式
 }

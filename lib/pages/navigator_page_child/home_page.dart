@@ -10,6 +10,7 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/FlyingUiKit/text.dart';
@@ -17,6 +18,8 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/NetRequest/course_get.dart';
 import 'package:flying_kxz/Model/course_info.dart';
+
+import 'myself_page_child/cumtLogin_view.dart';
 
 class CourseData {
   List weeks;//在几周有课 [1,2,3,4]代表1-4周都有课
@@ -54,7 +57,7 @@ List<CourseData> courseDataList = List();
 class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   var crossFadeState = CrossFadeState.showFirst;
-  ScrollController scrollController = new ScrollController(initialScrollOffset: (1.4*ScreenUtil().setWidth(deviceWidth/9.5)+fontSizeMain40)*(selectedWeek),keepScrollOffset: true);
+  ScrollController scrollController = new ScrollController(initialScrollOffset: (1.4*ScreenUtil().setSp(100)+fontSizeMain40)*(selectedWeek),keepScrollOffset: true);
   Color greyMask = Colors.transparent;
   double mMaxScrollExtent = (1.4*ScreenUtil().setWidth(deviceWidth/9)+fontSizeMain40)*22;//最大滑动像素距离
   bool loading = false;//是否显示加载动画
@@ -198,7 +201,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   }
   //调整右侧滚动条位置
   void setRightScrollPosition({int toWeek}){
-    double aimPosition = (1.4*ScreenUtil().setWidth(deviceWidth/9.5)+fontSizeMain40)*(toWeek-1);
+    double aimPosition = (1.4*ScreenUtil().setSp(100)+fontSizeMain40)*(toWeek-1);
     if(aimPosition>mMaxScrollExtent){
       scrollController.jumpTo(mMaxScrollExtent);
       return;
@@ -262,7 +265,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   }
 
   Widget pointArea() {
-    double width = ScreenUtil().setWidth(deviceWidth / 10);
+    double width = ScreenUtil().setSp(100);
     int curWeek = 0;
     return SingleChildScrollView(
       controller: scrollController,
@@ -400,342 +403,343 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
           children: <Widget>[
             //左侧课表区域
             Expanded(
-              child: Container(
-//                width: ScreenUtil().setWidth(deviceWidth),
-                child: Column(
-                  children: <Widget>[
-                    //顶部(周一，周二，周三……)
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Container(),
-                        ),
-                        Expanded(
-                          flex: 8,
+              child: Column(
+                children: <Widget>[
+                  //顶部(周一，周二，周三……)
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Container(
                           child: Column(
                             children: <Widget>[
-                              Row(
-                                children: lessonWeekList.map((item) {
-                                  mondayDuration++;
-                                  var addedDate = mondayDate
-                                      .add(Duration(days: mondayDuration));
-                                  var mondayMonth = addedDate.month;
-                                  var mondayDay = addedDate.day;
-                                  //判断是否是今天
-                                  return Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 0, fontSizeTip33/5),
-                                      child: addedDate.month==Global.nowDate.month&&addedDate.day==Global.nowDate.day?Container(
-                                        decoration: BoxDecoration(
-                                            color: colorMain.withAlpha(30),
-                                            borderRadius: BorderRadius.circular(2)
-                                        ),
-                                        child: Column(
-                                          children: <Widget>[
-                                            Center(
-                                                child: FlyTextTip30(item,color: colorMain,)
-                                            ),
-                                            SizedBox(
-                                              height: fontSizeMini38 / 3,
-                                            ),
-                                            Center(
-                                              child: FlyTextTipMini25(
-                                                '${mondayMonth}/${mondayDay}',color:colorMain,),
-                                            )
-                                          ],
-                                        ),
-                                      ):Column(
-                                        children: <Widget>[
-                                          Center(
-                                              child: FlyTextTip30(item,color: colorMainText.withAlpha(200))
-                                          ),
-                                          SizedBox(
-                                            height: fontSizeMini38 / 3,
-                                          ),
-                                          Center(
-                                            child: FlyTextTipMini25(
-                                              '${mondayMonth}/${mondayDay}',color: colorMainText.withAlpha(200)),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                }).toList(),
+                              Center(
+                                  child: FlyTextTip30(mondayDate
+                                      .add(Duration(days: mondayDuration)).month.toString(),color: colorMainText.withAlpha(200),)
                               ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    //课表部分
-                    Expanded(
-                      child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
-                        child: Container(
-                          height: ScreenUtil().setHeight(deviceHeight*0.75),
-                          width: ScreenUtil().setWidth(deviceWidth),
-                          child: Row(
-                            children: <Widget>[
-                              //左侧 节数+时间表
-                              Expanded(
-                                flex: 1,
-                                child: Column(
-                                  children: lessonTimeList.map((item) {
-                                    return Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          FlyTextMain40(
-                                              (lessonWeekListIndex++)
-                                                  .toString(),
-                                              color: colorMain),
-                                          FlyTextTipMini25(item)
-                                        ],
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
+                              SizedBox(
+                                height: fontSizeMini38 / 3,
                               ),
-                              //中间课程卡片排列区域
-                              Expanded(
-                                flex: 8,
-                                child: Container(
-                                  child: LayoutBuilder(
-                                    builder: (context, parSize) {
-                                      double heightCard = parSize.maxHeight / 10;
-                                      double widthCard = parSize.maxWidth / 7;
-                                      //详细信息卡片
-                                      Widget dialogKbWidget({
-                                        @required String courseName,//课程名称
-                                        @required String type,//课程类型
-                                        @required String location,//教室
-                                        @required String teacher,//教室姓名
-                                        @required String weeksStr,//周数
-                                        String lessonFromToWhen,//1-2节
-                                        @required String credicScore,//学分
-                                        Color color = Colors.green
-                                      }){
-                                        Widget rowKbContent(String title,String content){
-                                          return Row(
-                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                            children: <Widget>[
-                                              FlyTextMini35("$title     ", color: colorMainText.withAlpha(150)),
-                                              FlyTextMini35(content, color: colorMainText,maxLine: 3)
-                                            ],
-                                          );
-                                        }
-                                        return Container(
-                                          padding: EdgeInsets.fromLTRB(fontSizeMini38*2, fontSizeMini38*1.5, fontSizeMini38*2, fontSizeMini38),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(borderRadiusValue),
-                                              color: Colors.white.withAlpha(255)
-                                          ),
-                                          child: Wrap(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Container(height: fontSizeTitle45,width: fontSizeTitle45/5,color: color,),
-                                                  SizedBox(width: fontSizeTitle45*0.6,),
-                                                  Expanded(
-                                                    child: FlyTextTitle45(courseName + " " + type,maxLine: 3,),
-                                                  )
-                                                ],
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.all(fontSizeTitle45*0.8),
-                                                child: Wrap(
-                                                  runSpacing : fontSizeMini38/2,
-                                                  children: [
-                                                    rowKbContent('地点',location),
-                                                    rowKbContent('老师',teacher),
-                                                    rowKbContent('学分',credicScore),
-                                                    rowKbContent('周次',weeksStr),
-                                                    lessonFromToWhen==null?Container():rowKbContent('节次',lessonFromToWhen),
-                                                  ],
-                                                ),
-                                              )
-
-                                            ],
-                                          ),
-                                        );
-                                      }
-                                      Widget lessonSingleCard(
-                                          {@required int weekDay,
-                                            @required int lesson,
-                                            @required String courseName,
-                                            @required String courseLoc,
-                                            @required String teacherName,
-                                            GestureTapCallback onTap,
-                                            Color color = Colors.black12,
-                                            double duration = 2}) {
-                                        return Positioned(
-                                          top: heightCard * (lesson - 1),
-                                          left: widthCard * (weekDay - 1),
-                                          child: InkWell(
-                                            onTap: onTap,
-                                            child:Container(
-                                              height: heightCard * duration,
-                                              width: widthCard,
-                                              padding:
-                                              EdgeInsets.all(widthCard / 60),
-                                              child: Container(
-                                                padding: EdgeInsets.all(
-                                                    widthCard / 35),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius.circular(2),
-                                                    color: color.withAlpha(25)),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Text(courseName,style: TextStyle(fontSize: ScreenUtil().setSp(30),color: color, fontWeight: FontWeight.w600,),maxLines: 3,overflow: TextOverflow.ellipsis,),
-                                                    Text(courseLoc,style: TextStyle(fontSize: ScreenUtil().setSp(25),color: color),)
-//                                                    FlyTextTipMini25(teacherName,
-//                                                        color: color,maxLine: 3),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      Widget lessonMultiCard(
-                                          {
-                                            @required int week,
-                                            @required int weekDay,
-                                            @required int lesson,
-                                            GestureTapCallback onTap,
-                                            Color color = Colors.blueGrey,
-                                            double duration = 2}) {
-                                        return Positioned(
-                                          top: heightCard * (lesson - 1),
-                                          left: widthCard * (weekDay - 1),
-                                          child: InkWell(
-                                            onTap: (){
-                                              //寻找重复课程的课程数据
-                                              if(repeatCards.isNotEmpty)repeatCards.clear();
-                                              for(int i = 0;i<courseDataList.length;i++){
-                                                if(courseDataList[i].weekDay==weekDay&&courseDataList[i].lessonNum==lesson&&courseDataList[i].weeks.contains(week+1)){
-                                                  repeatCards.add(dialogKbWidget(
-                                                      courseName: courseDataList[i].courseName,
-                                                      type: courseDataList[i].type,
-                                                      location: courseDataList[i].location,
-                                                      teacher: courseDataList[i].teacher,
-                                                      weeksStr: courseDataList[i].weeksStr,
-                                                      credicScore: courseDataList[i].creditScore,
-                                                      color:colorCourse[
-                                                      courseDataList[i].courseName],
-                                                      lessonFromToWhen: courseDataList[i].lessonFromToWhen
-                                                  ));
-                                                }
-                                              }
-
-                                              showFlyDialog(context, child: Wrap(
-                                                runSpacing:fontSizeMini38,
-                                                children: repeatCards,
-                                              ));
-                                              //遍历查找重叠的课程
-
-                                            },
-                                            child:Container(
-                                              height: heightCard * duration,
-                                              width: widthCard,
-                                              padding:
-                                              EdgeInsets.all(widthCard / 30),
-                                              child: Container(
-                                                padding: EdgeInsets.all(
-                                                    widthCard / 30),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius.circular(2),
-                                                    color: color.withAlpha(30)),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    FlyTextTipMini25("重叠课程", color: color, fontWeight: FontWeight.w600,maxLine: 3),
-                                                    FlyTextTipMini25("查看详情",
-                                                        color: color,maxLine: 3),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      return loading==true?Center(
-                                        child: loadingAnimationTwoCircles(),
-                                      ):Stack(
-                                        children: <Widget>[
-                                          //底线
-                                          Column(
-                                            children: <Widget>[for(int i = 0;i<10;i++)baseTable(color: i.isOdd?Colors.black26.withAlpha(10):Colors.transparent),],
-                                          ),
-                                          Stack(
-                                            children: courseDataList == null
-                                                ? [Container()]
-                                                : courseDataList.map((item) {
-                                              if (item.weeks.contains(selectedWeek+1)) {
-                                                //如果课程有重叠
-                                                if(point[selectedWeek][item.lessonNum~/2][item.weekDay-1]>1){
-                                                  return lessonMultiCard(
-                                                      week:selectedWeek,
-                                                      weekDay: item.weekDay,
-                                                      lesson:
-                                                      item.lessonNum,
-                                                      );
-                                                }
-                                                //无重叠时
-                                                return lessonSingleCard(
-                                                    weekDay: item.weekDay,
-                                                    lesson:
-                                                    item.lessonNum,
-                                                    duration:
-                                                    item.duration,
-                                                    color: colorCourse[
-                                                    item.courseName],
-                                                    courseName:
-                                                    item.courseName,
-                                                    courseLoc:
-                                                    item.location,
-                                                    teacherName:
-                                                    item.teacher,
-                                                    onTap:(){
-                                                      showFlyDialog(context, child: dialogKbWidget(
-                                                          courseName: item.courseName,
-                                                          type: item.type,
-                                                          location: item.location,
-                                                          teacher: item.teacher,
-                                                          weeksStr: item.weeksStr,
-                                                          credicScore: item.creditScore,
-                                                          color:colorCourse[
-                                                          item.courseName]
-                                                      ));
-                                                    });
-                                              } else {
-                                                return Container();
-                                              }
-                                            }).toList(),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
+                              Center(
+                                child: FlyTextTipMini25(
+                                  '月',color:colorMainText.withAlpha(200),),
                               ),
-
+                              SizedBox(height: fontSizeTip33/5,)
                             ],
                           ),
                         ),
                       ),
-                    )
-                  ],
-                ),
+                      Expanded(
+                        flex: 8,
+                        child: Row(
+                          children: lessonWeekList.map((item) {
+                            mondayDuration++;
+                            var addedDate = mondayDate
+                                .add(Duration(days: mondayDuration));
+                            var mondayMonth = addedDate.month;
+                            var mondayDay = addedDate.day;
+                            //判断是否是今天
+                            return Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, fontSizeTip33/5),
+                                child: addedDate.month==Global.nowDate.month&&addedDate.day==Global.nowDate.day?Container(
+                                  decoration: BoxDecoration(
+                                      color: colorMain.withAlpha(30),
+                                      borderRadius: BorderRadius.circular(2)
+                                  ),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Center(
+                                          child: FlyTextTip30(item,color: colorMain,)
+                                      ),
+                                      SizedBox(
+                                        height: fontSizeMini38 / 3,
+                                      ),
+                                      Center(
+                                        child: FlyTextTipMini25(
+                                          '${mondayMonth}/${mondayDay}',color:colorMain,),
+                                      )
+                                    ],
+                                  ),
+                                ):Column(
+                                  children: <Widget>[
+                                    Center(
+                                        child: FlyTextTip30(item,color: colorMainText.withAlpha(200))
+                                    ),
+                                    SizedBox(
+                                      height: fontSizeMini38 / 3,
+                                    ),
+                                    Center(
+                                      child: FlyTextTipMini25(
+                                          '${mondayMonth}/${mondayDay}',color: colorMainText.withAlpha(200)),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      )
+                    ],
+                  ),
+                  //课表部分
+                  Expanded(
+                    child: Row(
+                      children: <Widget>[
+                        //左侧 节数+时间表
+                        Expanded(
+                          child: Column(
+                            children: lessonTimeList.map((item) {
+                              return Expanded(
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text((lessonWeekListIndex++)
+                                        .toString(),style: TextStyle(fontSize: ScreenUtil().setHeight(deviceHeight/60),color: colorMain),),
+                                    Text(item,style: TextStyle(fontSize: ScreenUtil().setHeight(deviceHeight/90),color: Colors.black38),),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        //中间课程卡片排列区域
+                        Expanded(
+                          flex: 8,
+                          child: Container(
+                            child: LayoutBuilder(
+                              builder: (context, parSize) {
+                                double heightCard = parSize.maxHeight / 10;
+                                double widthCard = parSize.maxWidth / 7;
+                                //详细信息卡片
+                                Widget dialogKbWidget({
+                                  @required String courseName,//课程名称
+                                  @required String type,//课程类型
+                                  @required String location,//教室
+                                  @required String teacher,//教室姓名
+                                  @required String weeksStr,//周数
+                                  String lessonFromToWhen,//1-2节
+                                  @required String credicScore,//学分
+                                  Color color = Colors.green
+                                }){
+                                  Widget rowKbContent(String title,String content){
+                                    return Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        FlyTextMini35("$title     ", color: colorMainText.withAlpha(150)),
+                                        FlyTextMini35(content, color: colorMainText,maxLine: 3)
+                                      ],
+                                    );
+                                  }
+                                  return Container(
+                                    padding: EdgeInsets.fromLTRB(fontSizeMini38*2, fontSizeMini38*1.5, fontSizeMini38*2, fontSizeMini38),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(borderRadiusValue),
+                                        color: Colors.white.withAlpha(255)
+                                    ),
+                                    child: Wrap(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(height: fontSizeTitle45,width: fontSizeTitle45/5,color: color,),
+                                            SizedBox(width: fontSizeTitle45*0.6,),
+                                            Expanded(
+                                              child: FlyTextTitle45(courseName + " " + type,maxLine: 3,),
+                                            )
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(fontSizeTitle45*0.8),
+                                          child: Wrap(
+                                            runSpacing : fontSizeMini38/2,
+                                            children: [
+                                              rowKbContent('地点',location),
+                                              rowKbContent('老师',teacher),
+                                              rowKbContent('学分',credicScore),
+                                              rowKbContent('周次',weeksStr),
+                                              lessonFromToWhen==null?Container():rowKbContent('节次',lessonFromToWhen),
+                                            ],
+                                          ),
+                                        )
+
+                                      ],
+                                    ),
+                                  );
+                                }
+                                Widget lessonSingleCard(
+                                    {@required int weekDay,
+                                      @required int lesson,
+                                      @required String courseName,
+                                      @required String courseLoc,
+                                      @required String teacherName,
+                                      GestureTapCallback onTap,
+                                      Color color = Colors.black12,
+                                      double duration = 2}) {
+                                  return Positioned(
+                                    top: heightCard * (lesson - 1),
+                                    left: widthCard * (weekDay - 1),
+                                    child: InkWell(
+                                      onTap: onTap,
+                                      child:Container(
+                                        height: heightCard * duration,
+                                        width: widthCard,
+                                        padding:
+                                        EdgeInsets.all(widthCard / 40),
+                                        child: Container(
+                                          padding: EdgeInsets.all(
+                                              widthCard / 35),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.circular(2),
+                                              color: color.withAlpha(24)),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text(courseName,style: TextStyle(fontSize: ScreenUtil().setSp(29),fontWeight:FontWeight.w600,color: color,fontFamily: "SY"),maxLines: 2,overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                              SizedBox(height: ScreenUtil().setSp(10),),
+                                              Text(courseLoc,style: TextStyle(fontSize: ScreenUtil().setSp(25),color: color.withOpacity(0.8),fontFamily: "SY"),textAlign: TextAlign.center,)
+//                                                    FlyTextTipMini25(teacherName,
+//                                                        color: color,maxLine: 3),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                Widget lessonMultiCard(
+                                    {
+                                      @required int week,
+                                      @required int weekDay,
+                                      @required int lesson,
+                                      GestureTapCallback onTap,
+                                      Color color = Colors.blueGrey,
+                                      double duration = 2}) {
+                                  return Positioned(
+                                    top: heightCard * (lesson - 1),
+                                    left: widthCard * (weekDay - 1),
+                                    child: InkWell(
+                                      onTap: (){
+                                        //寻找重复课程的课程数据
+                                        if(repeatCards.isNotEmpty)repeatCards.clear();
+                                        for(int i = 0;i<courseDataList.length;i++){
+                                          if(courseDataList[i].weekDay==weekDay&&courseDataList[i].lessonNum==lesson&&courseDataList[i].weeks.contains(week+1)){
+                                            repeatCards.add(dialogKbWidget(
+                                                courseName: courseDataList[i].courseName,
+                                                type: courseDataList[i].type,
+                                                location: courseDataList[i].location,
+                                                teacher: courseDataList[i].teacher,
+                                                weeksStr: courseDataList[i].weeksStr,
+                                                credicScore: courseDataList[i].creditScore,
+                                                color:colorCourse[
+                                                courseDataList[i].courseName],
+                                                lessonFromToWhen: courseDataList[i].lessonFromToWhen
+                                            ));
+                                          }
+                                        }
+
+                                        showFlyDialog(context, child: Wrap(
+                                          runSpacing:fontSizeMini38,
+                                          children: repeatCards,
+                                        ));
+                                        //遍历查找重叠的课程
+
+                                      },
+                                      child:Container(
+                                        height: heightCard * duration,
+                                        width: widthCard,
+                                        padding:
+                                        EdgeInsets.all(widthCard / 30),
+                                        child: Container(
+                                          padding: EdgeInsets.all(
+                                              widthCard / 30),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.circular(2),
+                                              color: color.withAlpha(30)),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              FlyTextTipMini25("重叠课程", color: color, fontWeight: FontWeight.w600,maxLine: 3),
+                                              FlyTextTipMini25("查看详情",
+                                                  color: color,maxLine: 3),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return loading==true?Center(
+                                  child: loadingAnimationTwoCircles(),
+                                ):Stack(
+                                  children: <Widget>[
+                                    //底线
+                                    Column(
+                                      children: <Widget>[for(int i = 0;i<10;i++)baseTable(color: i.isOdd?Colors.black26.withAlpha(10):Colors.transparent),],
+                                    ),
+                                    Stack(
+                                      children: courseDataList == null
+                                          ? [Container()]
+                                          : courseDataList.map((item) {
+                                        if (item.weeks.contains(selectedWeek+1)) {
+                                          //如果课程有重叠
+                                          if(point[selectedWeek][item.lessonNum~/2][item.weekDay-1]>1){
+                                            return lessonMultiCard(
+                                              week:selectedWeek,
+                                              weekDay: item.weekDay,
+                                              lesson:
+                                              item.lessonNum,
+                                            );
+                                          }
+                                          //无重叠时
+                                          return lessonSingleCard(
+                                              weekDay: item.weekDay,
+                                              lesson:
+                                              item.lessonNum,
+                                              duration:
+                                              item.duration,
+                                              color: colorCourse[
+                                              item.courseName],
+                                              courseName:
+                                              item.courseName,
+                                              courseLoc:
+                                              item.location,
+                                              teacherName:
+                                              item.teacher,
+                                              onTap:(){
+                                                showFlyDialog(context, child: dialogKbWidget(
+                                                    courseName: item.courseName,
+                                                    type: item.type,
+                                                    location: item.location,
+                                                    teacher: item.teacher,
+                                                    weeksStr: item.weeksStr,
+                                                    credicScore: item.creditScore,
+                                                    color:colorCourse[
+                                                    item.courseName]
+                                                ));
+                                              });
+                                        } else {
+                                          return Container();
+                                        }
+                                      }).toList(),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
             AnimatedCrossFade(

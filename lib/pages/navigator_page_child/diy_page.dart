@@ -1,16 +1,12 @@
-//课表页面
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/example_page.dart';
 import 'package:flying_kxz/FlyingUiKit/text.dart';
 import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/applets.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/func_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_page.dart';
 class DiyPage extends StatefulWidget {
   @override
   _DiyPageState createState() => _DiyPageState();
@@ -67,8 +63,8 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
   void initState() {
     super.initState();
     mController = TabController(
-      initialIndex: 1,
-      length: 3,
+      initialIndex: 0,
+      length: 2,
       vsync: this,
     );
   }
@@ -100,9 +96,6 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
                   isScrollable: true,
                   tabs: [
                     Tab(
-                      text: "考试",
-                    ),
-                    Tab(
                       text: "发现",
                     ),
                     Tab(
@@ -117,7 +110,6 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
                   physics: BouncingScrollPhysics(),
                   controller: mController,
                   children: <Widget>[
-                    ExamPage(),
                     FuncPage(),
                     ScorePage(),
                   ],

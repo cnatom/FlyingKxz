@@ -67,9 +67,11 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
     setState(() {loading = false;});
   }
   switchPage({@required int page})async{
-    miniLoading = true;
+    setState(() {
+      loading = true;
+    });
     await bookGet(book: curBookName,row: row.toString(),page: page.toString());
-    setState(() {miniLoading = false;});
+    setState(() {loading = false;});
   }
   Future<bool> getBookDetail({@required String url})async{
     Response res;
@@ -135,9 +137,9 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
     }
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB,
-          spaceCardPaddingRL, spaceCardPaddingTB),
-      margin: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB*2, spaceCardMarginRL, 0),
+      padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB/1.5,
+          spaceCardPaddingRL, spaceCardPaddingTB/1.5),
+      margin: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB, spaceCardMarginRL, 0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadiusValue),
         color: Colors.white,
@@ -150,7 +152,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
               children: [
                 //左侧书籍封面
                 Container(
-                  height: ScreenUtil().setHeight(deviceWidth*0.285),
+                  height: fontSizeMain40*8,
                   child: AspectRatio(
                     aspectRatio: 0.618,
                     child: BookImage(url: image,),
@@ -474,7 +476,7 @@ class BookImage extends StatefulWidget {
 class _BookImageState extends State<BookImage> with AutomaticKeepAliveClientMixin{
   Widget child;
   void initFunc({@required String url})async{
-    child = Container();
+    child = loadingAnimationIOS();
     Response res;
     Dio dio = Dio();
     //配置dio信息
@@ -485,10 +487,10 @@ class _BookImageState extends State<BookImage> with AutomaticKeepAliveClientMixi
     if (map['status']==200&&map['data']!='') {
       child = Image.network(
         map['data'],
-        fit: BoxFit.fitWidth,
+        fit: BoxFit.fill,
       );
     }else{
-      child = Image.asset("images/bookCover.jpg",fit: BoxFit.fitWidth,);
+      child = Image.asset("images/bookCover.jpg",fit: BoxFit.fill,);
     }
     setState(() {
 
@@ -498,14 +500,7 @@ class _BookImageState extends State<BookImage> with AutomaticKeepAliveClientMixi
   void initState() {
     super.initState();
     initFunc(url: widget.url);
-    print("initState");
   }
-  @override
-  void didUpdateWidget(BookImage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    initFunc(url: widget.url);
-  }
-
 
   @override
   Widget build(BuildContext context) {

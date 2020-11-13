@@ -32,7 +32,7 @@ Future<bool> examPost(BuildContext context,{@required String token,@required Str
     Map<String,dynamic> map = jsonDecode(res.toString());
     debugPrint(res.toString());
     if (map['status']==200) {
-      Global.prefs.setString(Global.prefsStr.examDataLoc, res.toString());//将课表信息存至本地
+      Global.prefs.setString(Global.prefsStr.examDataLoc, res.toString());//将考试信息存至本地
       Global.examInfo = ExamInfo.fromJson(map);
       return true;
     }else{

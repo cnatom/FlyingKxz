@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
+import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/home_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
@@ -21,15 +23,18 @@ class FlyNavigatorPage extends StatefulWidget {
 class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAliveClientMixin{
   int _currentIndex = 0; //数组索引，通过改变索引值改变视图
   List<Widget> pageList;
-  void initFunc()async{
+  void initFunc() async{
     pageList = [
       HomePage(),
       DiyPage(),
       MyselfPage()
     ];
-//    await UmengAnalyticsPlugin.init(
-//        androidKey: '5f9cf50745b2b751a92066ae', iosKey: "5f9cfd5645b2b751a9206776", logEnabled: true
-//    );
+    await Dio().get(
+      "https://www.lvyingzhao.cn/action",
+      queryParameters: {
+        "username":Global.prefs.getString(Global.prefsStr.username)
+      }
+    );
   }
   @override
   void initState() {
@@ -71,8 +76,8 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
           elevation: 1,
           fixedColor: colorMain,
           unselectedItemColor: Colors.black87,
-          selectedFontSize: fontSizeMini38,
-            unselectedFontSize: fontSizeMini38,
+          selectedFontSize: fontSizeTip33,
+            unselectedFontSize: fontSizeTip33,
             items: [
             _bottomNavigationBar('主页',FeatherIcons.home,),
             _bottomNavigationBar('发现',OMIcons.explore,),

@@ -22,22 +22,24 @@ class ExamPage extends StatefulWidget {
 }
 
 class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
-  bool loading;
+  bool loading = false;
   Timer timer;
   int countdownTime = 0;
 
   getShowExamView({@required String year,@required String term})async{
     setState(() {loading = true;});
-    await examPost(context, token:Global.prefs.getString(Global.prefsStr.token), year: year, term: term);
+    if(await examPost(context, token:Global.prefs.getString(Global.prefsStr.token), year: year, term: term))
     setState(() {loading = false;});
   }
   initData()async{
-    loading = false;
     if(Global.prefs.getString(Global.prefsStr.examDataLoc)!=null){
       Global.examInfo = ExamInfo.fromJson(jsonDecode(Global.prefs.getString(Global.prefsStr.examDataLoc)));//加载之前的考试数据
-      await examPost(context, token:Global.prefs.getString(Global.prefsStr.token),
-          year: Global.prefs.getString(Global.prefsStr.examYear), term: Global.prefs.getString(Global.prefsStr.examTerm));//刷新数据
       setState(() {});
+      if(await examPost(context, token:Global.prefs.getString(Global.prefsStr.token),
+          year: Global.prefs.getString(Global.prefsStr.examYear), term: Global.prefs.getString(Global.prefsStr.examTerm))){
+        setState(() {});
+      }
+
     }else{
       getShowExamView(year: Global.prefs.getString(Global.prefsStr.schoolYear), term: Global.prefs.getString(Global.prefsStr.schoolTerm));//首次使用
     }
@@ -54,7 +56,6 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
         }
       })
     };
-
     timer = Timer.periodic(oneSec, callback);
   }
 
@@ -62,7 +63,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
     Color colorCard;
     //计算剩余天数
     DateTime examDateTime = DateTime(year,month,day);
-    int timeLeftInt = examDateTime.difference(Global.nowDate).inDays;
+    int timeLeftInt = examDateTime.difference(Global.nowDate).inDays+1;
     String timeLeft = timeLeftInt.toString();
     if(timeLeftInt<0){
       colorCard = colorExamCard[4];
@@ -81,7 +82,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
         borderRadius: BorderRadius.circular(borderRadiusValue),
 
       ),
-      margin: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB*2, spaceCardMarginRL, 0),
+      margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, spaceCardMarginBigTB),
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, ScreenUtil().setSp(20)),
       child: Column(
         children: [
@@ -137,14 +138,17 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FlyTextMain40("（￣︶￣）↘  点右下角查询考试",color: Colors.black38),
+          FlyTextMain40("ヾ(๑╹◡╹)ﾉ'  考试信息是自动获取的哦～",color: Colors.black38),
         ],
       ),
     );
   }
   Widget loadingView(){
-    return Center(
-      child: loadingAnimationIOS(),
+    return Column(
+      children: [
+        SizedBox(height: fontSizeMini38*2,),
+        loadingAnimationIOS()
+      ],
     );
   }
   Widget infoView(){
@@ -152,7 +156,6 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
       physics: BouncingScrollPhysics(),
       child: Column(
         children: [
-          SizedBox(height: fontSizeMini38*3,),
           Column(
             children: Global.examInfo.data.map((item){
               return examCard(item.course, item.local, item.time, item.year, item.month, item.day);
@@ -165,12 +168,10 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
   }
   Widget infoEmptyView(){
     return Container(
-      height: double.infinity,
       width: double.infinity,
       child: InkWell(
         onTap: ()async{
           if (countdownTime == 0) {
-            debugPrint("当前学期"+Global.prefs.getString(Global.prefsStr.schoolTerm));
             await getShowExamView(year: Global.prefs.getString(Global.prefsStr.schoolYear),term: Global.prefs.getString(Global.prefsStr.schoolTerm));
             setState(() {
             countdownTime = 5;
@@ -182,7 +183,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FlyTextMain40("ヾ(๑╹◡╹)ﾉ'  暂时还没有考试",color: Colors.black38),
-            FlyTextTip30(countdownTime==0?"(点击空白处获取当前学年学期考试信息)":"$countdownTime秒后可再次获取")
+            FlyTextTip30(countdownTime==0?"(点击空白处刷新)":"$countdownTime秒后可再次刷新")
           ],
         ),
       ),
@@ -209,49 +210,14 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
   @override
   void dispose() {
     super.dispose();
-    if (timer != null) {
-      timer.cancel();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      backgroundColor: colorPageBackground,
-      body: Container(
-        height: double.infinity,
+    return Container(
         width: double.infinity,
-        child: Stack(
-          children: [
-
-            Positioned(child: curView()),
-            Positioned(
-              bottom: spaceCardMarginRL,
-              right: spaceCardMarginRL,
-              child: FlyFloatButton('ExamPage',iconData: Icons.search,
-                  onPressed: ()=>showPicker(context, Global.scaffoldKeyDiy, pickerDatas: Global.xqxnPickerData, onConfirm: (Picker picker, List value) {
-                    getShowExamView(year: picker.getSelectedValues()[0].toString().substring(0,4),term: '${(value[1]+1).toString()}');
-                  })),
-            ),
-            Container(
-              width: double.infinity,
-              height: fontSizeMini38*3,
-              color: Colors.white.withAlpha(240),
-              padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  FlyTextMini35("${Global.prefs.getString(Global.prefsStr.examYear)}-${int.parse(Global.prefs.getString(Global.prefsStr.examYear))+1}"+" 学年   ",color: Colors.black38),
-                  FlyTextMini35("第"+Global.prefs.getString(Global.prefsStr.examTerm)+"学期",color: Colors.black38)
-
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+        child: curView()
     );
   }
 

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.atcumt.kxz">
+    package="com.atcumt.flying_kxz">
    <application
-        android:label="flying_kxz"
+        android:label="矿小助内测版"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

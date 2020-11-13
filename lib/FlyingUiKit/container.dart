@@ -102,9 +102,8 @@ Widget FlyMyselfCard(
                       ),
                       child: Row(
                         children: [
-                          FlyTextTip30("内测会员",color: Colors.white,fontWeight: FontWeight.bold,textAlign: TextAlign.center),
+                          FlyTextTip30("内测会员",color: Colors.white,textAlign: TextAlign.center),
                           Global.prefs.getString(Global.prefsStr.rank)!=null?FlyTextTip30(" No.${Global.prefs.getString(Global.prefsStr.rank)}",color: Colors.white):Container()
-
                         ],
                       ),
                     ),

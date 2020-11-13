@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
@@ -91,11 +92,19 @@ class _BookDetailPageState extends State<BookDetailPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FlyWhiteAppBar(context, widget.bookName),
-      body: Column(
-        children: [
-          headerWidget(),
-          loading==false?infoListWidget():loadingAnimationArticle()
-        ],
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            headerWidget(),
+            loading==false?infoListWidget():Column(
+              children: [
+                SizedBox(height: ScreenUtil().setHeight(deviceHeight/3),),
+                loadingAnimationIOS()
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
