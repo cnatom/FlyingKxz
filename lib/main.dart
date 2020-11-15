@@ -19,8 +19,6 @@ void main() {
     SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
-  //锁定竖屏
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown,DeviceOrientation.portraitUp]);
   runApp(MaterialApp(
     theme: ThemeData(
         scaffoldBackgroundColor: scaffoldBackgroundColor,

@@ -7,9 +7,9 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'config.dart';
 
 
-void showToast(BuildContext context,String text,{int duration=2}){
+void showToast(BuildContext context,String text,{int duration=2,int gravity = 2}){
   Toast.show(text, context,
-      backgroundRadius: 5, gravity: Toast.TOP, duration: duration);
+      backgroundRadius: 5, gravity: gravity, duration: duration);
 }
 void showFlyDialog(BuildContext context,{@required Widget child}){
   showAnimatedDialog(
@@ -21,7 +21,7 @@ void showFlyDialog(BuildContext context,{@required Widget child}){
         child: child,
       );
     },
-    animationType: DialogTransitionType.scale,
+    animationType: DialogTransitionType.rotate3D,
     duration: const Duration(milliseconds: 200)
   );
 }

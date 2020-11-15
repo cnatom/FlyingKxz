@@ -23,7 +23,7 @@ class ScorePage extends StatefulWidget {
 
 class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMixin{
   ScrollController controller = new ScrollController();
-  String curScoreYear,curScoreTerm;//当前所选的学期学年信息
+  String curScoreYear = "全部学年",curScoreTerm = "全部学期";//当前所选的学期学年信息
   String jiaquanTotal;//总加权
   String jidianTotal;//总绩点
   double xfjdSum;//学分*绩点的和
@@ -406,7 +406,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     });
     await scoreGet(context, token: Global.prefs.getString(Global.prefsStr.token),year: year,term: term);
     curScoreYear = year;
-    curScoreTerm = term;
+    curScoreTerm = term=="0"?"全部学期":"第$term学期";
     scoreDetailCrossFadeState.clear();
     scoreFilter.clear();
     //添加开展动画控制器 并 计算总加权和总绩点
@@ -498,11 +498,12 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     FlySearchBarButton('点击查询',
-                        "${curScoreYear==null?"2020":curScoreYear}-${curScoreYear==null?"2021":(int.parse(curScoreYear)+1).toString()} ${curScoreTerm=='0'?"全部学期":"第${curScoreTerm==null?'1':int.parse(curScoreTerm).toString()}学期"}",
+                        "${curScoreYear} ${curScoreTerm}",
                         onTap: ()=>showPicker(context, Global.scaffoldKeyDiy,
                             pickerDatas: Global.xqxnWithAllTermPickerData,
                             onConfirm: (Picker picker, List value) {
-                              getShowScoreView(year: picker.getSelectedValues()[0].toString().substring(0,4),term: '${(value[1]).toString()}');
+                          debugPrint(value.toString());
+                              getShowScoreView(year: picker.getSelectedValues()[0].toString(),term: '${(value[1]).toString()}');
                             })),
                   ],
                 ),

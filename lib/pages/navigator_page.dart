@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/NetRequest/cumt_login.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/home_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
@@ -29,12 +30,21 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
       DiyPage(),
       MyselfPage()
     ];
-    await Dio().get(
-      "https://www.lvyingzhao.cn/action",
-      queryParameters: {
-        "username":Global.prefs.getString(Global.prefsStr.username)
-      }
+    Dio().get(
+        "https://www.lvyingzhao.cn/action",
+        queryParameters: {
+          "username":Global.prefs.getString(Global.prefsStr.username)
+        }
     );
+    debugPrint("@@@自动登录");
+    if(Global.prefs.getString(Global.prefsStr.cumtLoginUsername)!=null){
+
+      await cumtAutoLoginGet(context,
+          username: Global.prefs.getString(Global.prefsStr.cumtLoginUsername),
+          password: Global.prefs.getString(Global.prefsStr.cumtLoginPassword),
+          loginMethod: Global.prefs.getInt(Global.prefsStr.cumtLoginMethod));
+    }
+
   }
   @override
   void initState() {

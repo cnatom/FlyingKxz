@@ -20,7 +20,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
   TextEditingController _passWordController;
   String _username; //账号
   String _password; //密码
-  bool _loading = false;
+  bool ok = false;
   int loginType = Global.prefs.getInt(Global.prefsStr.cumtLoginMethod)??1;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>(); //表单状态
 
@@ -33,11 +33,12 @@ class _CumtLoginViewState extends State<CumtLoginView> {
     //判空
     if (_password.isEmpty||_username.isEmpty) {
       showToast(context, "请填写账号密码");
-      setState(() {_loading = false;});
       return;
     }
     //登录请求并决定是否跳转
-    await cumtLoginGet(context,username: _username,password: _password,loginMethod: loginType);
+    if(await cumtLoginGet(context,username: _username,password: _password,loginMethod: loginType)){
+      Navigator.pop(context);
+    }
   }
   //输入框组件
   Widget inputBar(String hintText, TextEditingController controller,
@@ -91,7 +92,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
     return Form(
       key: _formKey,
       child: Wrap(
-        runSpacing: 20,
+        runSpacing: 10,
         children: [
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -113,7 +114,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
 
             ],
           ),
-
+          Container(),
           Wrap(
             runSpacing: 10,
             children: [
@@ -150,13 +151,16 @@ class _CumtLoginViewState extends State<CumtLoginView> {
               )
             ],
           ),
+
           Wrap(
             runSpacing: 10,
             children: [
               cumtLoginButton(0,"登录",onTap: ()=>_loginFunc()),
-              cumtLoginButton(1,"注销",onTap: ()=>cumtLogoutGet(context))
+              cumtLoginButton(1,"注销",onTap: ()=>cumtLogoutGet(context)),
+              FlyTextTip30("小助会记住您的账号密码（本地存储）\n打开App后可以自动帮您连接校园网",maxLine: 5),
             ],
-          )
+          ),
+
         ],
       ),
     );

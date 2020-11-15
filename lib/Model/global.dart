@@ -67,6 +67,7 @@ class Global{
   ];
   static List xqxnWithAllTermPickerData = [
     [
+      "全部学年",
       "2021-2022",
       "2020-2021",
       "2019-2020",

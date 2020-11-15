@@ -8,7 +8,7 @@ import 'package:flying_kxz/Model/score_info.dart';
 
 Future<Null> scoreGet(BuildContext context,{@required String term, @required String year, @required String token}) async {
   try {
-    Map<String,dynamic> _jsonMap = {"xnm": year, "xqm": term};
+    Map<String,dynamic> _jsonMap = {"xnm": year=="全部学年"?"0":year.substring(0,4), "xqm": term};
     Response res;
     Dio dio = Dio();
     //配置dio信息

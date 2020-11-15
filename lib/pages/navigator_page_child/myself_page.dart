@@ -21,6 +21,7 @@ import 'package:flying_kxz/NetRequest/power_get.dart';
 import 'package:flying_kxz/NetRequest/rank_get.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/about_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'myself_page_child/cumtLogin_view.dart';
@@ -183,8 +184,15 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                       imageResource: 'images/netLogin.png',
                       title: '校园网登录',
                       onTap: () {
-                        // launch('http://10.2.5.251/');
                         FlyDialogDIYShow(context,content: CumtLoginView());
+                      }
+                  ),
+
+                  FlyRowMyselfItemButton(
+                      imageResource: 'images/yaoqing.png',
+                      title: '邀请好友',
+                      onTap: () {
+                        FlyDialogDIYShow(context,content: InvitePage());
                       }
                   ),
                   SizedBox(height: fontSizeMini38,),
