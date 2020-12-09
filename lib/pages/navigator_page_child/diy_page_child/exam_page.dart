@@ -62,11 +62,12 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
   Widget examCard(String courseName,String location,String dateTime,int year,int month,int day,){
     Color colorCard;
     //计算剩余天数
-    DateTime examDateTime = DateTime(year,month,day);
+    DateTime examDateTime = DateTime(year,month,day,);
     int timeLeftInt = examDateTime.difference(Global.nowDate).inDays+1;
     String timeLeft = timeLeftInt.toString();
-    if(timeLeftInt<0){
+    if(timeLeftInt<=0){
       colorCard = colorExamCard[4];
+      return Container();
     }else if(timeLeftInt<=7){
       colorCard = colorExamCard[0];
     }else if(timeLeftInt<=15){
@@ -76,14 +77,15 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
     }else{
       colorCard = colorExamCard[3];
     }
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.white.withOpacity(transparentValue),
         borderRadius: BorderRadius.circular(borderRadiusValue),
 
       ),
       margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, spaceCardMarginBigTB),
-      padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, ScreenUtil().setSp(20)),
+      padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB/2, spaceCardPaddingRL, spaceCardPaddingTB),
       child: Column(
         children: [
           //课程名 + 剩余天数
@@ -92,25 +94,27 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
-                child: FlyTextMini35(courseName,fontWeight: FontWeight.bold),
+                child: FlyTextMini35(courseName,fontWeight: FontWeight.w500),
               ),
               SizedBox(width: 10,),
-              timeLeftInt>=0?Row(
+              examDateTime.day!=Global.nowDate.day?Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   FlyTextTip30('剩余',color: colorCard.withAlpha(200)),
                   SizedBox(width: 10,),
-                  Text(timeLeft.toString(),style: TextStyle(fontSize: ScreenUtil().setSp(60),color: colorCard,fontWeight: FontWeight.bold,fontFamily: "SY"),textAlign: TextAlign.center,),
+                  Text(timeLeft.toString(),style: TextStyle(fontSize: ScreenUtil().setSp(60),color: colorCard,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
                   SizedBox(width: 10,),
                   FlyTextTip30('天',color: colorCard.withAlpha(200))
                 ],
               ):Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text("",style: TextStyle(fontSize: ScreenUtil().setSp(60)),),
-                  Text("已结束",style: TextStyle(fontSize: ScreenUtil().setSp(45),color: colorCard,fontWeight: FontWeight.bold,fontFamily: "SY"),textAlign: TextAlign.center,)
+                  Text('',style: TextStyle(fontSize: ScreenUtil().setSp(60),),),
+                  FlyTextTitle45('今天',color: colorCard.withAlpha(200),fontWeight: FontWeight.w600),
+                  FlyTextTip30(' 加油 !!~',color: colorCard.withAlpha(200)),
 
                 ],
-              ),
+              )
             ],
           ),
           SizedBox(height: spaceCardPaddingTB/3,),
@@ -182,8 +186,8 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FlyTextMain40("ヾ(๑╹◡╹)ﾉ'  暂时还没有考试",color: Colors.black38),
-            FlyTextTip30(countdownTime==0?"(点击空白处刷新)":"$countdownTime秒后可再次刷新")
+            FlyTextMain40("ヾ(๑╹◡╹)ﾉ'  暂时还没有考试",color: colorMainTextWhite),
+            FlyTextTip30(countdownTime==0?"(点击空白处刷新)":"$countdownTime秒后可再次刷新",color: colorMainTextWhite.withOpacity(0.8))
           ],
         ),
       ),

@@ -5,29 +5,32 @@ import 'dart:io';
 double deviceWidth = 1080;
 double deviceHeight = 1920;
 
+//透明度
+double transparentValue = 0.7;
+//背景图文件
+String dir;
+File fileBackImg;
+String dirBackImageFile = '/FlyingKXZ/background.jpg';
 //色彩管理
 final Color colorMain = Color.fromARGB(255, 1,176,117).withAlpha(255);
-// final Color colorMain = Colors.pinkAccent;
-final Color colorSecond = Color.fromARGB(255, 228,247,241).withAlpha(255);
-final Color colorMainText = Color.fromARGB(255, 12, 21, 60);
+final Color colorSecond = Color(0xFF33CC99).withAlpha(255);
+final Color colorMainText = Color.fromARGB(255, 0, 0, 0);
+final Color colorMainTextWhite = Colors.white.withOpacity(0.95);
 final Color colorIconBackground = Color.fromARGB(255, 244,245,249);
-final Color colorShadow = Colors.black45;
+final Color colorShadow = Color(0XFFCCCCCC);
 final Color scaffoldBackgroundColor = Color.fromARGB(255, 255,255,255);
 final Color colorPageBackground = Color.fromARGB(255, 247,247,247);
 
 final Color colorLoginPageMain = Color.fromARGB(255, 40,216,161);
 
 final List<Color> colorLessonCard = [
-  Colors.blueAccent,
-  Colors.deepOrange,
-  Colors.green,
-  Colors.deepPurple,
-  Colors.redAccent,
-  Colors.blue,
-  Colors.pink,
-  Colors.red,
-  Colors.pinkAccent,
-  Colors.teal.withAlpha(200)
+  Color(0xFF33CC99),
+  Color(0xFF6699FF),
+  Color(0xFFFF6666),
+  Color(0xFF99CC33),
+  // Color(0xFF),
+  // Color(0xFF),
+  // Color(0xFF),
 ];
 final List<Color> colorFuncButton = [
   Color.fromARGB(255, 88,188,216),
@@ -58,26 +61,28 @@ final double fontSizeMini38 = ScreenUtil().setSp(38);
 final double fontSizeTip33 = ScreenUtil().setSp(33);
 final double fontSizeTipMini25 = ScreenUtil().setSp(25);
 
+//图标大小管理
+final double sizeIconMain50 = ScreenUtil().setSp(50);
 //图标
 final Icon FlyIconBackIOS = Icon(
   Icons.arrow_back_ios,
   color: colorMainText,
-  size: fontSizeMini38,
+  size: sizeIconMain50,
 );
 final Icon FlyIconRightGreyArrow = Icon(
   Icons.keyboard_arrow_right,
-  color: Colors.black12,
-  size: fontSizeTitle50,
+  color: Colors.black38,
+  size: sizeIconMain50,
 );
 //边距等配置
-final double spaceCardMarginBigTB = ScreenUtil().setSp(20);
-final double spaceCardMarginTB = ScreenUtil().setSp(15);//上下外边距
-final double spaceCardPaddingTB = ScreenUtil().setSp(15);//上下内边距
+final double spaceCardMarginBigTB = ScreenUtil().setSp(25);
+final double spaceCardMarginTB = ScreenUtil().setSp(20);//上下外边距
+final double spaceCardPaddingTB = ScreenUtil().setSp(25);//上下内边距
 final double spaceCardMarginRL = ScreenUtil().setWidth(30);//左右外边距
 final double spaceCardPaddingRL = ScreenUtil().setWidth(50);//左右内边距
 
 //容器圆角值
-final double borderRadiusValue = fontSizeMini38;
+final double borderRadiusValue = 10;
 
 //用于取消蓝色回弹效果
 //ScrollConfiguration(

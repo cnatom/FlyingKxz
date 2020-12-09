@@ -62,7 +62,6 @@ Widget FlyIdCardContainer(
         ),
       ),
     );
-
 //个人资料卡
 Widget FlyMyselfCard(
     {String imageResource = "",
@@ -74,12 +73,18 @@ Widget FlyMyselfCard(
       padding: EdgeInsets.fromLTRB(fontSizeMini38*2, 0, 0, 0),
       child: Row(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.asset(
-              imageResource,
-              height: ScreenUtil().setWidth(170),
-              fit: BoxFit.fill,
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              border:Border.all(color: Colors.white,width: 3)
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Image.asset(
+                imageResource,
+                height: ScreenUtil().setWidth(120),
+                fit: BoxFit.fill,
+              ),
             ),
           ),
           SizedBox(
@@ -92,7 +97,7 @@ Widget FlyMyselfCard(
               children: <Widget>[
                 Row(
                   children: [
-                    FlyTextTitle50(name,color: colorMain,fontWeight: FontWeight.bold),
+                    FlyTextTitle50(name,color: colorMainTextWhite,fontWeight: FontWeight.w400),
                     SizedBox(width: fontSizeMini38,),
                     Container(
                       padding: EdgeInsets.fromLTRB(fontSizeMini38/2, 0, fontSizeMini38/2, 0),
@@ -111,9 +116,8 @@ Widget FlyMyselfCard(
                   ],
                 ),
                 SizedBox(height: 5,),
-                FlyTextTip30("账号: " + id),
                 Container(
-                  child: FlyTextTip30(college),
+                  child: FlyTextTip30(college,color: colorMainTextWhite.withOpacity(0.6)),
                 ),
 
               ],

@@ -13,7 +13,7 @@ Widget FlyTextTip30(String text,{double wordSpacing,int maxLine,TextAlign textAl
 Widget FlyTextTipMini25(String text,{double wordSpacing,int maxLine,TextAlign textAlign = TextAlign.start,Color color = Colors.black38,double letterSpacing = 0,FontWeight fontWeight = FontWeight.normal})=>Text(text, style: TextStyle(fontWeight: fontWeight,fontSize: fontSizeTipMini25, color: color,letterSpacing: letterSpacing,wordSpacing: wordSpacing),maxLines: maxLine,overflow: TextOverflow.ellipsis,textAlign: textAlign,);
 
 //特殊字体组件
-Widget FlyTitle(String title) => Container(
+Widget FlyTitle(String title,{Color textColor = Colors.black}) => Container(
   margin: EdgeInsets.fromLTRB(fontSizeMini38, 0, 0, 0),
   child: Row(
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -21,13 +21,13 @@ Widget FlyTitle(String title) => Container(
       Container(
         width: fontSizeMini38/4,
         height: fontSizeTitle45,
-        decoration: BoxDecoration(color: colorMain,borderRadius: BorderRadius.circular(borderRadiusValue)),
+        decoration: BoxDecoration(color: colorSecond,borderRadius: BorderRadius.circular(borderRadiusValue)),
       ),
       SizedBox(width: ScreenUtil().setSp(35),),
       Text(
         title,
         style: TextStyle(
-          color: colorMainText,
+          color: textColor,
           fontSize: fontSizeTitle45,
           fontWeight: FontWeight.bold,
         ),

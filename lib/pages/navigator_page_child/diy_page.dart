@@ -73,25 +73,24 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+        backgroundColor: Colors.transparent,
         key: Global.scaffoldKeyDiy,
         body: Column(
           children: <Widget>[
             SizedBox(height: ScreenUtil.statusBarHeight,),
             //AppBar
             Container(
-              alignment: Alignment.center,
+              margin: EdgeInsets.fromLTRB(fontSizeMini38, 0, 0, fontSizeMini38),
               width: double.infinity,
               child: TabBar(
                   controller: mController,
-                  labelColor: colorMainText,
-                  labelStyle: TextStyle(fontSize: fontSizeTitle45,fontWeight: FontWeight.bold,fontFamily: "SY"),
-                  unselectedLabelStyle: TextStyle(fontSize: fontSizeTitle45,fontFamily: "SY",fontWeight: FontWeight.bold,),
+                  labelColor: colorMainTextWhite,
+                  labelStyle: TextStyle(fontSize: fontSizeTitle45,fontWeight: FontWeight.w500,),
+                  unselectedLabelColor: colorMainTextWhite.withOpacity(0.5),
+                  unselectedLabelStyle: TextStyle(fontSize: fontSizeMain40,fontWeight: FontWeight.w500,),
                   indicatorSize: TabBarIndicatorSize.label,
-                  unselectedLabelColor: Colors.grey.withAlpha(200),
-//                  indicatorWeight: 3,
                   indicator: UnderlineTabIndicator(
-                      borderSide: BorderSide(width: 3,color: colorMainText),
-                      insets: EdgeInsets.fromLTRB(fontSizeMain40*1.2, 0, fontSizeMain40*1.2, 0)
+                      borderSide: BorderSide(color: Colors.transparent),
                   ),
                   isScrollable: true,
                   tabs: [
@@ -104,7 +103,6 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
 
                   ]),
             ),
-            Divider(height: 0,),
               Expanded(
                 child: TabBarView(
                   physics: BouncingScrollPhysics(),

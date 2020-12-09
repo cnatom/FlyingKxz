@@ -50,23 +50,6 @@ class _FuncPageState extends State<FuncPage> {
               fit: BoxFit.fitWidth,
             ),
           ),
-//          child: Global.swiperInfo.data!=null?Container(
-//            child: ClipRRect(
-//              borderRadius: BorderRadius.circular(borderRadiusValue),
-//              child: Image.network(
-//                Global.swiperInfo.data[index].image,
-//                fit: BoxFit.fill,
-//              ),
-//            ),
-//          ):Container(
-//            child: ClipRRect(
-//              borderRadius: BorderRadius.circular(borderRadiusValue),
-//              child: Image.asset(
-//                "images/swiperBackground.png",
-//                fit: BoxFit.fill,
-//              ),
-//            ),
-//          ),
         );
       },
       itemCount: 4,
@@ -79,14 +62,14 @@ class _FuncPageState extends State<FuncPage> {
   Widget funcButton({@required String imageResource,@required String title,@required subTitle,GestureTapCallback onTap,Color color = Colors.grey}){
     return Container(
       width: ScreenUtil().setWidth(deviceWidth/2)-spaceCardMarginRL/2,
-      padding: EdgeInsets.fromLTRB(0,spaceCardPaddingTB, spaceCardPaddingTB, 0),
+      padding: EdgeInsets.fromLTRB(0,0, spaceCardPaddingTB, spaceCardPaddingTB),
       child: InkWell(
         onTap: onTap,
         child: Container(
           padding: EdgeInsets.all(spaceCardMarginRL),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(borderRadiusValue),
-              color: Colors.white,
+              color: Colors.white.withOpacity(transparentValue),
           ),
           child: Row(
             children: [
@@ -127,38 +110,9 @@ class _FuncPageState extends State<FuncPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorPageBackground,
+      backgroundColor: Colors.transparent,
       body: Column(
         children: [
-          //轮播图
-          // Container(
-          //   color: Colors.white,
-          //   child:Column(
-          //     children: [
-          //       SizedBox(height: spaceCardMarginBigTB,),
-          //       AspectRatio(
-          //         aspectRatio: 2.43,
-          //         child: swiperWidget(),
-          //       ),
-          //       SizedBox(height: spaceCardMarginBigTB,),
-          //     ],
-          //   ),
-          // ),
-          Container(
-            width: double.infinity,
-            height: fontSizeMini38*3,
-            color: Colors.white.withAlpha(240),
-            padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FlyTextMini35("${Global.prefs.getString(Global.prefsStr.schoolYear)}-${int.parse(Global.prefs.getString(Global.prefsStr.schoolYear))+1}"+" 学年   ",color: Colors.black38),
-                FlyTextMini35("第"+Global.prefs.getString(Global.prefsStr.schoolTerm)+"学期",color: Colors.black38)
-
-              ],
-            ),
-          ),
           Expanded(
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -183,7 +137,6 @@ class _FuncPageState extends State<FuncPage> {
                     ),
                   ),
                   Container(),
-                  FlyTitle("考试倒计时"),
                   ExamPage(),
                 ],
               ),

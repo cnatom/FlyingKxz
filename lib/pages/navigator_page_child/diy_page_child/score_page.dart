@@ -36,7 +36,6 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   bool loading;//是否显示加载动画
   bool selectAll =  true;
   double opacityFloatButton = 0.0;//是否显示回到顶部按钮
-  ScrollController scrollController = new ScrollController();
   var topCrossFadeState = CrossFadeState.showFirst;
   //计算总加权和总绩点
   void calcuTotalScore(){
@@ -52,7 +51,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     jiaquanTotal = (xfcjSum/xfSum).toStringAsFixed(2);
     jidianTotal = (xfjdSum/xfSum).toStringAsFixed(2);
   }
-  Color selectedMainColor = Colors.black54;
+  Color selectedMainColor = colorMainText.withOpacity(0.8);
   //总绩点 + 展开闭合组件
   Widget topArea(){
     //展开闭合组件
@@ -73,7 +72,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
           height: fontSizeMini38*3,
           child:Row(
             children: [
-              scoreDetailAllExpand?FlyTextMini35('详细信息',color: selectedMainColor):FlyTextMini35('简略信息',color: selectedMainColor),
+              scoreDetailAllExpand?FlyTextMini35('详细信息',color: selectedMainColor,fontWeight: FontWeight.w300):FlyTextMini35('简略信息',color: selectedMainColor,fontWeight: FontWeight.w300),
               scoreDetailAllExpand?Icon(Icons.expand_more,color: selectedMainColor,size: fontSizeMini38,):Icon(Icons.expand_less,color: selectedMainColor,size: fontSizeMini38),
 
             ],
@@ -92,7 +91,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
           height: fontSizeMini38*3,
           child:Row(
             children: [
-              FlyTextMini35('筛选',color: selectedMainColor),
+              FlyTextMini35('筛选',color: selectedMainColor,fontWeight: FontWeight.w300),
               Icon(MdiIcons.filterOutline,color: selectedMainColor,size: fontSizeMini38*1.2,),
             ],
           ),
@@ -112,15 +111,13 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
           height: fontSizeMini38*3,
           child:Row(
             children: [
-              selectAll?FlyTextMini35('取消全选',color: selectedMainColor):FlyTextMini35('全部选择',color: selectedMainColor),
+              selectAll?FlyTextMini35('取消全选',color: selectedMainColor,fontWeight: FontWeight.w300):FlyTextMini35('全部选择',color: selectedMainColor,fontWeight: FontWeight.w300),
             ],
           ),
         ),
       );
     }
     return Container(
-      color: scaffoldBackgroundColor.withAlpha(240),
-      height: fontSizeMini38*3,
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -131,16 +128,16 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    FlyTextMini35("加权：", color: colorMainText),
+                    FlyTextTip30("加权：", color: selectedMainColor),
                     Text(jiaquanTotal!=null&&jiaquanTotal!='NaN'?jiaquanTotal:"00.00", style: TextStyle(color: colorMain,fontWeight: FontWeight.bold,fontSize: fontSizeMain40),)
                   ],
                 ),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    FlyTextMini35("绩点：", color: colorMainText),
+                    FlyTextTip30("绩点：", color: selectedMainColor),
                     Text(jidianTotal!=null&&jiaquanTotal!='NaN'?jidianTotal:"0.00", style: TextStyle(color: colorMain,fontWeight: FontWeight.bold,fontSize: fontSizeMain40),)
                   ],
                 ),
@@ -237,11 +234,11 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     }
     //主体
     return Container(
-      margin: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB, spaceCardMarginRL, 0),
+      margin: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginTB),
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB, 0, spaceCardPaddingTB),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadiusValue),
-        color: Colors.white,
+        color: Colors.white.withOpacity(transparentValue),
       ),
       child: Row(
         children: [
@@ -377,20 +374,9 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   @override
   void initState() {
     super.initState();
-    //添加滑动监听
-    scrollController.addListener(() {
-      if(scrollController.position.pixels>fontSizeMini38*2&&topCrossFadeState==CrossFadeState.showFirst){
-        setState(() {
-          opacityFloatButton = 1.0;
-          topCrossFadeState=CrossFadeState.showSecond;
-        });
-      }else if(scrollController.position.pixels<fontSizeMini38*2&&topCrossFadeState==CrossFadeState.showSecond){
-        setState(() {
-          opacityFloatButton = 0.0;
-          topCrossFadeState=CrossFadeState.showFirst;
-        });
-      }
-    });
+    curScoreYear = Global.prefs.getString(Global.prefsStr.schoolYear)+'-'+(int.parse(Global.prefs.getString(Global.prefsStr.schoolYear))+1).toString();
+    curScoreTerm = "第${Global.prefs.getString(Global.prefsStr.schoolTerm)}学期";
+    getShowScoreView(year: curScoreYear,term: Global.prefs.getString(Global.prefsStr.schoolTerm));
   }
 
   @override
@@ -420,41 +406,44 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
 
   Widget nullView(){
     return Center(
-      child: FlyTextMain40("（￣︶￣）↗点右上角查成绩",color: Colors.black38),
+      child: FlyTextMain40("（￣︶￣）↗点上面查成绩",color: colorMainTextWhite),
     );
   }
   Widget loadingView(){
     return Center(
-      child: loadingAnimationIOS(),
+      child: loadingAnimationTwoCircles(color: colorMainTextWhite),
     );
   }
   Widget infoView(){
     int _crossFadeStateIndex = 0;
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      controller: scrollController,
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: fontSizeMini38*6.5),
-          Global.scoreInfo.data!=null&&Global.scoreInfo.data.isNotEmpty?Column(
-            children: [
-              Column(
-                  children: Global.scoreInfo.data.map((item){
-                    return chengjiCard(
-                      _crossFadeStateIndex++,
-                      courseName: item.courseName,
-                      xuefen: item.xuefen,
-                      jidian: item.jidian.toString(),
-                      zongping: item.zongping,
-                      scoreDetail: item.scoreDetail,);
-                  }).toList()
-              ),
-
-
+    return Container(
+      margin: EdgeInsets.fromLTRB(0, spaceCardMarginTB, 0, 0),
+      padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            children: <Widget>[
+              Global.scoreInfo.data!=null&&Global.scoreInfo.data.isNotEmpty?Column(
+                children: [
+                  Column(
+                      children: Global.scoreInfo.data.map((item){
+                        return chengjiCard(
+                          _crossFadeStateIndex++,
+                          courseName: item.courseName,
+                          xuefen: item.xuefen,
+                          jidian: item.jidian.toString(),
+                          zongping: item.zongping,
+                          scoreDetail: item.scoreDetail,);
+                      }).toList()
+                  ),
+                ],
+              ):Container(),
+              SizedBox(height: ScreenUtil().setSp(300),),
             ],
-          ):Container(),
-          SizedBox(height: ScreenUtil().setSp(300),),
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -463,8 +452,8 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FlyTextMain40("∑(っ°Д°;)っ没有本学期的成绩",color: Colors.black38),
-          FlyTextTip30("（ 换个学期试一试 ？） "),
+          FlyTextMain40("∑(っ°Д°;)っ没有本学期的成绩",color: colorMainTextWhite),
+          FlyTextTip30("（ 换个学期试一试 ？） ",color: colorMainTextWhite),
         ],
       ),
     );
@@ -483,39 +472,32 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-      color: colorPageBackground,
-      child: Stack(
-        children: [
-          curView(),
-          Column(
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(transparentValue),
+            borderRadius: BorderRadius.circular(10)
+          ),
+          child: Column(
             children: [
               topArea(),
-              AnimatedCrossFade(
-                firstCurve: Curves.easeOutCubic,
-                secondCurve: Curves.easeOutCubic,
-                firstChild: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    FlySearchBarButton('点击查询',
-                        "${curScoreYear} ${curScoreTerm}",
-                        onTap: ()=>showPicker(context, Global.scaffoldKeyDiy,
-                            pickerDatas: Global.xqxnWithAllTermPickerData,
-                            onConfirm: (Picker picker, List value) {
-                          debugPrint(value.toString());
-                              getShowScoreView(year: picker.getSelectedValues()[0].toString(),term: '${(value[1]).toString()}');
-                            })),
-                  ],
-                ),
-                secondChild: Container(),
-                duration: Duration(milliseconds: 300),
-                crossFadeState: topCrossFadeState,
-              )
-
+              FlySearchBarButton('点击查询',
+                  "${curScoreYear} ${curScoreTerm}",
+                  onTap: ()=>showPicker(context, Global.scaffoldKeyDiy,
+                      pickerDatas: Global.xqxnWithAllTermPickerData,
+                      onConfirm: (Picker picker, List value) {
+                        debugPrint(value.toString());
+                        getShowScoreView(year: picker.getSelectedValues()[0].toString(),term: '${(value[1]).toString()}');
+                      })),
             ],
           ),
-        ],
-      ),
+        ),
+        Expanded(
+          child: curView(),
+        ),
+      ],
     );
   }
   @override

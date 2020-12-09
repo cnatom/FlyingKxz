@@ -12,6 +12,7 @@ void showToast(BuildContext context,String text,{int duration=2,int gravity = 2}
       backgroundRadius: 5, gravity: gravity, duration: duration);
 }
 void showFlyDialog(BuildContext context,{@required Widget child}){
+
   showAnimatedDialog(
     context: context,
     barrierDismissible: true,

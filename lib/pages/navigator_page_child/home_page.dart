@@ -56,8 +56,8 @@ List<CourseData> courseDataList = List();
 
 class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  var crossFadeState = CrossFadeState.showFirst;
-  ScrollController scrollController = new ScrollController(initialScrollOffset: (1.4*ScreenUtil().setSp(100)+fontSizeMain40)*(selectedWeek),keepScrollOffset: true);
+  var crossFadeState = CrossFadeState.showSecond;
+  ScrollController scrollController = new ScrollController(initialScrollOffset: (1.4*ScreenUtil().setSp(110)+fontSizeMain40)*(selectedWeek),keepScrollOffset: true);
   Color greyMask = Colors.transparent;
   double mMaxScrollExtent = (1.4*ScreenUtil().setWidth(deviceWidth/9)+fontSizeMain40)*22;//最大滑动像素距离
   bool loading = false;//是否显示加载动画
@@ -231,7 +231,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
         height: width / 9,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            color: light > 0 ? colorMain.withAlpha(180) : Colors.black12),
+            color: light > 0 ? colorMain : Colors.black12),
       );
     }
     //点阵
@@ -265,7 +265,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   }
 
   Widget pointArea() {
-    double width = ScreenUtil().setSp(100);
+    double width = ScreenUtil().setSp(110);
     int curWeek = 0;
     return SingleChildScrollView(
       controller: scrollController,
@@ -278,7 +278,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
             margin: EdgeInsets.fromLTRB(width/10, 0, width/10, width/20),
             child: Material(
               color: colorExpand[curWeek_temp],
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.circular(5),
               child: InkWell(
                 highlightColor: colorSelectWeekCard,
                 splashColor: Colors.transparent,
@@ -295,7 +295,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           FlyTextTipMini25("第", color: colorMainText),
-                          FlyTextMain40((curWeek_temp+1).toString()),
+                          FlyTextMain40((curWeek_temp+1).toString(),color: colorMainText),
                           FlyTextTipMini25("周", color: colorMainText),
                         ],
                       ),
@@ -315,6 +315,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   void initState() {
     super.initState();
     //初始化点矩阵数据
+    colorExpand.clear();
+    point.clear();
     for (int i = 0; i <= 21; i++) {
       colorExpand.add(Colors.transparent);
       point.add([
@@ -347,6 +349,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   void dispose() {
     super.dispose();
     scrollController.dispose();
+
   }
   @override
   Widget build(BuildContext context) {
@@ -354,52 +357,58 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     int lessonWeekListIndex = 1; //左侧课程序列号
     int mondayDuration = -1;
     return Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          brightness: Brightness.light,
-          elevation: 0,
-          backgroundColor: scaffoldBackgroundColor,
-          title: FlyTextTitle45('第${(selectedWeek+1).toString()}周',
-              fontWeight: FontWeight.bold),
-          centerTitle: true,
-          actions: <Widget>[
-            selectedWeek==currentWeek?Container():IconButton(
-              icon: Icon(EvilIcons.refresh,color: colorMainText,),
-              onPressed: (){
-                setWeek(mCurrentWeek: currentWeek);
+      key: _scaffoldKey,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        title: FlyTextTitle45('第${(selectedWeek+1).toString()}周',
+            fontWeight: FontWeight.w400,color: colorMainTextWhite),
+        centerTitle: true,
+        actions: <Widget>[
+          selectedWeek==currentWeek?Container():IconButton(
+            icon: Icon(EvilIcons.refresh,color: colorMainTextWhite,),
+            onPressed: (){
+              setWeek(mCurrentWeek: currentWeek);
+              setRightScrollPosition(toWeek: selectedWeek+1);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.add,color: colorMainTextWhite,),
+            onPressed: (){
+              showPicker(context, _scaffoldKey,
+                  pickerDatas: Global.xqxnPickerData,
+                  onConfirm: (Picker picker, List value) {
+                    getShowCourseData(xnm: picker.getSelectedValues()[0].toString().substring(0,4), xqm: '${value[1]+1}');
+                  });
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Boxicons.bx_menu_alt_right,
+              color: colorMainTextWhite,
+            ),
+            onPressed: () {
+              setState(() {
+                crossFadeState = crossFadeState == CrossFadeState.showFirst
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst;
+                if(scrollController.position.maxScrollExtent>0){
+                  mMaxScrollExtent = scrollController.position.maxScrollExtent;
+                }
                 setRightScrollPosition(toWeek: selectedWeek+1);
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.add,color: colorMainText,),
-              onPressed: (){
-                showPicker(context, _scaffoldKey,
-                    pickerDatas: Global.xqxnPickerData,
-                    onConfirm: (Picker picker, List value) {
-                  getShowCourseData(xnm: picker.getSelectedValues()[0].toString().substring(0,4), xqm: '${value[1]+1}');
-                });
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                Boxicons.bx_menu_alt_right,
-                color: colorMainText,
-              ),
-              onPressed: () {
-                setState(() {
-                  crossFadeState = crossFadeState == CrossFadeState.showFirst
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst;
-                  if(scrollController.position.maxScrollExtent>0){
-                    mMaxScrollExtent = scrollController.position.maxScrollExtent;
-                  }
-                  setRightScrollPosition(toWeek: selectedWeek+1);
-                });
-              },
-            ),
-          ],
+              });
+            },
+          ),
+        ],
+      ),
+      backgroundColor: Colors.transparent,
+      body: Container(
+        padding: EdgeInsets.fromLTRB(0, fontSizeMini38/2, 0, 0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white.withOpacity(transparentValue),
         ),
-        body: Row(
+        child: Row(
           children: <Widget>[
             //左侧课表区域
             Expanded(
@@ -438,40 +447,39 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                 .add(Duration(days: mondayDuration));
                             var mondayMonth = addedDate.month;
                             var mondayDay = addedDate.day;
-                            //判断是否是今天
                             return Expanded(
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, fontSizeTip33/5),
                                 child: addedDate.month==Global.nowDate.month&&addedDate.day==Global.nowDate.day?Container(
                                   decoration: BoxDecoration(
-                                      color: colorMain.withAlpha(30),
+                                      color: colorMain.withOpacity(0.7),
                                       borderRadius: BorderRadius.circular(2)
                                   ),
                                   child: Column(
                                     children: <Widget>[
                                       Center(
-                                          child: FlyTextTip30(item,color: colorMain,)
+                                          child: FlyTextTip30(item,color: colorMainTextWhite,)
                                       ),
                                       SizedBox(
                                         height: fontSizeMini38 / 3,
                                       ),
                                       Center(
                                         child: FlyTextTipMini25(
-                                          '${mondayMonth}/${mondayDay}',color:colorMain,),
+                                          '${mondayMonth}/${mondayDay}',color:colorMainTextWhite,),
                                       )
                                     ],
                                   ),
                                 ):Column(
                                   children: <Widget>[
                                     Center(
-                                        child: FlyTextTip30(item,color: colorMainText.withAlpha(200))
+                                        child: FlyTextTip30(item,color: colorMainText)
                                     ),
                                     SizedBox(
                                       height: fontSizeMini38 / 3,
                                     ),
                                     Center(
                                       child: FlyTextTipMini25(
-                                          '${mondayMonth}/${mondayDay}',color: colorMainText.withAlpha(200)),
+                                          '${mondayMonth}/${mondayDay}',color: colorMainText),
                                     )
                                   ],
                                 ),
@@ -498,8 +506,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                   CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Text((lessonWeekListIndex++)
-                                        .toString(),style: TextStyle(fontSize: ScreenUtil().setHeight(deviceHeight/60),color: colorMain),),
-                                    Text(item,style: TextStyle(fontSize: ScreenUtil().setHeight(deviceHeight/90),color: Colors.black38),),
+                                        .toString(),style: TextStyle(fontSize: ScreenUtil().setHeight(deviceHeight/60),color: colorMainText),),
+                                    Text(item,style: TextStyle(fontSize: ScreenUtil().setHeight(deviceHeight/90),color: colorMainText.withOpacity(0.8)),),
                                   ],
                                 ),
                               );
@@ -594,14 +602,14 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                           decoration: BoxDecoration(
                                               borderRadius:
                                               BorderRadius.circular(2),
-                                              color: color.withAlpha(24)),
+                                              color: color.withOpacity(0.7)),
                                           child: Column(
                                             mainAxisAlignment:
                                             MainAxisAlignment.center,
                                             children: <Widget>[
-                                              Text(courseName,style: TextStyle(fontSize: ScreenUtil().setSp(29),fontWeight:FontWeight.w600,color: color,fontFamily: "SY"),maxLines: 2,overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                              Text(courseName,style: TextStyle(fontSize: ScreenUtil().setSp(33),color:Colors.white),maxLines: 2,overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
                                               SizedBox(height: ScreenUtil().setSp(10),),
-                                              Text(courseLoc,style: TextStyle(fontSize: ScreenUtil().setSp(25),color: color.withOpacity(0.8),fontFamily: "SY"),textAlign: TextAlign.center,)
+                                              Text(courseLoc,style: TextStyle(fontSize: ScreenUtil().setSp(25),color: Colors.white),textAlign: TextAlign.center,)
 //                                                    FlyTextTipMini25(teacherName,
 //                                                        color: color,maxLine: 3),
                                             ],
@@ -675,7 +683,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                     ),
                                   );
                                 }
-                                return loading==true?Center(
+                                return loading?Center(
                                   child: loadingAnimationTwoCircles(),
                                 ):Stack(
                                   children: <Widget>[
@@ -752,9 +760,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
               crossFadeState: crossFadeState,
             ),
           ],
-        )
+        ),
+      ),
     );
   }
   @override
   bool get wantKeepAlive => true;
 }
+
+

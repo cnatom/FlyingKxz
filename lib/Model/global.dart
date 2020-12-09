@@ -100,6 +100,7 @@ class ApiUrl{
 }
 
 class PrefsStr{
+  String backImg = 'backImg';//背景图
   String username = 'username';//用户名
   String name = 'name';
   String token = 'token';//token信息

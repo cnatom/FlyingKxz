@@ -9,6 +9,10 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - image_crop (0.0.1):
+    - Flutter
+  - image_picker (0.0.1):
+    - Flutter
   - mop (0.1.0):
     - FinApplet
     - Flutter
@@ -31,6 +35,8 @@ DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - Flutter (from `Flutter`)
   - flutter_splash_screen (from `.symlinks/plugins/flutter_splash_screen/ios`)
+  - image_crop (from `.symlinks/plugins/image_crop/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - mop (from `.symlinks/plugins/mop/ios`)
   - open_file (from `.symlinks/plugins/open_file/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
@@ -52,6 +58,10 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_splash_screen:
     :path: ".symlinks/plugins/flutter_splash_screen/ios"
+  image_crop:
+    :path: ".symlinks/plugins/image_crop/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
   mop:
     :path: ".symlinks/plugins/mop/ios"
   open_file:
@@ -73,6 +83,8 @@ SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_splash_screen: 0323a1080aa7853a0f0af4491dc29d034be61746
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  image_crop: e0a67085d3ebf3cf46ca46d61c53a082507b0bc3
+  image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   mop: e3eac9de90d3e331268e9c9e8308e233e540ad1c
   open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62

@@ -5,7 +5,7 @@ import 'package:flutter_picker/Picker.dart';
 import 'config.dart';
 
 
-void showPicker(BuildContext context,GlobalKey<ScaffoldState> scaffoldKey,{@required List pickerDatas,@required PickerConfirmCallback onConfirm}) {
+void showPicker(BuildContext context,GlobalKey scaffoldKey,{@required List pickerDatas,@required PickerConfirmCallback onConfirm}) {
   var picker = new Picker(
       textStyle: TextStyle(fontSize: fontSizeMain40,color: colorMainText),
       adapter: PickerDataAdapter<String>(pickerdata: pickerDatas, isArray: true),

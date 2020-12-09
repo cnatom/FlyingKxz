@@ -69,8 +69,7 @@ Widget FlyRecFlatSecondButton(String title,{double width=100,GestureTapCallback 
     ),
   ),
 );
-Widget FlyRowMyselfItemButton({@required String imageResource,@required String title,String preview = '',GestureTapCallback onTap})=>Container(
-  color: Colors.white,
+Widget FlyRowMyselfItemButton({@required IconData icon,@required String title,String preview = '',GestureTapCallback onTap})=>Container(
   child: InkWell(
     onTap: onTap,
     child: Padding(
@@ -81,9 +80,9 @@ Widget FlyRowMyselfItemButton({@required String imageResource,@required String t
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Image.asset(imageResource,height: fontSizeMain40*1.3,),
-              SizedBox(width: spaceCardPaddingTB,),
-              FlyTextMini35(title)
+              Icon(icon,size: sizeIconMain50,),
+              SizedBox(width: spaceCardPaddingTB*3,),
+              FlyTextMini35(title,color: colorMainText)
             ],
           ),
           FlyIconRightGreyArrow
@@ -149,9 +148,9 @@ Widget FlyGreyFlatButton(String text, {VoidCallback onPressed,double fontSize}) 
 
 Widget FlySearchBarButton(String title,String content,{GestureTapCallback onTap}){
   return Material(
-    shadowColor: colorShadow,
-    color: scaffoldBackgroundColor.withAlpha(240),
+    color: Colors.transparent,
     child: InkWell(
+      borderRadius: BorderRadius.circular(10),
       highlightColor: Colors.black12,
       onTap: onTap,
       child: Container(
@@ -165,13 +164,13 @@ Widget FlySearchBarButton(String title,String content,{GestureTapCallback onTap}
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                FlyTextMini35(title),
-                FlyTextMini35(content,color: Colors.black38),
+                FlyTextMini35(title,color: colorMainText,fontWeight: FontWeight.w300),
+                FlyTextTip30(content,color: colorMainText,fontWeight: FontWeight.w200),
               ],
             ),
             Icon(
               Icons.search,
-              color: colorMainText.withAlpha(100),
+              color: colorMainText.withOpacity(0.5),
             )
           ],
         ),
