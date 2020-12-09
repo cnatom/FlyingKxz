@@ -42,6 +42,8 @@ class Global{
   static PowerInfo powerInfo = new PowerInfo();//电量信息
   static SwiperInfo swiperInfo = new SwiperInfo();//轮播图
   static RankInfo rankInfo = new RankInfo();//内测用户排名
+  static bool igUpgrade;//是否忽略更新
+  static String curVersion;
   static clearPrefsData(){
     loginInfo = new LoginInfo();
     courseInfo = new CourseInfo();
@@ -118,4 +120,5 @@ class PrefsStr{
   String cumtLoginUsername = "cumtLoginUsername";//校园网账号
   String cumtLoginPassword = "cumtLoginPassword";//校园网账号
   String cumtLoginMethod = "cumtLoginMethod";//登录方式
+  String igUpgrade = 'igUpgrade';//是否忽略更新
 }

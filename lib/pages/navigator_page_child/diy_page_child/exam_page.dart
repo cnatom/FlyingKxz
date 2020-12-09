@@ -97,7 +97,15 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
                 child: FlyTextMini35(courseName,fontWeight: FontWeight.w500),
               ),
               SizedBox(width: 10,),
-              examDateTime.day!=Global.nowDate.day?Row(
+              (examDateTime.day==Global.nowDate.day&&examDateTime.month==Global.nowDate.month)?Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text('',style: TextStyle(fontSize: ScreenUtil().setSp(60),),),
+                  FlyTextTitle45('今天',color: colorCard.withAlpha(200),fontWeight: FontWeight.w600),
+                  FlyTextTip30(' 加油 !!~',color: colorCard.withAlpha(200)),
+
+                ],
+              ):Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   FlyTextTip30('剩余',color: colorCard.withAlpha(200)),
@@ -105,14 +113,6 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
                   Text(timeLeft.toString(),style: TextStyle(fontSize: ScreenUtil().setSp(60),color: colorCard,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
                   SizedBox(width: 10,),
                   FlyTextTip30('天',color: colorCard.withAlpha(200))
-                ],
-              ):Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text('',style: TextStyle(fontSize: ScreenUtil().setSp(60),),),
-                  FlyTextTitle45('今天',color: colorCard.withAlpha(200),fontWeight: FontWeight.w600),
-                  FlyTextTip30(' 加油 !!~',color: colorCard.withAlpha(200)),
-
                 ],
               )
             ],

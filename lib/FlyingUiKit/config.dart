@@ -6,7 +6,7 @@ double deviceWidth = 1080;
 double deviceHeight = 1920;
 
 //透明度
-double transparentValue = 0.7;
+double transparentValue = 0.75;
 //背景图文件
 String dir;
 File fileBackImg;

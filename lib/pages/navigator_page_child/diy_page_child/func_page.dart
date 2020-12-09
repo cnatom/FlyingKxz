@@ -66,7 +66,7 @@ class _FuncPageState extends State<FuncPage> {
       child: InkWell(
         onTap: onTap,
         child: Container(
-          padding: EdgeInsets.all(spaceCardMarginRL),
+          padding: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardPaddingTB*1.5,0, spaceCardPaddingTB*1.5),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(borderRadiusValue),
               color: Colors.white.withOpacity(transparentValue),

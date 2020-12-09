@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
@@ -20,6 +21,7 @@ import 'package:flying_kxz/NetRequest/cumt_login.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
 import 'package:flying_kxz/NetRequest/power_get.dart';
 import 'package:flying_kxz/NetRequest/rank_get.dart';
+import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/about_page.dart';
@@ -124,11 +126,11 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        toolbarHeight: ScreenUtil.statusBarHeight,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
             //个人资料区域
@@ -190,7 +192,8 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                       icon: LineariconsFree.shirt,
                       title: '更换背景',
                       onTap: () async{
-                        fileBackImg  = await ImagePicker.pickImage(source: ImageSource.gallery);
+                        var tempImg = await ImagePicker.pickImage(source: ImageSource.gallery);
+                        fileBackImg  = tempImg!=null?tempImg:fileBackImg;
                         Global.prefs.setString(Global.prefsStr.backImg, fileBackImg.path);
                         navigatorPageController.jumpToPage(0);
                       }
@@ -207,6 +210,18 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                       title: '邀请好友',
                       onTap: () {
                         FlyDialogDIYShow(context,content: InvitePage());
+                      }
+                  ),
+                  FlyRowMyselfItemButton(
+                      icon: CommunityMaterialIcons.download_outline,
+                      title: '检查更新',
+                      onTap: () {
+                        // upgradeApp(context,auto: false);//用户没有忽略过则检查更新
+                        updateAlert(context,{
+                          'isForceUpdate': false,//是否强制更新
+                          'content': '描述',//版本描述
+                          'url': 'https://cumt-kxz-1300931999.cos.ap-nanjing.myqcloud.com/CUMT-KXZ/FlyingKXZ.apk',// 安装包的链接
+                        });
                       }
                   ),
                 ],
@@ -233,7 +248,7 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
               child: Column(
                 children: [
                   SizedBox(height: fontSizeMini38,),
-                  FlyTextTip30("矿小助-内测版 0.7.0 ",color: Colors.white),
+                  FlyTextTip30("矿小助-内测版 ${Global.curVersion} ",color: Colors.white),
                   SizedBox(height: fontSizeMini38/2,),
                   FlyTextTip30('内测结束时间：2020年12月31日，',color: Colors.white,maxLine: 5),
                   SizedBox(height: fontSizeMini38/2,),
