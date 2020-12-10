@@ -49,17 +49,17 @@ class _StartPageState extends State<StartPage> {
     Global.curVersion = packageInfo.version;
   }
   Future<void> initFunc(BuildContext context) async {
+
     //提取本地信息
     Global.prefs = await SharedPreferences.getInstance();
+    if(Global.prefs.getString(Global.prefsStr.backImg)!=null){
+      if(await File(Global.prefs.getString(Global.prefsStr.backImg)).exists()) backImgFileDiy = File(Global.prefs.getString(Global.prefsStr.backImg));
+    }
     await getSchoolYearTerm();
-    if(Global.prefs.getString(Global.prefsStr.backImg)!=null) fileBackImg = File(Global.prefs.getString(Global.prefsStr.backImg));
     //内测结束
-    if(DateTime.now().isAfter(DateTime.parse('2020-12-31'))){
+    if(DateTime.now().isAfter(DateTime.parse('2021-01-24'))){
       toNullPage(context);
       return;
-    }
-    if(Global.igUpgrade!=true){
-      upgradeApp(context,auto: true);//用户没有忽略过则检查更新
     }
     //是否登录过
     if (Global.prefs.getBool(Global.prefsStr.isFirstLogin)==false){

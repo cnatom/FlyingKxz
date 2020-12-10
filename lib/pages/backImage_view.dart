@@ -8,15 +8,12 @@ class BackImgView extends StatefulWidget {
   BackImgViewState createState() => BackImgViewState();
 }
 class BackImgViewState extends State<BackImgView> {
-  void refreshImg(){
-    build(context);
-  }
   @override
   Widget build(BuildContext context) {
-    return fileBackImg==null?Positioned.fill(
-      child: Image.asset("images/loginBackground.png",fit: BoxFit.fitHeight,),
+    return backImgFileDiy==null?Positioned.fill(
+      child: Image.asset("images/loginBackground.png",fit: BoxFit.fitHeight,filterQuality: FilterQuality.none,),
     ):Positioned.fill(
-      child: Image.file(fileBackImg,fit: BoxFit.fitHeight,),
+      child: Image.file(backImgFileDiy,fit: BoxFit.fitHeight,filterQuality: FilterQuality.none,),
     );
   }
 }

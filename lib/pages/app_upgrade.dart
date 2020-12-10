@@ -14,20 +14,12 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-void upgradeApp(BuildContext context,{bool auto = false})async{
+Future<Null> upgradeApp(BuildContext context,{bool auto = false})async{
   Response res;
   Dio dio = Dio();
-  Map a = {
-    'status':200, //200说明连接成功
-    'checkRes':true,//是否监测到更新
-    'isForceUpgrade':false,//是否强制更新
-    'description':'描述',//版本描述
-    'apkUrl':'https://xxxxx/xxx.apk',//安装包位置
-  };
-
   try{
     res = await dio.get(
-        "https://kddgw.wjy2000.cn/api/v1/apk_check_update",
+        Global.apiUrl.appUpgradeUrl,
         queryParameters: {'version':Global.curVersion}
     );
     debugPrint(res.toString());
@@ -38,10 +30,10 @@ void upgradeApp(BuildContext context,{bool auto = false})async{
         updateAlert(context,{
           'isForceUpdate': map['isForceUpgrade'],//是否强制更新
           'content': map['description'],//版本描述
-          'url': map['newest_apk_url'],// 安装包的链接
+          'url': map['apkUrl'],// 安装包的链接
         });
       }else{
-        if(auto==false) showToast(context, map['msg']);
+        if(auto==false) showToast(context, "当前为最新版本！");
       }
     }else{
       if(auto==false) showToast(context, '获取最新版本失败(X_X)');
@@ -56,7 +48,7 @@ Future<void> updateAlert(BuildContext context, Map data) async {
   bool isForceUpdate = data['isForceUpdate']; // 从数据拿到是否强制更新字段
   showDialog( // 显示对话框
     context: context,
-    barrierDismissible: false, // 点击空白区域不结束对话框
+    barrierDismissible: !isForceUpdate, // 点击空白区域不结束对话框
     builder: (_) => new UpgradeDialog(data, isForceUpdate, updateUrl: data['url']),
   );
 }
@@ -96,31 +88,9 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)), // 圆角
           ),
-          child: new Wrap(
+          child: Wrap(
             children: <Widget>[
-              new SizedBox(height: 10.0, width: 10.0),
-              new Align(
-                alignment: Alignment.topRight,
-                child: widget.isForceUpdate
-                    ? new Container()
-                    : new InkWell(
-                  // 不强制更新才显示这个
-                  child: new Padding(
-                    padding: EdgeInsets.only(
-                      top: 5.0,
-                      right: 15.0,
-                      bottom: 5.0,
-                      left: 5.0,
-                    ),
-                    child: new Icon(
-                      Icons.clear,
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: () => Navigator.of(context).pop(),
-                ),
-              ),
-              new Container(
+              Container(
                 height: 30.0,
                 width: double.infinity,
                 alignment: Alignment.center,
@@ -130,7 +100,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
                         fontSize: 17.0,
                         fontWeight: FontWeight.bold)),
               ),
-              new Container(
+              Container(
                 width: double.infinity,
                 alignment: Alignment.center,
                 child: new Padding(
@@ -164,7 +134,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
                             bottomLeft: Radius.circular(12.0),
                             bottomRight: Radius.circular(12.0)),
                       ),
-                      child: new MaterialButton(
+                      child: widget.isForceUpdate?Container():MaterialButton(
                         child: new Text('忽略此版本',style: TextStyle(color: Colors.black38),),
                         onPressed: ()async{
                           Global.prefs.setBool(Global.prefsStr.igUpgrade, true);

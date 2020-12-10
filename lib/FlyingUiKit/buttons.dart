@@ -164,8 +164,8 @@ Widget FlySearchBarButton(String title,String content,{GestureTapCallback onTap}
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                FlyTextMini35(title,color: colorMainText,fontWeight: FontWeight.w300),
-                FlyTextTip30(content,color: colorMainText,fontWeight: FontWeight.w200),
+                FlyTextMini35(title,color: colorMainText,),
+                FlyTextTip30(content,color: colorMainText.withOpacity(0.5),),
               ],
             ),
             Icon(

@@ -222,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
 
                                 ],
                               ),
-                              FlyTextTip30('内测结束时间：2020年12月31日'),
+                              FlyTextTip30('内测结束时间：2021年1月24日'),
                               SizedBox(
                                 height: fontSizeMini38,
                               )

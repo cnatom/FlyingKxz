@@ -8,14 +8,12 @@ double deviceHeight = 1920;
 //透明度
 double transparentValue = 0.75;
 //背景图文件
-String dir;
-File fileBackImg;
-String dirBackImageFile = '/FlyingKXZ/background.jpg';
+File backImgFileDiy;
 //色彩管理
 final Color colorMain = Color.fromARGB(255, 1,176,117).withAlpha(255);
 final Color colorSecond = Color(0xFF33CC99).withAlpha(255);
 final Color colorMainText = Color.fromARGB(255, 0, 0, 0);
-final Color colorMainTextWhite = Colors.white.withOpacity(0.95);
+final Color colorMainTextWhite = Colors.white;
 final Color colorIconBackground = Color.fromARGB(255, 244,245,249);
 final Color colorShadow = Color(0XFFCCCCCC);
 final Color scaffoldBackgroundColor = Color.fromARGB(255, 255,255,255);

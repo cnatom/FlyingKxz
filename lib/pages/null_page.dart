@@ -23,15 +23,16 @@ class NullPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children:[
+              Container(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('images/logo.png',width: ScreenUtil().setWidth(deviceWidth*0.3),),
+                  Image.asset('images/logo.png',width: ScreenUtil().setWidth(deviceWidth*0.2),),
                   SizedBox(height: fontSizeMini38,),
                   Text('翔工作室出品',style: TextStyle(color: colorLoginPageMain,fontSize: fontSizeMain40,fontWeight: FontWeight.bold,letterSpacing: 3),)
                 ],
               ),
-              Text('本次测试已结束\n2020.10.6 - 2020.12.31\n\n感谢您对我们的支持\n我们将会继续对产品进行打磨\n不久后将会发布正式版\n\n反馈建议QQ群：839372371',
+              Text('本次测试已结束\n2020.10.6 - 2021-01-24\n\n感谢您对我们的支持\n我们将会继续对产品进行打磨\n不久后将会发布正式版\n\n后续通知QQ群：839372371',
                 textAlign: TextAlign.center,style: TextStyle(color: colorMainText,fontSize: fontSizeMain40,fontWeight: FontWeight.bold,letterSpacing: 3),),
               Container()
             ]

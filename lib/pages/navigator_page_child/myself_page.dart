@@ -1,7 +1,6 @@
 //"我的"页面
-
+import 'dart:io';
 import 'dart:ui';
-
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -111,6 +110,7 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
     super.initState();
     getShowPowerInfo();
     getRankInfo();
+
   }
 
 
@@ -193,8 +193,8 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                       title: '更换背景',
                       onTap: () async{
                         var tempImg = await ImagePicker.pickImage(source: ImageSource.gallery);
-                        fileBackImg  = tempImg!=null?tempImg:fileBackImg;
-                        Global.prefs.setString(Global.prefsStr.backImg, fileBackImg.path);
+                        backImgFileDiy  = tempImg!=null?tempImg:backImgFileDiy;
+                        Global.prefs.setString(Global.prefsStr.backImg, backImgFileDiy.path);
                         navigatorPageController.jumpToPage(0);
                       }
                   ),
@@ -212,18 +212,14 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                         FlyDialogDIYShow(context,content: InvitePage());
                       }
                   ),
-                  FlyRowMyselfItemButton(
+                  Platform.isIOS?Container():FlyRowMyselfItemButton(
                       icon: CommunityMaterialIcons.download_outline,
                       title: '检查更新',
                       onTap: () {
-                        // upgradeApp(context,auto: false);//用户没有忽略过则检查更新
-                        updateAlert(context,{
-                          'isForceUpdate': false,//是否强制更新
-                          'content': '描述',//版本描述
-                          'url': 'https://cumt-kxz-1300931999.cos.ap-nanjing.myqcloud.com/CUMT-KXZ/FlyingKXZ.apk',// 安装包的链接
-                        });
+                        upgradeApp(context,auto: false);
                       }
-                  ),
+                  )
+                  ,
                 ],
               ),
             ),
@@ -250,9 +246,9 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                   SizedBox(height: fontSizeMini38,),
                   FlyTextTip30("矿小助-内测版 ${Global.curVersion} ",color: Colors.white),
                   SizedBox(height: fontSizeMini38/2,),
-                  FlyTextTip30('内测结束时间：2020年12月31日，',color: Colors.white,maxLine: 5),
+                  FlyTextTip30('内测结束时间：2021年1月24日',color: Colors.white,maxLine: 5),
                   SizedBox(height: fontSizeMini38/2,),
-                  FlyTextTip30('内测会员"勋章可保留至公测',maxLine: 5,color: Colors.white),
+                  FlyTextTip30('内测会员勋章可保留至公测',maxLine: 5,color: Colors.white),
                   SizedBox(height: fontSizeMini38/2,),
                   FlyTextTip30('（暂无法预览校园卡余额）',maxLine: 5,color: Colors.white),
                   SizedBox(height: fontSizeMini38/2,),

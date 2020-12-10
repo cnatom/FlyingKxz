@@ -77,7 +77,7 @@ class _AboutPageState extends State<AboutPage> {
         BackImgView(),
         Positioned.fill(
           child: Container(
-            color: Colors.white.withOpacity(0.9),
+            color: Colors.white.withOpacity(0.85),
           ),
         ),
         Scaffold(

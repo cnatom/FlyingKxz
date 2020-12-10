@@ -14,6 +14,7 @@ import 'package:flying_kxz/pages/navigator_page_child/home_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
+import 'app_upgrade.dart';
 import 'backImage_view.dart';
 
 //跳转到当前页面
@@ -34,6 +35,9 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
       DiyPage(),
       MyselfPage()
     ];
+    if(Global.igUpgrade!=true&&Platform.isAndroid){
+      await upgradeApp(context,auto: true);//用户没有忽略过则检查更新
+    }
     Dio().get(
         "https://www.lvyingzhao.cn/action",
         queryParameters: {
@@ -42,7 +46,6 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
     );
     debugPrint("@@@自动登录");
     if(Global.prefs.getString(Global.prefsStr.cumtLoginUsername)!=null){
-
       await cumtAutoLoginGet(context,
           username: Global.prefs.getString(Global.prefsStr.cumtLoginUsername),
           password: Global.prefs.getString(Global.prefsStr.cumtLoginPassword),
@@ -52,6 +55,7 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
   @override
   void initState() {
     super.initState();
+
     initFunc();
   }
   BottomNavigationBarItem _bottomNavigationBar(String title,IconData iconData,{double size})=>BottomNavigationBarItem(

@@ -72,7 +72,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
           height: fontSizeMini38*3,
           child:Row(
             children: [
-              scoreDetailAllExpand?FlyTextMini35('详细信息',color: selectedMainColor,fontWeight: FontWeight.w300):FlyTextMini35('简略信息',color: selectedMainColor,fontWeight: FontWeight.w300),
+              scoreDetailAllExpand?FlyTextMini35('详细信息',color: selectedMainColor,):FlyTextMini35('简略信息',color: selectedMainColor,),
               scoreDetailAllExpand?Icon(Icons.expand_more,color: selectedMainColor,size: fontSizeMini38,):Icon(Icons.expand_less,color: selectedMainColor,size: fontSizeMini38),
 
             ],
@@ -111,7 +111,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
           height: fontSizeMini38*3,
           child:Row(
             children: [
-              selectAll?FlyTextMini35('取消全选',color: selectedMainColor,fontWeight: FontWeight.w300):FlyTextMini35('全部选择',color: selectedMainColor,fontWeight: FontWeight.w300),
+              selectAll?FlyTextMini35('取消全选',color: selectedMainColor,):FlyTextMini35('全部选择',color: selectedMainColor,),
             ],
           ),
         ),

@@ -98,7 +98,7 @@ class ApiUrl{
   String rankUrl = "https://api.kxz.atcumt.com/admin/user_id";//用户内测排名
   String feedbackUrl = "https://api.kxz.atcumt.com/admin/feedback";//反馈
   String cumtLoginUrl = "http://10.2.5.251:801/eportal/";//校园网登陆
-
+  String appUpgradeUrl = "https://api.kxz.atcumt.com/admin/version";//检查App更新
 }
 
 class PrefsStr{
