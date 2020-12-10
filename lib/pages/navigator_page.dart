@@ -46,7 +46,6 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
           "platform":Platform.operatingSystem
         }
     );
-    debugPrint("@@@自动登录"+Platform.operatingSystem);
     if(Global.prefs.getString(Global.prefsStr.cumtLoginUsername)!=null){
       await cumtAutoLoginGet(context,
           username: Global.prefs.getString(Global.prefsStr.cumtLoginUsername),

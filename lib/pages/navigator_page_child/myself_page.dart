@@ -219,6 +219,7 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                           icon: CommunityMaterialIcons.download_outline,
                           title: '检查更新',
                           onTap: () {
+                            Global.prefs.setBool('igUpgrade', false);
                             upgradeApp(context,auto: false);
                           }
                       )

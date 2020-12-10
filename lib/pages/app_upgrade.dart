@@ -28,7 +28,6 @@ Future<Null> upgradeApp(BuildContext context,{bool auto = false})async{
     Map<String,dynamic> map = jsonDecode(res.toString());
     if(map['status']==200){
       if(map['check']==true){
-        Global.prefs.setBool('igUpgrade', false);
         updateAlert(context,{
           'isForceUpdate': false,//是否强制更新
           'content': map['description'],//版本描述
