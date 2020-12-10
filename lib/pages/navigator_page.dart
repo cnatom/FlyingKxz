@@ -35,16 +35,18 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
       DiyPage(),
       MyselfPage()
     ];
-    if(Global.igUpgrade!=true&&Platform.isAndroid){
+    if(Global.prefs.getBool(Global.prefsStr.igUpgrade)==false&&Platform.isAndroid){
       await upgradeApp(context,auto: true);//用户没有忽略过则检查更新
     }
     Dio().get(
         "https://www.lvyingzhao.cn/action",
         queryParameters: {
-          "username":Global.prefs.getString(Global.prefsStr.username)
+          "username":Global.prefs.getString(Global.prefsStr.username),
+          "version":Global.curVersion,
+          "platform":Platform.operatingSystem
         }
     );
-    debugPrint("@@@自动登录");
+    debugPrint("@@@自动登录"+Platform.operatingSystem);
     if(Global.prefs.getString(Global.prefsStr.cumtLoginUsername)!=null){
       await cumtAutoLoginGet(context,
           username: Global.prefs.getString(Global.prefsStr.cumtLoginUsername),

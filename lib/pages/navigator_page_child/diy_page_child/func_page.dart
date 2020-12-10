@@ -136,7 +136,6 @@ class _FuncPageState extends State<FuncPage> {
                       ],
                     ),
                   ),
-                  Container(),
                   ExamPage(),
                 ],
               ),

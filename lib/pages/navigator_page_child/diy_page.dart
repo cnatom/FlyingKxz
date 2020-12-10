@@ -85,9 +85,9 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
               child: TabBar(
                   controller: mController,
                   labelColor: colorMainTextWhite,
-                  labelStyle: TextStyle(fontSize: fontSizeTitle45,fontWeight: FontWeight.w600,),
+                  labelStyle: TextStyle(fontSize: fontSizeTitle50,fontWeight: FontWeight.w600,),
                   unselectedLabelColor: colorMainTextWhite.withOpacity(0.5),
-                  unselectedLabelStyle: TextStyle(fontSize: fontSizeMain40,fontWeight: FontWeight.w600,),
+                  unselectedLabelStyle: TextStyle(fontSize: fontSizeTitle45,fontWeight: FontWeight.w600,),
                   indicatorSize: TabBarIndicatorSize.label,
                   indicator: UnderlineTabIndicator(
                       borderSide: BorderSide(color: Colors.transparent),

@@ -76,16 +76,18 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
     ) ??
         false;
   }
-  Widget topIconButton(IconData icon, {VoidCallback onPressed}) => IconButton(
-        onPressed: onPressed,
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        icon: Icon(
-          icon,
-          color: Color.fromARGB(255, 150, 150, 150),
-          size: fontSizeMini38 * 1.3,
-        ),
-      );
+  Widget buttonListCard({List<Widget> children = const <Widget>[]}){
+    return Container(
+      margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadiusValue),
+          color: Colors.white.withOpacity(transparentValue)
+      ),
+      child: Column(
+        children: children,
+      ),
+    );
+  }
 
 
   Widget previewItem({@required String title,@required String subTitle})=>Container(
@@ -165,80 +167,82 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
               ],
             ),
             //可滚动功能区
-            Container(
-              margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadiusValue),
-                color: Colors.white.withOpacity(transparentValue)
-              ),
-              child: Column(
-                children: <Widget>[
-                  FlyRowMyselfItemButton(
-                      icon:  Icons.people_outline,
-                      title: '关于我们',
-                      onTap: () => toAboutPage(context)
-                  ),
-                  FlyRowMyselfItemButton(
-                      icon: Icons.feedback_outlined,
-                      title: '反馈与建议',
-                      onTap: () async{
-                        String text = await FlyDialogInputShow(context,hintText: "感谢您提出宝贵的建议，这对我们非常重要！\n*｡٩(ˊᗜˋ*)و*｡",maxLines: 10);
-                        if(text!=null){
-                          await feedbackPost(context, text: text);
-                        }
-                      }
-                  ),
-                  FlyRowMyselfItemButton(
-                      icon: LineariconsFree.shirt,
-                      title: '更换背景',
-                      onTap: () async{
-                        var tempImg = await ImagePicker.pickImage(source: ImageSource.gallery);
-                        backImgFileDiy  = tempImg!=null?tempImg:backImgFileDiy;
-                        Global.prefs.setString(Global.prefsStr.backImg, backImgFileDiy.path);
-                        navigatorPageController.jumpToPage(0);
-                      }
-                  ),
-                  FlyRowMyselfItemButton(
-                      icon: Icons.language_outlined,
-                      title: '校园网登录',
-                      onTap: () {
-                        FlyDialogDIYShow(context,content: CumtLoginView());
-                      }
-                  ),
-                  FlyRowMyselfItemButton(
-                      icon: MdiIcons.heartOutline,
-                      title: '邀请好友',
-                      onTap: () {
-                        FlyDialogDIYShow(context,content: InvitePage());
-                      }
-                  ),
-                  Platform.isIOS?Container():FlyRowMyselfItemButton(
-                      icon: CommunityMaterialIcons.download_outline,
-                      title: '检查更新',
-                      onTap: () {
-                        upgradeApp(context,auto: false);
-                      }
-                  )
-                  ,
-                ],
-              ),
-            ),
-            InkWell(
-              onTap: ()=>willSignOut(context),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white.withOpacity(transparentValue)
+            Wrap(
+              runSpacing: spaceCardMarginTB,
+              children: [
+                buttonListCard(
+                    children: <Widget>[
+                      FlyRowMyselfItemButton(
+                          icon: Icons.language_outlined,
+                          title: '校园网登录',
+                          onTap: () {
+                            FlyDialogDIYShow(context,content: CumtLoginView());
+                          }
+                      ),
+                      FlyRowMyselfItemButton(
+                          icon: LineariconsFree.shirt,
+                          title: '更换背景',
+                          onTap: () async{
+                            var tempImg = await ImagePicker.pickImage(source: ImageSource.gallery);
+                            backImgFileDiy  = tempImg!=null?tempImg:backImgFileDiy;
+                            Global.prefs.setString(Global.prefsStr.backImg, backImgFileDiy.path);
+                            navigatorPageController.jumpToPage(0);
+                          }
+                      ),
+                    ]
                 ),
-                margin: EdgeInsets.all(spaceCardMarginRL),
-                padding: EdgeInsets.fromLTRB(0, spaceCardPaddingTB*1.5, 0, spaceCardPaddingTB*1.5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    FlyTextMini35("退出登录",color: colorMainText)
-                  ],
+                buttonListCard(
+                    children: <Widget>[
+                      FlyRowMyselfItemButton(
+                          icon:  Icons.people_outline,
+                          title: '关于我们',
+                          onTap: () => toAboutPage(context)
+                      ),
+                      FlyRowMyselfItemButton(
+                          icon: Icons.feedback_outlined,
+                          title: '反馈与建议',
+                          onTap: () async{
+                            String text = await FlyDialogInputShow(context,hintText: "感谢您提出宝贵的建议，这对我们非常重要！\n*｡٩(ˊᗜˋ*)و*｡\n\n(也可以留下您的联系方式，方便我们及时联络您)",confirmText: "发送",maxLines: 10);
+                            if(text!=null){
+                              await feedbackPost(context, text: text);
+                            }
+                          }
+                      ),
+                      FlyRowMyselfItemButton(
+                          icon: MdiIcons.heartOutline,
+                          title: '邀请好友',
+                          onTap: () {
+                            FlyDialogDIYShow(context,content: InvitePage());
+                          }
+                      ),
+                      Platform.isIOS?Container():FlyRowMyselfItemButton(
+                          icon: CommunityMaterialIcons.download_outline,
+                          title: '检查更新',
+                          onTap: () {
+                            upgradeApp(context,auto: false);
+                          }
+                      )
+                    ]
                 ),
-              ),
+                Container(),
+                InkWell(
+                  onTap: ()=>willSignOut(context),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white.withOpacity(transparentValue)
+                    ),
+                    margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+                    padding: EdgeInsets.fromLTRB(0, spaceCardPaddingTB*1.5, 0, spaceCardPaddingTB*1.5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        FlyTextMini35("退出登录",color: colorMainText)
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
             Center(
               child: Column(

@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/FlyingUiKit/text.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:open_file/open_file.dart';
@@ -15,20 +16,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 Future<Null> upgradeApp(BuildContext context,{bool auto = false})async{
+  Global.curVersion = (await PackageInfo.fromPlatform()).version;
   Response res;
   Dio dio = Dio();
   try{
     res = await dio.get(
         Global.apiUrl.appUpgradeUrl,
-        queryParameters: {'version':Global.curVersion}
+        queryParameters: {'version':Global.curVersion.toString()}
     );
     debugPrint(res.toString());
     Map<String,dynamic> map = jsonDecode(res.toString());
-    if(map['code']==0){
-      if(map['check_res']==true){
+    if(map['status']==200){
+      if(map['check']==true){
         Global.prefs.setBool('igUpgrade', false);
         updateAlert(context,{
-          'isForceUpdate': map['isForceUpgrade'],//是否强制更新
+          'isForceUpdate': false,//是否强制更新
           'content': map['description'],//版本描述
           'url': map['apkUrl'],// 安装包的链接
         });
@@ -48,7 +50,7 @@ Future<void> updateAlert(BuildContext context, Map data) async {
   bool isForceUpdate = data['isForceUpdate']; // 从数据拿到是否强制更新字段
   showDialog( // 显示对话框
     context: context,
-    barrierDismissible: !isForceUpdate, // 点击空白区域不结束对话框
+    barrierDismissible: false, // 点击空白区域不结束对话框
     builder: (_) => new UpgradeDialog(data, isForceUpdate, updateUrl: data['url']),
   );
 }
@@ -85,20 +87,16 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
         borderRadius: BorderRadius.circular(borderRadiusValue),
         child: new Container(
           width: MediaQuery.of(context).size.width * 0.8, // 宽度是整宽的百分之80
+          padding: EdgeInsets.fromLTRB(0, spaceCardPaddingTB*2, 0, spaceCardPaddingTB*2),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)), // 圆角
           ),
           child: Wrap(
             children: <Widget>[
               Container(
-                height: 30.0,
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: new Text('发现最新版本！',
-                    style: new TextStyle(
-                        color: const Color(0xff343243),
-                        fontSize: 17.0,
-                        fontWeight: FontWeight.bold)),
+                child: FlyTextTitle45("发现最新版本！",fontWeight: FontWeight.bold),
               ),
               Container(
                 width: double.infinity,
@@ -113,36 +111,21 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                      decoration: BoxDecoration(
-                        borderRadius: new BorderRadius.only(
-                            bottomLeft: Radius.circular(12.0),
-                            bottomRight: Radius.circular(12.0)),
-                      ),
-                      child: new MaterialButton(
-                        child: new Text('立即更新',style: TextStyle(color: colorMain,fontWeight: FontWeight.bold),),
-                        onPressed: () => upgradeHandle(),
-                      ),
+                    child: InkWell(
+                      child: Center(child: FlyTextMain40("立即更新",color: colorMain,fontWeight: FontWeight.w600),),
+                      onTap: () => upgradeHandle(),
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                      decoration: BoxDecoration(
-                        borderRadius: new BorderRadius.only(
-                            bottomLeft: Radius.circular(12.0),
-                            bottomRight: Radius.circular(12.0)),
-                      ),
-                      child: widget.isForceUpdate?Container():MaterialButton(
-                        child: new Text('忽略此版本',style: TextStyle(color: Colors.black38),),
-                        onPressed: ()async{
-                          Global.prefs.setBool(Global.prefsStr.igUpgrade, true);
-                          Navigator.of(context).pop();
-                        },
-                      ),
+                  widget.isForceUpdate?Container():Expanded(
+                    child: InkWell(
+                      child: Center(child: FlyTextMain40("忽略",color: Colors.black38,fontWeight: FontWeight.w600),),
+                      onTap: ()async{
+                        Global.prefs.setBool(Global.prefsStr.igUpgrade, true);
+                        Navigator.of(context).pop();
+                      },
                     ),
                   )
+
                 ],
               ),
             ],

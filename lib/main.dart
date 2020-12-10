@@ -77,8 +77,8 @@ class _StartPageState extends State<StartPage> {
   }
   @override
   Widget build(BuildContext context) {
-    if(MediaQuery.of(context).size.height/MediaQuery.of(context).size.width<1){
-      deviceHeight = 1920;
+    if(MediaQuery.of(context).size.height/MediaQuery.of(context).size.width<1.5){
+      deviceHeight = 1080;
       deviceWidth = 1920;
     }
     ScreenUtil.init(context, height: deviceHeight, width: deviceWidth);//初始化参考屏幕信息

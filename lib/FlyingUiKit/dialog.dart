@@ -41,6 +41,11 @@ Future<String> FlyDialogInputShow(BuildContext context,
         ),
       ),
       actions: <Widget>[
+
+        FlatButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: FlyTextMain40("取消", color: Colors.black38),
+        ),
         FlatButton(
           onPressed: () {
             if (result == '') {
@@ -51,10 +56,6 @@ Future<String> FlyDialogInputShow(BuildContext context,
             Navigator.of(context).pop(result);
           },
           child: FlyTextMain40(confirmText, color: colorMain),
-        ),
-        FlatButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: FlyTextMain40("取消", color: Colors.black38),
         ),
       ],
     ),

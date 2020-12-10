@@ -9,6 +9,7 @@ import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/text.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/Model/global.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -56,7 +57,7 @@ class _InvitePageState extends State<InvitePage> {
             Container(),Container(),
             InkWell(
               onTap: (){
-                Clipboard.setData(ClipboardData(text: "https://cumt-kxz-1300931999.cos.ap-nanjing.myqcloud.com/CUMT-KXZ/FlyingKXZ.apk"));
+                Clipboard.setData(ClipboardData(text: "https://cumt-kxz-1300931999.cos.ap-nanjing.myqcloud.com/CUMT-KXZ/${Global.curVersion}.apk"));
                 showToast(context,"已复制下载链接\n感谢您的支持！QAQ",);
               },
               child: Container(

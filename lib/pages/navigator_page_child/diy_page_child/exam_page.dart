@@ -138,22 +138,10 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
     );
   }
   Widget nullView(){
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FlyTextMain40("ヾ(๑╹◡╹)ﾉ'  考试信息是自动获取的哦～",color: Colors.black38),
-        ],
-      ),
-    );
+    return Container();
   }
   Widget loadingView(){
-    return Column(
-      children: [
-        SizedBox(height: fontSizeMini38*2,),
-        loadingAnimationIOS()
-      ],
-    );
+    return Container();
   }
   Widget infoView(){
     return SingleChildScrollView(
@@ -171,6 +159,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
     );
   }
   Widget infoEmptyView(){
+    return Container();
     return Container(
       width: double.infinity,
       child: InkWell(

@@ -57,7 +57,7 @@ List<CourseData> courseDataList = List();
 class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   var crossFadeState = CrossFadeState.showSecond;
-  ScrollController scrollController = new ScrollController(initialScrollOffset: (1.4*ScreenUtil().setSp(110)+fontSizeMain40)*(selectedWeek),keepScrollOffset: true);
+  ScrollController scrollController = new ScrollController(initialScrollOffset: (1.4*ScreenUtil().setWidth(deviceWidth/10)+fontSizeMain40)*(selectedWeek),keepScrollOffset: true);
   Color greyMask = Colors.transparent;
   double mMaxScrollExtent = (1.4*ScreenUtil().setWidth(deviceWidth/9)+fontSizeMain40)*22;//最大滑动像素距离
   bool loading = false;//是否显示加载动画
@@ -265,7 +265,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   }
 
   Widget pointArea() {
-    double width = ScreenUtil().setSp(110);
+    double width = ScreenUtil().setWidth(deviceWidth/10);
     int curWeek = 0;
     return SingleChildScrollView(
       controller: scrollController,
