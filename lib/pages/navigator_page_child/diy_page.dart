@@ -6,7 +6,6 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/text.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/func_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score_page.dart';
 class DiyPage extends StatefulWidget {
   @override
   _DiyPageState createState() => _DiyPageState();
@@ -64,7 +63,7 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
     super.initState();
     mController = TabController(
       initialIndex: 0,
-      length: 2,
+      length: 1,
       vsync: this,
     );
   }
@@ -73,48 +72,64 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Container(),
+        centerTitle: true,
+        title: FlyTextTitle45('发现',color: colorMainTextWhite,fontWeight: FontWeight.w600),
+      ),
         backgroundColor: Colors.transparent,
         key: Global.scaffoldKeyDiy,
         body: Column(
-          children: <Widget>[
-            SizedBox(height: ScreenUtil.statusBarHeight,),
-            //AppBar
-            Container(
-              margin: EdgeInsets.fromLTRB(fontSizeMini38, 0, 0, fontSizeMini38),
-              width: double.infinity,
-              child: TabBar(
-                  controller: mController,
-                  labelColor: colorMainTextWhite,
-                  labelStyle: TextStyle(fontSize: fontSizeTitle50,fontWeight: FontWeight.w600,),
-                  unselectedLabelColor: colorMainTextWhite.withOpacity(0.5),
-                  unselectedLabelStyle: TextStyle(fontSize: fontSizeTitle45,fontWeight: FontWeight.w600,),
-                  indicatorSize: TabBarIndicatorSize.label,
-                  indicator: UnderlineTabIndicator(
-                      borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  isScrollable: true,
-                  tabs: [
-                    Tab(
-                      text: "发现",
-                    ),
-                    Tab(
-                      text: "成绩",
-                    ),
-
-                  ]),
-            ),
-              Expanded(
-                child: TabBarView(
-                  physics: BouncingScrollPhysics(),
-                  controller: mController,
-                  children: <Widget>[
-                    FuncPage(),
-                    ScorePage(),
-                  ],
-                ),
-              )
+          children: [
+            SizedBox(height: ScreenUtil().setHeight(ScreenUtil.statusBarHeight),),
+            Expanded(
+              child: FuncPage(),
+            )
           ],
-        ));
+        ),
+        // body: Column(
+        //   children: <Widget>[
+        //     SizedBox(height: ScreenUtil.statusBarHeight,),
+        //     //AppBar
+        //     Container(
+        //       margin: EdgeInsets.fromLTRB(fontSizeMini38, 0, 0, fontSizeMini38),
+        //       width: double.infinity,
+        //       child: TabBar(
+        //           controller: mController,
+        //           labelColor: colorMainTextWhite,
+        //           labelStyle: TextStyle(fontSize: fontSizeTitle50,fontWeight: FontWeight.w600,),
+        //           unselectedLabelColor: colorMainTextWhite.withOpacity(0.5),
+        //           unselectedLabelStyle: TextStyle(fontSize: fontSizeTitle45,fontWeight: FontWeight.w600,),
+        //           indicatorSize: TabBarIndicatorSize.label,
+        //           indicator: UnderlineTabIndicator(
+        //               borderSide: BorderSide(color: Colors.transparent),
+        //           ),
+        //           isScrollable: true,
+        //           tabs: [
+        //             Tab(
+        //               text: "发现",
+        //             ),
+        //             // Tab(
+        //             //   text: "成绩",
+        //             // ),
+        //
+        //           ]),
+        //     ),
+        //       Expanded(
+        //         child: TabBarView(
+        //           physics: BouncingScrollPhysics(),
+        //           controller: mController,
+        //           children: <Widget>[
+        //             FuncPage(),
+        //             // ScorePage(),
+        //           ],
+        //         ),
+        //       )
+        //   ],
+        // )
+    );
   }
 
   @override

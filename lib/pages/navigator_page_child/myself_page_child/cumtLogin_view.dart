@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/text.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
@@ -94,8 +95,8 @@ class _CumtLoginViewState extends State<CumtLoginView> {
       child: Wrap(
         runSpacing: 10,
         children: [
-          Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
+
+          Row(
             children: <Widget>[
               Container(
                 width: fontSizeMini38/4,
@@ -111,7 +112,17 @@ class _CumtLoginViewState extends State<CumtLoginView> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: ()=>toCumtLoginHelpPage(context),
+                      child: Text("用前必看,拜托！",style: TextStyle(fontSize: fontSizeMain40,color: colorMain,decoration: TextDecoration.underline),textWidthBasis: TextWidthBasis.longestLine,),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
           Container(),
@@ -162,6 +173,67 @@ class _CumtLoginViewState extends State<CumtLoginView> {
           ),
 
         ],
+      ),
+    );
+  }
+}
+//跳转到当前页面
+void toCumtLoginHelpPage(BuildContext context) {
+  Navigator.push(
+      context, CupertinoPageRoute(builder: (context) => CumtLoginHelpPage()));
+}
+class CumtLoginHelpPage extends StatefulWidget {
+  @override
+  _CumtLoginHelpPageState createState() => _CumtLoginHelpPageState();
+}
+
+class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
+  Widget helpItem(String imageResource,String text,)=>Wrap(
+    children: [
+      FlyTextTitle45(text,maxLine: 100,),
+      Padding(
+        padding: EdgeInsets.all(ScreenUtil().setWidth(deviceWidth*0.1)),
+        child: Container(
+          decoration: BoxDecoration(
+              boxShadow: [
+                boxShadowMain
+              ]
+          ),
+          child: Center(
+            child: Image.asset(imageResource,fit: BoxFit.fill,),
+          ),
+        ),
+      )
+    ],
+  );
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: colorPageBackground,
+      appBar: FlyWhiteAppBar(context, "《校园网登录秘籍-看完不后悔系列》"),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.all(spaceCardMarginRL),
+          child: Wrap(
+            children: [
+              helpItem("images/cumtLoginHelp1.png",
+                  '1、在系统设置中连接校园网CUMT_Stu，并等待上方出现wifi标志'),
+              helpItem("images/cumtLoginHelp2.png",
+                  '2、打开矿小助输入账号密码就可以登录了\n（第二次打开这个框框就不用填账号密码了哦）'),
+              helpItem('images/cumtLoginHelp1.png',
+                  "你以为这就结束了？？？\n用脚趾头想想也知道那必不可能（滑稽\n\n矿小助还可以一键登录校园网\n(前提是你已经用上述1、2步骤手动登录过了)\n\n1、连接wifi，等待出现wifi标志"),
+              helpItem('images/cumtLoginHelp3.png',
+                  "2、打开矿小助"),
+              helpItem('images/cumtLoginHelp4.png',
+                  "然后就可以愉快的上网了～\n\n"
+                      "特别注意：如果无法自动登录，就重启矿小助。\n\n"
+                      "（自动登录函数只会在App初始化的时候执行，无法登录说明后台还开着矿小助）\n\n"
+                      "如果喜欢的话可以将矿小助推荐给其他人哦～\n\n"
+                      "——用爱发电的程序员小哥")
+            ],
+          ),
+        ),
       ),
     );
   }

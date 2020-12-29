@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
@@ -29,9 +30,16 @@ void main() {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent
     ),
+    //添加国际化
     localizationsDelegates: [
-      PickerLocalizationsDelegate.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
     ],
+    supportedLocales: [
+      const Locale('zh', 'CH'),
+      const Locale('en', 'US'),
+    ],
+    locale: Locale("zh"),
     debugShowCheckedModeBanner: false,
     home: StartPage(),
   ));
@@ -53,9 +61,10 @@ class _StartPageState extends State<StartPage> {
     //提取本地信息
     Global.prefs = await SharedPreferences.getInstance();
     if(Global.prefs.getString(Global.prefsStr.backImg)!=null){
-      if(await File(Global.prefs.getString(Global.prefsStr.backImg)).exists()) backImgFileDiy = File(Global.prefs.getString(Global.prefsStr.backImg));
+      if(await File(Global.prefs.getString(Global.prefsStr.backImg)).exists()) backImgFile = File(Global.prefs.getString(Global.prefsStr.backImg));
     }
     await getSchoolYearTerm();
+
     //内测结束
     if(DateTime.now().isAfter(DateTime.parse('2021-01-24'))){
       toNullPage(context);

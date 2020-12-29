@@ -18,6 +18,7 @@ import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
 import 'package:flying_kxz/FlyingUiKit/text.dart';
+import 'package:flying_kxz/FlyingUiKit/text_editer.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
@@ -25,6 +26,7 @@ import 'package:flying_kxz/NetRequest/login_post.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'app_upgrade.dart';
 import 'navigator_page_child/myself_page_child/cumtLogin_view.dart';
 
 //跳转到当前页面
@@ -68,27 +70,8 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {_loading = false;});
     }
   }
-  //输入框组件
-  Widget inputBar(String hintText, TextEditingController controller,
-      {FormFieldSetter<String> onSaved, bool obscureText = false}) =>
-      Container(
-        decoration: BoxDecoration(
-            color: Color.fromARGB(255, 242,243,247),
-            borderRadius: BorderRadius.circular(100)
-        ),
-        child: TextFormField(
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: fontSizeMain40,color: colorMainText,),
-          obscureText: obscureText, //是否是密码
-          controller: controller, //控制正在编辑的文本。通过其可以拿到输入的文本值
-          decoration: InputDecoration(
-            hintStyle: TextStyle(fontSize: fontSizeMain40,color: Colors.grey),
-            border: InputBorder.none, //下划线
-            hintText: hintText, //点击后显示的提示语
-          ),
-          onSaved: onSaved,
-        ),
-      ); //输入文本框区域
+
+  //输入文本框区域
   //登录按钮
   Widget loginButton()=>LayoutBuilder(
     builder: (context,parSize){
@@ -117,6 +100,14 @@ class _LoginPageState extends State<LoginPage> {
       );
     },
   );
+
+
+  @override
+  void initState() {
+    super.initState();
+    checkUpgrade(context);
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -163,10 +154,10 @@ class _LoginPageState extends State<LoginPage> {
                         children: <Widget>[
                           Column(
                             children: [
-                              inputBar('输入学号', _userNameController,
+                              FlyInputBar('输入学号', _userNameController,
                                   onSaved: (String value) => _username = value),
                               SizedBox(height: fontSizeMini38*2,),
-                              inputBar('统一认证密码', _passWordController,
+                              FlyInputBar('统一认证密码', _passWordController,
                                   onSaved: (String value) => _password = value,obscureText:true),
                               SizedBox(height: fontSizeMini38*5,),
                               loginButton(),

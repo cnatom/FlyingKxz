@@ -5,8 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/score_info.dart';
+import 'package:flying_kxz/pages/backImage_view.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
@@ -15,6 +17,11 @@ import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/FlyingUiKit/text.dart';
 import 'package:flying_kxz/NetRequest/exam_get.dart';
 import 'package:flying_kxz/NetRequest/score_get.dart';
+//跳转到当前页面
+void toScorePage(BuildContext context) {
+  Navigator.push(
+      context, CupertinoPageRoute(builder: (context) => ScorePage()));
+}
 
 class ScorePage extends StatefulWidget {
   @override
@@ -23,6 +30,7 @@ class ScorePage extends StatefulWidget {
 
 class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMixin{
   ScrollController controller = new ScrollController();
+  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   String curScoreYear = "全部学年",curScoreTerm = "全部学期";//当前所选的学期学年信息
   String jiaquanTotal;//总加权
   String jidianTotal;//总绩点
@@ -51,7 +59,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     jiaquanTotal = (xfcjSum/xfSum).toStringAsFixed(2);
     jidianTotal = (xfjdSum/xfSum).toStringAsFixed(2);
   }
-  Color selectedMainColor = colorMainText.withOpacity(0.8);
+  Color selectedMainColor = colorMainText;
   //总绩点 + 展开闭合组件
   Widget topArea(){
     //展开闭合组件
@@ -238,7 +246,10 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB, 0, spaceCardPaddingTB),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadiusValue),
-        color: Colors.white.withOpacity(transparentValue),
+        color: Colors.white,
+        boxShadow: [
+          boxShadowMain
+        ]
       ),
       child: Row(
         children: [
@@ -406,12 +417,12 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
 
   Widget nullView(){
     return Center(
-      child: FlyTextMain40("（￣︶￣）↗点上面查成绩",color: colorMainTextWhite),
+      child: FlyTextMain40("（￣︶￣）↗点上面查成绩",color: colorMainText),
     );
   }
   Widget loadingView(){
     return Center(
-      child: loadingAnimationTwoCircles(color: colorMainTextWhite),
+      child: loadingAnimationTwoCircles(),
     );
   }
   Widget infoView(){
@@ -440,6 +451,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                   ),
                 ],
               ):Container(),
+              Center(child: FlyTextTip30('\n"筛选"功能可忽略某些不计入加权的成绩\n点击卡片可查看成绩明细',textAlign: TextAlign.center),),
               SizedBox(height: ScreenUtil().setSp(300),),
             ],
           ),
@@ -452,8 +464,8 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FlyTextMain40("∑(っ°Д°;)っ没有本学期的成绩",color: colorMainTextWhite),
-          FlyTextTip30("（ 换个学期试一试 ？） ",color: colorMainTextWhite),
+          FlyTextMain40("∑(っ°Д°;)っ没有本学期的成绩",color: colorMainText),
+          FlyTextTip30("（ 换个学期试一试 ？） ",color: colorMainText),
         ],
       ),
     );
@@ -472,32 +484,40 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(transparentValue),
-            borderRadius: BorderRadius.circular(10)
+    return Scaffold(
+      backgroundColor: colorPageBackground,
+      key: scaffoldKey,
+      appBar: FlyWhiteAppBar(context, '成绩',),
+      body: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(borderRadiusValue),
+              boxShadow: [
+                boxShadowMain
+              ]
+            ),
+            child: Column(
+              children: [
+                topArea(),
+                FlySearchBarButton('点击查询',
+                    "${curScoreYear} ${curScoreTerm}",
+                    onTap: ()=>showPicker(context, scaffoldKey,
+                        pickerDatas: Global.xqxnWithAllTermPickerData,
+                        onConfirm: (Picker picker, List value) {
+                          debugPrint(value.toString());
+                          getShowScoreView(year: picker.getSelectedValues()[0].toString(),term: '${(value[1]).toString()}');
+                        })),
+              ],
+            ),
           ),
-          child: Column(
-            children: [
-              topArea(),
-              FlySearchBarButton('点击查询',
-                  "${curScoreYear} ${curScoreTerm}",
-                  onTap: ()=>showPicker(context, Global.scaffoldKeyDiy,
-                      pickerDatas: Global.xqxnWithAllTermPickerData,
-                      onConfirm: (Picker picker, List value) {
-                        debugPrint(value.toString());
-                        getShowScoreView(year: picker.getSelectedValues()[0].toString(),term: '${(value[1]).toString()}');
-                      })),
-            ],
+          Expanded(
+            child: curView(),
           ),
-        ),
-        Expanded(
-          child: curView(),
-        ),
-      ],
+        ],
+      ),
     );
   }
   @override

@@ -14,7 +14,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
+void checkUpgrade(BuildContext context)async{
+  if(Global.prefs.getBool(Global.prefsStr.igUpgrade)==false&&Platform.isAndroid){
+    await upgradeApp(context,auto: true);//用户没有忽略过则检查更新
+  }
+  debugPrint("@@checkUpgrade");
+}
 Future<Null> upgradeApp(BuildContext context,{bool auto = false})async{
   Global.curVersion = (await PackageInfo.fromPlatform()).version;
   Response res;

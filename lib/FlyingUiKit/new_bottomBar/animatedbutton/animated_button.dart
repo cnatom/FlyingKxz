@@ -33,7 +33,7 @@ class _AnimatedButtonState extends State<AnimatedButton>
     _currentState = ButtonState.SHOW_ONLY_TEXT;
     _smallDuration = Duration(milliseconds: (widget.animationDuration.inMilliseconds * 0.2).round());
     _controller =
-        AnimationController(vsync: this, duration: widget.animationDuration);
+        AnimationController(value: this, duration: widget.animationDuration);
     _controller.addListener(() {
       double _controllerValue = _controller.value;
       if (_controllerValue < 0.2) {

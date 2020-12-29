@@ -12,6 +12,7 @@ import 'package:flying_kxz/NetRequest/swiper_get.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/func_page_child/school_bus_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/func_page_child/school_calendar_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score_page.dart';
 
 import 'func_page_child/book_page.dart';
 class FuncPage extends StatefulWidget {
@@ -126,11 +127,12 @@ class _FuncPageState extends State<FuncPage> {
                         Wrap(
                           children: [
                             funcButton(imageResource: 'images/tushuguan.png',title: '图书馆',color:colorFuncButton[0],subTitle: '馆藏查询、图书推荐',onTap: ()=>toBookPage(context)),
-                            funcButton(imageResource: 'images/xiaoche.png',title: '校车',color:colorFuncButton[3],subTitle: '通勤班车时间表',onTap: ()=>toSchoolBusPage(context)),
+                            funcButton(imageResource: 'images/chengji.png',title: '成绩',color:colorFuncButton[5],subTitle: '查看学分绩点',onTap: ()=>toScorePage(context)),
+                            funcButton(imageResource: 'images/xiaoche.png',title: '校车',color:colorFuncButton[1],subTitle: '通勤班车时间表',onTap: ()=>toSchoolBusPage(context)),
                             funcButton(imageResource: 'images/xiaoli.png',title: '校历',color:colorFuncButton[2],subTitle: '本学年校历',onTap: ()=>toSchoolCalendarPage(context)),
-                            funcButton(imageResource: 'images/kongjiaoshi.png',title: '空教室',subTitle: '快速查找空教室'),
-                            funcButton(imageResource: 'images/tongxunlu.png',title: '通讯录',subTitle: '矿大黄页、联系你我'),
-                            funcButton(imageResource: 'images/ditu.png',title: '校园地图',subTitle: '拯救路痴的你'),
+
+                            // funcButton(imageResource: 'images/tongxunlu.png',title: '通讯录',subTitle: '矿大黄页、联系你我'),
+                            // funcButton(imageResource: 'images/ditu.png',title: '校园地图',subTitle: '拯救路痴的你'),
                           ],
                         )
                       ],

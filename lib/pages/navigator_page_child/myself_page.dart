@@ -16,17 +16,21 @@ import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
 import 'package:flying_kxz/FlyingUiKit/text.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/NetRequest/balance_get.dart';
 import 'package:flying_kxz/NetRequest/cumt_login.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
 import 'package:flying_kxz/NetRequest/power_get.dart';
 import 'package:flying_kxz/NetRequest/rank_get.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
+import 'package:flying_kxz/pages/backImage_view.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/about_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/activeStep_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'home_page_child/test_view.dart';
 import 'myself_page_child/cumtLogin_view.dart';
@@ -38,23 +42,39 @@ class MyselfPage extends StatefulWidget {
 }
 
 class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMixin{
-
   void getShowPowerInfo()async{
     if(await powerGet(context,token: Global.prefs.getString(Global.prefsStr.token))){
       setState(() {});
     }
   }
-  void getRankInfo()async{
+  void getPreviewInfo()async{
     if(await rankGet(username: Global.prefs.getString(Global.prefsStr.username))){
+      setState(() {});
+    }
+    if(await balanceGet(newToken: Global.prefs.getString(Global.prefsStr.newToken))){
       setState(() {
+
       });
     }
+
   }
   void signOut(){
     Global.clearPrefsData();
     toLoginPage(context);
   }
 
+  void _changeBackgroundImage()async{
+    File tempImgFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    String imageFileName = tempImgFile.path.substring(tempImgFile.path.lastIndexOf('/')+1,tempImgFile.path.length);
+    Directory tempDir = await getApplicationDocumentsDirectory();
+    Directory directory = new Directory('${tempDir.path}/images');
+    if (!directory.existsSync()) {
+      directory.createSync();
+    }
+    backImgFile = await tempImgFile.copy('${directory.path}/$imageFileName');
+    Global.prefs.setString(Global.prefsStr.backImg, backImgFile.path);
+    navigatorPageController.jumpToPage(0);
+  }
   //确定退出
   Future<bool> willSignOut(context) async {
     return await showDialog(
@@ -98,20 +118,16 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
       direction: Axis.vertical,
       children: <Widget>[
         FlyTextMain40(title,color: colorMainTextWhite,fontWeight: FontWeight.bold),
-        FlyTextTip30(subTitle,color: colorMainTextWhite,fontWeight: FontWeight.w200),
+        FlyTextTip30(subTitle,color: colorMainTextWhite.withOpacity(0.9),),
       ],
     ),
   );
 
-  ///从相册选取
-  Future chooseImage() async {
-    await ImagePicker.pickImage(source: ImageSource.gallery);
-  }
   @override
   void initState() {
     super.initState();
     getShowPowerInfo();
-    getRankInfo();
+    getPreviewInfo();
 
   }
 
@@ -150,7 +166,7 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                   children: <Widget>[
                     Expanded(
                         flex: 1,
-                        child: previewItem(title: "0.0",subTitle: "校园卡余额 (元)",)
+                        child: previewItem(title: "${Global.prefs.getString(Global.prefsStr.balance)??'0.0'}",subTitle: "校园卡余额 (元)",)
                     ),
                     Container(
                       color: Colors.white.withOpacity(0.2),
@@ -159,7 +175,7 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                     ),
                     Expanded(
                       flex: 1,
-                      child: previewItem(title: "${Global.prefs.getString(Global.prefsStr.power)??'0.0'}",subTitle: "宿舍电量 (${Global.prefs.getString(Global.prefsStr.power)==null?"loading":"度"})"),
+                      child: previewItem(title: "${Global.prefs.getString(Global.prefsStr.power)??'0.0'}",subTitle: "宿舍电量 (度)"),
                     ),
                   ],
                 ),
@@ -182,12 +198,7 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                       FlyRowMyselfItemButton(
                           icon: LineariconsFree.shirt,
                           title: '更换背景',
-                          onTap: () async{
-                            var tempImg = await ImagePicker.pickImage(source: ImageSource.gallery);
-                            backImgFileDiy  = tempImg!=null?tempImg:backImgFileDiy;
-                            Global.prefs.setString(Global.prefsStr.backImg, backImgFileDiy.path);
-                            navigatorPageController.jumpToPage(0);
-                          }
+                          onTap: ()=>_changeBackgroundImage()
                       ),
                     ]
                 ),
@@ -225,24 +236,8 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                       )
                     ]
                 ),
-                Container(),
-                InkWell(
-                  onTap: ()=>willSignOut(context),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white.withOpacity(transparentValue)
-                    ),
-                    margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-                    padding: EdgeInsets.fromLTRB(0, spaceCardPaddingTB*1.5, 0, spaceCardPaddingTB*1.5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        FlyTextMini35("退出登录",color: colorMainText)
-                      ],
-                    ),
-                  ),
-                ),
+                FlyCenterMyselfItemButton('永久激活  "校园卡余额"  功能',onTap: ()=>toActiveStepPage(context),),
+                FlyCenterMyselfItemButton('退出登录',onTap: ()=>willSignOut(context)),
               ],
             ),
             Center(
@@ -254,8 +249,6 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                   FlyTextTip30('内测结束时间：2021年1月24日',color: Colors.white,maxLine: 5),
                   SizedBox(height: fontSizeMini38/2,),
                   FlyTextTip30('内测会员勋章可保留至公测',maxLine: 5,color: Colors.white),
-                  SizedBox(height: fontSizeMini38/2,),
-                  FlyTextTip30('（暂无法预览校园卡余额）',maxLine: 5,color: Colors.white),
                   SizedBox(height: fontSizeMini38/2,),
                 ],
               ),

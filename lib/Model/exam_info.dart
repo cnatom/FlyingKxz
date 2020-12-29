@@ -3,9 +3,9 @@
 /// data : [{"local":"博1-C104","time":"2019-11-02(19:00-20:40)","course":"高等数学A（1）(16版，","type":"2019-2020-1正常考试","year":2019,"month":11,"day":2},{"local":"博2-A202","time":"2019-11-18(19:00-20:40)","course":"信息学科概论","type":"2019-2020-1正常考试","year":2019,"month":11,"day":18},{"local":"计-31机房","time":"2019-11-27(10:15-11:55)","course":"计算机基础训练","type":"2019-2020-1正常考试","year":2019,"month":11,"day":27},{"local":"博3-B303","time":"2020-01-06(08:00-09:40)","course":"高等数学A（2）(16版，","type":"2019-2020-1正常考试","year":2020,"month":1,"day":6},{"local":"博4-C307","time":"2020-01-07(10:15-11:55)","course":"综合英语（1）(16版，","type":"2019-2020-1正常考试","year":2020,"month":1,"day":7}]
 
 class ExamInfo {
-  int status;
+  String status;
   String msg;
-  List<Data> data;
+  List<ExamData> data;
 
   ExamInfo({
       this.status, 
@@ -13,12 +13,12 @@ class ExamInfo {
       this.data});
 
   ExamInfo.fromJson(dynamic json) {
-    status = json["status"];
+    status = json["status"].toString();
     msg = json["msg"];
     if (json["data"] != null) {
       data = [];
       json["data"].forEach((v) {
-        data.add(Data.fromJson(v));
+        data.add(ExamData.fromJson(v));
       });
     }
   }
@@ -43,7 +43,7 @@ class ExamInfo {
 /// month : 11
 /// day : 2
 
-class Data {
+class ExamData {
   String local;
   String time;
   String course;
@@ -52,7 +52,7 @@ class Data {
   int month;
   int day;
 
-  Data({
+  ExamData({
       this.local, 
       this.time, 
       this.course, 
@@ -61,7 +61,7 @@ class Data {
       this.month, 
       this.day});
 
-  Data.fromJson(dynamic json) {
+  ExamData.fromJson(dynamic json) {
     local = json["local"];
     time = json["time"];
     course = json["course"];

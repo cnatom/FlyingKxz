@@ -91,7 +91,25 @@ Widget FlyRowMyselfItemButton({@required IconData icon,@required String title,St
     ),
   ),
 );
-
+Widget FlyCenterMyselfItemButton(String title,{GestureTapCallback onTap,Color textColor = Colors.black,Color backgroundColor = Colors.white}){
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: backgroundColor.withOpacity(transparentValue)
+      ),
+      margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+      padding: EdgeInsets.fromLTRB(0, spaceCardPaddingTB*1.5, 0, spaceCardPaddingTB*1.5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          FlyTextMini35(title,color: textColor)
+        ],
+      ),
+    ),
+  );
+}
 Widget FlyPreviewCardButton(
     {@required String title,
       @required String content,

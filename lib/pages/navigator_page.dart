@@ -35,9 +35,6 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
       DiyPage(),
       MyselfPage()
     ];
-    if(Global.prefs.getBool(Global.prefsStr.igUpgrade)==false&&Platform.isAndroid){
-      await upgradeApp(context,auto: true);//用户没有忽略过则检查更新
-    }
     Dio().get(
         "https://www.lvyingzhao.cn/action",
         queryParameters: {
@@ -56,8 +53,8 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
   @override
   void initState() {
     super.initState();
-
     initFunc();
+    checkUpgrade(context);
   }
   BottomNavigationBarItem _bottomNavigationBar(String title,IconData iconData,{double size})=>BottomNavigationBarItem(
       label: title,

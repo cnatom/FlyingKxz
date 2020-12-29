@@ -57,8 +57,8 @@ class _InvitePageState extends State<InvitePage> {
             Container(),Container(),
             InkWell(
               onTap: (){
-                Clipboard.setData(ClipboardData(text: "https://cumt-kxz-1300931999.cos.ap-nanjing.myqcloud.com/CUMT-KXZ/${Global.curVersion}.apk"));
-                showToast(context,"已复制下载链接\n感谢您的支持！QAQ",);
+                Clipboard.setData(ClipboardData(text: "https://cumt-kxz-1300931999.cos.ap-nanjing.myqcloud.com/CUMT-KXZ/FlyingKXZ.apk"));
+                showToast(context,"已复制安卓版本下载链接\n快分享给好友吧～！",);
               },
               child: Container(
                 padding: EdgeInsets.all(10),
@@ -78,7 +78,7 @@ class _InvitePageState extends State<InvitePage> {
             InkWell(
               onTap: (){
                 Clipboard.setData(ClipboardData(text: "https://testflight.apple.com/join/hVUvhb9I"));
-                showToast(context,"已复制下载链接\n感谢您的支持！QAQ",);
+                showToast(context,"已复制iOS版本下载链接\n感谢您的支持！QAQ",);
               },
               child: Container(
                 padding: EdgeInsets.all(10),

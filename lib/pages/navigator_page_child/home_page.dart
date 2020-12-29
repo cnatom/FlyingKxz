@@ -57,7 +57,7 @@ List<CourseData> courseDataList = List();
 class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   var crossFadeState = CrossFadeState.showSecond;
-  ScrollController scrollController = new ScrollController(initialScrollOffset: (1.4*ScreenUtil().setWidth(deviceWidth/10)+fontSizeMain40)*(selectedWeek),keepScrollOffset: true);
+  ScrollController scrollController = new ScrollController(initialScrollOffset: (ScreenUtil().setWidth(deviceWidth/10)+fontSizeMain40)*(selectedWeek),keepScrollOffset: true);
   Color greyMask = Colors.transparent;
   double mMaxScrollExtent = (1.4*ScreenUtil().setWidth(deviceWidth/9)+fontSizeMain40)*22;//最大滑动像素距离
   bool loading = false;//是否显示加载动画
@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   }
   //调整右侧滚动条位置
   void setRightScrollPosition({int toWeek}){
-    double aimPosition = (1.4*ScreenUtil().setSp(100)+fontSizeMain40)*(toWeek-1);
+    double aimPosition = (ScreenUtil().setWidth(deviceWidth/10)+fontSizeMain40)*(toWeek-1);
     if(aimPosition>mMaxScrollExtent){
       scrollController.jumpTo(mMaxScrollExtent);
       return;
@@ -359,10 +359,19 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        // leading: FlatButton(
+        //   child: Text("Test"),
+        //   onPressed: (){
+        //     String a = '{"status": 200,"msg": "123","data": []}';
+        //     Global.examDiyInfo.toJson();
+        //     Map map = jsonDecode(a);
+        //     print(jsonEncode(Global.examDiyInfo.toJson()));
+        //   },
+        // ),
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: FlyTextTitle45('第${(selectedWeek+1).toString()}周',
-            fontWeight: FontWeight.w400,color: colorMainTextWhite),
+            fontWeight: FontWeight.w600,color: colorMainTextWhite),
         centerTitle: true,
         actions: <Widget>[
           selectedWeek==currentWeek?Container():IconButton(
@@ -403,10 +412,10 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
       ),
       backgroundColor: Colors.transparent,
       body: Container(
-        padding: EdgeInsets.fromLTRB(0, fontSizeMini38/2, 0, 0),
+        padding: EdgeInsets.fromLTRB(0, fontSizeMini38/2, fontSizeMini38/10, fontSizeMini38/3),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.white.withOpacity(transparentValue),
+          color: Colors.white.withOpacity(transparentValue*0.8),
         ),
         child: Row(
           children: <Widget>[
@@ -602,7 +611,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                           decoration: BoxDecoration(
                                               borderRadius:
                                               BorderRadius.circular(2),
-                                              color: color.withOpacity(0.7)),
+                                              color: color.withOpacity(0.95)),
                                           child: Column(
                                             mainAxisAlignment:
                                             MainAxisAlignment.center,

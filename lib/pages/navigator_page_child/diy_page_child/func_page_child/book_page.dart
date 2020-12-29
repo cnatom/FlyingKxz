@@ -141,6 +141,9 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
           spaceCardPaddingRL, spaceCardPaddingTB/1.5),
       margin: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB, spaceCardMarginRL, 0),
       decoration: BoxDecoration(
+        boxShadow: [
+          boxShadowMain
+        ],
         borderRadius: BorderRadius.circular(borderRadiusValue),
         color: Colors.white,
       ),

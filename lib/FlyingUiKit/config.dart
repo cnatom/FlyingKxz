@@ -6,9 +6,9 @@ double deviceWidth = 1080;
 double deviceHeight = 1920;
 
 //透明度
-double transparentValue = 0.75;
+double transparentValue = 0.85;
 //背景图文件
-File backImgFileDiy;
+File backImgFile;
 //色彩管理
 final Color colorMain = Color.fromARGB(255, 1,176,117).withAlpha(255);
 final Color colorSecond = Color(0xFF33CC99).withAlpha(255);
@@ -22,10 +22,15 @@ final Color colorPageBackground = Color.fromARGB(255, 247,247,247);
 final Color colorLoginPageMain = Color.fromARGB(255, 40,216,161);
 
 final List<Color> colorLessonCard = [
-  Color(0xFF33CC99),
+  Color.fromARGB(255, 102,204,153),
   Color(0xFF6699FF),
-  Color(0xFFFF6666),
-  Color(0xFF99CC33),
+  Color.fromARGB(255, 255,102,102),
+  Color.fromARGB(255, 255,153,153),
+  Color.fromARGB(255, 166,145,248),
+  Color.fromARGB(255, 204,102,153),
+  Color.fromARGB(255, 62,188,202),
+  Color.fromARGB(255, 255,153,102),
+  Color.fromARGB(255, 51,153,204),
   // Color(0xFF),
   // Color(0xFF),
   // Color(0xFF),
@@ -82,6 +87,12 @@ final double spaceCardPaddingRL = ScreenUtil().setWidth(50);//左右内边距
 //容器圆角值
 final double borderRadiusValue = 10;
 
+//阴影
+final BoxShadow boxShadowMain = BoxShadow(
+    blurRadius: 10,
+    spreadRadius: 0.05,
+    color: Colors.black12.withAlpha(10)
+);
 //用于取消蓝色回弹效果
 //ScrollConfiguration(
 //       behavior: MyBehavior(),

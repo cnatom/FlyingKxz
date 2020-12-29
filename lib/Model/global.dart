@@ -3,6 +3,7 @@
 //实体类实例汇总
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flying_kxz/Model/balance_info.dart';
 import 'package:flying_kxz/Model/power_info.dart';
 import 'package:flying_kxz/Model/rank_info.dart';
 import 'package:flying_kxz/Model/score_info.dart';
@@ -36,10 +37,12 @@ class Global{
   static LoginInfo loginInfo = new LoginInfo();//登录信息
   static ScoreInfo scoreInfo = new ScoreInfo();//成绩信息
   static ExamInfo examInfo = new ExamInfo();//考试信息
+  static ExamInfo examDiyInfo = new ExamInfo(msg: '',status: '0',data: []);//自定义倒计时
   static BookInfo bookInfo = new BookInfo();//图书馆书籍信息
   static BookDetailInfo bookDetailInfo = new BookDetailInfo();
   static DateTime nowDate = DateTime.now(); //当前日期
   static PowerInfo powerInfo = new PowerInfo();//电量信息
+  static BalanceInfo balanceInfo = new BalanceInfo();//校园卡余额
   static SwiperInfo swiperInfo = new SwiperInfo();//轮播图
   static RankInfo rankInfo = new RankInfo();//内测用户排名
   static bool igUpgrade;//是否忽略更新
@@ -89,6 +92,7 @@ class Global{
 
 class ApiUrl{
   String loginUrl = "https://api.kxz.atcumt.com/jwxt/login";//登录请求
+  String newLoginUrl = "https://api.kxz.atcumt.com/new/login";//登录请求
   String courseUrl = "https://api.kxz.atcumt.com/jwxt/kb";//课表查询
   String scoreUrl = "https://api.kxz.atcumt.com/jwxt/grade";//成绩查询
   String examUrl = "https://api.kxz.atcumt.com/jwxt/exam";//考试查询
@@ -99,6 +103,7 @@ class ApiUrl{
   String feedbackUrl = "https://api.kxz.atcumt.com/admin/feedback";//反馈
   String cumtLoginUrl = "http://10.2.5.251:801/eportal/";//校园网登陆
   String appUpgradeUrl = "https://api.kxz.atcumt.com/admin/version";//检查App更新
+  String balanceUrl = "https://api.kxz.atcumt.com/new/simpleBalance";//校园卡余额
 }
 
 class PrefsStr{
@@ -106,12 +111,15 @@ class PrefsStr{
   String username = 'username';//用户名
   String name = 'name';
   String token = 'token';//token信息
+  String newToken = 'newToken';//新版登录的token信息
   String college = 'college';//学院
   String iClass = 'class';//班级
   String power = 'power';//宿舍电量
+  String balance = 'balance';//校园卡余额
   String rank = 'rank';//用户内测排名
   String courseDataLoc = 'courseDataLoc';//课表
   String examDataLoc = 'examDataLoc';//考试
+  String examDiyDataLoc = 'examDiyDataLoc';//自定义考试
   String examYear = 'examYear';//考试学年
   String examTerm = 'examTerm';//考试学期
   String schoolYear = 'schoolYear';//当前学年
