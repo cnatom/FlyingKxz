@@ -13,10 +13,8 @@ Future<bool> newLoginPost(BuildContext context,{@required String username, @requ
     Response res;
     Dio dio = Dio();
     //配置dio信息
-
     res = await dio.post(Global.apiUrl.newLoginUrl, data: _jsonMap);
     Map<String, dynamic> map = jsonDecode(res.toString());
-
     debugPrint(res.toString());
     if (map['code'] == 0) {
       //登录成功
@@ -27,8 +25,9 @@ Future<bool> newLoginPost(BuildContext context,{@required String username, @requ
       return false;
     }
   } catch (e) {
+
     debugPrint(e.toString());
-    showToast(context, '请检查您的网络连接');
+    showToast(context, '发生了一点小错误（X_X)');
     return false;
   }
 }

@@ -72,7 +72,7 @@ class _ActiveStepPageState extends State<ActiveStepPage> {
     );
   Widget secondView()=>stepView(
     children: [],
-    leftChild: stepButton('上一步', 0, onPressed: ()=>lastStep()),
+    leftChild: stepButton('已激活', 0, onPressed: ()=>nextStep()),
     rightChild: stepButton('前往激活', 1, onPressed: (){
       launch('http://authserver.cumt.edu.cn/retrieve-password/accountActivation/index.html#/?service=http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice');
       nextStep();
@@ -84,6 +84,15 @@ class _ActiveStepPageState extends State<ActiveStepPage> {
       children: [
         FlyInputBar('学号', usernameController),
         FlyInputBar('密码（新版教务）', passwordController,obscureText: true),
+        FlyTextMain40('如果忘记了新版教务的密码\n请点击以下链接验证或找回密码',maxLine: 100),
+        Row(
+          children: [
+            InkWell(
+              onTap: ()=>launch("http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice"),
+              child: Text("新版教务系统",style: TextStyle(fontSize: fontSizeMain40,color: colorMain,decoration: TextDecoration.underline),textWidthBasis: TextWidthBasis.longestLine,),
+            ),
+          ],
+        )
       ],
       leftChild: !_loading?stepButton('上一步', 0, onPressed: ()=>lastStep()):Container(),
       rightChild: !_loading?stepButton('登录', 1, onPressed: ()async{

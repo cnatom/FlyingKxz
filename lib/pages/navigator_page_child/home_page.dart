@@ -18,6 +18,7 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/NetRequest/course_get.dart';
 import 'package:flying_kxz/Model/course_info.dart';
+import 'package:flying_kxz/pages/navigator_page_child/home_page_child/test_view.dart';
 
 import 'myself_page_child/cumtLogin_view.dart';
 
@@ -359,15 +360,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        // leading: FlatButton(
-        //   child: Text("Test"),
-        //   onPressed: (){
-        //     String a = '{"status": 200,"msg": "123","data": []}';
-        //     Global.examDiyInfo.toJson();
-        //     Map map = jsonDecode(a);
-        //     print(jsonEncode(Global.examDiyInfo.toJson()));
-        //   },
-        // ),
+        leading: FlatButton(
+          child: Text("Test"),
+          onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>TestPage()));
+          },
+        ),
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: FlyTextTitle45('第${(selectedWeek+1).toString()}周',

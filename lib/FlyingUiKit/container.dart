@@ -7,7 +7,6 @@ import 'package:flutter_easyhub/animation/easy_falling_ball.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/text.dart';
 import 'package:flying_kxz/Model/global.dart';
-
 import 'config.dart';
 
 //常用圆角容器
