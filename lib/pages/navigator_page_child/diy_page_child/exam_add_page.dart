@@ -37,7 +37,7 @@ class _ExamAddViewState extends State<ExamAddView> {
       child: TextFormField(
         cursorColor: colorMain,
         autofocus: autofocus,
-        style: TextStyle(fontSize: fontSizeTitle45,color: colorMainText,),
+        style: TextStyle(fontSize: fontSizeTitle45,),
         controller: controller, //控制正在编辑的文本。通过其可以拿到输入的文本值
         decoration: InputDecoration(
           hintStyle: TextStyle(fontSize: fontSizeTitle45,),

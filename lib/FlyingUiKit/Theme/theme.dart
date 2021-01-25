@@ -48,7 +48,7 @@ class FlyThemes {
       backgroundColor: Color(0xfff2f5f7).withOpacity(0), //主页面背景色
       primaryColor: Colors.black,
       accentColor: Colors.white, //用作字体色彩
-      unselectedWidgetColor: Color(0xfff3f3f3),
+      unselectedWidgetColor: Colors.black12.withOpacity(0.05),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
           unselectedItemColor: Colors.white54, //底部导航蓝未选中色
           selectedItemColor: Colors.white),

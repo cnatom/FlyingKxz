@@ -391,7 +391,7 @@ class _HomePageState extends State<HomePage>
               : IconButton(
                   icon: Icon(
                     EvilIcons.refresh,
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).accentColor,
                   ),
                   onPressed: () {
                     setWeek(mCurrentWeek: currentWeek);
@@ -400,7 +400,7 @@ class _HomePageState extends State<HomePage>
                 ),
           IconButton(
             icon: Icon(Icons.add),
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).accentColor,
             onPressed: () {
               showPicker(context, _scaffoldKey,
                   pickerDatas: Global.xqxnPickerData,
@@ -417,7 +417,7 @@ class _HomePageState extends State<HomePage>
           IconButton(
             icon: Icon(
               Boxicons.bx_menu_alt_right,
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).accentColor,
             ),
             onPressed: () {
               setState(() {
