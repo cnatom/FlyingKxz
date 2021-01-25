@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_easyhub/animation/easy_falling_ball.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'config.dart';
 
@@ -52,7 +52,7 @@ Widget FlyIdCardContainer(
                   SizedBox(
                     height: spaceCardPaddingTB,
                   ),
-                  FlyTextMain40(subTitle, color: Colors.black38)
+                  FlyText.main40(subTitle, color: Colors.black38)
                 ],
               ),
             )
@@ -62,7 +62,7 @@ Widget FlyIdCardContainer(
       ),
     );
 //个人资料卡
-Widget FlyMyselfCard(
+Widget FlyMyselfCard(BuildContext context,
     {String imageResource = "",
       String name = "",
       String id = "",
@@ -96,7 +96,7 @@ Widget FlyMyselfCard(
               children: <Widget>[
                 Row(
                   children: [
-                    FlyTextTitle50(name,color: colorMainTextWhite,fontWeight: FontWeight.w400),
+                    FlyText.title45(name,color: Colors.white,fontWeight: FontWeight.bold),
                     SizedBox(width: fontSizeMini38,),
                     Container(
                       padding: EdgeInsets.fromLTRB(fontSizeMini38/2, 0, fontSizeMini38/2, 0),
@@ -106,8 +106,8 @@ Widget FlyMyselfCard(
                       ),
                       child: Row(
                         children: [
-                          FlyTextTip30("内测会员",color: Colors.white,textAlign: TextAlign.center),
-                          Global.prefs.getString(Global.prefsStr.rank)!=null?FlyTextTip30(" No.${Global.prefs.getString(Global.prefsStr.rank)}",color: Colors.white):Container()
+                          FlyText.mini30("内测会员",color: Colors.white,textAlign: TextAlign.center),
+                          Global.prefs.getString(Global.prefsStr.rank)!=null?FlyText.mini30(" No.${Global.prefs.getString(Global.prefsStr.rank)}",color: Colors.white):Container()
                         ],
                       ),
                     ),
@@ -116,7 +116,7 @@ Widget FlyMyselfCard(
                 ),
                 SizedBox(height: 5,),
                 Container(
-                  child: FlyTextTip30(college,color: colorMainTextWhite.withOpacity(0.6)),
+                  child: FlyText.mini30(college,color: Theme.of(context).accentColor,),
                 ),
 
               ],

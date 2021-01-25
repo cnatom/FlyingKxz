@@ -11,9 +11,9 @@ class BackImgViewState extends State<BackImgView> {
   @override
   Widget build(BuildContext context) {
     return backImgFile==null?Positioned.fill(
-      child: Image.asset("images/loginBackground.png",fit: BoxFit.fitHeight,filterQuality: FilterQuality.none,),
+      child: Image.asset("images/loginBackground.png",fit: BoxFit.cover,),
     ):Positioned.fill(
-      child: Image.file(backImgFile,fit: BoxFit.fitHeight,),
+      child: Image.file(backImgFile,fit: BoxFit.cover,),
     );
   }
 }

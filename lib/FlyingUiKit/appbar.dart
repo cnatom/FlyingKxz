@@ -1,32 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'Text/text.dart';
 import 'config.dart';
 //白色背景AppBar(子页面AppBar)
-Widget FlyWhiteAppBar(BuildContext context, String title,
+Widget FlyAppBar(BuildContext context, String title,
     {PreferredSizeWidget bottom,List<Widget> actions}) =>
     AppBar(
+      brightness: Theme.of(context).brightness,
       actions: actions,
       centerTitle: true,
       bottom: bottom,
-      elevation: 0,
-      brightness: Brightness.light,
-      title: Text(
-        title,
-        style: TextStyle(
-            color: colorMainText,
-            fontWeight: FontWeight.bold,
-            fontSize: fontSizeMain40),
-      ),
+      title: FlyText.main40(title,fontWeight: FontWeight.bold,color: Theme.of(context).primaryColor,),
       leading: IconButton(
         icon: Icon(
           Icons.arrow_back_ios,
-          color: colorMainText,
           size: fontSizeMain40,
+          color: Theme.of(context).primaryColor,
         ),
         onPressed: () => Navigator.pop(context),
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
       ),
-      backgroundColor: colorPageBackground,
     );

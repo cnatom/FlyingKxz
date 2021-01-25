@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
+
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/book_detail_info.dart';
 import 'package:flying_kxz/Model/global.dart';
@@ -105,7 +106,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
         padding: EdgeInsets.fromLTRB(15, 3, 15, 3),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5), color: color.withAlpha(20)),
-        child: FlyTextMini35(title, color: color, fontWeight: FontWeight.bold),
+        child: FlyText.main35(title, color: color, fontWeight: FontWeight.bold),
       );
     }
 
@@ -113,8 +114,8 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
       return Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          FlyTextTip30(title+'：', color: colorMainText.withAlpha(100)),
-          FlyTextMain40(
+          FlyText.miniTip30(title+'：', ),
+          FlyText.main40(
             content,
             color: colorMain,
           )
@@ -127,9 +128,9 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
         color:Colors.grey.withAlpha(5),
         child:Row(
           children: [
-            Expanded(child: FlyTextMini35(location??"-",textAlign: TextAlign.center,maxLine: 3)),
-            Expanded(child: FlyTextMini35(bookCode??'-',textAlign: TextAlign.center,maxLine: 3)),
-            Expanded(child: FlyTextMini35(current??'-',textAlign: TextAlign.center,color: colorMain,maxLine: 3)),
+            Expanded(child: FlyText.main35(location??"-",textAlign: TextAlign.center,maxLine: 3)),
+            Expanded(child: FlyText.main35(bookCode??'-',textAlign: TextAlign.center,maxLine: 3)),
+            Expanded(child: FlyText.main35(current??'-',textAlign: TextAlign.center,color: colorMain,maxLine: 3)),
 
           ],
         ),
@@ -145,7 +146,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
           boxShadowMain
         ],
         borderRadius: BorderRadius.circular(borderRadiusValue),
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
       ),
       child: InkWell(
         onTap: ()=>toBookDetailPage(context,statusNow,name),
@@ -176,20 +177,17 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                         children: [
                           Row(
                             children: [
-                              Expanded(child: FlyTextTitle45(name, fontWeight: FontWeight.bold,),),
+                              Expanded(child: FlyText.title45(name, fontWeight: FontWeight.bold,),),
                               tipCard(available)
                             ],
                           ),
-                          FlyTextMini35(author,
-                              color: colorMainText.withAlpha(200)),
+                          FlyText.mainTip35(author,),
                         ],
                       ),
                       SizedBox(height: spaceCardPaddingTB,),
                       //出版社+搜索代码
-                      FlyTextMini35(publisher,
-                          color: colorMainText.withAlpha(100)),
-                      FlyTextMini35("索书号："+searchCode,
-                          color: colorMainText.withAlpha(100)),
+                      FlyText.mainTip35(publisher,),
+                      FlyText.mainTip35("索书号："+searchCode),
                       Divider(height: spaceCardPaddingTB/1.5,),
                       //纸本馆藏
                       Row(
@@ -201,9 +199,8 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                           ),
                           Row(
                             children: [
-                              FlyTextTip30("详情",
-                                  color: colorMainText.withAlpha(100)),
-                              Icon(Icons.chevron_right,color: colorMainText.withAlpha(100))
+                              FlyText.miniTip30("详情",),
+                              Icon(Icons.chevron_right,)
                             ],
                           )
                         ],
@@ -226,7 +223,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
         Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(200),
-              color: Colors.white.withAlpha(200),
+              color: Theme.of(context).cardColor.withAlpha(200),
               boxShadow: [
                 BoxShadow(
                     color: Colors.black12.withAlpha(20),
@@ -258,12 +255,12 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                     }
                   }
                 },
-                child: FlyTextMini35("上一页"),
+                child: FlyText.main35("上一页"),
               ),
               Container(
                 alignment: Alignment.center,
                 width: fontSizeMini38*5,
-                child: miniLoading==true?loadingAnimationIOS():FlyTextMain40(
+                child: miniLoading==true?loadingAnimationIOS():FlyText.main40(
                   "$curPage/$allPage",),
               ),
               FlatButton(
@@ -276,7 +273,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                     }
                   }
                 },
-                child: FlyTextMini35("下一页",),
+                child: FlyText.main35("下一页",),
               ),
             ],
           ),
@@ -290,8 +287,8 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
       child: Column(
         children: [
           SizedBox(height: ScreenUtil().setHeight(deviceHeight/3),),
-          FlyTextMain40("(￣▽￣)~* 矿大书库，应有尽有", color: Colors.black38),
-          FlyTextTip30("( 图书推荐功能正在开发中…… )")
+          FlyText.mainTip40("(￣▽￣)~* 矿大书库，应有尽有",),
+          FlyText.miniTip30("( 图书推荐功能正在开发中…… )")
         ],
       ),
     );
@@ -300,7 +297,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
     return SingleChildScrollView(
       child: Column(
         children: [
-          for(int i = 0;i<5;i++)loadingAnimationArticle()
+          for(int i = 0;i<5;i++)loadingAnimationArticle(context)
         ],
       ),
     );
@@ -328,8 +325,8 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                       statusNow: item.statusNow);
                 }).toList(),
               ),
-              FlyTextTip30(""),
-              FlyTextTip30("长按“上一页”按钮可返回首页"),
+              FlyText.mini30(""),
+              FlyText.mini30("长按“上一页”按钮可返回首页"),
               SizedBox(height: ScreenUtil().setHeight(deviceHeight/5),)
             ],
           ),
@@ -339,7 +336,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
   }
   Widget infoEmptyView(){
     return Center(
-      child: FlyTextMain40("∑(っ°Д°;)っ 小助没有搜到这本书", color: Colors.black38),
+      child: FlyText.main40("∑(っ°Д°;)っ 小助没有搜到这本书",),
     );
   }
   Widget curView(){
@@ -367,20 +364,17 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorPageBackground,
       appBar: AppBar(
+        brightness: Theme.of(context).brightness,
           leadingWidth: 0,
-          brightness: Brightness.light,
           leading: Container(),
-          backgroundColor: Colors.white,
-          elevation: 0,
           title: Row(
             children: [
               IconButton(
                 icon: Icon(
                   Icons.arrow_back_ios,
-                  color: colorMainText,
                   size: fontSizeMain40,
+                  color: Theme.of(context).primaryColor,
                 ),
                 onPressed: () => Navigator.pop(context),
                 highlightColor: Colors.transparent,
@@ -389,7 +383,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
               Expanded(child: Container(
                 margin: EdgeInsets.only(right: 10, left: 10),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 242,243,247),
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
@@ -400,7 +394,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                       child: Icon(
                         Icons.search,
                         size: 22,
-                        color: Color(0xFF999999),
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                     Expanded(
@@ -413,12 +407,10 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                           isDense: true,
                           hintStyle: TextStyle(
                             fontSize: fontSizeMini38,
-                            color: Color(0xFF999999),
                           ),
                         ),
                         style: TextStyle(
                           fontSize: 15,
-                          color: Color(0xFF333333),
                           height: 1.3,
                         ),
                         textInputAction: TextInputAction.search,

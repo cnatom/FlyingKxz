@@ -6,8 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
+
 import 'package:flying_kxz/Model/exam_info.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/NetRequest/exam_get.dart';
@@ -39,7 +40,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
       Global.examInfo = ExamInfo.fromJson(jsonDecode(localExamInfo));
       setState(() {});
       if(await examPost(context, token:Global.prefs.getString(Global.prefsStr.token),
-          year: Global.prefs.getString(Global.prefsStr.examYear), term: Global.prefs.getString(Global.prefsStr.examTerm))){
+          year: Global.prefs.getString(Global.prefsStr.schoolYear), term: Global.prefs.getString(Global.prefsStr.schoolTerm))){
         setState(() {});
       }
 
@@ -76,6 +77,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
      await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: Theme.of(context).cardColor.withOpacity(0.9),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10)),
       builder: (BuildContext context) {
@@ -92,14 +94,14 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10))),
-        content: FlyTextMain40('确定删除此倒计时卡片？'),
+        content: FlyText.main40('确定删除此倒计时卡片？'),
         actions: <Widget>[
           FlatButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: FlyTextMain40('确定',color: colorMain),),
+            child: FlyText.main40('确定',color: colorMain),),
           FlatButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: FlyTextMain40('取消',color: Colors.black38),
+            child: FlyText.mainTip40('取消',),
           ),
         ],
       ),
@@ -126,9 +128,11 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
     }
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(transparentValue),
+        color: Theme.of(context).cardColor.withOpacity(transparentValue),
         borderRadius: BorderRadius.circular(borderRadiusValue),
-
+        boxShadow: [
+          boxShadowMain
+        ]
       ),
       margin: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginBigTB),
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB/2, spaceCardPaddingRL, spaceCardPaddingTB),
@@ -140,32 +144,32 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
-                child: FlyTextMini35(courseName,fontWeight: FontWeight.w500),
+                child: FlyText.main35(courseName,fontWeight: FontWeight.w500),
               ),
               SizedBox(width: 10,),
               (examDateTime.day==Global.nowDate.day&&examDateTime.month==Global.nowDate.month)?Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text('',style: TextStyle(fontSize: ScreenUtil().setSp(60),),),
-                  FlyTextTitle45('今天',color: colorCard.withAlpha(200),fontWeight: FontWeight.w600),
-                  FlyTextTip30(' 加油 !!~',color: colorCard.withAlpha(200)),
+                  FlyText.title45('今天',color: colorCard.withAlpha(200),fontWeight: FontWeight.w600),
+                  FlyText.mini30(' 加油 !!~',color: colorCard.withAlpha(200)),
 
                 ],
               ):Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  FlyTextTip30('剩余',color: colorCard.withAlpha(200)),
+                  FlyText.mini30('剩余',color: colorCard.withAlpha(200)),
                   SizedBox(width: 10,),
                   Text(timeLeft.toString(),style: TextStyle(fontSize: ScreenUtil().setSp(60),color: colorCard,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
                   SizedBox(width: 10,),
-                  FlyTextTip30('天',color: colorCard.withAlpha(200))
+                  FlyText.mini30('天',color: colorCard.withAlpha(200))
                 ],
               )
             ],
           ),
           SizedBox(height: spaceCardPaddingTB/3,),
           LinearProgressIndicator(
-            backgroundColor: Colors.black12.withAlpha(10),
+            backgroundColor: Theme.of(context).unselectedWidgetColor,
             minHeight: 7,
             value: timeLeftInt/30,
             valueColor: new AlwaysStoppedAnimation<Color>(colorCard.withAlpha(180)),
@@ -175,8 +179,8 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              FlyTextMini35(location,color: Colors.black.withAlpha(100)),
-              FlyTextMini35(dateTime,color: colorCard.withAlpha(180))
+              FlyText.mainTip35(location,),
+              FlyText.main35(dateTime,color: colorCard.withAlpha(180))
             ],
           )
         ],
@@ -205,7 +209,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
     );
   }
   Widget infoEmptyView(){
-    return FlyTextMain40("ヾ(๑╹◡╹)ﾉ'  暂时还没有考试",color: colorMainTextWhite);
+    return Container();
     return Container(
       width: double.infinity,
       child: InkWell(
@@ -221,8 +225,8 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FlyTextMain40("ヾ(๑╹◡╹)ﾉ'  暂时还没有考试",color: colorMainTextWhite),
-            FlyTextTip30(countdownTime==0?"(点击空白处刷新)":"$countdownTime秒后可再次刷新",color: colorMainTextWhite.withOpacity(0.8))
+            FlyText.main40("ヾ(๑╹◡╹)ﾉ'  暂时还没有考试",color: colorMainTextWhite),
+            FlyText.mini30(countdownTime==0?"(点击空白处刷新)":"$countdownTime秒后可再次刷新",color: colorMainTextWhite.withOpacity(0.8))
           ],
         ),
       ),
@@ -244,7 +248,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
       onTap: ()=>addDiyExamFunc(),
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white.withOpacity(transparentValue),
+            color: Theme.of(context).cardColor.withOpacity(transparentValue),
             borderRadius: BorderRadius.circular(100)
         ),
         padding: EdgeInsets.all(spaceCardPaddingRL/1.5),
@@ -292,6 +296,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
               );
             }).toList(),
           ),
+          SizedBox(height: spaceCardMarginTB,),
           addDiyExamButton()
         ],
       ),

@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/Model/global.dart';
@@ -70,7 +70,7 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
       children: [
         BackImgView(),
         Scaffold(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Theme.of(context).backgroundColor,
           body: PageView.builder(
             physics: BouncingScrollPhysics(),
             itemBuilder: (context,index)=>pageList[index],
@@ -82,31 +82,21 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
               });
             },
           ),
-          bottomNavigationBar: Theme(
-            data: ThemeData(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              canvasColor: scaffoldBackgroundColor,
-            ),
-            child: BottomNavigationBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                fixedColor: Colors.white,
-                unselectedItemColor: colorMainTextWhite.withOpacity(0.6),
-                selectedFontSize: fontSizeTip33,
-                unselectedFontSize: fontSizeTip33,
-                items: [
-                  _bottomNavigationBar('主页',FeatherIcons.home,),
-                  _bottomNavigationBar('发现',OMIcons.explore,),
-                  _bottomNavigationBar('我的',Icons.person_outline,),
-                ],
-                currentIndex: _currentIndex,
-                onTap: (int index) {
-                  navigatorPageController.jumpToPage(index);
-                },
-                type: BottomNavigationBarType.fixed),
-
-          ),
+          bottomNavigationBar: BottomNavigationBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              selectedFontSize: fontSizeTip33,
+              unselectedFontSize: fontSizeTip33,
+              items: [
+                _bottomNavigationBar('主页',FeatherIcons.home,),
+                _bottomNavigationBar('发现',OMIcons.explore,),
+                _bottomNavigationBar('我的',Icons.person_outline,),
+              ],
+              currentIndex: _currentIndex,
+              onTap: (int index) {
+                navigatorPageController.jumpToPage(index);
+              },
+              type: BottomNavigationBarType.fixed),
         )
       ],
     );

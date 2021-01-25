@@ -4,10 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
+
 import 'package:flying_kxz/Model/book_detail_info.dart';
 import 'package:flying_kxz/Model/global.dart';
 //跳转到当前页面
@@ -50,10 +51,10 @@ class _BookDetailPageState extends State<BookDetailPage>{
         children: [
           Expanded(child: Padding(
             padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
-            child: FlyTextTip30(location??"-",textAlign: TextAlign.center,color: colorMainText,maxLine: 3),
+            child: FlyText.mini30(location??"-",textAlign: TextAlign.center,maxLine: 3),
           )),
-          Expanded(child: FlyTextMini35(bookCode??'-',textAlign: TextAlign.center,maxLine: 3)),
-          Expanded(child: FlyTextMini35(current??'-',textAlign: TextAlign.center,color: colorMain,maxLine: 3)),
+          Expanded(child: FlyText.main35(bookCode??'-',textAlign: TextAlign.center,maxLine: 3)),
+          Expanded(child: FlyText.main35(current??'-',textAlign: TextAlign.center,color: colorMain,maxLine: 3)),
 
         ],
       ),
@@ -66,9 +67,9 @@ class _BookDetailPageState extends State<BookDetailPage>{
       color:Colors.grey.withAlpha(15),
       child:Row(
         children: [
-          Expanded(child: FlyTextMini35('馆藏地',textAlign: TextAlign.center,color: Colors.grey)),
-          Expanded(child: FlyTextMini35('条码号',textAlign: TextAlign.center,color: Colors.grey)),
-          Expanded(child: FlyTextMini35('属性',textAlign: TextAlign.center,color: Colors.grey)),
+          Expanded(child: FlyText.main35('馆藏地',textAlign: TextAlign.center,color: Colors.grey)),
+          Expanded(child: FlyText.main35('条码号',textAlign: TextAlign.center,color: Colors.grey)),
+          Expanded(child: FlyText.main35('属性',textAlign: TextAlign.center,color: Colors.grey)),
         ],
       ),
     );
@@ -91,7 +92,7 @@ class _BookDetailPageState extends State<BookDetailPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FlyWhiteAppBar(context, widget.bookName),
+      appBar: FlyAppBar(context, widget.bookName),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(

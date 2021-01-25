@@ -11,13 +11,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme_switch_button.dart';
 import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
 import 'package:flying_kxz/FlyingUiKit/text_editer.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
@@ -89,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),),
-              child: FlyTextTitle45('登录',color: Colors.white)
+              child: FlyText.title45('登录',color: Colors.white)
           ),
         ),
       ):Container(
@@ -141,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         Image.asset('images/logo.png',height: fontSizeMini38*4,),
                         SizedBox(height: fontSizeMini38*2,),
-                        Text('矿小助内测版',style: TextStyle(color: colorLoginPageMain,fontSize: fontSizeMain40,fontWeight: FontWeight.bold,letterSpacing: 3),)
+                        Text('矿小助正式版',style: TextStyle(color: colorLoginPageMain,fontSize: fontSizeMain40,fontWeight: FontWeight.bold,letterSpacing: 3),),
                       ],
                     ),
                   ),
@@ -154,10 +155,10 @@ class _LoginPageState extends State<LoginPage> {
                         children: <Widget>[
                           Column(
                             children: [
-                              FlyInputBar('输入学号', _userNameController,
+                              FlyInputBar(context,'输入学号', _userNameController,
                                   onSaved: (String value) => _username = value),
                               SizedBox(height: fontSizeMini38*2,),
-                              FlyInputBar('统一认证密码', _passWordController,
+                              FlyInputBar(context,'统一认证密码', _passWordController,
                                   onSaved: (String value) => _password = value,obscureText:true),
                               SizedBox(height: fontSizeMini38*5,),
                               loginButton(),
@@ -192,17 +193,17 @@ class _LoginPageState extends State<LoginPage> {
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                FlyTextMini35("@建议先尝试如下解决方案：\n"
+                                                FlyText.main35("@建议先尝试如下解决方案：\n"
                                                   "1.进入my.cumt.edu.cn网站成功登录自己的账号。\n"
                                                   "2.重新登录矿小助。\n",maxLine: 10),
                                                 InkWell(
                                                   onTap: ()=>launch("http://my.cumt.edu.cn"),
-                                                  child: FlyTextMini35("➡️点我跳转至my.cumt.edu.cn",color: Colors.blue),
+                                                  child: FlyText.main35("➡️点我跳转至my.cumt.edu.cn",color: Colors.blue),
                                                 ),
-                                                FlyTextMini35(
+                                                FlyText.main35(
                                                     "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）\n"
                                                     ,maxLine: 10),
-                                                FlyTextTip30("失败原因：\n多次登录失败后，my.cumt.edu.cn会出现验证码\n在该网站中成功登录账号即可取消验证码\n我们正在解决这个问题～",maxLine: 5)
+                                                FlyText.mainTip35("失败原因：\n多次登录失败后，my.cumt.edu.cn会出现验证码\n在该网站中成功登录账号即可取消验证码\n我们正在解决这个问题～",maxLine: 5)
                                               ],
                                             ),
 
@@ -213,10 +214,9 @@ class _LoginPageState extends State<LoginPage> {
 
                                 ],
                               ),
-                              FlyTextTip30('内测结束时间：2021年1月24日'),
                               SizedBox(
                                 height: fontSizeMini38,
-                              )
+                              ),
                             ],
                           )
                         ],

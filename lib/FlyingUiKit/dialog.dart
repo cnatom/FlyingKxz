@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 
 import 'config.dart';
@@ -18,13 +18,18 @@ Future<String> FlyDialogInputShow(BuildContext context,
     context: context,
     builder: (context) => AlertDialog(
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10))),
+          borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue))),
       content: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadiusValue),
+          color: Theme.of(context).unselectedWidgetColor,
+
+        ),
         padding: EdgeInsets.fromLTRB(
             spaceCardPaddingRL / 2, 0, spaceCardPaddingRL / 2, 0),
-        color: colorPageBackground,
         child: TextField(
           autofocus: true,
+
           focusNode: focusNode,
           maxLines: maxLines,
           onChanged: (text) {
@@ -44,7 +49,7 @@ Future<String> FlyDialogInputShow(BuildContext context,
 
         FlatButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: FlyTextMain40("取消", color: Colors.black38),
+          child: FlyText.mainTip40("取消", ),
         ),
         FlatButton(
           onPressed: () {
@@ -55,7 +60,7 @@ Future<String> FlyDialogInputShow(BuildContext context,
             showToast(context, "感谢您的反馈！");
             Navigator.of(context).pop(result);
           },
-          child: FlyTextMain40(confirmText, color: colorMain),
+          child: FlyText.main40(confirmText, color: colorMain),
         ),
       ],
     ),

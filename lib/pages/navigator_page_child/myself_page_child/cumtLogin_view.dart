@@ -3,9 +3,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
+
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/NetRequest/cumt_login.dart';
@@ -46,12 +47,12 @@ class _CumtLoginViewState extends State<CumtLoginView> {
       {FormFieldSetter<String> onSaved, bool obscureText = false}) =>
       Container(
         decoration: BoxDecoration(
-            color: Color.fromARGB(255, 242,243,247),
+            color: Theme.of(context).unselectedWidgetColor,
             borderRadius: BorderRadius.circular(5)
         ),
         child: TextFormField(
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: fontSizeMain40,color: colorMainText,),
+          style: TextStyle(fontSize: fontSizeMain40,),
           obscureText: obscureText, //是否是密码
           controller: controller, //控制正在编辑的文本。通过其可以拿到输入的文本值
           decoration: InputDecoration(
@@ -66,7 +67,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
   Widget cumtLoginButton(int type,String title,{@required GestureTapCallback onTap})=>Material(
     borderRadius: BorderRadius.circular(5),
     elevation: 0,
-    color: type==0?colorLoginPageMain:colorPageBackground,
+    color: type==0?Theme.of(context).buttonColor:Theme.of(context).unselectedWidgetColor.withOpacity(0.05),
     child: InkWell(
       splashColor: Colors.black12,
       borderRadius: BorderRadius.circular(5),
@@ -76,7 +77,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),),
-          child: FlyTextTitle45(title,color: type==0?Colors.white:colorLoginPageMain)
+          child: FlyText.title45(title,color: type==0?Colors.white:colorMain)
       ),
     ),
   );
@@ -107,7 +108,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
               Text(
                 "校园网登录",
                 style: TextStyle(
-                  color: colorMainText,
+                  color: Theme.of(context).primaryColor,
                   fontSize: fontSizeTitle45,
                   fontWeight: FontWeight.bold,
                 ),
@@ -168,7 +169,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
             children: [
               cumtLoginButton(0,"登录",onTap: ()=>_loginFunc()),
               cumtLoginButton(1,"注销",onTap: ()=>cumtLogoutGet(context)),
-              FlyTextTip30("小助会记住您的账号密码（本地存储）\n打开App后可以自动帮您连接校园网",maxLine: 5),
+              FlyText.mini30("小助会记住您的账号密码（本地存储）\n打开App后可以自动帮您连接校园网",maxLine: 5),
             ],
           ),
 
@@ -190,7 +191,7 @@ class CumtLoginHelpPage extends StatefulWidget {
 class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
   Widget helpItem(String imageResource,String text,)=>Wrap(
     children: [
-      FlyTextTitle45(text,maxLine: 100,),
+      FlyText.title45(text,maxLine: 100,),
       Padding(
         padding: EdgeInsets.all(ScreenUtil().setWidth(deviceWidth*0.1)),
         child: Container(
@@ -209,8 +210,7 @@ class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorPageBackground,
-      appBar: FlyWhiteAppBar(context, "《校园网登录秘籍-看完不后悔系列》"),
+      appBar: FlyAppBar(context, "《校园网登录秘籍-看完不后悔系列》"),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Padding(

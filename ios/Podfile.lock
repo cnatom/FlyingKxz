@@ -30,11 +30,6 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
-  - tencent_kit (1.1.2):
-    - Flutter
-    - tencent_kit/vendor (= 1.1.2)
-  - tencent_kit/vendor (1.1.2):
-    - Flutter
   - url_launcher (0.0.1):
     - Flutter
 
@@ -51,7 +46,6 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - tencent_kit (from `.symlinks/plugins/tencent_kit/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
 SPEC REPOS:
@@ -85,8 +79,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
-  tencent_kit:
-    :path: ".symlinks/plugins/tencent_kit/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
 
@@ -106,7 +98,6 @@ SPEC CHECKSUMS:
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  tencent_kit: 19391606d6432d9e75f50572350acd952a89c28e
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
 PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa

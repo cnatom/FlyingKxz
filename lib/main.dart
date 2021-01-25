@@ -1,8 +1,7 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
@@ -12,6 +11,7 @@ import 'package:flutter_picker/PickerLocalizationsDelegate.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FlyingUiKit/config.dart';
 import 'Model/global.dart';
@@ -20,30 +20,44 @@ void main() {
   if (Platform.isAndroid) {
     //设置android状态栏为透明的沉浸。
     SystemUiOverlayStyle systemUiOverlayStyle =
-    SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
-  runApp(MaterialApp(
-    theme: ThemeData(
-        scaffoldBackgroundColor: scaffoldBackgroundColor,
-        // fontFamily: "SY",
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent
-    ),
-    //添加国际化
-    localizationsDelegates: [
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-    ],
-    supportedLocales: [
-      const Locale('zh', 'CH'),
-      const Locale('en', 'US'),
-    ],
-    locale: Locale("zh"),
-    debugShowCheckedModeBanner: false,
-    home: StartPage(),
-  ));
+  runApp(MyApp());
 }
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context)=>ChangeNotifierProvider(
+
+    create: (context)=>ThemeProvider(),
+    builder: (context,_){
+      final themeProvider = Provider.of<ThemeProvider>(context);
+      return MaterialApp(
+        themeMode: ThemeMode.system,
+        theme: FlyThemes.lightTheme,
+        darkTheme: FlyThemes.darkTheme,
+        //添加国际化
+        localizationsDelegates: [
+          GlobalMaterialLocalizations .delegate,
+          GlobalWidgetsLocalizations .delegate,
+          DefaultCupertinoLocalizations .delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('zh', 'CH'),
+          const Locale('en', 'US'), // English
+          const Locale('zh', 'Hans'), // China
+          const Locale('zh', ''), // China
+        ],
+        locale: Locale("zh"),
+        debugShowCheckedModeBanner: false,
+        home: StartPage(),
+      );
+    },
+  );
+}
+
 //启动页
 class StartPage extends StatefulWidget {
   @override
@@ -56,45 +70,52 @@ class _StartPageState extends State<StartPage> {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     Global.curVersion = packageInfo.version;
   }
-  Future<void> initFunc(BuildContext context) async {
 
+  Future<void> initFunc(BuildContext context) async {
     //提取本地信息
     Global.prefs = await SharedPreferences.getInstance();
-    if(Global.prefs.getString(Global.prefsStr.backImg)!=null){
-      if(await File(Global.prefs.getString(Global.prefsStr.backImg)).exists()) backImgFile = File(Global.prefs.getString(Global.prefsStr.backImg));
+    if (Global.prefs.getString(Global.prefsStr.backImg) != null) {
+      if (await File(Global.prefs.getString(Global.prefsStr.backImg)).exists())
+        backImgFile = File(Global.prefs.getString(Global.prefsStr.backImg));
     }
     await getSchoolYearTerm();
 
-    //内测结束
-    if(DateTime.now().isAfter(DateTime.parse('2021-01-24'))){
-      toNullPage(context);
-      return;
-    }
+    // //内测结束
+    // if(DateTime.now().isAfter(DateTime.parse('2021-01-24'))){
+    //   toNullPage(context);
+    //   return;
+    // }
     //是否登录过
-    if (Global.prefs.getBool(Global.prefsStr.isFirstLogin)==false){
+    if (Global.prefs.getBool(Global.prefsStr.isFirstLogin) == false) {
       toNavigatorPage(context);
-    } else{
+    } else {
       Global.prefs.setBool(Global.prefsStr.isFirstLogin, true);
-      toLoginPage(context);//第一次登录进入登录页
+      toLoginPage(context); //第一次登录进入登录页
     }
   }
+
   @override
   void initState() {
     super.initState();
     initFunc(context);
     _getAppVersion();
   }
+
   @override
   Widget build(BuildContext context) {
-    if(MediaQuery.of(context).size.height/MediaQuery.of(context).size.width<1.5){
+    if (MediaQuery.of(context).size.height / MediaQuery.of(context).size.width <
+        1.5) {
       deviceHeight = 1080;
       deviceWidth = 1920;
     }
-    ScreenUtil.init(context, height: deviceHeight, width: deviceWidth);//初始化参考屏幕信息
+    ScreenUtil.init(context,
+        height: deviceHeight, width: deviceWidth); //初始化参考屏幕信息
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(),
     );
   }
 }
+
+
 

@@ -2,11 +2,12 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
+
 import 'package:flying_kxz/FlyingUiKit/text_editer.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
@@ -56,18 +57,10 @@ class _ActiveStepPageState extends State<ActiveStepPage> {
     );
   }
   Widget stepButton(String text,int type,{@required VoidCallback onPressed}){
-    Color color = Colors.blue;
-    Color textColor = Colors.white;
-    if(type==0){
-      color = Colors.black12;
-      textColor = Colors.black38;
-    }else if(type==2){
-
-    }
-    return FlatButton(onPressed: onPressed, child: Text(text),color: color,textColor: textColor,);
+    return FlatButton(onPressed: onPressed, child: Text(text),color: type!=0?colorMain:Colors.black12.withOpacity(0.05),textColor: type!=0?Colors.white:colorMain,);
   }
   Widget firstView()=>stepView(
-      children: [FlyTextMain40('校园卡余额的信息是从新版教务系统上面提取的，而新版教务现在还未正式投入使用，需要用户自己去激活账号。',maxLine: 100)],
+      children: [FlyText.main40('校园卡余额的信息是从新版教务系统上面提取的，而新版教务现在还未正式投入使用，需要用户自己去激活账号。',maxLine: 100)],
       rightChild: stepButton('了解', 1, onPressed: ()=>nextStep()),
     );
   Widget secondView()=>stepView(
@@ -82,9 +75,9 @@ class _ActiveStepPageState extends State<ActiveStepPage> {
 
     return stepView(
       children: [
-        FlyInputBar('学号', usernameController),
-        FlyInputBar('密码（新版教务）', passwordController,obscureText: true),
-        FlyTextMain40('如果忘记了新版教务的密码\n请点击以下链接验证或找回密码',maxLine: 100),
+        FlyInputBar(context,'学号', usernameController),
+        FlyInputBar(context,'密码（新版教务）', passwordController,obscureText: true),
+        FlyText.main40('如果忘记了新版教务的密码\n请点击以下链接验证或找回密码',maxLine: 100),
         Row(
           children: [
             InkWell(
@@ -110,10 +103,10 @@ class _ActiveStepPageState extends State<ActiveStepPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: colorPageBackground,
-      appBar: FlyWhiteAppBar(context, "激活校园卡余额"),
+      appBar: FlyAppBar(context, "激活校园卡余额"),
       body: Container(
         child: Stepper(
+
             type: StepperType.vertical,
             currentStep: _position,
             controlsBuilder: (_,
@@ -128,16 +121,16 @@ class _ActiveStepPageState extends State<ActiveStepPage> {
             steps: [
               Step(
                 isActive: _position == 0 ? true : false,
-                title: FlyTextTitle45('为什么需要激活？'),
+                title: FlyText.main40('为什么需要激活？'),
                 content: firstView(),
               ),
               Step(
                   isActive: _position == 1 ? true : false,
-                  title: FlyTextTitle45('激活账号'),
+                  title: FlyText.main40('激活账号'),
                   content: secondView()),
               Step(
                   isActive: _position == 2 ? true : false,
-                  title: FlyTextTitle45('登录以获取校园卡余额'),
+                  title: FlyText.main40('登录以获取校园卡余额'),
                   content: thirdView()),
             ]),
       ),

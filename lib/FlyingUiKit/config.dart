@@ -6,11 +6,11 @@ double deviceWidth = 1080;
 double deviceHeight = 1920;
 
 //透明度
-double transparentValue = 0.85;
+double transparentValue = 0.8;
 //背景图文件
 File backImgFile;
 //色彩管理
-final Color colorMain = Color.fromARGB(255, 1,176,117).withAlpha(255);
+final Color colorMain = Color(0xff00c5a8);
 final Color colorSecond = Color(0xFF33CC99).withAlpha(255);
 final Color colorMainText = Color.fromARGB(255, 0, 0, 0);
 final Color colorMainTextWhite = Colors.white;
@@ -18,22 +18,17 @@ final Color colorIconBackground = Color.fromARGB(255, 244,245,249);
 final Color colorShadow = Color(0XFFCCCCCC);
 final Color scaffoldBackgroundColor = Color.fromARGB(255, 255,255,255);
 final Color colorPageBackground = Color.fromARGB(255, 247,247,247);
-
 final Color colorLoginPageMain = Color.fromARGB(255, 40,216,161);
 
 final List<Color> colorLessonCard = [
   Color.fromARGB(255, 102,204,153),
   Color(0xFF6699FF),
-  Color.fromARGB(255, 255,102,102),
   Color.fromARGB(255, 255,153,153),
   Color.fromARGB(255, 166,145,248),
-  Color.fromARGB(255, 204,102,153),
   Color.fromARGB(255, 62,188,202),
   Color.fromARGB(255, 255,153,102),
-  Color.fromARGB(255, 51,153,204),
-  // Color(0xFF),
-  // Color(0xFF),
-  // Color(0xFF),
+  Color(0xFF4ecccc),
+  Color(0xFFff9bcb)
 ];
 final List<Color> colorFuncButton = [
   Color.fromARGB(255, 88,188,216),
@@ -54,15 +49,6 @@ final List<Color> colorExamCard = [
   Color.fromARGB(255, 191,188,183),//灰色
 
 ];
-//字体大小管理
-final double fontSizeHomeAppBar60 = ScreenUtil().setSp(60);
-final double fontSizeChildAppBar50 = ScreenUtil().setSp(50);
-final double fontSizeTitle50 = ScreenUtil().setSp(50);
-final double fontSizeTitle45 = ScreenUtil().setSp(45);
-final double fontSizeMain40 = ScreenUtil().setSp(40);
-final double fontSizeMini38 = ScreenUtil().setSp(38);
-final double fontSizeTip33 = ScreenUtil().setSp(33);
-final double fontSizeTipMini25 = ScreenUtil().setSp(25);
 
 //图标大小管理
 final double sizeIconMain50 = ScreenUtil().setSp(50);
@@ -74,7 +60,6 @@ final Icon FlyIconBackIOS = Icon(
 );
 final Icon FlyIconRightGreyArrow = Icon(
   Icons.keyboard_arrow_right,
-  color: Colors.black38,
   size: sizeIconMain50,
 );
 //边距等配置

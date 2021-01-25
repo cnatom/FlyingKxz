@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
-
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -14,7 +15,7 @@ import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
+
 import 'package:flying_kxz/NetRequest/exam_get.dart';
 import 'package:flying_kxz/NetRequest/score_get.dart';
 //跳转到当前页面
@@ -80,8 +81,8 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
           height: fontSizeMini38*3,
           child:Row(
             children: [
-              scoreDetailAllExpand?FlyTextMini35('详细信息',color: selectedMainColor,):FlyTextMini35('简略信息',color: selectedMainColor,),
-              scoreDetailAllExpand?Icon(Icons.expand_more,color: selectedMainColor,size: fontSizeMini38,):Icon(Icons.expand_less,color: selectedMainColor,size: fontSizeMini38),
+              scoreDetailAllExpand?FlyText.main35('详细信息',):FlyText.main35('简略信息',),
+              scoreDetailAllExpand?Icon(Icons.expand_more,size: fontSizeMini38,):Icon(Icons.expand_less,size: fontSizeMini38),
 
             ],
           ),
@@ -99,8 +100,8 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
           height: fontSizeMini38*3,
           child:Row(
             children: [
-              FlyTextMini35('筛选',color: selectedMainColor,fontWeight: FontWeight.w300),
-              Icon(MdiIcons.filterOutline,color: selectedMainColor,size: fontSizeMini38*1.2,),
+              FlyText.main35('筛选',fontWeight: FontWeight.w300),
+              Icon(MdiIcons.filterOutline,size: fontSizeMini38*1.2,),
             ],
           ),
         ),
@@ -119,7 +120,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
           height: fontSizeMini38*3,
           child:Row(
             children: [
-              selectAll?FlyTextMini35('取消全选',color: selectedMainColor,):FlyTextMini35('全部选择',color: selectedMainColor,),
+              selectAll?FlyText.main35('取消全选',):FlyText.main35('全部选择',),
             ],
           ),
         ),
@@ -138,14 +139,14 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    FlyTextTip30("加权：", color: selectedMainColor),
+                    FlyText.mini30("加权：", ),
                     Text(jiaquanTotal!=null&&jiaquanTotal!='NaN'?jiaquanTotal:"00.00", style: TextStyle(color: colorMain,fontWeight: FontWeight.bold,fontSize: fontSizeMain40),)
                   ],
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    FlyTextTip30("绩点：", color: selectedMainColor),
+                    FlyText.mini30("绩点：",),
                     Text(jidianTotal!=null&&jiaquanTotal!='NaN'?jidianTotal:"0.00", style: TextStyle(color: colorMain,fontWeight: FontWeight.bold,fontSize: fontSizeMain40),)
                   ],
                 ),
@@ -214,8 +215,8 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       return Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          FlyTextTip30("$title：", color: colorMainText),
-          FlyTextMini35(content, color: colorCard)
+          FlyText.miniTip30("$title：",),
+          FlyText.main35(content, color: colorCard)
         ],
       );
     }
@@ -226,10 +227,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(fontSize: fontSizeTip33),
-          ),
+          FlyText.miniTip30(title),
           SizedBox(
             height: ScreenUtil().setWidth(10),
           ),
@@ -246,7 +244,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB, 0, spaceCardPaddingTB),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadiusValue),
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         boxShadow: [
           boxShadowMain
         ]
@@ -276,7 +274,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                         child: Stack(
                           alignment: Alignment.center,
                           children: <Widget>[
-                            FlyTextMain40(zongping,
+                            FlyText.main40(zongping,
                                 color: colorCard, fontWeight: FontWeight.bold),
                             LayoutBuilder(
                               builder: (context, parSize) {
@@ -298,15 +296,14 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                             Row(
                               children: [
                                 Expanded(
-                                  child: FlyTextMini35(
-                                    courseName,fontWeight: FontWeight.bold,color: colorMainText,
+                                  child: FlyText.main35(
+                                    courseName,fontWeight: FontWeight.bold
                                   ),
                                 )
                               ],
                             ),
                             Divider(
                               height: fontSizeMini38/1.5,
-                              color: Colors.black12.withAlpha(10),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -417,7 +414,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
 
   Widget nullView(){
     return Center(
-      child: FlyTextMain40("（￣︶￣）↗点上面查成绩",color: colorMainText),
+      child: FlyText.main40("（￣︶￣）↗点上面查成绩",color: colorMainText),
     );
   }
   Widget loadingView(){
@@ -451,7 +448,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                   ),
                 ],
               ):Container(),
-              Center(child: FlyTextTip30('\n"筛选"功能可忽略某些不计入加权的成绩\n点击卡片可查看成绩明细',textAlign: TextAlign.center),),
+              Center(child: FlyText.mini30('\n"筛选"功能可忽略某些不计入加权的成绩\n点击卡片可查看成绩明细',textAlign: TextAlign.center),),
               SizedBox(height: ScreenUtil().setSp(300),),
             ],
           ),
@@ -464,8 +461,8 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FlyTextMain40("∑(っ°Д°;)っ没有本学期的成绩",color: colorMainText),
-          FlyTextTip30("（ 换个学期试一试 ？） ",color: colorMainText),
+          FlyText.main40("∑(っ°Д°;)っ没有本学期的成绩",color: colorMainText),
+          FlyText.mini30("（ 换个学期试一试 ？） ",color: colorMainText),
         ],
       ),
     );
@@ -485,15 +482,14 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      backgroundColor: colorPageBackground,
       key: scaffoldKey,
-      appBar: FlyWhiteAppBar(context, '成绩',),
+      appBar: FlyAppBar(context, '成绩',),
       body: Column(
         children: [
           Container(
             margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(borderRadiusValue),
               boxShadow: [
                 boxShadowMain

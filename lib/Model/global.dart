@@ -16,20 +16,30 @@ import 'book_info.dart';
 import 'course_info.dart';
 import 'exam_info.dart';
 import 'login_info.dart';
-//从本地提取历史信息
+
+//获取当前学年学期
 Future<void> getSchoolYearTerm()async{
-  //获取当前学年学期
-  if(DateTime(2020,Global.nowDate.month,Global.nowDate.day).isAfter(DateTime(2020,8,1))){
-    Global.prefs.setString(Global.prefsStr.schoolYear, Global.nowDate.year.toString());
-    Global.prefs.setString(Global.prefsStr.schoolTerm, '1');
+  /******************
+   * 2021年修复的第一个bug
+   * 希望2021年少点bug,多点关爱
+   * 2021.1.1
+   ******************/
+  int year,term;
+  if(Global.nowDate.isBefore(DateTime(Global.nowDate.year,2,1))){
+    year = Global.nowDate.year-1;
+    term = 1;
+  }else if(Global.nowDate.isAfter(DateTime(Global.nowDate.year,8,1))){
+    year = Global.nowDate.year;
+    term = 1;
   }else{
-    Global.prefs.setString(Global.prefsStr.schoolYear, (Global.nowDate.year-1).toString());
-    Global.prefs.setString(Global.prefsStr.schoolTerm, '2');
+    year = Global.nowDate.year-1;
+    term = 2;
   }
+  Global.prefs.setString(Global.prefsStr.schoolYear, year.toString());
+  Global.prefs.setString(Global.prefsStr.schoolTerm, term.toString());
 }
 
 class Global{
-  static GlobalKey<ScaffoldState> scaffoldKeyDiy = GlobalKey<ScaffoldState>();//用于弹出picker
   static SharedPreferences prefs;
   static ApiUrl apiUrl = new ApiUrl();//网络请求url汇总
   static PrefsStr prefsStr = new PrefsStr();//prefs信息的String标题
@@ -120,13 +130,10 @@ class PrefsStr{
   String courseDataLoc = 'courseDataLoc';//课表
   String examDataLoc = 'examDataLoc';//考试
   String examDiyDataLoc = 'examDiyDataLoc';//自定义考试
-  String examYear = 'examYear';//考试学年
-  String examTerm = 'examTerm';//考试学期
   String schoolYear = 'schoolYear';//当前学年
   String schoolTerm = 'schoolTerm';//当前学期
   String isFirstLogin = 'isFirstLogin';//是否初次登陆
   String cumtLoginUsername = "cumtLoginUsername";//校园网账号
   String cumtLoginPassword = "cumtLoginPassword";//校园网账号
   String cumtLoginMethod = "cumtLoginMethod";//登录方式
-  String igUpgrade = 'igUpgrade';//是否忽略更新
 }

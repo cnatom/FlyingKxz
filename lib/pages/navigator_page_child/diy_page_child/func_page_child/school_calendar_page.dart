@@ -17,7 +17,7 @@ class SchoolCalendarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-        appBar: FlyWhiteAppBar(context, "校历"),
+        appBar: FlyAppBar(context, "校历"),
         body: Container(
           color: Colors.white,
             child: PhotoView(

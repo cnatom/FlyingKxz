@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
+
 import 'package:photo_view/photo_view.dart';
 
 
@@ -113,16 +114,14 @@ class _SchoolBusPageState extends State<SchoolBusPage> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FlyWhiteAppBar(context, "2020年班车时刻表",
+      appBar: FlyAppBar(context, "2020年班车时刻表",
           bottom: TabBar(
               controller: _tabController,
-              labelColor: colorMainText,
               labelStyle: TextStyle(fontSize: fontSizeMini38,fontWeight: FontWeight.bold,fontFamily: "SY"),
               unselectedLabelStyle: TextStyle(fontSize: fontSizeMini38,fontFamily: "SY",fontWeight: FontWeight.bold,),
               indicatorSize: TabBarIndicatorSize.tab,
-              unselectedLabelColor: Colors.grey.withAlpha(200),
               indicator: UnderlineTabIndicator(
-                  borderSide: BorderSide(width: 2,color: colorMainText),
+                  borderSide: BorderSide(width: 2,color: Theme.of(context).indicatorColor),
                   insets: EdgeInsets.fromLTRB(fontSizeMain40*1.2, 0, fontSizeMain40*1.2, 0)
               ),
               tabs: [
@@ -165,9 +164,9 @@ class _BusTimeListViewState extends State<BusTimeListView> {
             children: [
               for(int j = 1;j<widget.busTimeData[0].length;j++) widget.busTimeData[0][0]==0?
               Expanded(
-                child: FlyTextMain40(widget.busTimeData[0][j],maxLine: 2,fontWeight: FontWeight.bold,textAlign: TextAlign.center),
+                child: FlyText.main40(widget.busTimeData[0][j],maxLine: 2,fontWeight: FontWeight.bold,textAlign: TextAlign.center),
               ):Expanded(
-                child: FlyTextMain40(widget.busTimeData[0][j],maxLine: 2,textAlign: TextAlign.center),
+                child: FlyText.main40(widget.busTimeData[0][j],maxLine: 2,textAlign: TextAlign.center),
               ),
             ],
           ),
@@ -187,16 +186,16 @@ class _BusTimeListViewState extends State<BusTimeListView> {
                       children: [
                         for(int j = 1;j<widget.busTimeData[i].length;j++) widget.busTimeData[i][0]==0?
                         Expanded(
-                          child: FlyTextMain40(widget.busTimeData[i][j],maxLine: 2,fontWeight: FontWeight.bold,textAlign: TextAlign.center),
+                          child: FlyText.main40(widget.busTimeData[i][j],maxLine: 2,fontWeight: FontWeight.bold,textAlign: TextAlign.center),
                         ):Expanded(
-                          child: FlyTextMain40(widget.busTimeData[i][j],maxLine: 2,textAlign: TextAlign.center),
+                          child: FlyText.main40(widget.busTimeData[i][j],maxLine: 2,textAlign: TextAlign.center),
                         ),
                       ],
                     ),
                   ),
                 SizedBox(height: 40,),
-                FlyTextMain40("团体用车联系电话：83885871、17851181688\n",color: Colors.black38,textAlign: TextAlign.left),
-                FlyTextMain40("更新时间：2020 年 9 月 19 日",color: Colors.black38),
+                FlyText.main40("团体用车联系电话：83885871、17851181688\n",color: Colors.black38,textAlign: TextAlign.left),
+                FlyText.main40("更新时间：2020 年 9 月 19 日",color: Colors.black38),
                 SizedBox(height: 60,),
 
               ],

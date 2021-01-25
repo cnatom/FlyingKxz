@@ -8,12 +8,13 @@ import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/entypo_icons.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme_switch_button.dart';
 import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/NetRequest/balance_get.dart';
@@ -32,7 +33,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'home_page_child/test_view.dart';
 import 'myself_page_child/cumtLogin_view.dart';
 
 
@@ -42,20 +42,14 @@ class MyselfPage extends StatefulWidget {
 }
 
 class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMixin{
-  void getShowPowerInfo()async{
-    if(await powerGet(context,token: Global.prefs.getString(Global.prefsStr.token))){
-      setState(() {});
-    }
-  }
-  void getPreviewInfo()async{
-    if(await rankGet(username: Global.prefs.getString(Global.prefsStr.username))){
-      setState(() {});
-    }
-    if(await balanceGet(newToken: Global.prefs.getString(Global.prefsStr.newToken))){
-      setState(() {
 
-      });
-    }
+  void getPreviewInfo()async{
+    await powerGet(context,token: Global.prefs.getString(Global.prefsStr.token));
+    await rankGet(username: Global.prefs.getString(Global.prefsStr.username));
+    await balanceGet(newToken: Global.prefs.getString(Global.prefsStr.newToken));
+    setState(() {
+
+    });
 
   }
   void signOut(){
@@ -82,14 +76,14 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10))),
-        content: FlyTextMain40('你确定要退出登录吗?'),
+        content: FlyText.main40('你确定要退出登录吗?'),
         actions: <Widget>[
           FlatButton(
             onPressed: () => signOut(),
-            child: FlyTextMain40('确定',color: colorMain),),
+            child: FlyText.main40('确定',color: colorMain),),
           FlatButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: FlyTextMain40('取消',color: Colors.black38),
+            child: FlyText.mainTip40('取消',),
           ),
         ],
       ),
@@ -101,7 +95,7 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
       margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadiusValue),
-          color: Colors.white.withOpacity(transparentValue)
+          color: Theme.of(context).cardColor.withOpacity(transparentValue)
       ),
       child: Column(
         children: children,
@@ -117,8 +111,8 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
       crossAxisAlignment: WrapCrossAlignment.center,
       direction: Axis.vertical,
       children: <Widget>[
-        FlyTextMain40(title,color: colorMainTextWhite,fontWeight: FontWeight.bold),
-        FlyTextTip30(subTitle,color: colorMainTextWhite.withOpacity(0.9),),
+        FlyText.main40(title,fontWeight: FontWeight.bold,color: Theme.of(context).accentColor,),
+        FlyText.mini30(subTitle,color: Theme.of(context).accentColor,),
       ],
     ),
   );
@@ -126,7 +120,6 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
   @override
   void initState() {
     super.initState();
-    getShowPowerInfo();
     getPreviewInfo();
 
   }
@@ -144,8 +137,12 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
+        leading: Container(),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          // ChangeThemeButton()
+        ],
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -155,7 +152,7 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
               Wrap(
               runSpacing: spaceCardMarginBigTB*3,
               children: <Widget>[
-                FlyMyselfCard(
+                FlyMyselfCard(context,
                     imageResource: 'images/avatar.png',
                     name: Global.prefs.getString(Global.prefsStr.name),
                     id: Global.prefs.getString(Global.prefsStr.username),
@@ -236,20 +233,15 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                       )
                     ]
                 ),
-                FlyCenterMyselfItemButton('永久激活  "校园卡余额"  功能',onTap: ()=>toActiveStepPage(context),),
-                FlyCenterMyselfItemButton('退出登录',onTap: ()=>willSignOut(context)),
+                FlyCenterMyselfItemButton(context,'永久激活  "校园卡余额"  功能',onTap: ()=>toActiveStepPage(context),),
+                FlyCenterMyselfItemButton(context,'退出登录',onTap: ()=>willSignOut(context)),
               ],
             ),
             Center(
               child: Column(
                 children: [
                   SizedBox(height: fontSizeMini38,),
-                  FlyTextTip30("矿小助-内测版 ${Global.curVersion} ",color: Colors.white),
-                  SizedBox(height: fontSizeMini38/2,),
-                  FlyTextTip30('内测结束时间：2021年1月24日',color: Colors.white,maxLine: 5),
-                  SizedBox(height: fontSizeMini38/2,),
-                  FlyTextTip30('内测会员勋章可保留至公测',maxLine: 5,color: Colors.white),
-                  SizedBox(height: fontSizeMini38/2,),
+                  FlyText.miniTip30("矿小助-正式版 ${Global.curVersion} "),
                 ],
               ),
             )

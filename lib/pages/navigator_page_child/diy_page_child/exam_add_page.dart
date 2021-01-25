@@ -8,7 +8,8 @@ import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
 import 'package:flying_kxz/FlyingUiKit/text_editer.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/exam_info.dart';
@@ -30,7 +31,7 @@ class _ExamAddViewState extends State<ExamAddView> {
     return Container(
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
       decoration: BoxDecoration(
-          color: Color.fromARGB(255, 240,240,240),
+          color: Theme.of(context).unselectedWidgetColor,
           borderRadius: BorderRadius.circular(borderRadiusValue)
       ),
       child: TextFormField(
@@ -39,7 +40,7 @@ class _ExamAddViewState extends State<ExamAddView> {
         style: TextStyle(fontSize: fontSizeTitle45,color: colorMainText,),
         controller: controller, //控制正在编辑的文本。通过其可以拿到输入的文本值
         decoration: InputDecoration(
-          hintStyle: TextStyle(fontSize: fontSizeTitle45,color: colorMainText.withOpacity(0.7)),
+          hintStyle: TextStyle(fontSize: fontSizeTitle45,),
           border: InputBorder.none, //下划线
           hintText: hintText, //点击后显示的提示语
         ),
@@ -96,12 +97,12 @@ class _ExamAddViewState extends State<ExamAddView> {
                 children: [
                   TextButton(
                     onPressed: ()=>Navigator.pop(context,false),
-                    child: FlyTextMain40('取消',color: colorMainText.withOpacity(0.6)),
+                    child: FlyText.mainTip40('取消',),
                   ),
-                  FlyTextTitle45('新建倒计时',fontWeight: FontWeight.bold),
+                  FlyText.title45('新建倒计时',fontWeight: FontWeight.bold),
                   TextButton(
                     onPressed: ()=>determineFunc(),
-                    child: FlyTextMain40('保存',color: colorMain),
+                    child: FlyText.main40('保存',color: colorMain),
                   )
                 ],
               ),
@@ -115,15 +116,15 @@ class _ExamAddViewState extends State<ExamAddView> {
                   padding: EdgeInsets.all(spaceCardMarginRL),
                   child: Row(
                     children: [
-                      FlyTextTitle45('日期'),
+                      FlyText.title45('日期'),
                       Expanded(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            date==null?FlyTextMain40('未选择',color: colorMainText.withOpacity(0.5)):
-                            FlyTextMain40("${date.year}-${date.month}-${date.day}")
+                            date==null?FlyText.mainTip40('未选择',):
+                            FlyText.main40("${date.year}-${date.month}-${date.day}")
                             ,
-                            Icon(Icons.keyboard_arrow_right_rounded,color: colorMainText.withOpacity(0.5),)
+                            Icon(Icons.keyboard_arrow_right_rounded,)
                           ],
                         ),
                       )
@@ -133,7 +134,7 @@ class _ExamAddViewState extends State<ExamAddView> {
               ),
               Divider(height: 0,),
               Center(
-                child: FlyTextTip30('Tip：点击倒计时卡片可以将其删除（从教务系统提取的除外）'),
+                child: FlyText.miniTip30('Tip：点击倒计时卡片可以将其删除（从教务系统提取的除外）'),
               )
             ],
           )),

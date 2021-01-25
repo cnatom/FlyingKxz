@@ -4,8 +4,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:open_file/open_file.dart';
@@ -15,10 +16,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void checkUpgrade(BuildContext context)async{
-  if(Global.prefs.getBool(Global.prefsStr.igUpgrade)==false&&Platform.isAndroid){
+  if(Platform.isAndroid){
     await upgradeApp(context,auto: true);//用户没有忽略过则检查更新
   }
-  debugPrint("@@checkUpgrade");
 }
 Future<Null> upgradeApp(BuildContext context,{bool auto = false})async{
   Global.curVersion = (await PackageInfo.fromPlatform()).version;
@@ -96,42 +96,45 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
             borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)), // 圆角
           ),
           child: Wrap(
+            runSpacing: spaceCardMarginBigTB,
             children: <Widget>[
               Container(
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: FlyTextTitle45("发现最新版本！",fontWeight: FontWeight.bold),
+                child: FlyText.title45("发现最新版本！",fontWeight: FontWeight.bold),
               ),
               Container(
+                height: ScreenUtil().setHeight(deviceHeight/2),
                 width: double.infinity,
-                alignment: Alignment.center,
-                child: new Padding(
-                    padding:
-                    EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
-                    child: new Text('$info',
-                        style: new TextStyle(color: Color(0xff7A7A7A)))),
+                child: new SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Padding(
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
+                      child: new Text('$info',
+                          style: new TextStyle(color: Color(0xff7A7A7A)))),
+                ),
               ),
               getLoadingWidget(),
-              Row(
+              uploadingFlag == UploadingFlag.uploading?Container():Row(
                 children: <Widget>[
                   Expanded(
                     child: InkWell(
-                      child: Center(child: FlyTextMain40("立即更新",color: colorMain,fontWeight: FontWeight.w600),),
-                      onTap: () => upgradeHandle(),
-                    ),
-                  ),
-                  widget.isForceUpdate?Container():Expanded(
-                    child: InkWell(
-                      child: Center(child: FlyTextMain40("忽略",color: Colors.black38,fontWeight: FontWeight.w600),),
+                      child: Center(child: FlyText.main40("取消",color: Colors.black38,fontWeight: FontWeight.w600),),
                       onTap: ()async{
-                        Global.prefs.setBool(Global.prefsStr.igUpgrade, true);
                         Navigator.of(context).pop();
                       },
                     ),
-                  )
-
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      child: Center(child: FlyText.main40("立即更新",color: colorMain,fontWeight: FontWeight.w600),),
+                      onTap: () => upgradeHandle(),
+                    ),
+                  ),
                 ],
               ),
+
             ],
           ),
         ),
@@ -191,7 +194,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
         alignment: Alignment.center,
         child: LinearProgressIndicator(
           valueColor:
-          AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+          AlwaysStoppedAnimation<Color>(colorMain),
           backgroundColor: Colors.grey[300],
           value: _downloadProgress / 100,
         ),
@@ -210,12 +213,12 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(colorMainText)),
+                valueColor: AlwaysStoppedAnimation<Color>(colorMain)),
             SizedBox(width: 5),
             Material(
               child: Text(
                 '等待',
-                style: TextStyle(color: colorMainText),
+                style: TextStyle(color: colorMain),
               ),
               color: Colors.transparent,
             )

@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/FlyingUiKit/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 
 import 'config.dart';
 
@@ -29,7 +29,7 @@ Widget FlyTitleIconButton(String title,String imageResource)=>Column(
 
               ),
               SizedBox(height: spaceCardMarginBigTB/2,),
-              FlyTextMini35(title,color: colorMainText,letterSpacing: 1)
+              FlyText.main35(title,color: colorMainText,letterSpacing: 1)
             ],
           ),
         ),
@@ -50,7 +50,7 @@ Widget FlyRecFlatButton(String title,{double width=100,GestureTapCallback onTap}
       alignment: Alignment.center,
       padding: EdgeInsets.fromLTRB(0, fontSizeMini38*0.8, 0, fontSizeMini38*0.8),
       width: width,
-      child: FlyTextTitle45(title,letterSpacing: 2,color: Colors.white),
+      child: FlyText.title45(title,letterSpacing: 2,color: Colors.white),
     ),
   ),
 );
@@ -65,46 +65,44 @@ Widget FlyRecFlatSecondButton(String title,{double width=100,GestureTapCallback 
       alignment: Alignment.center,
       padding: EdgeInsets.fromLTRB(0, fontSizeMini38*0.8, 0, fontSizeMini38*0.8),
       width: width,
-      child: FlyTextTitle45(title,letterSpacing: 2,color: colorMain),
+      child: FlyText.title45(title,letterSpacing: 2,color: colorMain),
     ),
   ),
 );
-Widget FlyRowMyselfItemButton({@required IconData icon,@required String title,String preview = '',GestureTapCallback onTap})=>Container(
-  child: InkWell(
-    onTap: onTap,
-    child: Padding(
-      padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, fontSizeMain40*1.3, spaceCardPaddingRL, fontSizeMain40*1.3),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Icon(icon,size: sizeIconMain50,),
-              SizedBox(width: spaceCardPaddingTB*3,),
-              FlyTextMini35(title,color: colorMainText)
-            ],
-          ),
-          FlyIconRightGreyArrow
-        ],
-      ),
+Widget FlyRowMyselfItemButton({@required IconData icon,@required String title,String preview = '',GestureTapCallback onTap})=>InkWell(
+  onTap: onTap,
+  child: Padding(
+    padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, fontSizeMain40*1.3, spaceCardPaddingRL, fontSizeMain40*1.3),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Icon(icon,size: sizeIconMain50,),
+            SizedBox(width: spaceCardPaddingTB*3,),
+            FlyText.main40(title)
+          ],
+        ),
+        FlyIconRightGreyArrow
+      ],
     ),
   ),
 );
-Widget FlyCenterMyselfItemButton(String title,{GestureTapCallback onTap,Color textColor = Colors.black,Color backgroundColor = Colors.white}){
+Widget FlyCenterMyselfItemButton(BuildContext context,String title,{GestureTapCallback onTap,Color textColor = Colors.black,Color backgroundColor = Colors.white}){
   return InkWell(
     onTap: onTap,
     child: Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: backgroundColor.withOpacity(transparentValue)
+          color: Theme.of(context).cardColor.withOpacity(transparentValue)
       ),
       margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
       padding: EdgeInsets.fromLTRB(0, spaceCardPaddingTB*1.5, 0, spaceCardPaddingTB*1.5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          FlyTextMini35(title,color: textColor)
+          FlyText.main35(title,)
         ],
       ),
     ),
@@ -131,7 +129,7 @@ Widget FlyPreviewCardButton(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              FlyTextMini35(title, color: Colors.black38),
+              FlyText.main35(title, color: Colors.black38),
               SizedBox(
                 height: fontSizeMini38 / 6,
               ),
@@ -144,7 +142,7 @@ Widget FlyPreviewCardButton(
               SizedBox(
                 height: fontSizeMini38 / 6,
               ),
-              FlyTextTip30(subContent, color: color.withAlpha(150)),
+              FlyText.mini30(subContent, color: color.withAlpha(150)),
             ],
           ),
         ),
@@ -182,13 +180,12 @@ Widget FlySearchBarButton(String title,String content,{GestureTapCallback onTap}
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                FlyTextMini35(title,color: colorMainText,),
-                FlyTextTip30(content,color: colorMainText.withOpacity(0.5),),
+                FlyText.main35(title,),
+                FlyText.miniTip30(content,),
               ],
             ),
             Icon(
               Icons.search,
-              color: colorMainText.withOpacity(0.5),
             )
           ],
         ),

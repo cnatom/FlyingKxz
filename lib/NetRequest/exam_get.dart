@@ -10,8 +10,6 @@ import 'package:flying_kxz/Model/global.dart';
 //xqm: '3' 代表第1学期  '12' 代表第2学期  '16' 代表第3学期
 
 Future<bool> examPost(BuildContext context,{@required String token,@required String year,@required String term}) async {
-  Global.prefs.setString(Global.prefsStr.examTerm, term);
-  Global.prefs.setString(Global.prefsStr.examYear, year);
   Map<String,dynamic> _jsonMap = {
     "xnm":year,
     "xqm":term
