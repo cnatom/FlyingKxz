@@ -37,7 +37,6 @@ dependencies:
   provider: ^4.3.3
   shared_preferences: ^0.5.8
   flutter_easyhub: ^1.0.1+0.10
-  flutter_splash_screen: ^0.1.0
   connectivity: ^0.4.9
   flutter_emoji: ^2.2.1+1
   flutter_picker: ^1.1.5

@@ -3,8 +3,6 @@ PODS:
     - Flutter
     - Reachability
   - Flutter (1.0.0)
-  - flutter_splash_screen (0.0.1):
-    - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -32,7 +30,6 @@ PODS:
 DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - Flutter (from `Flutter`)
-  - flutter_splash_screen (from `.symlinks/plugins/flutter_splash_screen/ios`)
   - image_crop (from `.symlinks/plugins/image_crop/ios`)
   - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
@@ -53,8 +50,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/connectivity/ios"
   Flutter:
     :path: Flutter
-  flutter_splash_screen:
-    :path: ".symlinks/plugins/flutter_splash_screen/ios"
   image_crop:
     :path: ".symlinks/plugins/image_crop/ios"
   image_gallery_saver:
@@ -77,7 +72,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_splash_screen: 0323a1080aa7853a0f0af4491dc29d034be61746
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_crop: e0a67085d3ebf3cf46ca46d61c53a082507b0bc3
   image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2

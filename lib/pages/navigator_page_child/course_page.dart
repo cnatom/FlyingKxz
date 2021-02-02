@@ -10,11 +10,12 @@ import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/loading_animation.dart';
+import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
 
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/course_get.dart';
 import 'package:flying_kxz/Model/course_info.dart';
 
@@ -286,11 +287,11 @@ class _HomePageState extends State<HomePage>
       physics: BouncingScrollPhysics(),
       child: Column(
         children: point.map((item) {
-          int curWeek_temp = curWeek++;
+          int curWeekTemp = curWeek++;
           return Container(
             margin: EdgeInsets.fromLTRB(width / 10, 0, width / 10, width / 20),
             child: Material(
-              color: selectedWeek == curWeek_temp
+              color: selectedWeek == curWeekTemp
                   ? Theme.of(context).unselectedWidgetColor
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(5),
@@ -298,7 +299,7 @@ class _HomePageState extends State<HomePage>
                 highlightColor: colorSelectWeekCard,
                 splashColor: Colors.transparent,
                 borderRadius: BorderRadius.circular(2),
-                onTap: () => setWeek(mCurrentWeek: curWeek_temp),
+                onTap: () => setWeek(mCurrentWeek: curWeekTemp),
                 child: Container(
                   padding: EdgeInsets.fromLTRB(0, width / 6, 0, width / 6),
                   width: width,
@@ -313,7 +314,7 @@ class _HomePageState extends State<HomePage>
                             "第",
                           ),
                           FlyText.main40(
-                            (curWeek_temp + 1).toString(),
+                            (curWeekTemp + 1).toString(),
                           ),
                           FlyText.mini25(
                             "周",
@@ -349,19 +350,15 @@ class _HomePageState extends State<HomePage>
       ]);
     }
     //初始化选中色彩
-    if (Global.prefs.getString(Global.prefsStr.courseDataLoc) != null) {
+    if (Prefs.courseData != null) {
       //有查询历史则直接展示
-      Global.courseInfo = CourseInfo.fromJson(
-          jsonDecode(Global.prefs.getString(Global.prefsStr.courseDataLoc)));
+      Global.courseInfo = CourseInfo.fromJson(jsonDecode(Prefs.courseData));
       showCourseCards();
-    } else if (Global.prefs.getBool(Global.prefsStr.isFirstLogin)) {
+    } else{
       //刚登录则自动获取课表
       getShowCourseData(
-          xnm: Global.prefs.getString(Global.prefsStr.schoolYear),
-          xqm: Global.prefs.getString(Global.prefsStr.schoolTerm));
-      Global.prefs.setBool(Global.prefsStr.isFirstLogin, false);
-    } else {
-      setState(() {});
+          xnm: Prefs.schoolYear,
+          xqm: Prefs.schoolTerm);
     }
   }
 
@@ -483,8 +480,7 @@ class _HomePageState extends State<HomePage>
                         child: Row(
                           children: lessonWeekList.map((item) {
                             mondayDuration++;
-                            var addedDate =
-                                mondayDate.add(Duration(days: mondayDuration));
+                            var addedDate = mondayDate.add(Duration(days: mondayDuration));
                             var mondayMonth = addedDate.month;
                             var mondayDay = addedDate.day;
                             bool isToday =
@@ -741,31 +737,17 @@ class _HomePageState extends State<HomePage>
                                         for (int i = 0;
                                             i < courseDataList.length;
                                             i++) {
-                                          if (courseDataList[i].weekDay ==
-                                                  weekDay &&
-                                              courseDataList[i].lessonNum ==
-                                                  lesson &&
-                                              courseDataList[i]
-                                                  .weeks
-                                                  .contains(week + 1)) {
-                                            repeatCards.add(dialogKbWidget(
-                                                courseName: courseDataList[i]
-                                                    .courseName,
+                                          if (courseDataList[i].weekDay == weekDay && courseDataList[i].lessonNum == lesson && courseDataList[i].weeks.contains(week + 1)) {
+                                            repeatCards.add(
+                                                dialogKbWidget(
+                                                    courseName: courseDataList[i].courseName,
                                                 type: courseDataList[i].type,
-                                                location:
-                                                    courseDataList[i].location,
-                                                teacher:
-                                                    courseDataList[i].teacher,
-                                                weeksStr:
-                                                    courseDataList[i].weeksStr,
-                                                credicScore: courseDataList[i]
-                                                    .creditScore,
-                                                color: colorCourse[
-                                                    courseDataList[i]
-                                                        .courseName],
-                                                lessonFromToWhen:
-                                                    courseDataList[i]
-                                                        .lessonFromToWhen));
+                                                location: courseDataList[i].location,
+                                                teacher: courseDataList[i].teacher,
+                                                weeksStr: courseDataList[i].weeksStr,
+                                                credicScore: courseDataList[i].creditScore,
+                                                color: colorCourse[courseDataList[i].courseName],
+                                                lessonFromToWhen: courseDataList[i].lessonFromToWhen));
                                           }
                                         }
 
@@ -826,16 +808,9 @@ class _HomePageState extends State<HomePage>
                                             children: courseDataList == null
                                                 ? [Container()]
                                                 : courseDataList.map((item) {
-                                                    if (item.weeks.contains(
-                                                        selectedWeek + 1)) {
+                                                    if (item.weeks.contains(selectedWeek + 1)) {
                                                       //如果课程有重叠
-                                                      if (point[
-                                                              selectedWeek][item
-                                                                  .lessonNum ~/
-                                                              2][item
-                                                                  .weekDay -
-                                                              1] >
-                                                          1) {
+                                                      if (point[selectedWeek][item.lessonNum ~/ 2][item.weekDay - 1] >1) {
                                                         return lessonMultiCard(
                                                           week: selectedWeek,
                                                           weekDay: item.weekDay,

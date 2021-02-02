@@ -7,6 +7,22 @@ import 'package:flutter_easyhub/tool/config.dart';
 import 'Text/text.dart';
 import 'config.dart';
 
+class FlyWidgetBuilder extends StatefulWidget {
+  final Widget firstChild;
+  final Widget secondChild;
+  final bool whenFirst;
+  const FlyWidgetBuilder({Key key, @required this.firstChild, @required this.whenFirst, @required this.secondChild}) : super(key: key);
+  @override
+  _FlyWidgetBuilderState createState() => _FlyWidgetBuilderState();
+}
+
+class _FlyWidgetBuilderState extends State<FlyWidgetBuilder> {
+  @override
+  Widget build(BuildContext context) {
+    return widget.whenFirst==true?widget.firstChild:widget.secondChild;
+  }
+}
+
 
 Widget loadingAnimationWave=Tool.getIndicatorWidget(
     EasyHubIndicatorType.beatingRects,

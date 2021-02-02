@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
@@ -17,6 +18,8 @@ import 'FlyingUiKit/config.dart';
 import 'Model/global.dart';
 import 'dart:io';
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Prefs.init();
   if (Platform.isAndroid) {
     //设置android状态栏为透明的沉浸。
     SystemUiOverlayStyle systemUiOverlayStyle =
