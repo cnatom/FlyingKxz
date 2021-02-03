@@ -89,7 +89,7 @@ class _StartPageState extends State<StartPage> {
     //   return;
     // }
     //是否登录过
-    if (Global.prefs.getBool(Global.prefsStr.isFirstLogin) == false) {
+    if (Prefs.username!=null) {
       toNavigatorPage(context);
     } else {
       Global.prefs.setBool(Global.prefsStr.isFirstLogin, true);

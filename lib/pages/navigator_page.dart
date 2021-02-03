@@ -8,7 +8,7 @@ import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/cumt_login.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/provider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -64,7 +64,7 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
       children: [
         BackImgView(),
         Scaffold(
-          // backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).backgroundColor,
           body: PageView(
             physics: BouncingScrollPhysics(),
             children: [

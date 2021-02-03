@@ -3,15 +3,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/provider.dart';
+import 'package:flying_kxz/FlyingUiKit/loading.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../../course_page.dart';
+import 'course_table.dart';
 
 
 class PointArea extends StatefulWidget {
+
   @override
   _PointAreaState createState() => _PointAreaState();
 }
-
 class _PointAreaState extends State<PointArea> {
   CourseProvider courseProvider;
   ///格子高度
@@ -19,22 +23,35 @@ class _PointAreaState extends State<PointArea> {
   double gridWidth;
   List<CourseData> dl;
   ThemeData themeData;
-  ScrollController scrollController;
 
-  void _init(BuildContext context){
-    this.gridHeight = MediaQuery.of(context).size.height/13.0;
-    this.gridWidth = gridHeight*0.618;
-    // this.dl = courseProvider.info;
-    this.themeData = Theme.of(context);
-    scrollController = ScrollController(
-        initialScrollOffset: (CourseProvider.curWeek-1)*gridHeight,
-        keepScrollOffset: true);
+  @override
+  void initState() {
+    super.initState();
   }
 
-  void _handleCurWeekChange(int week){
-    setState(() {
-      courseProvider.changeWeek(week);
-    });
+  @override
+  Widget build(BuildContext context) {
+    courseProvider = Provider.of<CourseProvider>(context);
+    debugPrint("build PointArea");
+    _init(context);
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      physics: BouncingScrollPhysics(),
+      child: _buildColumn(),
+    );
+  }
+
+
+
+  void _init(BuildContext context){
+    debugPrint("PointInit");
+    this.gridHeight = MediaQuery.of(context).size.height/13.0;
+    this.gridWidth = gridHeight*0.618;
+    this.themeData = Theme.of(context);
+  }
+  void handleCurWeekChange(int week){
+    courseProvider.changeWeek(week);
+    pageController.jumpToPage(week-1,);
   }
   Widget _buildColumn(){
     final List<Widget> col = [];
@@ -46,43 +63,61 @@ class _PointAreaState extends State<PointArea> {
     );
   }
   Widget _buildButtons(int week){
-
     return InkWell(
-      onTap: () => _handleCurWeekChange(week),
+      onTap: () => handleCurWeekChange(week),
       child: Container(
         width: gridWidth,
         height: gridHeight,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("第",style: TextStyle(fontSize: gridHeight*0.15),),
-                Text("$week",style: TextStyle(fontSize: gridHeight*0.21),),
-                Text("周",style: TextStyle(fontSize: gridHeight*0.15),)
-              ],
-            ),
-            _buildPoints(week)
-          ],
+        child: FlyWidgetBuilder(
+          whenFirst: week == CourseProvider.curWeek,
+          firstChild: _buildCurWeekCard(week),
+          secondChild: _buildWeekCard(week),
         ),
       ),
     );
   }
+  Widget _buildCurWeekCard(int week){
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).unselectedWidgetColor,
+        borderRadius: BorderRadius.circular(5)
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text("第",style: TextStyle(fontSize: gridHeight*0.15),),
+              Text("$week",style: TextStyle(fontSize: gridHeight*0.21),),
+              Text("周",style: TextStyle(fontSize: gridHeight*0.15),)
+            ],
+          ),
+          _buildPoints(week)
+        ],
+      ),
+    );
+  }
+  Widget _buildWeekCard(int week){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("第",style: TextStyle(fontSize: gridHeight*0.15),),
+            Text("$week",style: TextStyle(fontSize: gridHeight*0.21),),
+            Text("周",style: TextStyle(fontSize: gridHeight*0.15),)
+          ],
+        ),
+        _buildPoints(week)
+      ],
+    );
+  }
   Widget _buildPoints(int week) {
-    //右侧单个点阵只取5*5的布局
-    List pointArray = [
-      [0, 0, 0, 0, 0,0],
-      [0, 0, 0, 0, 0,0],
-      [0, 0, 0, 0, 0,0],
-      [0, 0, 0, 0, 0,0],
-      [0, 0, 0, 0, 0,0],
-    ];
-    // for(int i = 1;i<=5;i++)
-    //   for(int j = 1;j<=5;j++)
-    //     if(db['$week']['$i']['$j']!=null)
-    //       pointArray[i][j] = 1;
+    List pointArray = courseProvider.getPointArray[week];
     //一个点
     Widget singlePoint(int light) {
       return Container(
@@ -101,31 +136,22 @@ class _PointAreaState extends State<PointArea> {
       padding: EdgeInsets.all(gridWidth * 0.1),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: pointArray.map((item) {
-          return Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[for(int i = 1;i<=5;i++)singlePoint(item[i])],
-              ),
-              SizedBox(
-                height: gridWidth / 100,
-              )
-            ],
-          );
-        }).toList(),
+        children: [
+          for(int i = 1;i<=5;i++)
+            Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[for(int j = 1;j<=5;j++)singlePoint(pointArray[i][j])],
+                ),
+                SizedBox(
+                  height: gridWidth / 100,
+                )
+              ],
+            )
+        ],
       ),
     );
   }
-  @override
-  Widget build(BuildContext context) {
-    courseProvider = Provider.of<CourseProvider>(context);
-    _init(context);
-    return SingleChildScrollView(
-      controller: scrollController,
-      scrollDirection: Axis.vertical,
-      physics: BouncingScrollPhysics(),
-      child: _buildColumn(),
-    );
-  }
+
 }

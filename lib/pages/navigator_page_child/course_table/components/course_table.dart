@@ -2,20 +2,26 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/provider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'course_table_child.dart';
-
+PageController pageController = new PageController(initialPage: CourseProvider.curWeek-1);
 class CourseTable extends StatefulWidget {
   @override
   _CourseTableState createState() => _CourseTableState();
 }
-
 class _CourseTableState extends State<CourseTable> {
   CourseProvider courseProvider;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     courseProvider = Provider.of<CourseProvider>(context);
@@ -65,31 +71,54 @@ class _CourseTableState extends State<CourseTable> {
                 whenFirst: _isToday(subDates[i]),
                 firstChild: _buildTopTodayItem(weeks[i], subDates[i]),
                 secondChild: _buildTopItem(weeks[i], subDates[i])),
-          )
+          ),
+
       ],
     );
   }
 
   Widget _buildTopTodayItem(String week, DateTime subDate) {
-    return Column(
-      children: [
-        FlyText.mini30(
-          week,
-          color: Colors.red,
-        ),
-        FlyText.mini25("${subDate.month}/${subDate.day}")
-      ],
+    return Container(
+      decoration: BoxDecoration(
+        color: colorMain.withOpacity(0.1),
+        border: Border(
+          top: BorderSide(
+            width: 5,
+            color: colorMain
+          )
+        )
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FlyText.mini30(
+            week,
+          ),
+          FlyText.mini25("${subDate.month}/${subDate.day}",)
+        ],
+      ),
     );
   }
 
   Widget _buildTopItem(String week, DateTime subDate) {
-    return Column(
-      children: [
-        FlyText.mini30(
-          week,
-        ),
-        FlyText.mini25("${subDate.month}/${subDate.day}")
-      ],
+    return Container(
+      decoration: BoxDecoration(
+          border: Border(
+              top: BorderSide(
+                  width: 5,
+                  color: Colors.transparent
+              )
+          )
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FlyText.mini30(
+            week,
+          ),
+          FlyText.mini25("${subDate.month}/${subDate.day}")
+        ],
+      ),
     );
   }
 
@@ -122,7 +151,9 @@ class _CourseTableState extends State<CourseTable> {
       return false;
     }
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+
         for(int i = 0; i < lessonTimes.length; i++)
           Expanded(
             child: FlyWidgetBuilder(
@@ -130,7 +161,7 @@ class _CourseTableState extends State<CourseTable> {
               firstChild: _buildLeftNowItem("${i + 1}", lessonTimes[i]),
               secondChild: _buildLeftItem("${i + 1}", lessonTimes[i]) ,
             ),
-          )
+          ),
       ],
     );
   }
@@ -138,52 +169,82 @@ class _CourseTableState extends State<CourseTable> {
   Widget _buildLeftItem(String num, List<String> subTimeList) {
     return LayoutBuilder(builder: (context, parSize) {
       double height = parSize.maxHeight;
-      return Column(
-        children: [
-          Text(
-            num,
-            style: TextStyle(fontSize: height * 0.2),
+      return Container(
+        width: parSize.maxWidth,
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              width: 5,//宽度
+              color: Colors.transparent, //边框颜色
+            ),
           ),
-          for(int i = 0;i<subTimeList.length;i++)Text(
-            subTimeList[i]+(i!=0?'\n':''),
-            style: TextStyle(fontSize: height * 0.12),
-          )
-        ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              num,
+              style: TextStyle(fontSize: height * 0.22),
+            ),
+            for(int i = 0;i<subTimeList.length;i++)Text(
+              subTimeList[i]+(i!=0?'\n':''),
+              style: TextStyle(fontSize: height * 0.14),
+            )
+          ],
+        ),
       );
     });
   }
   Widget _buildLeftNowItem(String num, List subTimeList) {
     return LayoutBuilder(builder: (context, parSize) {
       double height = parSize.maxHeight;
-      return Column(
-        children: [
-          Text(
-            num,
-            style: TextStyle(color: Colors.red,fontSize: height * 0.2),
+      return Container(
+        width: parSize.maxWidth,
+        decoration: BoxDecoration(
+          color: colorMain.withOpacity(0.1),
+          border: Border(
+            left: BorderSide(
+              width: 5,//宽度
+              color: colorMain, //边框颜色
+            ),
           ),
-          for(int i = 0;i<subTimeList.length;i++)Text(
-            subTimeList[i]+(i!=0?'\n':''),
-            style: TextStyle(fontSize: height * 0.12),
-          )
-        ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              num,
+              style: TextStyle(fontSize: height * 0.22,),
+            ),
+            for(int i = 0;i<subTimeList.length;i++)Text(
+              subTimeList[i]+(i!=0?'\n':''),
+              style: TextStyle(fontSize: height * 0.14),
+            )
+          ],
+        ),
       );
     });
   }
 
   Widget _buildBody() {
-    return LayoutBuilder(
-      builder: (context, parSize) {
-        List<Widget> children = [];
-        double height = parSize.maxHeight;
-        double width = parSize.maxWidth;
-
-        for (int i = 1; i <= 22; i++) {
-          children.add(new CourseTableChild(i, width, height));
-        }
-        return PageView(
-          children: children,
-        );
-      },
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+      child: LayoutBuilder(
+        builder: (context, parSize) {
+          List<Widget> children = [];
+          double height = parSize.maxHeight;
+          double width = parSize.maxWidth;
+          for(int i = 1;i<=22;i++){
+            children.add(new CourseTableChild(CourseProvider.info[i], width, height));
+          }
+          return PageView(
+            controller: pageController,
+            onPageChanged: (value)=>courseProvider.changeWeek(value+1),
+            scrollDirection: Axis.vertical,
+            children: children,
+          );
+        },
+      ),
     );
   }
 
