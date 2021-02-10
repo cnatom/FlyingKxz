@@ -4,20 +4,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../course_page.dart';
-import 'course_table.dart';
-
+import '../course_page.dart';
 
 class PointArea extends StatefulWidget {
-
+  PointArea({Key key}):super(key: key);
   @override
-  _PointAreaState createState() => _PointAreaState();
+  PointAreaState createState() => PointAreaState();
+
 }
-class _PointAreaState extends State<PointArea> {
+class PointAreaState extends State<PointArea> {
   CourseProvider courseProvider;
+  ScrollController scrollController = new ScrollController();
   ///格子高度
   double gridHeight;
   double gridWidth;
@@ -34,14 +35,30 @@ class _PointAreaState extends State<PointArea> {
     courseProvider = Provider.of<CourseProvider>(context);
     debugPrint("build PointArea");
     _init(context);
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      physics: BouncingScrollPhysics(),
-      child: _buildColumn(),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadiusValue),
+        color: Theme.of(context).cardColor.withOpacity(0.1),
+      ),
+      child: SingleChildScrollView(
+        controller: scrollController,
+        scrollDirection: Axis.vertical,
+        physics: BouncingScrollPhysics(),
+        child: _buildColumn(),
+      ),
     );
   }
 
-
+  void changeWeekOffset(int week){
+    var aimPosition = gridHeight*(week-1);
+    var mMaxScrollExtent = gridHeight*22;
+    debugPrint("$aimPosition  $mMaxScrollExtent ${scrollController.position.extentInside}");
+    if (aimPosition > mMaxScrollExtent) {
+      scrollController.jumpTo(mMaxScrollExtent);
+      return;
+    }
+    scrollController.jumpTo(aimPosition);
+  }
 
   void _init(BuildContext context){
     debugPrint("PointInit");
@@ -51,7 +68,7 @@ class _PointAreaState extends State<PointArea> {
   }
   void handleCurWeekChange(int week){
     courseProvider.changeWeek(week);
-    pageController.jumpToPage(week-1,);
+    coursePageController.jumpToPage(week-1,);
   }
   Widget _buildColumn(){
     final List<Widget> col = [];

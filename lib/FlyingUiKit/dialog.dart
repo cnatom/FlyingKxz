@@ -67,7 +67,7 @@ Future<String> FlyDialogInputShow(BuildContext context,
   );
 }
 
-Future<String> FlyDialogDIYShow(BuildContext context,
+Future<dynamic> FlyDialogDIYShow(BuildContext context,
     {@required Widget content,List<Widget> actions}) async {
   return await showDialog(
     context: context,

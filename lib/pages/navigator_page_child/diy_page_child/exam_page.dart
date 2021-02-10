@@ -77,7 +77,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
      await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Theme.of(context).cardColor.withOpacity(0.9),
+      backgroundColor: Theme.of(context).cardColor.withOpacity(1),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10)),
       builder: (BuildContext context) {

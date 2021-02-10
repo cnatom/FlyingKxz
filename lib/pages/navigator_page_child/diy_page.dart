@@ -76,7 +76,7 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        elevation: 0,
+        brightness: Brightness.dark,
         leading: Container(),
         centerTitle: true,
         backgroundColor: Colors.transparent,

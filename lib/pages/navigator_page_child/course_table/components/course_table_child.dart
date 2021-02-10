@@ -63,7 +63,7 @@ class _CourseCardState extends State<CourseCard> {
   }
   BoxDecoration cardDecoration ()=>BoxDecoration(
       borderRadius: BorderRadius.circular(5),
-      color: CourseColor.fromStr(widget.courseData.title.toString())
+      color: CourseColor.fromStr(widget.courseData.title.toString()).withOpacity(0.9)
   );
   EdgeInsets cardMargin()=>EdgeInsets.all(widget.unitWidth/40);
   EdgeInsets cardPadding()=>EdgeInsets.all(widget.unitWidth/35);

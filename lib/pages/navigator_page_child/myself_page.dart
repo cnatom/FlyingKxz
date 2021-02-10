@@ -139,7 +139,7 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
       appBar: AppBar(
         leading: Container(),
         backgroundColor: Colors.transparent,
-        elevation: 0,
+        brightness: Brightness.dark,
         actions: [
           // ChangeThemeButton()
         ],

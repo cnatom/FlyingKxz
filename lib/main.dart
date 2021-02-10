@@ -3,15 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/null_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_picker/PickerLocalizationsDelegate.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:package_info/package_info.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FlyingUiKit/config.dart';
@@ -31,7 +27,6 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context)=>ChangeNotifierProvider(
-
     create: (context)=>ThemeProvider(),
     builder: (context,_){
       final themeProvider = Provider.of<ThemeProvider>(context);

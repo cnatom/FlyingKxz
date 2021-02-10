@@ -31,8 +31,11 @@ class CourseData {
   String location; //上课地点
   String teacher; //教师姓名
   String lessonFromToWhen; //1-2节 只展示给重叠课程卡片
-  CourseData(this.weeks, this.weekDay, this.lessonNum,
-      {this.duration = 2.0,
+  CourseData(
+      {this.weeks,
+      this.weekDay,
+      this.lessonNum,
+      this.duration = 2.0,
       this.courseName,
       this.location,
       this.teacher,
@@ -156,7 +159,10 @@ class _HomePageState extends State<HomePage>
           point[week - 1][lessonNum ~/ 2][weekDay - 1]++;
         }
         //添加课程卡片信息
-        courseDataList.add(new CourseData(weeks, weekDay, lessonNum,
+        courseDataList.add(new CourseData(
+            weeks: weeks,
+            weekDay: weekDay,
+            lessonNum: lessonNum,
             duration: lessonDuration,
             courseName: item.kcmc,
             teacher: item.xm,
@@ -354,11 +360,9 @@ class _HomePageState extends State<HomePage>
       //有查询历史则直接展示
       Global.courseInfo = CourseInfo.fromJson(jsonDecode(Prefs.courseData));
       showCourseCards();
-    } else{
+    } else {
       //刚登录则自动获取课表
-      getShowCourseData(
-          xnm: Prefs.schoolYear,
-          xqm: Prefs.schoolTerm);
+      getShowCourseData(xnm: Prefs.schoolYear, xqm: Prefs.schoolTerm);
     }
   }
 
@@ -480,7 +484,8 @@ class _HomePageState extends State<HomePage>
                         child: Row(
                           children: lessonWeekList.map((item) {
                             mondayDuration++;
-                            var addedDate = mondayDate.add(Duration(days: mondayDuration));
+                            var addedDate =
+                                mondayDate.add(Duration(days: mondayDuration));
                             var mondayMonth = addedDate.month;
                             var mondayDay = addedDate.day;
                             bool isToday =
@@ -737,17 +742,31 @@ class _HomePageState extends State<HomePage>
                                         for (int i = 0;
                                             i < courseDataList.length;
                                             i++) {
-                                          if (courseDataList[i].weekDay == weekDay && courseDataList[i].lessonNum == lesson && courseDataList[i].weeks.contains(week + 1)) {
-                                            repeatCards.add(
-                                                dialogKbWidget(
-                                                    courseName: courseDataList[i].courseName,
+                                          if (courseDataList[i].weekDay ==
+                                                  weekDay &&
+                                              courseDataList[i].lessonNum ==
+                                                  lesson &&
+                                              courseDataList[i]
+                                                  .weeks
+                                                  .contains(week + 1)) {
+                                            repeatCards.add(dialogKbWidget(
+                                                courseName: courseDataList[i]
+                                                    .courseName,
                                                 type: courseDataList[i].type,
-                                                location: courseDataList[i].location,
-                                                teacher: courseDataList[i].teacher,
-                                                weeksStr: courseDataList[i].weeksStr,
-                                                credicScore: courseDataList[i].creditScore,
-                                                color: colorCourse[courseDataList[i].courseName],
-                                                lessonFromToWhen: courseDataList[i].lessonFromToWhen));
+                                                location:
+                                                    courseDataList[i].location,
+                                                teacher:
+                                                    courseDataList[i].teacher,
+                                                weeksStr:
+                                                    courseDataList[i].weeksStr,
+                                                credicScore: courseDataList[i]
+                                                    .creditScore,
+                                                color: colorCourse[
+                                                    courseDataList[i]
+                                                        .courseName],
+                                                lessonFromToWhen:
+                                                    courseDataList[i]
+                                                        .lessonFromToWhen));
                                           }
                                         }
 
@@ -808,9 +827,16 @@ class _HomePageState extends State<HomePage>
                                             children: courseDataList == null
                                                 ? [Container()]
                                                 : courseDataList.map((item) {
-                                                    if (item.weeks.contains(selectedWeek + 1)) {
+                                                    if (item.weeks.contains(
+                                                        selectedWeek + 1)) {
                                                       //如果课程有重叠
-                                                      if (point[selectedWeek][item.lessonNum ~/ 2][item.weekDay - 1] >1) {
+                                                      if (point[
+                                                              selectedWeek][item
+                                                                  .lessonNum ~/
+                                                              2][item
+                                                                  .weekDay -
+                                                              1] >
+                                                          1) {
                                                         return lessonMultiCard(
                                                           week: selectedWeek,
                                                           weekDay: item.weekDay,
