@@ -81,7 +81,7 @@ class FlyThemes {
     //AppBar文字
     accentColor: Colors.white,
     //未选中项色彩
-    unselectedWidgetColor: Colors.black12.withOpacity(0.1),
+    unselectedWidgetColor: Color(0xffecedef),
     //底部导航栏
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
         unselectedItemColor: Colors.white.withOpacity(0.5), //底部导航蓝未选中色

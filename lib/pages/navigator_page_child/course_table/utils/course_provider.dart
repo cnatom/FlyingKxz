@@ -57,7 +57,13 @@ class CourseProvider extends ChangeNotifier{
     debugPrint('@get');
     loading = true;
     notifyListeners();
-    _initDateTime();
+    String newDateTimeStr;
+    if(term=='1'){
+      newDateTimeStr = '$year-09-07';
+    }else{
+      newDateTimeStr = '${int.parse(year)+1}-03-01';
+    }
+    setAdmissionDateTime(newDateTimeStr);
     _initData();
     Future.wait([_getJsonInfo(token, year, term)]).then((courseBeans){
       var courseBean = courseBeans[0];
@@ -87,6 +93,36 @@ class CourseProvider extends ChangeNotifier{
     _savePrefs();
     notifyListeners();
   }
+  /// 删除课程
+  /// CourseProvider().del()
+  void del(CourseData delCourseData){
+    for(int i = 0;i<_infoByCourse.length;i++){
+      if(_equal(delCourseData, _infoByCourse[i])){
+        _infoByCourse.removeAt(i--);
+      }
+    }
+    for(var week in delCourseData.weekList){
+      for(int i = 0;i<info[week].length;i++){
+        if(_equal(info[week][i], delCourseData)){
+          info[week].removeAt(i--);
+          pointArray[week][delCourseData.lessonNum~/2+1][delCourseData.weekNum]--;
+        }
+      }
+    }
+    notifyListeners();
+  }
+  /// 设置开学日期
+  /// CourseProvider().setAdmissionDateTime()
+  void setAdmissionDateTime(String newDateTimeStr){
+    Prefs.admissionDate = newDateTimeStr;
+    admissionDate = DateTime.parse(newDateTimeStr);
+    var difference = DateTime.now().difference(admissionDate);
+    curWeek = difference.inDays~/7 + 1;
+    if(curWeek<=0||curWeek>22) curWeek = 1;
+    initialWeek = curWeek;
+    curMondayDate = admissionDate.add(Duration(days: 7*(curWeek-1)));
+    notifyListeners();
+  }
   /// 用于测试数据
   /// CourseProvider().test();
   void test(){
@@ -102,6 +138,14 @@ class CourseProvider extends ChangeNotifier{
     for(int i = 0;i<_infoByCourse.length;i++){
       debugPrint(_infoByCourse[i].title);
     }
+  }
+  bool _equal(CourseData courseData1,CourseData courseData2){
+    if(courseData1.title==courseData2.title&&
+    courseData1.lessonNum==courseData2.lessonNum&&
+    courseData1.weekNum==courseData2.weekNum){
+      return true;
+    }
+    return false;
   }
   //课程列表打包存储到本地
   _savePrefs(){

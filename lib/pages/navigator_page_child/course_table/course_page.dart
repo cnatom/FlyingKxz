@@ -1,4 +1,6 @@
 //主页
+import 'dart:ui';
+
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/bottom_sheet.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
@@ -44,39 +47,32 @@ class CoursePageState extends State<CoursePage>
           key: _scaffoldKey,
           backgroundColor: Colors.transparent,
           appBar: _buildAppBar(),
-          body: Container(
-            decoration: BoxDecoration(
-                color: Theme.of(context).cardColor.withOpacity(transparentValue*0.5),
-                borderRadius: BorderRadius.circular(borderRadiusValue)
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      _buildTop(),
-                      SizedBox(height: fontSizeTip33 / 5,),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(child: _buildLeft(),),
-                            Expanded(child: _buildBody(), flex: 8,)
-                          ],
-                        ),
+          body: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    _buildTop(),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(child: _buildLeft(),),
+                          Expanded(child: _buildBody(), flex: 8,)
+                        ],
                       ),
-                      SizedBox(height: fontSizeTip33 / 5,),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: fontSizeTip33 / 5,),
+                  ],
                 ),
-                RightPointWidget(key: _rightGlobalKey,)
-              ],
-            ),
+              ),
+              RightPointWidget(key: _rightGlobalKey,)
+            ],
           ),
         );
       },
     );
   }
-  Widget _buildAppBar(){
+  PreferredSizeWidget _buildAppBar(){
     return AppBar(
       backgroundColor: Colors.transparent,
       brightness: Brightness.dark,
@@ -101,12 +97,12 @@ class CoursePageState extends State<CoursePage>
   }
   _importCourse()async{
     showPicker(context, _scaffoldKey,
+        title: "导入课表",
         pickerDatas: Global.xqxnPickerData,
         onConfirm: (Picker picker, List value) {
-      courseProvider.get(Prefs.token, picker
-          .getSelectedValues()[0]
-          .toString()
-          .substring(0, 4), '${value[1] + 1}');
+      String yearStr = picker.getSelectedValues()[0].toString().substring(0, 4);
+      String termStr = '${value[1] + 1}';
+      courseProvider.get(Prefs.token,yearStr , termStr);
         });
 
   }
@@ -153,6 +149,9 @@ class CoursePageState extends State<CoursePage>
     for(var newCourseData in newCourseDataList){
       courseProvider.add(newCourseData);
     }
+    setState(() {
+
+    });
   }
   Widget _buildShowRightButton(){
     return  IconButton(
@@ -183,27 +182,30 @@ class CoursePageState extends State<CoursePage>
     for (int i = 0; i < 7; i++) {
       subDates.add(mondayDate.add(Duration(days: i)));
     }
-    return Row(
-      children: [
-        Expanded(
-          child: Container(),
-        ),
-        Expanded(
-          flex: 8,
-          child: Row(
-            children: [
-              for (int i = 0; i < 7; i++)
-                Expanded(
-                  child: FlyWidgetBuilder(
-                      whenFirst: _isToday(subDates[i]),
-                      firstChild: _buildTopTodayItem(weeks[i], subDates[i]),
-                      secondChild: _buildTopItem(weeks[i], subDates[i])),
-                ),
-            ],
+    return FlyFilterContainer(
+      context,
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(),
           ),
-        )
+          Expanded(
+            flex: 8,
+            child: Row(
+              children: [
+                for (int i = 0; i < 7; i++)
+                  Expanded(
+                    child: FlyWidgetBuilder(
+                        whenFirst: _isToday(subDates[i]),
+                        firstChild: _buildTopTodayItem(weeks[i], subDates[i]),
+                        secondChild: _buildTopItem(weeks[i], subDates[i])),
+                  ),
+              ],
+            ),
+          )
 
-      ],
+        ],
+      )
     );
   }
 
@@ -222,9 +224,9 @@ class CoursePageState extends State<CoursePage>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FlyText.mini30(
-            week,
+            week,color: Colors.white,
           ),
-          FlyText.mini25("${subDate.month}/${subDate.day}",)
+          FlyText.mini25("${subDate.month}/${subDate.day}",color: Colors.white,)
         ],
       ),
     );
@@ -244,9 +246,9 @@ class CoursePageState extends State<CoursePage>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FlyText.mini30(
-            week,
+            week,color: Colors.white,
           ),
-          FlyText.mini25("${subDate.month}/${subDate.day}")
+          FlyText.mini25("${subDate.month}/${subDate.day}",color: Colors.white,)
         ],
       ),
     );
@@ -281,7 +283,8 @@ class CoursePageState extends State<CoursePage>
       return false;
     }
 
-    return Column(
+    return FlyFilterContainer(
+      context,child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         for(int i = 0; i < lessonTimes.length; i++)
@@ -293,6 +296,7 @@ class CoursePageState extends State<CoursePage>
             ),
           ),
       ],
+    )
     );
   }
 
@@ -314,11 +318,11 @@ class CoursePageState extends State<CoursePage>
           children: [
             Text(
               num,
-              style: TextStyle(fontSize: height * 0.22),
+              style: TextStyle(fontSize: height * 0.22,color: Colors.white),
             ),
             for(int i = 0;i<subTimeList.length;i++)Text(
               subTimeList[i]+(i!=0?'\n':''),
-              style: TextStyle(fontSize: height * 0.14),
+              style: TextStyle(fontSize: height * 0.14,color: Colors.white),
             )
           ],
         ),
@@ -344,11 +348,11 @@ class CoursePageState extends State<CoursePage>
           children: [
             Text(
               num,
-              style: TextStyle(fontSize: height * 0.22,),
+              style: TextStyle(fontSize: height * 0.22,color: Colors.white),
             ),
             for(int i = 0;i<subTimeList.length;i++)Text(
               subTimeList[i]+(i!=0?'\n':''),
-              style: TextStyle(fontSize: height * 0.14),
+              style: TextStyle(fontSize: height * 0.14,color: Colors.white),
             )
           ],
         ),
@@ -439,7 +443,7 @@ class _CourseAddViewState extends State<CourseAddView> {
   @override
   Widget build(BuildContext context) {
     return flyBottomSheetScaffold(context,
-        title: "导入课程",
+        title: "添加课程",
         onDetermine: ()=>_onDetermine(),
         onCancel: ()=>Navigator.of(context).pop(),
         child: SingleChildScrollView(
@@ -502,7 +506,7 @@ class _CourseAddViewState extends State<CourseAddView> {
     weekList = await FlyDialogDIYShow(context, content: WeekListPicker());
     if(weekList==null)return;
     courseDataList[index].weekList = weekList;
-    weekStrList[index] = CourseData.listToString(weekList);
+    weekStrList[index] = CourseData.weekListToString(weekList);
     setState(() {
 
     });
@@ -523,9 +527,6 @@ class _CourseAddViewState extends State<CourseAddView> {
       courseDataList[index].weekNum = weekNum;
       courseDataList[index].lessonNum = lessonNum;
       courseDataList[index].durationNum = durationNum;
-  }
-  bool checkBaseInfo(){
-
   }
 
   Widget _buildChooseButton(String title,String subTitle,GestureTapCallback onTap){
@@ -565,7 +566,7 @@ class _CourseAddViewState extends State<CourseAddView> {
         return false;
       }
     }
-    if(titleController.text.isEmpty||locationController.text.isEmpty||teacherController.text.isEmpty||remarkController.text.isEmpty){
+    if(titleController.text.isEmpty){
       showToast(context, "请填写完整哦");
       return false;
     }
@@ -637,7 +638,7 @@ class _WeekListPickerState extends State<WeekListPicker> {
 
   Widget _buildPreview(){
     return Center(
-      child: FlyText.miniTip30(CourseData.listToString(weekList),maxLine: 5,),
+      child: FlyText.miniTip30(CourseData.weekListToString(weekList),maxLine: 5,),
     );
   }
   Widget _buildWeekPicker(){
@@ -668,7 +669,11 @@ class _WeekListPickerState extends State<WeekListPicker> {
     return Center(child: FlyText.title50(title,fontWeight: FontWeight.bold,),);
   }
   _submit(){
-    Navigator.of(context).pop(weekList);
+    if(weekList.isEmpty){
+      Navigator.of(context).pop();
+    }else{
+      Navigator.of(context).pop(weekList);
+    }
   }
   Widget _buildButton({GestureTapCallback onTap}){
     return Center(
@@ -827,4 +832,3 @@ class _LessonWeekNumPickerState extends State<LessonWeekNumPicker> {
   }
 
 }
-

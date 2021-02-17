@@ -6,11 +6,11 @@ import 'Text/text.dart';
 import 'config.dart';
 
 
-void showPicker(BuildContext context,GlobalKey scaffoldKey,{@required List pickerDatas,@required PickerConfirmCallback onConfirm}) {
+void showPicker(BuildContext context,GlobalKey scaffoldKey,{String title,@required List pickerDatas,@required PickerConfirmCallback onConfirm}) {
   var picker = new Picker(
       textStyle: TextStyle(fontSize: fontSizeMain40,color: Theme.of(context).primaryColor),
       backgroundColor: Theme.of(context).cardColor,
-      title: FlyText.main40('导入课表'),
+      title: title!=null?FlyText.main40(title):null,
       adapter: PickerDataAdapter<String>(pickerdata: pickerDatas, isArray: true),
       confirmText: '确定',
       confirmTextStyle: TextStyle(fontSize: fontSizeMain40,color: colorMain),

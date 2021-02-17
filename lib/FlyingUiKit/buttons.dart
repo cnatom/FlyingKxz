@@ -7,7 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 
 import 'config.dart';
-
+Widget FlyTextButton(String title,{GestureTapCallback onTap,Color color})=>InkWell(
+  child: FlyText.main40(title,color: color??colorMain,fontWeight: FontWeight.bold,),
+  onTap: onTap,
+);
 Widget FlyTitleIconButton(String title,String imageResource)=>Column(
   children: <Widget>[
     Material(
@@ -154,12 +157,7 @@ Widget FlyGreyFlatButton(String text, {VoidCallback onPressed,double fontSize}) 
   onPressed: onPressed,
   highlightColor: Colors.transparent, //点击后的颜色为透明
   splashColor: Colors.transparent, //点击波纹的颜色为透明
-  child: Text(
-    text,
-    style: TextStyle(
-        color: Colors.black38, //字体颜色
-        fontSize: fontSizeMini38),
-  ),
+  child: FlyText.mainTip35(text),
 );
 
 Widget FlySearchBarButton(String title,String content,{GestureTapCallback onTap}){

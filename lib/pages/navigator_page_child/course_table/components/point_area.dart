@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
@@ -35,17 +36,15 @@ class PointAreaState extends State<PointArea> {
     courseProvider = Provider.of<CourseProvider>(context);
     debugPrint("build PointArea");
     _init(context);
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(borderRadiusValue),
-        color: Theme.of(context).cardColor.withOpacity(0.1),
-      ),
+    return FlyFilterContainer(
+      context,child: Container(
       child: SingleChildScrollView(
         controller: scrollController,
         scrollDirection: Axis.vertical,
         physics: BouncingScrollPhysics(),
         child: _buildColumn(),
       ),
+    )
     );
   }
 
@@ -96,7 +95,7 @@ class PointAreaState extends State<PointArea> {
   Widget _buildCurWeekCard(int week){
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).unselectedWidgetColor,
+        color: Theme.of(context).unselectedWidgetColor.withOpacity(0.2),
         borderRadius: BorderRadius.circular(5)
       ),
       child: Column(
@@ -106,9 +105,9 @@ class PointAreaState extends State<PointArea> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("第",style: TextStyle(fontSize: gridHeight*0.15),),
-              Text("$week",style: TextStyle(fontSize: gridHeight*0.21),),
-              Text("周",style: TextStyle(fontSize: gridHeight*0.15),)
+              Text("第",style: TextStyle(fontSize: gridHeight*0.15,color: Colors.white),),
+              Text("$week",style: TextStyle(fontSize: gridHeight*0.21,color: Colors.white),),
+              Text("周",style: TextStyle(fontSize: gridHeight*0.15,color: Colors.white),)
             ],
           ),
           _buildPoints(week)
@@ -124,9 +123,9 @@ class PointAreaState extends State<PointArea> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("第",style: TextStyle(fontSize: gridHeight*0.15),),
-            Text("$week",style: TextStyle(fontSize: gridHeight*0.21),),
-            Text("周",style: TextStyle(fontSize: gridHeight*0.15),)
+            Text("第",style: TextStyle(fontSize: gridHeight*0.15,color: Colors.white),),
+            Text("$week",style: TextStyle(fontSize: gridHeight*0.21,color: Colors.white),),
+            Text("周",style: TextStyle(fontSize: gridHeight*0.15,color: Colors.white),)
           ],
         ),
         _buildPoints(week)
@@ -144,7 +143,7 @@ class PointAreaState extends State<PointArea> {
             borderRadius: BorderRadius.circular(100),
             color: light > 0
                 ? colorMain.withOpacity(0.8)
-                : themeData.unselectedWidgetColor),
+                : themeData.unselectedWidgetColor.withOpacity(0.2)),
       );
     }
     return Container(

@@ -113,12 +113,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 250,250,250),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(0),
         child: AppBar(
-          brightness: Brightness.light,
-          backgroundColor: Color.fromARGB(255, 250,250,250),
           elevation: 0,
         ),
       ),
@@ -175,14 +173,14 @@ class _LoginPageState extends State<LoginPage> {
                                   Container(
                                     height: ScreenUtil().setWidth(35),
                                     width: 1,
-                                    color: Colors.black.withAlpha(60),
+                                    color: Theme.of(context).dividerColor,
                                   ),
                                   FlyGreyFlatButton("校园网登录",
                                       onPressed: () => FlyDialogDIYShow(context,content: CumtLoginView())),
                                   Container(
                                     height: ScreenUtil().setWidth(35),
                                     width: 1,
-                                    color: Colors.black.withAlpha(60),
+                                    color: Theme.of(context).dividerColor,
                                   ),
                                   FlyGreyFlatButton("无法登陆",
                                       onPressed: ()async{

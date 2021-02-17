@@ -6,7 +6,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_easyhub/animation/easy_falling_ball.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:provider/provider.dart';
 import 'config.dart';
 
 //常用圆角容器
@@ -20,7 +22,34 @@ import 'config.dart';
 //          borderRadius: BorderRadius.circular(borderRadiusValue), color: color),
 //      child: child,
 //    );
-
+Widget FlyFilterContainer(BuildContext context,{Widget child}){
+  return Container(
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadiusValue)
+    ),
+    child: Stack(
+      children: [
+        Positioned.fill(
+          child: ClipRect(
+            //背景过滤器
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0,sigmaY: 10.0),
+              child: Opacity(
+                opacity: 0.01,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        child,
+      ],
+    ),
+  );
+}
 Widget FlyIdCardContainer(
         {@required String title,
         @required String subTitle,
