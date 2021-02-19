@@ -72,45 +72,8 @@ Widget FlyRecFlatSecondButton(String title,{double width=100,GestureTapCallback 
     ),
   ),
 );
-Widget FlyRowMyselfItemButton({@required IconData icon,@required String title,String preview = '',GestureTapCallback onTap})=>InkWell(
-  onTap: onTap,
-  child: Padding(
-    padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, fontSizeMain40*1.3, spaceCardPaddingRL, fontSizeMain40*1.3),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Icon(icon,size: sizeIconMain50,),
-            SizedBox(width: spaceCardPaddingTB*3,),
-            FlyText.main40(title)
-          ],
-        ),
-        FlyIconRightGreyArrow
-      ],
-    ),
-  ),
-);
-Widget FlyCenterMyselfItemButton(BuildContext context,String title,{GestureTapCallback onTap,Color textColor = Colors.black,Color backgroundColor = Colors.white}){
-  return InkWell(
-    onTap: onTap,
-    child: Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).cardColor.withOpacity(transparentValue)
-      ),
-      margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-      padding: EdgeInsets.fromLTRB(0, spaceCardPaddingTB*1.5, 0, spaceCardPaddingTB*1.5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          FlyText.main35(title,)
-        ],
-      ),
-    ),
-  );
-}
+
+
 Widget FlyPreviewCardButton(
     {@required String title,
       @required String content,

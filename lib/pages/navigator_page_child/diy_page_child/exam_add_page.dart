@@ -31,7 +31,7 @@ class _ExamAddViewState extends State<ExamAddView> {
     return Container(
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
       decoration: BoxDecoration(
-          color: Theme.of(context).unselectedWidgetColor,
+          color: Theme.of(context).disabledColor,
           borderRadius: BorderRadius.circular(borderRadiusValue)
       ),
       child: TextFormField(

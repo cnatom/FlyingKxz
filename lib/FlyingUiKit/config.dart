@@ -6,7 +6,7 @@ double deviceWidth = 1080;
 double deviceHeight = 1920;
 
 //透明度
-double transparentValue = 0.8;
+double transparentValue = 0.3;
 //背景图文件
 File backImgFile;
 //色彩管理
@@ -58,13 +58,14 @@ final Icon FlyIconBackIOS = Icon(
   color: colorMainText,
   size: sizeIconMain50,
 );
-final Icon FlyIconRightGreyArrow = Icon(
+Icon FlyIconRightGreyArrow({Color color = Colors.white})=> Icon(
   Icons.keyboard_arrow_right,
   size: sizeIconMain50,
+  color: color,
 );
 //边距等配置
-final double spaceCardMarginBigTB = ScreenUtil().setSp(25);
-final double spaceCardMarginTB = ScreenUtil().setSp(20);//上下外边距
+final double spaceCardMarginBigTB = ScreenUtil().setSp(30);
+final double spaceCardMarginTB = ScreenUtil().setSp(25);//上下外边距
 final double spaceCardPaddingTB = ScreenUtil().setSp(25);//上下内边距
 final double spaceCardMarginRL = ScreenUtil().setWidth(30);//左右外边距
 final double spaceCardPaddingRL = ScreenUtil().setWidth(50);//左右内边距

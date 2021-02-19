@@ -58,10 +58,11 @@ class _InvitePageState extends State<InvitePage> {
 
             InkWell(
               onTap: (){
-                Clipboard.setData(ClipboardData(text: "https://cumt-kxz-1300578118.cos.ap-nanjing.myqcloud.com/FlyingKXZ.apk"));
-                showToast(context,"已复制安卓版本下载链接\n快分享给好友吧～！",);
+                Clipboard.setData(ClipboardData(text: "http://kxz.atcumt.com/"));
+                showToast(context,"已复制官网链接\n快分享给好友吧～！",);
               },
               child: Container(
+                height: fontSizeMain40*3,
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(borderRadiusValue),
@@ -70,29 +71,9 @@ class _InvitePageState extends State<InvitePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.android,color: Colors.white,),
-                    FlyText.main35("安卓版",color: Colors.white),
-                  ],
-                ),
-              ),
-            ),
-
-            InkWell(
-              onTap: (){
-                Clipboard.setData(ClipboardData(text: "https://testflight.apple.com/join/hVUvhb9I"));
-                showToast(context,"已复制iOS版本链接\n感谢您的支持！QAQ",);
-              },
-              child: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(borderRadiusValue),
-                    color: Colors.blueGrey
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(MdiIcons.apple,color: Colors.white,),
-                    FlyText.main35("IOS版",color: Colors.white),
+                    Image.asset("images/logoWhite.png",height: fontSizeMain40*1.2,),
+                    SizedBox(width: 5,),
+                    FlyText.main35("矿小助官网",color: Colors.white),
                   ],
                 ),
               ),
@@ -103,6 +84,7 @@ class _InvitePageState extends State<InvitePage> {
                 showToast(context,"已复制QQ群号\n快分享给好友吧！～",);
               },
               child: Container(
+                height: fontSizeMain40*3,
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(borderRadiusValue),
@@ -111,14 +93,13 @@ class _InvitePageState extends State<InvitePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(MdiIcons.qqchat,color: Colors.white,),
-                    FlyText.main35("QQ群",color: Colors.white),
+                    Icon(MdiIcons.qqchat,color: Colors.white),
+                    FlyText.main35("QQ群号",color: Colors.white),
                   ],
                 ),
               ),
             ),
-            Container(),
-            FlyText.miniTip30("IOS版本需要用Safari浏览器打开链接，\n安卓版随便找个浏览器就可以～")
+            Container()
           ],
         ),
       ],

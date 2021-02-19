@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/entypo_icons.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme_switch_button.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
@@ -32,127 +32,44 @@ import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_p
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'myself_page_child/cumtLogin_view.dart';
-
 
 class MyselfPage extends StatefulWidget {
   @override
   _MyselfPageState createState() => _MyselfPageState();
 }
 
-class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMixin{
-
-  void getPreviewInfo()async{
-    await powerGet(context,token: Global.prefs.getString(Global.prefsStr.token));
-    await rankGet(username: Global.prefs.getString(Global.prefsStr.username));
-    await balanceGet(newToken: Global.prefs.getString(Global.prefsStr.newToken));
-    setState(() {
-
-    });
-
-  }
-  void signOut(){
-    Global.clearPrefsData();
-    toLoginPage(context);
-  }
-
-  void _changeBackgroundImage()async{
-    File tempImgFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    String imageFileName = tempImgFile.path.substring(tempImgFile.path.lastIndexOf('/')+1,tempImgFile.path.length);
-    Directory tempDir = await getApplicationDocumentsDirectory();
-    Directory directory = new Directory('${tempDir.path}/images');
-    if (!directory.existsSync()) {
-      directory.createSync();
-    }
-    backImgFile = await tempImgFile.copy('${directory.path}/$imageFileName');
-    Global.prefs.setString(Global.prefsStr.backImg, backImgFile.path);
-    navigatorPageController.jumpToPage(0);
-  }
-  //确定退出
-  Future<bool> willSignOut(context) async {
-    return await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10))),
-        content: FlyText.main40('你确定要退出登录吗?'),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () => signOut(),
-            child: FlyText.main40('确定',color: colorMain),),
-          FlatButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: FlyText.mainTip40('取消',),
-          ),
-        ],
-      ),
-    ) ??
-        false;
-  }
-  Widget buttonListCard({List<Widget> children = const <Widget>[]}){
-    return Container(
-      margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadiusValue),
-          color: Theme.of(context).cardColor.withOpacity(transparentValue)
-      ),
-      child: Column(
-        children: children,
-      ),
-    );
-  }
-
-
-  Widget previewItem({@required String title,@required String subTitle})=>Container(
-    alignment: Alignment.center,
-    child: Wrap(
-      spacing: 5,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      direction: Axis.vertical,
-      children: <Widget>[
-        FlyText.main40(title,fontWeight: FontWeight.bold,color: Theme.of(context).accentColor,),
-        FlyText.mini30(subTitle,color: Theme.of(context).accentColor,),
-      ],
-    ),
-  );
-
+class _MyselfPageState extends State<MyselfPage>
+    with AutomaticKeepAliveClientMixin {
+  ThemeProvider themeProvider;
   @override
   void initState() {
     super.initState();
     getPreviewInfo();
-
-  }
-
-
-  @override
-  void dispose() {
-    super.dispose();
-
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         leading: Container(),
         backgroundColor: Colors.transparent,
         brightness: Brightness.dark,
-        actions: [
-          // ChangeThemeButton()
-        ],
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
             //个人资料区域
-              Wrap(
-              runSpacing: spaceCardMarginBigTB*3,
+            Wrap(
+              runSpacing: spaceCardMarginBigTB * 3,
               children: <Widget>[
-                FlyMyselfCard(context,
+                _buildInfoCard(context,
                     imageResource: 'images/avatar.png',
                     name: Global.prefs.getString(Global.prefsStr.name),
                     id: Global.prefs.getString(Global.prefsStr.username),
@@ -163,16 +80,22 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
                   children: <Widget>[
                     Expanded(
                         flex: 1,
-                        child: previewItem(title: "${Global.prefs.getString(Global.prefsStr.balance)??'0.0'}",subTitle: "校园卡余额 (元)",)
-                    ),
+                        child: previewItem(
+                          title:
+                              "${Global.prefs.getString(Global.prefsStr.balance) ?? '0.0'}",
+                          subTitle: "校园卡余额 (元)",
+                        )),
                     Container(
                       color: Colors.white.withOpacity(0.2),
-                      height: fontSizeMini38*2,
+                      height: fontSizeMini38 * 2,
                       width: 1,
                     ),
                     Expanded(
                       flex: 1,
-                      child: previewItem(title: "${Global.prefs.getString(Global.prefsStr.power)??'0.0'}",subTitle: "宿舍电量 (度)"),
+                      child: previewItem(
+                          title:
+                              "${Global.prefs.getString(Global.prefsStr.power) ?? '0.0'}",
+                          subTitle: "宿舍电量 (度)"),
                     ),
                   ],
                 ),
@@ -183,64 +106,68 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
             Wrap(
               runSpacing: spaceCardMarginTB,
               children: [
-                buttonListCard(
-                    children: <Widget>[
-                      FlyRowMyselfItemButton(
-                          icon: Icons.language_outlined,
-                          title: '校园网登录',
-                          onTap: () {
-                            FlyDialogDIYShow(context,content: CumtLoginView());
-                          }
-                      ),
-                      FlyRowMyselfItemButton(
-                          icon: LineariconsFree.shirt,
-                          title: '更换背景',
-                          onTap: ()=>_changeBackgroundImage()
-                      ),
-                    ]
-                ),
-                buttonListCard(
-                    children: <Widget>[
-                      FlyRowMyselfItemButton(
-                          icon:  Icons.people_outline,
-                          title: '关于我们',
-                          onTap: () => toAboutPage(context)
-                      ),
-                      FlyRowMyselfItemButton(
-                          icon: Icons.feedback_outlined,
-                          title: '反馈与建议',
-                          onTap: () async{
-                            String text = await FlyDialogInputShow(context,hintText: "感谢您提出宝贵的建议，这对我们非常重要！\n*｡٩(ˊᗜˋ*)و*｡\n\n(也可以留下您的联系方式，方便我们及时联络您)",confirmText: "发送",maxLines: 10);
-                            if(text!=null){
-                              await feedbackPost(context, text: text);
-                            }
-                          }
-                      ),
-                      FlyRowMyselfItemButton(
-                          icon: MdiIcons.heartOutline,
-                          title: '邀请好友',
-                          onTap: () {
-                            FlyDialogDIYShow(context,content: InvitePage());
-                          }
-                      ),
-                      Platform.isIOS?Container():FlyRowMyselfItemButton(
+                _buttonList(children: <Widget>[
+                  _buildIconTitleButton(
+                      icon: Icons.language_outlined,
+                      title: '校园网登录',
+                      onTap: () {
+                        FlyDialogDIYShow(context, content: CumtLoginView());
+                      }),
+                  FlyFlexibleButton(
+                    title: "个性化",
+                    icon: LineariconsFree.shirt,
+                    secondChild: _buildPersonalise(),
+                  ),
+                ]),
+                _buttonList(children: <Widget>[
+                  _buildIconTitleButton(
+                      icon: Icons.people_outline,
+                      title: '关于我们',
+                      onTap: () => toAboutPage(context)),
+                  _buildIconTitleButton(
+                      icon: Icons.feedback_outlined,
+                      title: '反馈与建议',
+                      onTap: () async {
+                        String text = await FlyDialogInputShow(context,
+                            hintText:
+                                "感谢您提出宝贵的建议，这对我们非常重要！\n*｡٩(ˊᗜˋ*)و*｡\n\n(也可以留下您的联系方式，方便我们及时联络您)",
+                            confirmText: "发送",
+                            maxLines: 10);
+                        if (text != null) {
+                          await feedbackPost(context, text: text);
+                        }
+                      }),
+                  _buildIconTitleButton(
+                      icon: MdiIcons.heartOutline,
+                      title: '邀请好友',
+                      onTap: () {
+                        FlyDialogDIYShow(context, content: InvitePage());
+                      }),
+                  Platform.isIOS
+                      ? Container()
+                      : _buildIconTitleButton(
                           icon: CommunityMaterialIcons.download_outline,
                           title: '检查更新',
                           onTap: () {
                             Global.prefs.setBool('igUpgrade', false);
-                            upgradeApp(context,auto: false);
-                          }
-                      )
-                    ]
+                            upgradeApp(context, auto: false);
+                          })
+                ]),
+                _buildTitleCenterButton(
+                  context,
+                  '永久激活  "校园卡余额"  功能',
+                  onTap: () => toActiveStepPage(context),
                 ),
-                FlyCenterMyselfItemButton(context,'永久激活  "校园卡余额"  功能',onTap: ()=>toActiveStepPage(context),),
-                FlyCenterMyselfItemButton(context,'退出登录',onTap: ()=>willSignOut(context)),
+                _buildTitleCenterButton(context, '退出登录',
+                    onTap: () => willSignOut(context)),
               ],
             ),
             Center(
               child: Column(
                 children: [
-                  SizedBox(height: fontSizeMini38,),
+                  SizedBox(
+                    height: fontSizeMini38,
+                  ),
                   FlyText.miniTip30("矿小助-正式版 ${Global.curVersion} "),
                 ],
               ),
@@ -251,6 +178,452 @@ class _MyselfPageState extends State<MyselfPage> with AutomaticKeepAliveClientMi
     );
   }
 
+  Widget _buildPersonalise() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
+      child: Wrap(
+        children: [
+          _buildDiyButton("更换背景",
+              onTap: ()=> _changeBackgroundImage(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(
+                    Icons.arrow_right_sharp,
+                    size: sizeIconMain50,
+                    color: Colors.white.withOpacity(0.5),
+                  )
+                ],
+              )
+              ),
+          _buildDiyButton("背景透明",
+              child: _buildSliver(themeProvider.transBack, onChanged: (v) {
+                themeProvider.transBack = v;
+              })
+          ),
+          _buildDiyButton("背景模糊",
+              child: _buildSliver(themeProvider.blurBack,max: 30.0, onChanged: (v) {
+                themeProvider.blurBack = v;
+              })
+          ),
+          _buildDiyButton("卡片透明",
+              child: _buildSliver(themeProvider.transCard,min: 0.01,max:0.5, onChanged: (v) {
+                themeProvider.transCard = v;
+              })
+          ),
+          _buildDiyButton("夜间模式", child: _buildSwitch(themeProvider.darkMode, onChanged: (v){
+            setState(() {
+              themeProvider.darkMode = !themeProvider.darkMode;
+            });
+          })),
+        ],
+      ),
+    );
+  }
+  Widget _buildDiyButton(String title,{@required Widget child,GestureTapCallback onTap}){
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: fontSizeMain40*3.5,
+        alignment: Alignment.center,
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: FlyText.main35(title,color: Colors.white,),
+            ),
+            Expanded(
+              flex: 5,
+              child: child,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+  Widget _buildSwitch(bool value,{@required ValueChanged<bool> onChanged}){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Switch(
+          activeColor: themeProvider.colorMain,
+          value: value,
+          onChanged: onChanged,
+        )
+      ],
+    );
+  }
+  Widget _buildSliver(double value,
+      {double max = 1.0,double min = 0.0, @required ValueChanged<double> onChanged}) {
+    return Slider(
+      inactiveColor: Theme.of(context).unselectedWidgetColor,
+      activeColor: themeProvider.colorMain,
+      value: value,
+      min: min,
+      max: max,
+      onChanged: onChanged,
+    );
+  }
+
+  void getPreviewInfo() async {
+    await powerGet(context,
+        token: Global.prefs.getString(Global.prefsStr.token));
+    await rankGet(username: Global.prefs.getString(Global.prefsStr.username));
+    await balanceGet(
+        newToken: Global.prefs.getString(Global.prefsStr.newToken));
+    setState(() {});
+  }
+
+  void signOut() {
+    Global.clearPrefsData();
+    toLoginPage(context);
+  }
+  void _changeBackgroundImage() async {
+    File tempImgFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    String imageFileName = tempImgFile.path.substring(
+        tempImgFile.path.lastIndexOf('/') + 1, tempImgFile.path.length);
+    Directory tempDir = await getApplicationDocumentsDirectory();
+    Directory directory = new Directory('${tempDir.path}/images');
+    if (!directory.existsSync()) {
+      directory.createSync();
+    }
+    backImgFile = await tempImgFile.copy('${directory.path}/$imageFileName');
+    Global.prefs.setString(Global.prefsStr.backImg, backImgFile.path);
+    navigatorPageController.jumpToPage(0);
+  }
+
+  //确定退出
+  Future<bool> willSignOut(context) async {
+    return await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            content: FlyText.main40('你确定要退出登录吗?'),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () => signOut(),
+                child: FlyText.main40('确定', color: colorMain),
+              ),
+              FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: FlyText.mainTip40(
+                  '取消',
+                ),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
+  Widget _buttonList({List<Widget> children = const <Widget>[]}) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+      child: _buildContainer(
+          child: Column(
+        children: children,
+      )),
+    );
+  }
+
+  Widget _buildContainer(
+      {@required Widget child,
+      EdgeInsetsGeometry margin,
+      EdgeInsetsGeometry padding}) {
+    return Container(
+      margin: margin,
+      padding: padding,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadiusValue),
+          color: Theme.of(context)
+              .cardColor
+              .withOpacity(themeProvider.transCard)),
+      child: child,
+    );
+  }
+
+  Widget _buildTitleLeftButton(String title,
+      {GestureTapCallback onTap}) =>
+      InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(0, spaceCardMarginBigTB*1.2, 0, spaceCardMarginBigTB),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  FlyText.main35(
+                    title,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+              Icon(
+                Icons.arrow_right_sharp,
+                size: sizeIconMain50,
+                color: Colors.white.withOpacity(0.5),
+              )
+            ],
+          ),
+        ),
+      );
+  Widget _buildIconTitleButton(
+          {@required IconData icon,
+          @required String title,
+          String preview = '',
+          GestureTapCallback onTap}) =>
+      InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, fontSizeMain40 * 1.3,
+              spaceCardPaddingRL, fontSizeMain40 * 1.3),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    icon,
+                    size: sizeIconMain50,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: spaceCardPaddingTB * 3,
+                  ),
+                  FlyText.main40(
+                    title,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+              FlyIconRightGreyArrow(color: Colors.white.withOpacity(0.5))
+            ],
+          ),
+        ),
+      );
+//个人资料卡
+  Widget _buildInfoCard(BuildContext context,
+          {String imageResource = "",
+          String name = "",
+          String id = "",
+          String classs = "",
+          String college = ""}) =>
+      Container(
+        padding: EdgeInsets.fromLTRB(fontSizeMini38 * 2, 0, 0, 0),
+        child: Row(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(color: Colors.white, width: 3)),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.asset(
+                  imageResource,
+                  height: ScreenUtil().setWidth(120),
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: [
+                      FlyText.title45(name,
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                      SizedBox(
+                        width: fontSizeMini38,
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(
+                            fontSizeMini38 / 2, 0, fontSizeMini38 / 2, 0),
+                        decoration: BoxDecoration(
+                            color: colorMain.withAlpha(200),
+                            borderRadius: BorderRadius.circular(2)),
+                        child: Row(
+                          children: [
+                            FlyText.mini30("内测会员",
+                                color: Colors.white,
+                                textAlign: TextAlign.center),
+                            Global.prefs.getString(Global.prefsStr.rank) != null
+                                ? FlyText.mini30(
+                                    " No.${Global.prefs.getString(Global.prefsStr.rank)}",
+                                    color: Colors.white)
+                                : Container()
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    child: FlyText.mini30(
+                      college,
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+  Widget previewItem({@required String title, @required String subTitle}) =>
+      Container(
+        alignment: Alignment.center,
+        child: Wrap(
+          spacing: 5,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          direction: Axis.vertical,
+          children: <Widget>[
+            FlyText.main40(
+              title,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).accentColor,
+            ),
+            FlyText.mini30(
+              subTitle,
+              color: Theme.of(context).accentColor,
+            ),
+          ],
+        ),
+      );
+  Widget _buildTitleCenterButton(BuildContext context, String title,
+      {GestureTapCallback onTap,
+      Color textColor = Colors.black,
+      Color backgroundColor = Colors.white}) {
+    return InkWell(
+      onTap: onTap,
+      child: _buildContainer(
+        margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+        padding: EdgeInsets.fromLTRB(
+            0, spaceCardPaddingTB * 1.5, 0, spaceCardPaddingTB * 1.5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            FlyText.main35(
+              title,
+              color: Colors.white,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   bool get wantKeepAlive => true;
+}
+
+class FlyFlexibleButton extends StatefulWidget {
+  final Widget secondChild;
+  final String title;
+  final IconData icon;
+  const FlyFlexibleButton({Key key, this.secondChild, this.title, this.icon})
+      : super(key: key);
+  @override
+  _FlyFlexibleButtonState createState() => _FlyFlexibleButtonState();
+}
+
+class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
+  bool showSecond = false;
+  double opacity = 0;
+  ThemeProvider themeProvider;
+  @override
+  Widget build(BuildContext context) {
+    themeProvider = Provider.of<ThemeProvider>(context);
+    if(opacity>0)opacity = themeProvider.transCard;
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadiusValue),
+        color: Theme.of(context).cardColor.withOpacity(opacity)
+      ),
+      child: Column(
+        children: [
+          _button(),
+          AnimatedCrossFade(
+            alignment: Alignment.topCenter,
+            firstCurve: Curves.easeOutCubic,
+            secondCurve: Curves.easeOutCubic,
+            sizeCurve: Curves.easeOutCubic,
+            firstChild: Container(),
+            secondChild: Padding(
+              padding:
+              EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, spaceCardMarginTB),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(borderRadiusValue),
+                    color: Theme.of(context)
+                        .cardColor
+                        .withOpacity(themeProvider.transCard)),
+                child: widget.secondChild,
+              ),
+            ),
+            duration: Duration(milliseconds: 200),
+            crossFadeState:
+            showSecond ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _button() => InkWell(
+        onTap: () {
+          setState(() {
+            showSecond = !showSecond;
+            if(showSecond){
+              opacity = themeProvider.transCard;
+            }else{
+              opacity = 0;
+            }
+          });
+        },
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, fontSizeMain40 * 1.3,
+              spaceCardPaddingRL, fontSizeMain40 * 1.3),
+          child:Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    widget.icon,
+                    size: sizeIconMain50,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: spaceCardPaddingTB * 3,
+                  ),
+                  FlyText.main40(
+                    widget.title,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+              Icon(
+                showSecond
+                    ? Icons.keyboard_arrow_down
+                    : Icons.keyboard_arrow_right,
+                size: sizeIconMain50,
+                color: Colors.white.withOpacity(0.5),
+              )
+            ],
+          ),
+        ),
+      );
 }

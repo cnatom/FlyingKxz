@@ -22,34 +22,43 @@ import 'config.dart';
 //          borderRadius: BorderRadius.circular(borderRadiusValue), color: color),
 //      child: child,
 //    );
-Widget FlyFilterContainer(BuildContext context,{Widget child}){
-  return Container(
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(borderRadiusValue)
-    ),
-    child: Stack(
+class FlyFilterContainer extends StatefulWidget {
+  final Widget child;
+
+  const FlyFilterContainer({Key key, @required this.child}) : super(key: key);
+
+  @override
+  _FlyFilterContainerState createState() => _FlyFilterContainerState();
+}
+
+class _FlyFilterContainerState extends State<FlyFilterContainer> {
+  @override
+  Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return Stack(
       children: [
         Positioned.fill(
           child: ClipRect(
             //背景过滤器
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10.0,sigmaY: 10.0),
+              filter: ImageFilter.blur(sigmaX: themeProvider.blurBack,sigmaY: themeProvider.blurBack,),
               child: Opacity(
-                opacity: 0.01,
+                opacity: themeProvider.transBack,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor
+                      color: Colors.black
                   ),
                 ),
               ),
             ),
           ),
         ),
-        child,
+        widget.child,
       ],
-    ),
-  );
+    );
+  }
 }
+
 Widget FlyIdCardContainer(
         {@required String title,
         @required String subTitle,
@@ -90,69 +99,6 @@ Widget FlyIdCardContainer(
         ),
       ),
     );
-//个人资料卡
-Widget FlyMyselfCard(BuildContext context,
-    {String imageResource = "",
-      String name = "",
-      String id = "",
-      String classs = "",
-      String college = ""}) =>
-    Container(
-      padding: EdgeInsets.fromLTRB(fontSizeMini38*2, 0, 0, 0),
-      child: Row(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              border:Border.all(color: Colors.white,width: 3)
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: Image.asset(
-                imageResource,
-                height: ScreenUtil().setWidth(120),
-                fit: BoxFit.fill,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: [
-                    FlyText.title45(name,color: Colors.white,fontWeight: FontWeight.bold),
-                    SizedBox(width: fontSizeMini38,),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(fontSizeMini38/2, 0, fontSizeMini38/2, 0),
-                      decoration: BoxDecoration(
-                          color: colorMain.withAlpha(200),
-                          borderRadius: BorderRadius.circular(2)
-                      ),
-                      child: Row(
-                        children: [
-                          FlyText.mini30("内测会员",color: Colors.white,textAlign: TextAlign.center),
-                          Global.prefs.getString(Global.prefsStr.rank)!=null?FlyText.mini30(" No.${Global.prefs.getString(Global.prefsStr.rank)}",color: Colors.white):Container()
-                        ],
-                      ),
-                    ),
 
-                  ],
-                ),
-                SizedBox(height: 5,),
-                Container(
-                  child: FlyText.mini30(college,color: Theme.of(context).accentColor,),
-                ),
-
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
 
 

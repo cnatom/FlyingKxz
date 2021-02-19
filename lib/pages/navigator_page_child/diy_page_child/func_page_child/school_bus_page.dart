@@ -116,12 +116,13 @@ class _SchoolBusPageState extends State<SchoolBusPage> with SingleTickerProvider
     return Scaffold(
       appBar: FlyAppBar(context, "2020年班车时刻表",
           bottom: TabBar(
+            labelColor: Theme.of(context).primaryColor,
               controller: _tabController,
-              labelStyle: TextStyle(fontSize: fontSizeMini38,fontWeight: FontWeight.bold,fontFamily: "SY"),
-              unselectedLabelStyle: TextStyle(fontSize: fontSizeMini38,fontFamily: "SY",fontWeight: FontWeight.bold,),
+              labelStyle: TextStyle(fontSize: fontSizeMini38,fontWeight: FontWeight.bold),
+              unselectedLabelStyle: TextStyle(fontSize: fontSizeMini38,fontWeight: FontWeight.bold,),
               indicatorSize: TabBarIndicatorSize.tab,
               indicator: UnderlineTabIndicator(
-                  borderSide: BorderSide(width: 2,color: Theme.of(context).indicatorColor),
+                  borderSide: BorderSide(width: 2,color: Theme.of(context).primaryColor),
                   insets: EdgeInsets.fromLTRB(fontSizeMain40*1.2, 0, fontSizeMain40*1.2, 0)
               ),
               tabs: [

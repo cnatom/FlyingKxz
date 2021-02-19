@@ -47,7 +47,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
       {FormFieldSetter<String> onSaved, bool obscureText = false}) =>
       Container(
         decoration: BoxDecoration(
-            color: Theme.of(context).unselectedWidgetColor,
+            color: Theme.of(context).disabledColor,
             borderRadius: BorderRadius.circular(5)
         ),
         child: TextFormField(

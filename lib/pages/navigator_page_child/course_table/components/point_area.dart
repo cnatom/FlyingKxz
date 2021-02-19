@@ -36,15 +36,13 @@ class PointAreaState extends State<PointArea> {
     courseProvider = Provider.of<CourseProvider>(context);
     debugPrint("build PointArea");
     _init(context);
-    return FlyFilterContainer(
-      context,child: Container(
+    return Container(
       child: SingleChildScrollView(
         controller: scrollController,
         scrollDirection: Axis.vertical,
         physics: BouncingScrollPhysics(),
         child: _buildColumn(),
       ),
-    )
     );
   }
 

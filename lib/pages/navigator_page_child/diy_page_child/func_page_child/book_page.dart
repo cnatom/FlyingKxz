@@ -159,7 +159,11 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                   height: fontSizeMain40*8,
                   child: AspectRatio(
                     aspectRatio: 0.618,
-                    child: BookImage(url: image,),
+                    child: FlyWidgetBuilder(
+                      whenFirst: image!='null',
+                      firstChild: Image.network(image,fit: BoxFit.fill,),
+                      secondChild: Image.asset("images/bookCover.jpg",fit: BoxFit.fill,),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -456,51 +460,6 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
       ),
     );
 
-  }
-
-  @override
-  bool get wantKeepAlive => true;
-}
-class BookImage extends StatefulWidget {
-  final String url;
-  BookImage({this.url});
-  @override
-  _BookImageState createState() => _BookImageState();
-}
-
-class _BookImageState extends State<BookImage> with AutomaticKeepAliveClientMixin{
-  Widget child;
-  void initFunc({@required String url})async{
-    child = loadingAnimationIOS();
-    Response res;
-    Dio dio = Dio();
-    //配置dio信息
-    res = await dio.get(url,);
-    //Json解码为Map
-    Map<String,dynamic> map = jsonDecode(res.toString());
-    debugPrint(res.toString());
-    if (map['status']==200&&map['data']!='') {
-      child = Image.network(
-        map['data'],
-        fit: BoxFit.fill,
-      );
-    }else{
-      child = Image.asset("images/bookCover.jpg",fit: BoxFit.fill,);
-    }
-    setState(() {
-
-    });
-  }
-  @override
-  void initState() {
-    super.initState();
-    initFunc(url: widget.url);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return child;
   }
 
   @override

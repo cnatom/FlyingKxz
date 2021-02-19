@@ -38,7 +38,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>MicrophoneUsageDescription</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>NSPhotoLibraryUsageDescription</string>
+	<string>方便个性化您的App</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

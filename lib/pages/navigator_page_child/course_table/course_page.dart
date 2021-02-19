@@ -182,30 +182,27 @@ class CoursePageState extends State<CoursePage>
     for (int i = 0; i < 7; i++) {
       subDates.add(mondayDate.add(Duration(days: i)));
     }
-    return FlyFilterContainer(
-      context,
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(),
+    return Row(
+      children: [
+        Expanded(
+          child: Container(),
+        ),
+        Expanded(
+          flex: 8,
+          child: Row(
+            children: [
+              for (int i = 0; i < 7; i++)
+                Expanded(
+                  child: FlyWidgetBuilder(
+                      whenFirst: _isToday(subDates[i]),
+                      firstChild: _buildTopTodayItem(weeks[i], subDates[i]),
+                      secondChild: _buildTopItem(weeks[i], subDates[i])),
+                ),
+            ],
           ),
-          Expanded(
-            flex: 8,
-            child: Row(
-              children: [
-                for (int i = 0; i < 7; i++)
-                  Expanded(
-                    child: FlyWidgetBuilder(
-                        whenFirst: _isToday(subDates[i]),
-                        firstChild: _buildTopTodayItem(weeks[i], subDates[i]),
-                        secondChild: _buildTopItem(weeks[i], subDates[i])),
-                  ),
-              ],
-            ),
-          )
+        )
 
-        ],
-      )
+      ],
     );
   }
 
@@ -283,8 +280,7 @@ class CoursePageState extends State<CoursePage>
       return false;
     }
 
-    return FlyFilterContainer(
-      context,child: Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         for(int i = 0; i < lessonTimes.length; i++)
@@ -296,7 +292,6 @@ class CoursePageState extends State<CoursePage>
             ),
           ),
       ],
-    )
     );
   }
 
@@ -590,7 +585,7 @@ class _CourseAddViewState extends State<CourseAddView> {
     return Container(
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
       decoration: BoxDecoration(
-          color: Theme.of(context).unselectedWidgetColor,
+          color: Theme.of(context).disabledColor,
           borderRadius: BorderRadius.circular(borderRadiusValue)
       ),
       child: TextFormField(

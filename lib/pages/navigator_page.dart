@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
@@ -63,8 +64,9 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
     return Stack(
       children: [
         BackImgView(),
-        Scaffold(
-          backgroundColor: Theme.of(context).backgroundColor,
+        FlyFilterContainer(
+          child: Scaffold(
+          backgroundColor: Colors.transparent,
           body: PageView(
             physics: BouncingScrollPhysics(),
             children: [
@@ -94,6 +96,7 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
                 navigatorPageController.jumpToPage(index);
               },
               type: BottomNavigationBarType.fixed),
+        )
         )
       ],
     );

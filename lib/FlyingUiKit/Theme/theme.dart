@@ -1,18 +1,71 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-
+import 'dart:io';
 class ThemeProvider extends ChangeNotifier {
-  ThemeMode themeMode = ThemeMode.system;
-  bool get isDarkMode => themeMode == ThemeMode.dark;
+  ThemeMode _themeMode = ThemeMode.light;
+  bool _darkMode = false;
 
-  void changeTheme(bool isOn) {
-    themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
+
+
+
+  double _transBack = 0.4;//背景透明度
+  double _blurBack = 8;
+  double _transCard = 0.05;//卡片透明度
+  Color _colorMain = Color(0xff00c5a8);
+  Color _colorMainText = Colors.white;
+  File backImgFile;
+
+  bool get darkMode => _darkMode;
+  ThemeMode get themeMode => _themeMode; //背景模糊度
+  double get transBack => _transBack;
+  double get blurBack => _blurBack;
+  double get transCard => _transCard;
+  Color get colorMain => _colorMain; //主题色彩
+
+  set themeMode(ThemeMode value) {
+    _themeMode = value;
+    _darkMode = _themeMode==ThemeMode.dark?true:false;
     notifyListeners();
   }
+  set darkMode(bool value) {
+    _darkMode = value;
+    if(darkMode){
+      _transBack = 1;
+      _transCard = 0.4;
+      _themeMode = ThemeMode.dark;
+    }else{
+      _transCard = 0.05;
+      _transBack = 0.3;
+      _themeMode = ThemeMode.light;
+    }
+    notifyListeners();
+  }
+
+  set transBack(double value) {
+    if(value>0&&value<1){
+      _transBack = value;
+      notifyListeners();
+    }
+  }
+  set blurBack(double value) {
+    _blurBack = value;
+    notifyListeners();
+  }
+  set transCard(double value) {
+    _transCard = value;
+    notifyListeners();
+  }
+  set colorMain(Color value) {
+    _colorMain = value;
+    notifyListeners();
+  }
+
 }
 
 class FlyThemes {
@@ -32,6 +85,8 @@ class FlyThemes {
       scaffoldBackgroundColor: Colors.black,
       //主页面背景色
       backgroundColor: Colors.black.withOpacity(0.9),
+      //输入框色彩
+      disabledColor: Color(0xff6C6C6C).withOpacity(0.7),
       //未选中项色彩
       unselectedWidgetColor: Color(0xff6C6C6C).withOpacity(0.5),
       //卡片色彩
@@ -80,8 +135,10 @@ class FlyThemes {
     primaryColor: Colors.black,
     //AppBar文字
     accentColor: Colors.white,
+    //输入框色彩
+    disabledColor: Color(0xffecedef),
     //未选中项色彩
-    unselectedWidgetColor: Color(0xffecedef),
+    unselectedWidgetColor: Color(0xff6C6C6C).withOpacity(0.5),
     //底部导航栏
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
         unselectedItemColor: Colors.white.withOpacity(0.5), //底部导航蓝未选中色
@@ -94,7 +151,7 @@ class FlyThemes {
       color: Colors.transparent,
     ),
     //卡片背景
-    cardColor: Colors.white.withOpacity(0.9),
+    cardColor: Colors.white,
       // //chip按钮主题
       // chipTheme: ChipThemeData(
       //   //选中项背景色彩，两个最好是一样

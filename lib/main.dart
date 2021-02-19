@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     builder: (context,_){
       final themeProvider = Provider.of<ThemeProvider>(context);
       return MaterialApp(
-        themeMode: ThemeMode.system,
+        themeMode: themeProvider.themeMode,
         theme: FlyThemes.lightTheme,
         darkTheme: FlyThemes.darkTheme,
         //添加国际化
