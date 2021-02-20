@@ -1,69 +1,140 @@
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
-import 'package:flutter_screenutil/screenutil.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
-import 'dart:io';
+import 'package:flying_kxz/Model/prefs.dart';
+
 class ThemeProvider extends ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.light;
-  bool _darkMode = false;
+  static ThemeMode _themeMode;
+  static bool _darkMode;//夜间模式
+  static bool _simpleMode;//简洁模式
+
+  static double _transBack; //背景透明度
+  static double _blurBack; //背景模糊度
+  static double _transCard; //卡片透明度 最大0.5
+  static Color _colorMain = Color(0xff00c5a8); //主题色彩
+  static Color _colorNavText;///卡片内的文字,过白时变黑;
 
 
-
-
-  double _transBack = 0.4;//背景透明度
-  double _blurBack = 8;
-  double _transCard = 0.05;//卡片透明度
-  Color _colorMain = Color(0xff00c5a8);
-  Color _colorMainText = Colors.white;
-  File backImgFile;
-
+  bool get simpleMode => _simpleMode;
+  ThemeMode get themeMode => _themeMode;
   bool get darkMode => _darkMode;
-  ThemeMode get themeMode => _themeMode; //背景模糊度
   double get transBack => _transBack;
   double get blurBack => _blurBack;
   double get transCard => _transCard;
-  Color get colorMain => _colorMain; //主题色彩
+  Color get colorMain => _colorMain;
+  Color get colorNavText => _colorNavText;
+
+  static Map _lightDefault = {
+    "darkMode": false,
+    "simpleMode":false,
+    "transBack": 0.5,
+    "blurBack": 8.0,
+    "transCard": 0.05,
+  };
+  ThemeProvider();
+
+  ///初始化主题数据
+  static init() {
+    debugPrint(Prefs.prefs.toString());
+    if (Prefs.themeData == null) {
+      _initFromJson(_lightDefault);
+      Prefs.themeData = jsonEncode(_lightDefault);
+    } else {
+      _initFromJson(jsonDecode(Prefs.themeData));
+    }
+  }
+  //恢复默认配置
+  _restore(){
+    _initFromJson(_lightDefault);
+  }
+  ///本地化存储
+  _savePrefs() {
+    Prefs.themeData = jsonEncode(toJson());
+  }
+
+  ///Map->类的变量
+  static _initFromJson(dynamic json) {
+    _darkMode = json["darkMode"];
+    _transBack = json["transBack"];
+    _simpleMode = json["simpleMode"];
+    _blurBack = json["blurBack"];
+    _transCard = json["transCard"];
+    _colorNavText = _simpleMode?Colors.black:Colors.white;
+    _themeMode = _darkMode ? ThemeMode.dark : ThemeMode.light;
+  }
+
+  ///将类数据打包成Map
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map["darkMode"] = _darkMode;
+    map["simpleMode"] = _simpleMode;
+    map["transBack"] = _transBack;
+    map["blurBack"] = _blurBack;
+    map["transCard"] = _transCard;
+    return map;
+  }
 
   set themeMode(ThemeMode value) {
     _themeMode = value;
-    _darkMode = _themeMode==ThemeMode.dark?true:false;
+    _darkMode = _themeMode == ThemeMode.dark ? true : false;
     notifyListeners();
+    _savePrefs();
   }
+
   set darkMode(bool value) {
     _darkMode = value;
-    if(darkMode){
+    if (darkMode) {
+      _simpleMode = false;
       _transBack = 1;
-      _transCard = 0.4;
+      _transCard = 0.5;
+      _colorNavText = Colors.white;
       _themeMode = ThemeMode.dark;
-    }else{
-      _transCard = 0.05;
-      _transBack = 0.3;
-      _themeMode = ThemeMode.light;
+    } else {
+      _restore();
     }
     notifyListeners();
+    _savePrefs();
   }
 
   set transBack(double value) {
-    if(value>0&&value<1){
+    if (value > 0 && value < 1) {
       _transBack = value;
       notifyListeners();
+      _savePrefs();
     }
   }
+  set simpleMode(bool value) {
+    _simpleMode = value;
+    if(_simpleMode){
+      _transCard = 0.1;
+      _themeMode = ThemeMode.light;
+      _colorNavText = Colors.black;
+      _darkMode = false;
+    }else{
+      _restore();
+    }
+    notifyListeners();
+    _savePrefs();
+  }
+
   set blurBack(double value) {
     _blurBack = value;
     notifyListeners();
+    _savePrefs();
   }
+
   set transCard(double value) {
     _transCard = value;
     notifyListeners();
+    _savePrefs();
   }
+
   set colorMain(Color value) {
     _colorMain = value;
     notifyListeners();
+    _savePrefs();
   }
 
 }
@@ -90,7 +161,7 @@ class FlyThemes {
       //未选中项色彩
       unselectedWidgetColor: Color(0xff6C6C6C).withOpacity(0.5),
       //卡片色彩
-      cardColor: Color(0xff1c1c1e),
+      cardColor: Color(0xff151517),
       //指示器色彩
       indicatorColor: Colors.white,
       cursorColor: colorMain,
@@ -119,8 +190,7 @@ class FlyThemes {
         padding: EdgeInsets.all(4.0),
         shape: StadiumBorder(),
         backgroundColor: Colors.transparent,
-      )
-  );
+      ));
   static final diyTheme =
       ThemeData(scaffoldBackgroundColor: Colors.transparent);
   static final lightTheme = ThemeData(
@@ -152,22 +222,22 @@ class FlyThemes {
     ),
     //卡片背景
     cardColor: Colors.white,
-      // //chip按钮主题
-      // chipTheme: ChipThemeData(
-      //   //选中项背景色彩，两个最好是一样
-      //   selectedColor: colorMain,
-      //   secondarySelectedColor: colorMain,
-      //   //选中项文字色彩
-      //   labelStyle: TextStyle(color: Colors.white54),
-      //   //未选中项背景色彩
-      //   disabledColor: Color(0xfff2f2f2),
-      //   //未选中项文字色彩
-      //   secondaryLabelStyle: TextStyle(color: Colors.black),
-      //   //暂时没啥用的参数，但不能没有
-      //   brightness: Brightness.dark,
-      //   padding: EdgeInsets.all(4.0),
-      //   shape: StadiumBorder(),
-      //   backgroundColor: Colors.transparent,
-      // )
+    // //chip按钮主题
+    // chipTheme: ChipThemeData(
+    //   //选中项背景色彩，两个最好是一样
+    //   selectedColor: colorMain,
+    //   secondarySelectedColor: colorMain,
+    //   //选中项文字色彩
+    //   labelStyle: TextStyle(color: Colors.white54),
+    //   //未选中项背景色彩
+    //   disabledColor: Color(0xfff2f2f2),
+    //   //未选中项文字色彩
+    //   secondaryLabelStyle: TextStyle(color: Colors.black),
+    //   //暂时没啥用的参数，但不能没有
+    //   brightness: Brightness.dark,
+    //   padding: EdgeInsets.all(4.0),
+    //   shape: StadiumBorder(),
+    //   backgroundColor: Colors.transparent,
+    // )
   );
 }

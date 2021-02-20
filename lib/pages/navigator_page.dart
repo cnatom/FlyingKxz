@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/Model/global.dart';
@@ -29,6 +30,7 @@ class FlyNavigatorPage extends StatefulWidget {
 var navigatorPageController = PageController();
 class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAliveClientMixin{
   int _currentIndex = 0; //数组索引，通过改变索引值改变视图
+  ThemeProvider themeProvider;
   void initFunc() async{
     Dio().get(
         "https://www.lvyingzhao.cn/action",
@@ -61,11 +63,9 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Stack(
-      children: [
-        BackImgView(),
-        FlyFilterContainer(
-          child: Scaffold(
+    themeProvider = Provider.of<ThemeProvider>(context);
+    return FlyNavBackground(
+        child: Scaffold(
           backgroundColor: Colors.transparent,
           body: PageView(
             physics: BouncingScrollPhysics(),
@@ -86,6 +86,8 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
               backgroundColor: Colors.transparent,
               selectedFontSize: fontSizeTip33,
               unselectedFontSize: fontSizeTip33,
+              selectedItemColor: themeProvider.simpleMode?themeProvider.colorMain:null,
+              unselectedItemColor: themeProvider.simpleMode?Colors.black45:null,
               items: [
                 _bottomNavigationBar('主页',FeatherIcons.home,),
                 _bottomNavigationBar('发现',OMIcons.explore,),
@@ -97,8 +99,6 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
               },
               type: BottomNavigationBarType.fixed),
         )
-        )
-      ],
     );
   }
   @override

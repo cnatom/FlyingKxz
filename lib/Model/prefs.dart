@@ -2,6 +2,7 @@
 
 import 'dart:core';
 
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /*获取本地信息
@@ -29,6 +30,10 @@ class Prefs{
   static String _cumtLoginPassword = "cumtLoginPassword";//校园网账号
   static String _cumtLoginMethod = "cumtLoginMethod";//登录方式
   static String _admissionDate = "admissionDate";//开学日期
+  static String _themeData = "themeData";
+
+
+
 
   static String get username => prefs.getString(_username);
   static String get name => prefs.getString(_name);
@@ -47,6 +52,7 @@ class Prefs{
   static String get cumtLoginPassword => prefs.getString(_cumtLoginPassword);
   static int get cumtLoginMethod => prefs.getInt(_cumtLoginMethod);
   static String get admissionDate=> prefs.getString(_admissionDate);
+  static String get themeData => prefs.getString(_themeData);
 
   static set username(String value) =>prefs.setString(_username, value);
   static set name(String value) =>prefs.setString(_name, value);
@@ -65,8 +71,8 @@ class Prefs{
   static set cumtLoginPassword(String value) =>prefs.setString(_cumtLoginPassword, value);
   static set cumtLoginMethod(int value) =>prefs.setInt(_cumtLoginMethod, value);
   static set admissionDate(String value) =>prefs.setString(_admissionDate, value);
-
-  static void init()async{
+  static set themeData(String value) =>prefs.setString(_themeData, value);
+  static Future<void> init()async{
     prefs = await SharedPreferences.getInstance();
     _initSchoolYearTerm();
     _initAdmissionDate();

@@ -2,6 +2,7 @@
 //单个点阵组件
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
@@ -19,6 +20,7 @@ class PointArea extends StatefulWidget {
 }
 class PointAreaState extends State<PointArea> {
   CourseProvider courseProvider;
+  ThemeProvider themeProvider;
   ScrollController scrollController = new ScrollController();
   ///格子高度
   double gridHeight;
@@ -34,7 +36,7 @@ class PointAreaState extends State<PointArea> {
   @override
   Widget build(BuildContext context) {
     courseProvider = Provider.of<CourseProvider>(context);
-    debugPrint("build PointArea");
+    themeProvider = Provider.of<ThemeProvider>(context);
     _init(context);
     return Container(
       child: SingleChildScrollView(
@@ -103,9 +105,9 @@ class PointAreaState extends State<PointArea> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("第",style: TextStyle(fontSize: gridHeight*0.15,color: Colors.white),),
-              Text("$week",style: TextStyle(fontSize: gridHeight*0.21,color: Colors.white),),
-              Text("周",style: TextStyle(fontSize: gridHeight*0.15,color: Colors.white),)
+              Text("第",style: TextStyle(fontSize: gridHeight*0.15,color: themeProvider.colorNavText),),
+              Text("$week",style: TextStyle(fontSize: gridHeight*0.21,color: themeProvider.colorNavText),),
+              Text("周",style: TextStyle(fontSize: gridHeight*0.15,color: themeProvider.colorNavText),)
             ],
           ),
           _buildPoints(week)
@@ -121,9 +123,9 @@ class PointAreaState extends State<PointArea> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("第",style: TextStyle(fontSize: gridHeight*0.15,color: Colors.white),),
-            Text("$week",style: TextStyle(fontSize: gridHeight*0.21,color: Colors.white),),
-            Text("周",style: TextStyle(fontSize: gridHeight*0.15,color: Colors.white),)
+            Text("第",style: TextStyle(fontSize: gridHeight*0.15,color: themeProvider.colorNavText),),
+            Text("$week",style: TextStyle(fontSize: gridHeight*0.21,color: themeProvider.colorNavText),),
+            Text("周",style: TextStyle(fontSize: gridHeight*0.15,color: themeProvider.colorNavText),)
           ],
         ),
         _buildPoints(week)

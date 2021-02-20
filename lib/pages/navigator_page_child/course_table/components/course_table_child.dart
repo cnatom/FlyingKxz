@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
@@ -63,12 +64,19 @@ class CourseCard extends StatefulWidget {
 
 class _CourseCardState extends State<CourseCard> {
   CourseProvider courseProvider;
+  ThemeProvider themeProvider;
+  Color cardColor;
   bool isRepeat;
   @override
   Widget build(BuildContext context) {
     courseProvider = Provider.of<CourseProvider>(context);
+    themeProvider = Provider.of<ThemeProvider>(context);
+    cardColor = CourseColor.fromStr(widget.courseData.title.toString());
     isRepeat = false;
-    if(widget.clickData.length!=1) isRepeat = true;
+    if(widget.clickData.length!=1){
+      isRepeat = true;
+      cardColor = Colors.grey;
+    }
     if(widget.courseData!=null){
       return _buildCard();
     }else{
@@ -98,7 +106,6 @@ class _CourseCardState extends State<CourseCard> {
     double top = (widget.courseData.lessonNum-1)*widget.unitHeight;
     double left = (widget.courseData.weekNum-1)*widget.unitWidth;
     double height = widget.unitHeight*widget.courseData.durationNum;
-
     return Positioned(
       top:top,
       left:left,
@@ -112,7 +119,7 @@ class _CourseCardState extends State<CourseCard> {
             padding: cardPadding(),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: isRepeat?Colors.grey:CourseColor.fromStr(widget.courseData.title.toString()).withOpacity(0.9)
+                color: cardColor.withOpacity(0.9)
             ),
             child: _buildCardInfo(),
           ),
@@ -253,9 +260,10 @@ class _CourseCardState extends State<CourseCard> {
       style: TextStyle(
           fontSize:
           ScreenUtil().setSp(sp),
-          color: Colors.white),
+          color: Colors.white,),
       textAlign: TextAlign.center,
       maxLines: 2,
+
       overflow: TextOverflow.ellipsis,
     );
   }

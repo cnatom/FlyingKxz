@@ -7,47 +7,70 @@ import 'package:flutter_easyhub/animation/easy_falling_ball.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
+import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/pages/backImage_view.dart';
 import 'package:provider/provider.dart';
 import 'config.dart';
 
-//常用圆角容器
-//Widget FlyCirContainer(
-//        {@required Widget child,
-//        Color color = Colors.white}) =>
-//    Container(
-//      margin: EdgeInsets.fromLTRB(spaceCardMarginTB, 0, spaceRow, 0),
-//      padding: EdgeInsets.all(spaceRow),
-//      decoration: BoxDecoration(
-//          borderRadius: BorderRadius.circular(borderRadiusValue), color: color),
-//      child: child,
-//    );
-class FlyFilterContainer extends StatefulWidget {
+class FlyContainer extends StatefulWidget {
   final Widget child;
-
-  const FlyFilterContainer({Key key, @required this.child}) : super(key: key);
-
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
+  final Decoration decoration;
+  FlyContainer(
+      {@required this.child, this.margin, this.padding, this.decoration});
   @override
-  _FlyFilterContainerState createState() => _FlyFilterContainerState();
+  _FlyContainerState createState() => _FlyContainerState();
 }
 
-class _FlyFilterContainerState extends State<FlyFilterContainer> {
+class _FlyContainerState extends State<FlyContainer> {
+  @override
+  Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+    return Container(
+      margin: widget.margin,
+      padding: widget.padding,
+      decoration: widget.decoration??BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadiusValue),
+          color: Theme.of(context)
+              .cardColor
+              .withOpacity(themeProvider.simpleMode?1:themeProvider.transCard),
+          boxShadow: [
+            boxShadowMain
+          ]),
+      child: widget.child,
+    );
+  }
+}
+
+class FlyNavBackground extends StatefulWidget {
+  final Widget child;
+
+  const FlyNavBackground({Key key, @required this.child}) : super(key: key);
+
+  @override
+  _FlyNavBackgroundState createState() => _FlyNavBackgroundState();
+}
+
+class _FlyNavBackgroundState extends State<FlyNavBackground> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Stack(
       children: [
+        BackImgView(),
         Positioned.fill(
-          child: ClipRect(
-            //背景过滤器
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: themeProvider.blurBack,sigmaY: themeProvider.blurBack,),
-              child: Opacity(
-                opacity: themeProvider.transBack,
+          child: FlyWidgetBuilder(
+            whenFirst: themeProvider.simpleMode,
+            firstChild: Container(color: Color(0xfff2f5f7),),
+            secondChild: ClipRect(
+              //背景过滤器
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: themeProvider.blurBack,sigmaY: themeProvider.blurBack),
                 child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.black
-                  ),
+                  color: Colors.black.withOpacity(themeProvider.transBack),
                 ),
               ),
             ),

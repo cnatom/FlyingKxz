@@ -34,15 +34,19 @@ class CoursePage extends StatefulWidget {
 class CoursePageState extends State<CoursePage>
     with AutomaticKeepAliveClientMixin {
   CourseProvider courseProvider;
+  ThemeProvider themeProvider;
   GlobalKey<RightPointWidgetState> _rightGlobalKey = new GlobalKey<RightPointWidgetState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return MultiProvider(
-      providers: [ChangeNotifierProvider.value(value: CourseProvider())],
+      providers: [
+        ChangeNotifierProvider.value(value: CourseProvider()),
+        ChangeNotifierProvider.value(value: ThemeProvider()),],
       builder: (context,_){
         courseProvider = Provider.of<CourseProvider>(context);
+        themeProvider = Provider.of<ThemeProvider>(context);
         return Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.transparent,
@@ -75,10 +79,10 @@ class CoursePageState extends State<CoursePage>
   PreferredSizeWidget _buildAppBar(){
     return AppBar(
       backgroundColor: Colors.transparent,
-      brightness: Brightness.dark,
+      brightness: themeProvider.simpleMode?Brightness.light:Brightness.dark,
       centerTitle: true,
       title: FlyText.title45('第${CourseProvider.curWeek}周',
-          fontWeight: FontWeight.w600, color: Theme.of(context).accentColor),
+          fontWeight: FontWeight.w600, color: themeProvider.colorNavText),
       leading: _buildCourseImportView(),
       actions: [
         _buildRefreshButton(),
@@ -93,7 +97,7 @@ class CoursePageState extends State<CoursePage>
     return IconButton(
       icon: Icon(Icons.cloud_download_outlined),
       onPressed: ()=>_importCourse(),
-      color: Colors.white,);
+      color: themeProvider.colorNavText,);
   }
   _importCourse()async{
     showPicker(context, _scaffoldKey,
@@ -113,7 +117,7 @@ class CoursePageState extends State<CoursePage>
         firstChild: IconButton(
           icon: Icon(
             EvilIcons.refresh,
-            color: Theme.of(context).accentColor,
+            color: themeProvider.colorNavText,
           ),
           onPressed: (){
             courseProvider.changeWeek(CourseProvider.initialWeek);
@@ -127,7 +131,7 @@ class CoursePageState extends State<CoursePage>
     return IconButton(
       icon: Icon(
         Icons.add,
-        color: Theme.of(context).accentColor,
+        color: themeProvider.colorNavText,
       ),
       onPressed: ()=>_addCourse(),
     );
@@ -157,7 +161,7 @@ class CoursePageState extends State<CoursePage>
     return  IconButton(
       icon: Icon(
         Boxicons.bx_menu_alt_right,
-        color: Theme.of(context).accentColor,
+        color: themeProvider.colorNavText,
       ),
       onPressed: () {
         _rightGlobalKey.currentState.show();
@@ -221,9 +225,9 @@ class CoursePageState extends State<CoursePage>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FlyText.mini30(
-            week,color: Colors.white,
+            week,color: themeProvider.colorNavText,
           ),
-          FlyText.mini25("${subDate.month}/${subDate.day}",color: Colors.white,)
+          FlyText.mini25("${subDate.month}/${subDate.day}",color: themeProvider.colorNavText,)
         ],
       ),
     );
@@ -243,9 +247,9 @@ class CoursePageState extends State<CoursePage>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FlyText.mini30(
-            week,color: Colors.white,
+            week,color: themeProvider.colorNavText,
           ),
-          FlyText.mini25("${subDate.month}/${subDate.day}",color: Colors.white,)
+          FlyText.mini25("${subDate.month}/${subDate.day}",color: themeProvider.colorNavText,)
         ],
       ),
     );
@@ -313,11 +317,11 @@ class CoursePageState extends State<CoursePage>
           children: [
             Text(
               num,
-              style: TextStyle(fontSize: height * 0.22,color: Colors.white),
+              style: TextStyle(fontSize: height * 0.22,color: themeProvider.colorNavText),
             ),
             for(int i = 0;i<subTimeList.length;i++)Text(
               subTimeList[i]+(i!=0?'\n':''),
-              style: TextStyle(fontSize: height * 0.14,color: Colors.white),
+              style: TextStyle(fontSize: height * 0.14,color: themeProvider.colorNavText),
             )
           ],
         ),
@@ -343,11 +347,11 @@ class CoursePageState extends State<CoursePage>
           children: [
             Text(
               num,
-              style: TextStyle(fontSize: height * 0.22,color: Colors.white),
+              style: TextStyle(fontSize: height * 0.22,color: themeProvider.colorNavText),
             ),
             for(int i = 0;i<subTimeList.length;i++)Text(
               subTimeList[i]+(i!=0?'\n':''),
-              style: TextStyle(fontSize: height * 0.14,color: Colors.white),
+              style: TextStyle(fontSize: height * 0.14,color: themeProvider.colorNavText),
             )
           ],
         ),

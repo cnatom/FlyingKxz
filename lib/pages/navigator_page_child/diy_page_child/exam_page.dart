@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/FlyingUiKit/container.dart';
 
 import 'package:flying_kxz/Model/exam_info.dart';
 import 'package:flying_kxz/Model/global.dart';
@@ -18,6 +20,7 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_add_pa
 import 'package:left_scroll_actions/cupertinoLeftScroll.dart';
 import 'package:left_scroll_actions/global/actionListener.dart';
 import 'package:left_scroll_actions/leftScroll.dart';
+import 'package:provider/provider.dart';
 class ExamPage extends StatefulWidget {
   @override
   _ExamPageState createState() => _ExamPageState();
@@ -27,7 +30,48 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
   bool loading = false;
   Timer timer;
   int countdownTime = 0;
+  ThemeProvider themeProvider;
+  @override
+  void initState() {
+    super.initState();
+    initExamData();
+    initDiyData();
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    themeProvider = Provider.of<ThemeProvider>(context);
+    return Padding(
+      padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+      child: Column(
+        children: [
+          Container(
+              width: double.infinity,
+              child: curView()
+          ),
+          Column(
+            children: Global.examDiyInfo.data.map((item){
+              return InkWell(
+                onTap: ()async{
+                  if(await willSignOut(context)){
+                    var delIndex = Global.examDiyInfo.data.indexOf(item);
+                    Global.examDiyInfo.data.removeAt(delIndex);
+                    Global.prefs.setString(Global.prefsStr.examDiyDataLoc, jsonEncode(Global.examDiyInfo.toJson()));
+                    setState(() {
+                    });
+                  }
+                },
+                child: examCard(item.course, item.local, item.time, item.year, item.month, item.day),
+              );
+            }).toList(),
+          ),
+          SizedBox(height: spaceCardMarginTB,),
+          addDiyExamButton()
+        ],
+      ),
+    );
+  }
 
   getShowExamView({@required String year,@required String term})async{
     setState(() {loading = true;});
@@ -126,14 +170,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
     }else{
       colorCard = colorExamCard[3];
     }
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor.withOpacity(transparentValue),
-        borderRadius: BorderRadius.circular(borderRadiusValue),
-        boxShadow: [
-          boxShadowMain
-        ]
-      ),
+    return FlyContainer(
       margin: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginBigTB),
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB/2, spaceCardPaddingRL, spaceCardPaddingTB),
       child: Column(
@@ -144,7 +181,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
-                child: FlyText.main35(courseName,fontWeight: FontWeight.w500),
+                child: FlyText.main35(courseName,fontWeight: FontWeight.w500,color: themeProvider.colorNavText,),
               ),
               SizedBox(width: 10,),
               (examDateTime.day==Global.nowDate.day&&examDateTime.month==Global.nowDate.month)?Row(
@@ -169,7 +206,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
           ),
           SizedBox(height: spaceCardPaddingTB/3,),
           LinearProgressIndicator(
-            backgroundColor: Theme.of(context).unselectedWidgetColor,
+            backgroundColor: Theme.of(context).unselectedWidgetColor.withOpacity(0.2),
             minHeight: 7,
             value: timeLeftInt/30,
             valueColor: new AlwaysStoppedAnimation<Color>(colorCard.withAlpha(180)),
@@ -179,7 +216,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              FlyText.mainTip35(location,),
+              FlyText.main35(location,color: themeProvider.colorNavText.withOpacity(0.5),),
               FlyText.main35(dateTime,color: colorCard.withAlpha(180))
             ],
           )
@@ -246,62 +283,21 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
   Widget addDiyExamButton(){
     return InkWell(
       onTap: ()=>addDiyExamFunc(),
-      child: Container(
+      child: FlyContainer(
         decoration: BoxDecoration(
-            color: Theme.of(context).cardColor.withOpacity(transparentValue),
-            borderRadius: BorderRadius.circular(100)
+            color: Theme.of(context).cardColor.withOpacity(themeProvider.simpleMode?1:themeProvider.transCard),
+            borderRadius: BorderRadius.circular(100),
+            boxShadow: [
+              boxShadowMain
+            ]
         ),
+
         padding: EdgeInsets.all(spaceCardPaddingRL/1.5),
-        child: Icon(Icons.add,color: colorMain,),
+        child: Icon(Icons.add,color: themeProvider.colorMain,),
       ),
     );
   }
-  @override
-  void initState() {
-    super.initState();
-    initExamData();
-    initDiyData();
-  }
 
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return Padding(
-      padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-      child: Column(
-        children: [
-          Container(
-              width: double.infinity,
-              child: curView()
-          ),
-          Column(
-            children: Global.examDiyInfo.data.map((item){
-              return InkWell(
-                onTap: ()async{
-                  if(await willSignOut(context)){
-                    var delIndex = Global.examDiyInfo.data.indexOf(item);
-                    Global.examDiyInfo.data.removeAt(delIndex);
-                    Global.prefs.setString(Global.prefsStr.examDiyDataLoc, jsonEncode(Global.examDiyInfo.toJson()));
-                    setState(() {
-                    });
-                  }
-                },
-                child: examCard(item.course, item.local, item.time, item.year, item.month, item.day),
-              );
-            }).toList(),
-          ),
-          SizedBox(height: spaceCardMarginTB,),
-          addDiyExamButton()
-        ],
-      ),
-    );
-  }
 
   @override
   bool get wantKeepAlive => true;

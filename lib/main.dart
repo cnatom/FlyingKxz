@@ -15,7 +15,6 @@ import 'Model/global.dart';
 import 'dart:io';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  Prefs.init();
   if (Platform.isAndroid) {
     //设置android状态栏为透明的沉浸。
     SystemUiOverlayStyle systemUiOverlayStyle =
@@ -24,12 +23,27 @@ void main() {
   }
   runApp(MyApp());
 }
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context)=>ChangeNotifierProvider(
-    create: (context)=>ThemeProvider(),
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  void _init()async{
+    await Prefs.init();
+    ThemeProvider.init();
+  }
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+  @override
+  Widget build(BuildContext context)=>MultiProvider(
+    providers: [ChangeNotifierProvider.value(value: ThemeProvider())],
     builder: (context,_){
       final themeProvider = Provider.of<ThemeProvider>(context);
+
       return MaterialApp(
         themeMode: themeProvider.themeMode,
         theme: FlyThemes.lightTheme,
@@ -54,6 +68,8 @@ class MyApp extends StatelessWidget {
       );
     },
   );
+
+
 }
 
 //启动页

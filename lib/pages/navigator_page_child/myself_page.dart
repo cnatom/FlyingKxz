@@ -59,7 +59,7 @@ class _MyselfPageState extends State<MyselfPage>
       appBar: AppBar(
         leading: Container(),
         backgroundColor: Colors.transparent,
-        brightness: Brightness.dark,
+        brightness: themeProvider.simpleMode?Brightness.light:Brightness.dark,
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -86,7 +86,7 @@ class _MyselfPageState extends State<MyselfPage>
                           subTitle: "校园卡余额 (元)",
                         )),
                     Container(
-                      color: Colors.white.withOpacity(0.2),
+                      color: themeProvider.colorNavText.withOpacity(0.2),
                       height: fontSizeMini38 * 2,
                       width: 1,
                     ),
@@ -183,6 +183,17 @@ class _MyselfPageState extends State<MyselfPage>
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
       child: Wrap(
         children: [
+          _buildDiyButton("简约白", child: _buildSwitch(themeProvider.simpleMode, onChanged: (v){
+            setState(() {
+              themeProvider.simpleMode = !themeProvider.simpleMode;
+            });
+          })),
+          _buildDiyButton("深邃黑", child: _buildSwitch(themeProvider.darkMode, onChanged: (v){
+            setState(() {
+              themeProvider.darkMode = !themeProvider.darkMode;
+            });
+          })),
+
           _buildDiyButton("更换背景",
               onTap: ()=> _changeBackgroundImage(),
               child: Row(
@@ -191,7 +202,7 @@ class _MyselfPageState extends State<MyselfPage>
                   Icon(
                     Icons.arrow_right_sharp,
                     size: sizeIconMain50,
-                    color: Colors.white.withOpacity(0.5),
+                    color: themeProvider.colorNavText.withOpacity(0.5),
                   )
                 ],
               )
@@ -207,15 +218,11 @@ class _MyselfPageState extends State<MyselfPage>
               })
           ),
           _buildDiyButton("卡片透明",
-              child: _buildSliver(themeProvider.transCard,min: 0.01,max:0.5, onChanged: (v) {
+              child: _buildSliver(themeProvider.transCard,min: 0.01,max:themeProvider.darkMode?0.5:0.2, onChanged: (v) {
                 themeProvider.transCard = v;
               })
           ),
-          _buildDiyButton("夜间模式", child: _buildSwitch(themeProvider.darkMode, onChanged: (v){
-            setState(() {
-              themeProvider.darkMode = !themeProvider.darkMode;
-            });
-          })),
+
         ],
       ),
     );
@@ -230,7 +237,7 @@ class _MyselfPageState extends State<MyselfPage>
           children: [
             Expanded(
               flex: 2,
-              child: FlyText.main35(title,color: Colors.white,),
+              child: FlyText.main35(title,color: themeProvider.colorNavText,),
             ),
             Expanded(
               flex: 5,
@@ -320,60 +327,18 @@ class _MyselfPageState extends State<MyselfPage>
   Widget _buttonList({List<Widget> children = const <Widget>[]}) {
     return Padding(
       padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-      child: _buildContainer(
+      child: FlyContainer(
           child: Column(
         children: children,
       )),
     );
   }
 
-  Widget _buildContainer(
-      {@required Widget child,
-      EdgeInsetsGeometry margin,
-      EdgeInsetsGeometry padding}) {
-    return Container(
-      margin: margin,
-      padding: padding,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadiusValue),
-          color: Theme.of(context)
-              .cardColor
-              .withOpacity(themeProvider.transCard)),
-      child: child,
-    );
-  }
 
-  Widget _buildTitleLeftButton(String title,
-      {GestureTapCallback onTap}) =>
-      InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(0, spaceCardMarginBigTB*1.2, 0, spaceCardMarginBigTB),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  FlyText.main35(
-                    title,
-                    color: Colors.white,
-                  )
-                ],
-              ),
-              Icon(
-                Icons.arrow_right_sharp,
-                size: sizeIconMain50,
-                color: Colors.white.withOpacity(0.5),
-              )
-            ],
-          ),
-        ),
-      );
+
   Widget _buildIconTitleButton(
           {@required IconData icon,
           @required String title,
-          String preview = '',
           GestureTapCallback onTap}) =>
       InkWell(
         onTap: onTap,
@@ -389,18 +354,18 @@ class _MyselfPageState extends State<MyselfPage>
                   Icon(
                     icon,
                     size: sizeIconMain50,
-                    color: Colors.white,
+                    color: themeProvider.colorNavText,
                   ),
                   SizedBox(
                     width: spaceCardPaddingTB * 3,
                   ),
                   FlyText.main40(
                     title,
-                    color: Colors.white,
+                    color: themeProvider.colorNavText,
                   )
                 ],
               ),
-              FlyIconRightGreyArrow(color: Colors.white.withOpacity(0.5))
+              FlyIconRightGreyArrow(color: themeProvider.colorNavText.withOpacity(0.5))
             ],
           ),
         ),
@@ -440,7 +405,7 @@ class _MyselfPageState extends State<MyselfPage>
                   Row(
                     children: [
                       FlyText.title45(name,
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                          color: themeProvider.colorNavText, fontWeight: FontWeight.bold),
                       SizedBox(
                         width: fontSizeMini38,
                       ),
@@ -471,7 +436,7 @@ class _MyselfPageState extends State<MyselfPage>
                   Container(
                     child: FlyText.mini30(
                       college,
-                      color: Theme.of(context).accentColor,
+                      color: themeProvider.colorNavText,
                     ),
                   ),
                 ],
@@ -491,22 +456,20 @@ class _MyselfPageState extends State<MyselfPage>
             FlyText.main40(
               title,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).accentColor,
+              color: themeProvider.colorNavText,
             ),
             FlyText.mini30(
               subTitle,
-              color: Theme.of(context).accentColor,
+              color: themeProvider.colorNavText.withOpacity(0.5),
             ),
           ],
         ),
       );
   Widget _buildTitleCenterButton(BuildContext context, String title,
-      {GestureTapCallback onTap,
-      Color textColor = Colors.black,
-      Color backgroundColor = Colors.white}) {
+      {GestureTapCallback onTap,}) {
     return InkWell(
       onTap: onTap,
-      child: _buildContainer(
+      child: FlyContainer(
         margin: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
         padding: EdgeInsets.fromLTRB(
             0, spaceCardPaddingTB * 1.5, 0, spaceCardPaddingTB * 1.5),
@@ -515,7 +478,7 @@ class _MyselfPageState extends State<MyselfPage>
           children: <Widget>[
             FlyText.main35(
               title,
-              color: Colors.white,
+              color: themeProvider.colorNavText,
             )
           ],
         ),
@@ -554,6 +517,7 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
       child: Column(
         children: [
           _button(),
+
           AnimatedCrossFade(
             alignment: Alignment.topCenter,
             firstCurve: Curves.easeOutCubic,
@@ -566,10 +530,16 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(borderRadiusValue),
-                    color: Theme.of(context)
-                        .cardColor
-                        .withOpacity(themeProvider.transCard)),
-                child: widget.secondChild,
+                    color: Theme.of(context).cardColor.withOpacity(opacity)),
+                child: Column(
+                  children: [
+                    themeProvider.simpleMode?Padding(
+                      padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+                      child: Divider(height: 0,),
+                    ):Container(),
+                    widget.secondChild
+                  ],
+                ),
               ),
             ),
             duration: Duration(milliseconds: 200),
@@ -604,14 +574,14 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
                   Icon(
                     widget.icon,
                     size: sizeIconMain50,
-                    color: Colors.white,
+                    color: themeProvider.colorNavText,
                   ),
                   SizedBox(
                     width: spaceCardPaddingTB * 3,
                   ),
                   FlyText.main40(
                     widget.title,
-                    color: Colors.white,
+                    color: themeProvider.colorNavText,
                   )
                 ],
               ),
@@ -620,7 +590,7 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
                     ? Icons.keyboard_arrow_down
                     : Icons.keyboard_arrow_right,
                 size: sizeIconMain50,
-                color: Colors.white.withOpacity(0.5),
+                color: themeProvider.colorNavText.withOpacity(0.5),
               )
             ],
           ),
