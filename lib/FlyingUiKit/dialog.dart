@@ -22,7 +22,7 @@ Future<String> FlyDialogInputShow(BuildContext context,
       content: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadiusValue),
-          color: Theme.of(context).unselectedWidgetColor,
+          color: Theme.of(context).disabledColor,
 
         ),
         padding: EdgeInsets.fromLTRB(

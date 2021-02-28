@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
+import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/Model/score_info.dart';
 import 'package:flying_kxz/pages/backImage_view.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -382,9 +384,9 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   @override
   void initState() {
     super.initState();
-    curScoreYear = Global.prefs.getString(Global.prefsStr.schoolYear)+'-'+(int.parse(Global.prefs.getString(Global.prefsStr.schoolYear))+1).toString();
-    curScoreTerm = "第${Global.prefs.getString(Global.prefsStr.schoolTerm)}学期";
-    getShowScoreView(year: curScoreYear,term: Global.prefs.getString(Global.prefsStr.schoolTerm));
+    curScoreYear = Prefs.schoolYear+'-'+(int.parse(Prefs.schoolYear)+1).toString();
+    curScoreTerm = "第${Prefs.schoolTerm}学期";
+    getShowScoreView(year: curScoreYear,term: Prefs.schoolTerm);
   }
 
   @override
@@ -398,7 +400,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       jiaquanTotal = null;
       jidianTotal = null;
     });
-    await scoreGet(context, token: Global.prefs.getString(Global.prefsStr.token),year: year,term: term);
+    await scoreGet(context, token:Prefs.token,year: year,term: term);
     curScoreYear = year;
     curScoreTerm = term=="0"?"全部学期":"第$term学期";
     scoreDetailCrossFadeState.clear();
@@ -501,7 +503,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                 FlySearchBarButton('点击查询',
                     "${curScoreYear} ${curScoreTerm}",
                     onTap: ()=>showPicker(context, scaffoldKey,
-                        pickerDatas: Global.xqxnWithAllTermPickerData,
+                        pickerDatas: PickerData.xqxnWithAllTermPickerData,
                         onConfirm: (Picker picker, List value) {
                           debugPrint(value.toString());
                           getShowScoreView(year: picker.getSelectedValues()[0].toString(),term: '${(value[1]).toString()}');

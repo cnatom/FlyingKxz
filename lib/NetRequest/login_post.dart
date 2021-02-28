@@ -4,10 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/login_info.dart';
-
+import 'package:flying_kxz/Model/prefs.dart';
 
 //获取登录json数据
-Future<bool> loginPost(BuildContext context,int loginCount,{@required String username, @required String password}) async {
+Future<bool> loginPost(BuildContext context, int loginCount,
+    {@required String username, @required String password}) async {
   try {
     Map _jsonMap = {'username': username, 'password': password};
     Response res;
@@ -21,15 +22,18 @@ Future<bool> loginPost(BuildContext context,int loginCount,{@required String use
     if (map['code'] == 0) {
       //登录成功
       Global.loginInfo = LoginInfo.fromJson(map);
-      Global.prefs.setString(Global.prefsStr.token, Global.loginInfo.data.token.toString());
-      Global.prefs.setString(Global.prefsStr.username, username);
-      Global.prefs.setString(Global.prefsStr.name, Global.loginInfo.data.name);
-      Global.prefs.setString(Global.prefsStr.iClass, Global.loginInfo.data.classname);
-      Global.prefs.setString(Global.prefsStr.college, Global.loginInfo.data.college);
-      Global.prefs.setBool(Global.prefsStr.isFirstLogin, true);
+      Prefs.token = Global.loginInfo.data.token.toString();
+      Prefs.username = username;
+      Prefs.name = Global.loginInfo.data.name;
+      Prefs.iClass = Global.loginInfo.data.classname;
+      Prefs.college = Global.loginInfo.data.college;
+      Prefs.isFirstLogin = true;
       return true;
-    }else{
-      showToast(context, map['msg'].toString()+(loginCount>2?'\n\n多次登陆失败请点击"无法登陆"联系我们':""));
+    } else {
+      showToast(
+          context,
+          map['msg'].toString() +
+              (loginCount > 2 ? '\n\n多次登陆失败请点击"无法登陆"联系我们' : ""));
       return false;
     }
   } catch (e) {

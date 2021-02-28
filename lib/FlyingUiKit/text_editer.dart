@@ -6,10 +6,11 @@ import 'Text/text.dart';
 import 'config.dart';
 
 Widget FlyInputBar(BuildContext context,String hintText, TextEditingController controller,
-    {FormFieldSetter<String> onSaved, bool obscureText = false,TextAlign textAlign = TextAlign.center}) =>
+    {FormFieldSetter<String> onSaved,EdgeInsetsGeometry padding,bool obscureText = false,TextAlign textAlign = TextAlign.center}) =>
     Container(
+      padding: padding,
       decoration: BoxDecoration(
-          color: Theme.of(context).unselectedWidgetColor,
+          color: Theme.of(context).disabledColor,
           borderRadius: BorderRadius.circular(100)
       ),
       child: TextFormField(

@@ -6,7 +6,7 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  static ThemeMode _themeMode;
+  static ThemeMode _themeMode = ThemeMode.light;
   static bool _darkMode;//夜间模式
   static bool _simpleMode;//简洁模式
 
@@ -26,47 +26,66 @@ class ThemeProvider extends ChangeNotifier {
   Color get colorMain => _colorMain;
   Color get colorNavText => _colorNavText;
 
-  static Map _lightDefault = {
+  static Map _diyDefault = {
     "darkMode": false,
     "simpleMode":false,
     "transBack": 0.5,
     "blurBack": 8.0,
     "transCard": 0.05,
   };
-  ThemeProvider();
-
+  static Map _lightDefault = {
+    "darkMode": false,
+    "simpleMode":true,
+    "transBack": 0.5,
+    "blurBack": 8.0,
+    "transCard": 0.1,
+  };
+  static Map _darkDefault = {
+    "darkMode": true,
+    "simpleMode":false,
+    "transBack": 1.0,
+    "blurBack": 8.0,
+    "transCard": 0.8,
+  };
+  ThemeProvider(){
+    notifyListeners();
+  }
+  notify(){
+    notifyListeners();
+  }
   ///初始化主题数据
   static init() {
-    debugPrint(Prefs.prefs.toString());
     if (Prefs.themeData == null) {
-      _initFromJson(_lightDefault);
-      Prefs.themeData = jsonEncode(_lightDefault);
+      _initFromJson(_diyDefault);
+      _themeMode = ThemeMode.light;
+      _savePrefs();
     } else {
       _initFromJson(jsonDecode(Prefs.themeData));
     }
   }
   //恢复默认配置
   _restore(){
-    _initFromJson(_lightDefault);
+    debugPrint("@restore");
+    _initFromJson(_diyDefault);
   }
   ///本地化存储
-  _savePrefs() {
-    Prefs.themeData = jsonEncode(toJson());
+  static _savePrefs() {
+    Prefs.themeData = jsonEncode(_toJson());
   }
 
   ///Map->类的变量
   static _initFromJson(dynamic json) {
     _darkMode = json["darkMode"];
-    _transBack = json["transBack"];
     _simpleMode = json["simpleMode"];
     _blurBack = json["blurBack"];
     _transCard = json["transCard"];
+    _transBack = json["transBack"];
     _colorNavText = _simpleMode?Colors.black:Colors.white;
     _themeMode = _darkMode ? ThemeMode.dark : ThemeMode.light;
   }
 
   ///将类数据打包成Map
-  Map<String, dynamic> toJson() {
+  static Map<String, dynamic> _toJson() {
     var map = <String, dynamic>{};
     map["darkMode"] = _darkMode;
     map["simpleMode"] = _simpleMode;
@@ -82,15 +101,20 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
     _savePrefs();
   }
-
+  set simpleMode(bool value) {
+    _simpleMode = value;
+    if(_simpleMode){
+      _initFromJson(_lightDefault);
+    }else{
+      _restore();
+    }
+    notifyListeners();
+    _savePrefs();
+  }
   set darkMode(bool value) {
     _darkMode = value;
     if (darkMode) {
-      _simpleMode = false;
-      _transBack = 1;
-      _transCard = 0.5;
-      _colorNavText = Colors.white;
-      _themeMode = ThemeMode.dark;
+      _initFromJson(_darkDefault);
     } else {
       _restore();
     }
@@ -105,19 +129,7 @@ class ThemeProvider extends ChangeNotifier {
       _savePrefs();
     }
   }
-  set simpleMode(bool value) {
-    _simpleMode = value;
-    if(_simpleMode){
-      _transCard = 0.1;
-      _themeMode = ThemeMode.light;
-      _colorNavText = Colors.black;
-      _darkMode = false;
-    }else{
-      _restore();
-    }
-    notifyListeners();
-    _savePrefs();
-  }
+
 
   set blurBack(double value) {
     _blurBack = value;

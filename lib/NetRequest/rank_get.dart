@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/book_info.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/Model/rank_info.dart';
 
 Future<bool> rankGet({@required String username}) async {
@@ -22,7 +23,7 @@ Future<bool> rankGet({@required String username}) async {
     debugPrint(res.toString());
     if (res.statusCode==200) {
       Global.rankInfo = RankInfo.fromJson(map);
-      Global.prefs.setString(Global.prefsStr.rank, Global.rankInfo.data.rank.toString());
+      Prefs.rank = Global.rankInfo.data.rank.toString();
       return true;
     }else{
       return false;

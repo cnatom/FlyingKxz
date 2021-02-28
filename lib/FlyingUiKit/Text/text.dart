@@ -2,14 +2,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
+double fontSizeTitle50; //headline1
+double fontSizeTitle45; //headline2
+double fontSizeMain40; //body1
+double fontSizeMini38; //body2
+double fontSizeTip33; //subtitle1
+double fontSizeTipMini25; //subtitle2
 
-final double fontSizeTitle50 = ScreenUtil().setSp(50); //headline1
-final double fontSizeTitle45 = ScreenUtil().setSp(45); //headline2
-final double fontSizeMain40 = ScreenUtil().setSp(40); //body1
-final double fontSizeMini38 = ScreenUtil().setSp(38); //body2
-final double fontSizeTip33 = ScreenUtil().setSp(33); //subtitle1
-final double fontSizeTipMini25 = ScreenUtil().setSp(25); //subtitle2
-enum TextType { head1, head2, body1, body2, sub1, sub2 }
+//边距等配置
+double spaceCardMarginBigTB;
+double spaceCardMarginTB;//上下外边距
+double spaceCardPaddingTB;//上下内边距
+double spaceCardMarginRL;//左右外边距
+double spaceCardPaddingRL;//左右内边距
+//图标大小管理
+double sizeIconMain50;
+void initSize(){
+  fontSizeTitle50 = ScreenUtil().setSp(50); //headline1
+  fontSizeTitle45 = ScreenUtil().setSp(45); //headline2
+  fontSizeMain40 = ScreenUtil().setSp(40); //body1
+  fontSizeMini38 = ScreenUtil().setSp(38); //body2
+  fontSizeTip33 = ScreenUtil().setSp(33); //subtitle1
+  fontSizeTipMini25 = ScreenUtil().setSp(25); //subtitle2
+  sizeIconMain50 = ScreenUtil().setSp(50);
+
+  //边距等配置
+  spaceCardMarginBigTB = ScreenUtil().setSp(30);
+  spaceCardMarginTB = ScreenUtil().setSp(25);//上下外边距
+  spaceCardPaddingTB = ScreenUtil().setSp(25);//上下内边距
+  spaceCardMarginRL = ScreenUtil().setWidth(30);//左右外边距
+  spaceCardPaddingRL = ScreenUtil().setWidth(50);//左右内边距
+}
+
 class FlyText extends StatelessWidget {
   FlyText.title50(
     this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine}

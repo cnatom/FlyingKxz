@@ -35,12 +35,12 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
     Dio().get(
         "https://www.lvyingzhao.cn/action",
         queryParameters: {
-          "username":Global.prefs.getString(Global.prefsStr.username),
+          "username":Prefs.username,
           "version":Global.curVersion,
           "platform":Platform.operatingSystem
         }
     );
-    if(Global.prefs.getString(Global.prefsStr.cumtLoginUsername)!=null){
+    if(Prefs.cumtLoginUsername!=null){
       await cumtAutoLoginGet(context,
           username: Prefs.cumtLoginUsername,
           password: Prefs.cumtLoginPassword,

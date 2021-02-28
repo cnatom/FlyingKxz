@@ -10,15 +10,15 @@ import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../course_page.dart';
+import '../../course_page.dart';
 
-class PointArea extends StatefulWidget {
-  PointArea({Key key}):super(key: key);
+class PointMatrix extends StatefulWidget {
+  PointMatrix({Key key}):super(key: key);
   @override
-  PointAreaState createState() => PointAreaState();
+  PointMatrixState createState() => PointMatrixState();
 
 }
-class PointAreaState extends State<PointArea> {
+class PointMatrixState extends State<PointMatrix> {
   CourseProvider courseProvider;
   ThemeProvider themeProvider;
   ScrollController scrollController = new ScrollController();
@@ -38,13 +38,11 @@ class PointAreaState extends State<PointArea> {
     courseProvider = Provider.of<CourseProvider>(context);
     themeProvider = Provider.of<ThemeProvider>(context);
     _init(context);
-    return Container(
-      child: SingleChildScrollView(
-        controller: scrollController,
-        scrollDirection: Axis.vertical,
-        physics: BouncingScrollPhysics(),
-        child: _buildColumn(),
-      ),
+    return SingleChildScrollView(
+      controller: scrollController,
+      scrollDirection: Axis.vertical,
+      physics: BouncingScrollPhysics(),
+      child: _buildColumn(),
     );
   }
 

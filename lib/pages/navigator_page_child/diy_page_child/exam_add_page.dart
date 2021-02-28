@@ -14,6 +14,7 @@ import 'package:flying_kxz/FlyingUiKit/text_editer.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/exam_info.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 
 class ExamAddView extends StatefulWidget {
   @override
@@ -76,7 +77,7 @@ class _ExamAddViewState extends State<ExamAddView> {
         day: date.day
     );
     Global.examDiyInfo.data.add(newCountDownInfo);
-    Global.prefs.setString(Global.prefsStr.examDiyDataLoc, jsonEncode(Global.examDiyInfo.toJson()));
+    Prefs.examData = jsonEncode(Global.examDiyInfo.toJson());
     Navigator.pop(context);
   }
   @override

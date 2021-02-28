@@ -13,6 +13,7 @@ import 'package:flying_kxz/FlyingUiKit/container.dart';
 
 import 'package:flying_kxz/Model/exam_info.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/exam_get.dart';
 import 'dart:async';
 
@@ -57,7 +58,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
                   if(await willSignOut(context)){
                     var delIndex = Global.examDiyInfo.data.indexOf(item);
                     Global.examDiyInfo.data.removeAt(delIndex);
-                    Global.prefs.setString(Global.prefsStr.examDiyDataLoc, jsonEncode(Global.examDiyInfo.toJson()));
+                    Prefs.examDataDiy = jsonEncode(Global.examDiyInfo.toJson());
                     setState(() {
                     });
                   }
@@ -75,27 +76,27 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
 
   getShowExamView({@required String year,@required String term})async{
     setState(() {loading = true;});
-    if(await examPost(context, token:Global.prefs.getString(Global.prefsStr.token), year: year, term: term))
+    if(await examPost(context, token:Prefs.token, year: year, term: term))
     setState(() {loading = false;});
   }
   initExamData()async{
-    var localExamInfo = Global.prefs.getString(Global.prefsStr.examDataLoc);
+    var localExamInfo = Prefs.examData;
     if(localExamInfo!=null){
       Global.examInfo = ExamInfo.fromJson(jsonDecode(localExamInfo));
       setState(() {});
-      if(await examPost(context, token:Global.prefs.getString(Global.prefsStr.token),
-          year: Global.prefs.getString(Global.prefsStr.schoolYear), term: Global.prefs.getString(Global.prefsStr.schoolTerm))){
+      if(await examPost(context, token:Prefs.token,
+          year: Prefs.schoolYear, term: Prefs.schoolTerm)){
         setState(() {});
       }
 
     }else{
-      getShowExamView(year: Global.prefs.getString(Global.prefsStr.schoolYear), term: Global.prefs.getString(Global.prefsStr.schoolTerm));//首次使用
+      getShowExamView(year: Prefs.schoolYear, term: Prefs.schoolTerm);//首次使用
     }
 
   }
 
   initDiyData()async{
-    var localDiyInfo = Global.prefs.getString(Global.prefsStr.examDiyDataLoc);
+    var localDiyInfo = Prefs.examDataDiy;
     if(localDiyInfo!=null){
       Global.examDiyInfo = ExamInfo.fromJson(jsonDecode(localDiyInfo));
       setState(() {
@@ -247,27 +248,27 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
   }
   Widget infoEmptyView(){
     return Container();
-    return Container(
-      width: double.infinity,
-      child: InkWell(
-        onTap: ()async{
-          if (countdownTime == 0) {
-            await getShowExamView(year: Global.prefs.getString(Global.prefsStr.schoolYear),term: Global.prefs.getString(Global.prefsStr.schoolTerm));
-            setState(() {
-            countdownTime = 5;
-          });
-          startCountdownTimer();//倒计时
-          }
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FlyText.main40("ヾ(๑╹◡╹)ﾉ'  暂时还没有考试",color: colorMainTextWhite),
-            FlyText.mini30(countdownTime==0?"(点击空白处刷新)":"$countdownTime秒后可再次刷新",color: colorMainTextWhite.withOpacity(0.8))
-          ],
-        ),
-      ),
-    );
+    // return Container(
+    //   width: double.infinity,
+    //   child: InkWell(
+    //     onTap: ()async{
+    //       if (countdownTime == 0) {
+    //         await getShowExamView(year: Global.prefs.getString(Global.prefsStr.schoolYear),term: Global.prefs.getString(Global.prefsStr.schoolTerm));
+    //         setState(() {
+    //         countdownTime = 5;
+    //       });
+    //       startCountdownTimer();//倒计时
+    //       }
+    //     },
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       children: [
+    //         FlyText.main40("ヾ(๑╹◡╹)ﾉ'  暂时还没有考试",color: colorMainTextWhite),
+    //         FlyText.mini30(countdownTime==0?"(点击空白处刷新)":"$countdownTime秒后可再次刷新",color: colorMainTextWhite.withOpacity(0.8))
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
   Widget curView(){
     Widget child = nullView();

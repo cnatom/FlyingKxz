@@ -11,6 +11,7 @@ import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/text_editer.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/newLogin_post.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,7 +29,7 @@ class _ActiveStepPageState extends State<ActiveStepPage> {
   int _position = 0;
   bool _loading = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController usernameController = new TextEditingController(text: Global.prefs.getString(Global.prefsStr.username));
+  TextEditingController usernameController = new TextEditingController(text: Prefs.username);
   TextEditingController passwordController = new TextEditingController();
   void nextStep(){
     if(_position<2) setState(()=>_position++);
@@ -96,7 +97,7 @@ class _ActiveStepPageState extends State<ActiveStepPage> {
           Navigator.pop(context,);
         }
         setState(() {_loading = false;});
-      }):loadingAnimationTwoCircles(color: Colors.blue),
+      }):loadingAnimationTwoCircles(color: colorMain),
     );
   }
   @override

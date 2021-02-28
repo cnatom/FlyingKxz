@@ -4,12 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/Model/score_info.dart';
 
 Future<bool> cumtLoginGet(BuildContext context,{@required String username,@required String password,@required int loginMethod}) async {
-  Global.prefs.setString(Global.prefsStr.cumtLoginUsername, username);
-  Global.prefs.setString(Global.prefsStr.cumtLoginPassword, password);
-  Global.prefs.setInt(Global.prefsStr.cumtLoginMethod, loginMethod);
+  Prefs.cumtLoginUsername = username;
+  Prefs.cumtLoginPassword = password;
+  Prefs.cumtLoginMethod = loginMethod;
   try {
     String method;
     switch(loginMethod) {

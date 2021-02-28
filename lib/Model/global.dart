@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/Model/balance_info.dart';
 import 'package:flying_kxz/Model/power_info.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/Model/rank_info.dart';
 import 'package:flying_kxz/Model/score_info.dart';
 import 'package:flying_kxz/Model/swiper_info.dart';
@@ -35,14 +36,12 @@ Future<void> getSchoolYearTerm()async{
     year = Global.nowDate.year-1;
     term = 2;
   }
-  Global.prefs.setString(Global.prefsStr.schoolYear, year.toString());
-  Global.prefs.setString(Global.prefsStr.schoolTerm, term.toString());
+  Prefs.schoolYear = year.toString();
+  Prefs.schoolTerm = term.toString();
 }
 
 class Global{
-  static SharedPreferences prefs;
   static ApiUrl apiUrl = new ApiUrl();//网络请求url汇总
-  static PrefsStr prefsStr = new PrefsStr();//prefs信息的String标题
   static CourseInfo courseInfo = new CourseInfo(); //课表信息
   static LoginInfo loginInfo = new LoginInfo();//登录信息
   static ScoreInfo scoreInfo = new ScoreInfo();//成绩信息
@@ -62,41 +61,10 @@ class Global{
     courseInfo = new CourseInfo();
     scoreInfo = new ScoreInfo();
     examInfo = new ExamInfo();
-    Global.prefs.clear();
+    Prefs.prefs.clear();
     getSchoolYearTerm();
   }
-  static List xqxnPickerData = [
-    [
-      "2021-2022",
-      "2020-2021",
-      "2019-2020",
-      "2018-2019",
-      "2017-2018",
-      "2016-2017"
-    ],
-    [
-      '第1学期',
-      '第2学期',
-      '第3学期',
-    ],
-  ];
-  static List xqxnWithAllTermPickerData = [
-    [
-      "全部学年",
-      "2021-2022",
-      "2020-2021",
-      "2019-2020",
-      "2018-2019",
-      "2017-2018",
-      "2016-2017"
-    ],
-    [
-      '全部学期',
-      '第1学期',
-      '第2学期',
-      '第3学期',
-    ],
-  ];
+
 
 }
 
@@ -107,33 +75,12 @@ class ApiUrl{
   String scoreUrl = "https://api.kxz.atcumt.com/jwxt/grade";//成绩查询
   String examUrl = "https://api.kxz.atcumt.com/jwxt/exam";//考试查询
   String bookUrl = "https://api.kxz.atcumt.com/lib/book";//书籍查询
-  String powerUrl = "https://api.kxz.atcumt.com/daily/au_df";//自动电量查询
+  String powerAutoUrl = "https://api.kxz.atcumt.com/daily/au_df";//自动电量查询
+  String powerUrl = "https://api.kxz.atcumt.com/daily/df";//电量手动查询
   String swiperUrl = "http://api.kxz.atcumt.com/daily/home_image";//轮播图
   String rankUrl = "https://api.kxz.atcumt.com/admin/user_id";//用户内测排名
   String feedbackUrl = "https://api.kxz.atcumt.com/admin/feedback";//反馈
   String cumtLoginUrl = "http://10.2.5.251:801/eportal/";//校园网登陆
   String appUpgradeUrl = "https://api.kxz.atcumt.com/admin/version";//检查App更新
   String balanceUrl = "https://api.kxz.atcumt.com/new/simpleBalance";//校园卡余额
-}
-
-class PrefsStr{
-  String backImg = 'backImg';//背景图
-  String username = 'username';//用户名
-  String name = 'name';
-  String token = 'token';//token信息
-  String newToken = 'newToken';//新版登录的token信息
-  String college = 'college';//学院
-  String iClass = 'class';//班级
-  String power = 'power';//宿舍电量
-  String balance = 'balance';//校园卡余额
-  String rank = 'rank';//用户内测排名
-  String courseDataLoc = 'courseDataLoc';//课表
-  String examDataLoc = 'examDataLoc';//考试
-  String examDiyDataLoc = 'examDiyDataLoc';//自定义考试
-  String schoolYear = 'schoolYear';//当前学年
-  String schoolTerm = 'schoolTerm';//当前学期
-  String isFirstLogin = 'isFirstLogin';//是否初次登陆
-  String cumtLoginUsername = "cumtLoginUsername";//校园网账号
-  String cumtLoginPassword = "cumtLoginPassword";//校园网账号
-  String cumtLoginMethod = "cumtLoginMethod";//登录方式
 }

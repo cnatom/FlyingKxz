@@ -3,26 +3,27 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/power_info.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 
 // ignore: missing_return
-Future<bool> powerGet(BuildContext context,{@required String token}) async {
+Future<bool> powerGet(BuildContext context,
+    {@required String token,@required String home,@required String num}) async {
   try {
     Response res;
     Dio dio = Dio();
     //配置dio信息
-    res = await dio.get(Global.apiUrl.powerUrl,options: Options(
-        headers: {
-          "token":token
-        }
-    ));
+    res = await dio.get(Global.apiUrl.powerUrl,queryParameters: {"home":home,"num":num},
+        options: Options(headers: {"token": token}));
     //Json解码为Map
     Map<String, dynamic> map = jsonDecode(res.toString());
-    debugPrint("@powerGet:"+res.toString());
-    if (map['status']==200) {
+    debugPrint("@powerGet:" + res.toString());
+    if (map['status'] == 200&&map['data']!='null') {
       Global.powerInfo = PowerInfo.fromJson(map);
-      Global.prefs.setString(Global.prefsStr.power, Global.powerInfo.data.balance.toString());
+      Prefs.power = Global.powerInfo.data.toString();
+      Prefs.powerNum = num;
+      Prefs.powerHome = home;
       return true;
-    }else{
+    } else {
       return false;
     }
   } catch (e) {

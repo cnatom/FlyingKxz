@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/exam_get.dart';
 
 class TemplatePage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _TemplatePageState extends State<TemplatePage> {
   bool loading;
   getShowExamView()async{
     setState(() {loading = true;});
-    await examPost(context, token:Global.prefs.getString(Global.prefsStr.token), year: '2019', term: '1');
+    await examPost(context, token:Prefs.token, year: '2019', term: '1');
     setState(() {loading = false;});
   }
 

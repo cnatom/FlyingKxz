@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/balance_info.dart';
 import 'package:flying_kxz/Model/book_info.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/Model/rank_info.dart';
 
 Future<bool> balanceGet({@required String newToken}) async {
@@ -28,7 +29,7 @@ Future<bool> balanceGet({@required String newToken}) async {
       Global.balanceInfo = BalanceInfo.fromJson(map);
       String balance = Global.balanceInfo.data.balance.toString();
       balance = (double.parse(balance)/100).toStringAsFixed(2);
-      Global.prefs.setString(Global.prefsStr.balance, balance);
+      Prefs.balance = balance;
       return true;
     }else{
       return false;

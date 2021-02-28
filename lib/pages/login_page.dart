@@ -48,58 +48,7 @@ class _LoginPageState extends State<LoginPage> {
   String _password; //密码
   GlobalKey<FormState> _formKey = GlobalKey<FormState>(); //表单状态
   bool _loading = false;
-  int loginCount = 1;//登陆次数,>=3则特别提示
-  //点击登录后的行为
-  _loginFunc() async {
-
-    FocusScope.of(context).requestFocus(FocusNode());//收起键盘
-    setState(() {_loading = true;});//开始加载
-    //提取输入框数据
-    var _form = _formKey.currentState;
-    _form.save();
-    //判空
-    if (_password.isEmpty||_username.isEmpty) {
-      showToast(context, "请填写学号密码");
-      setState(() {_loading = false;});
-      return;
-    }
-    //登录请求并决定是否跳转
-    if(await loginPost(context,loginCount++,username: _username, password: _password)){
-      toNavigatorPage(context);
-    }else{
-      setState(() {_loading = false;});
-    }
-  }
-
-  //输入文本框区域
-  //登录按钮
-  Widget loginButton()=>LayoutBuilder(
-    builder: (context,parSize){
-      return _loading==false?Material(
-        borderRadius: BorderRadius.circular(100),
-        elevation: 0,
-        color: colorLoginPageMain,
-        child: InkWell(
-          splashColor: Colors.black12,
-          borderRadius: BorderRadius.circular(100),
-          onTap: ()=>_loginFunc(),
-          child: Container(
-              height: fontSizeMain40*2.8,
-              width: parSize.maxWidth*0.7,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),),
-              child: FlyText.title45('登录',color: Colors.white)
-          ),
-        ),
-      ):Container(
-        alignment: Alignment.topCenter,
-        height: fontSizeMain40*2.8,
-        width: parSize.maxWidth*0.7,
-        child: loadingAnimationTwoCircles(),
-      );
-    },
-  );
+  int loginCount = 1; //登陆次数,>=3则特别提示
 
 
   @override
@@ -110,112 +59,37 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(0),
-        child: AppBar(
-          elevation: 0,
-        ),
-      ),
-        body: GestureDetector(
+    return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         // 触摸收起键盘
         FocusScope.of(context).requestFocus(FocusNode());
       },
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(deviceWidth*0.1), 0, ScreenUtil().setWidth(deviceWidth*0.1), 0),
+      child: Material(
         child: Stack(
           children: [
-            Positioned(
+            _buildBackground(),
+            Padding(
+              padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(deviceWidth * 0.08), 0, ScreenUtil().setWidth(deviceWidth * 0.08), 0),
               child: Column(
                 children: <Widget>[
                   Expanded(
-                    flex: 4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Image.asset('images/logo.png',height: fontSizeMini38*4,),
-                        SizedBox(height: fontSizeMini38*2,),
-                        Text('矿小助正式版',style: TextStyle(color: colorLoginPageMain,fontSize: fontSizeMain40,fontWeight: FontWeight.bold,letterSpacing: 3),),
-                      ],
-                    ),
+                    flex:2,
+                    child: Container(),
                   ),
                   Expanded(
-                    flex:6,
+                    flex: 4,
+                    child: _buildHeader(),
+                  ),
+                  Expanded(
+                    flex: 10,
                     child: Form(
                       key: _formKey,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Column(
-                            children: [
-                              FlyInputBar(context,'输入学号', _userNameController,
-                                  onSaved: (String value) => _username = value),
-                              SizedBox(height: fontSizeMini38*2,),
-                              FlyInputBar(context,'统一认证密码', _passWordController,
-                                  onSaved: (String value) => _password = value,obscureText:true),
-                              SizedBox(height: fontSizeMini38*5,),
-                              loginButton(),
-
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  FlyGreyFlatButton("忘记密码",
-                                      onPressed: () => showToast(context, '初始密码为身份证后六位\n即教务系统密码')),
-                                  Container(
-                                    height: ScreenUtil().setWidth(35),
-                                    width: 1,
-                                    color: Theme.of(context).dividerColor,
-                                  ),
-                                  FlyGreyFlatButton("校园网登录",
-                                      onPressed: () => FlyDialogDIYShow(context,content: CumtLoginView())),
-                                  Container(
-                                    height: ScreenUtil().setWidth(35),
-                                    width: 1,
-                                    color: Theme.of(context).dividerColor,
-                                  ),
-                                  FlyGreyFlatButton("无法登陆",
-                                      onPressed: ()async{
-                                        Clipboard.setData(ClipboardData(text: "839372371"));
-                                        showToast(context,"已复制反馈QQ群号至剪切板");
-                                        FlyDialogDIYShow(context, content: Wrap(
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                FlyText.main35("@建议先尝试如下解决方案：\n"
-                                                  "1.进入my.cumt.edu.cn网站成功登录自己的账号。\n"
-                                                  "2.重新登录矿小助。\n",maxLine: 10),
-                                                InkWell(
-                                                  onTap: ()=>launch("http://my.cumt.edu.cn"),
-                                                  child: FlyText.main35("➡️点我跳转至my.cumt.edu.cn",color: Colors.blue),
-                                                ),
-                                                FlyText.main35(
-                                                    "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）\n"
-                                                    ,maxLine: 10),
-                                                FlyText.mainTip35("失败原因：\n多次登录失败后，my.cumt.edu.cn会出现验证码\n在该网站中成功登录账号即可取消验证码\n我们正在解决这个问题～",maxLine: 5)
-                                              ],
-                                            ),
-
-                                          ],
-                                        ));
-                                      }),
-
-
-                                ],
-                              ),
-                              SizedBox(
-                                height: fontSizeMini38,
-                              ),
-                            ],
-                          )
+                          _buildInputBody(),
+                          _buildBottom()
                         ],
                       ),
                     ),
@@ -226,7 +100,255 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-    ));
+    );
+  }
+  Widget _buildHeader(){
+    return Container(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // Center(
+          //   child:Image.asset(
+          //     'images/logo.png',
+          //     height: fontSizeMini38 * 3.5,
+          //   ),
+          // ),
+          Text(
+            'Hi 欢迎使用矿小助',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: ScreenUtil().setSp(75),
+              fontWeight: FontWeight.bold,),
+          ),
+          SizedBox(
+            height: fontSizeMini38/2,
+          ),
+          Text(
+            '矿大人自己的App。',
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.6),
+              fontSize: ScreenUtil().setSp(33),),
+          ),
+
+        ],
+      ),
+    );
+  }
+  _loginHandler() async {
+    FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
+    setState(() {
+      _loading = true;
+    }); //开始加载
+    //提取输入框数据
+    var _form = _formKey.currentState;
+    _form.save();
+    //判空
+    if (_password.isEmpty || _username.isEmpty) {
+      showToast(context, "请填写学号密码");
+      setState(() {
+        _loading = false;
+      });
+      return;
+    }
+    //登录请求并决定是否跳转
+    if (await loginPost(context, loginCount++,
+        username: _username, password: _password)) {
+      toNavigatorPage(context);
+    } else {
+      setState(() {
+        _loading = false;
+      });
+    }
+  }
+  void _visitorHandler()async{
+    FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
+    setState(() {
+      _loading = true;
+    }); //开始加载
+    //登录请求并决定是否跳转
+    if (await loginPost(context, 1,
+    username: "12345678", password: "12345678")) {
+    toNavigatorPage(context);
+    } else {
+    setState(() {
+    _loading = false;
+    });
+    }
+  }
+  Widget _buildInputBody(){
+    return Column(
+      children: [
+        _buildInputBar(
+          context, '输入学号', _userNameController,
+          onSaved: (String value) =>
+          _username = value,),
+        SizedBox(
+          height: fontSizeMini38 * 2,
+        ),
+        _buildInputBar(
+            context, '教务系统密码', _passWordController,
+            onSaved: (String value) =>
+            _password = value,
+            obscureText: true,),
+        SizedBox(
+          height: fontSizeMini38 * 5,
+        ),
+        _buildLoginButton(),
+      ],
+    );
+  }
+  Widget _buildInputBar(BuildContext context,String hintText, TextEditingController controller,
+      {FormFieldSetter<String> onSaved,bool obscureText = false,}) =>
+      Container(
+        padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB/4, spaceCardPaddingRL, spaceCardPaddingTB/4),
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(100)
+        ),
+        child: TextFormField(
+          textAlign: TextAlign.start,
+          style: TextStyle(fontSize: fontSizeMain40,color: Colors.white),
+          obscureText: obscureText, //是否是密码
+          controller: controller, //控制正在编辑的文本。通过其可以拿到输入的文本值
+          cursorColor: colorMain,
+          decoration: InputDecoration(
+            hintStyle: TextStyle(fontSize: fontSizeMain40,color: Colors.white.withOpacity(0.8)),
+            border: InputBorder.none, //下划线
+            hintText: hintText, //点击后显示的提示语
+          ),
+          onSaved: onSaved,
+        ),
+      );
+  Widget _buildBottom(){
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment:
+          MainAxisAlignment.center,
+          children: <Widget>[
+            _buildFlatButton("忘记密码",
+                onPressed: () => showToast(context,
+                    '初始密码为身份证后六位\n即教务系统密码')),
+            Container(
+              height: ScreenUtil().setWidth(35),
+              width: 1,
+              color: Colors.white.withOpacity(0.5),
+            ),
+            _buildFlatButton("游客身份访问",
+                onPressed: () => _visitorHandler()),
+            Container(
+              height: ScreenUtil().setWidth(35),
+              width: 1,
+              color: Colors.white.withOpacity(0.5),
+            ),
+            _buildFlatButton("无法登陆",
+                onPressed: () async {
+                  Clipboard.setData(
+                      ClipboardData(text: "839372371"));
+                  showToast(context, "已复制反馈QQ群号至剪切板");
+                  FlyDialogDIYShow(context,
+                      content: Wrap(
+                        children: [
+                          Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment
+                                .start,
+                            children: [
+                              FlyText.main35(
+                                  "@建议先尝试如下解决方案：\n"
+                                      "1.进入my.cumt.edu.cn网站成功登录自己的账号。\n"
+                                      "2.重新登录矿小助。\n",
+                                  maxLine: 10),
+                              InkWell(
+                                onTap: () => launch(
+                                    "http://my.cumt.edu.cn"),
+                                child: FlyText.main35(
+                                    "➡️点我跳转至my.cumt.edu.cn",
+                                    color: Colors.blue),
+                              ),
+                              FlyText.main35(
+                                  "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）\n",
+                                  maxLine: 10),
+                              FlyText.mainTip35(
+                                  "失败原因：\n多次登录失败后，my.cumt.edu.cn会出现验证码\n在该网站中成功登录账号即可取消验证码\n我们正在解决这个问题～",
+                                  maxLine: 5)
+                            ],
+                          ),
+                        ],
+                      ));
+                }),
+          ],
+        ),
+        SizedBox(
+          height: fontSizeMini38,
+        ),
+      ],
+    );
+  }
+  //小按钮
+  Widget _buildFlatButton(String text, {VoidCallback onPressed,double fontSize}) => FlatButton(
+    onPressed: onPressed,
+    highlightColor: Colors.transparent, //点击后的颜色为透明
+    splashColor: Colors.transparent, //点击波纹的颜色为透明
+    child: FlyText.main35(text,color: Colors.white.withOpacity(0.6),),
+  );
+  //登录按钮
+  Widget _buildLoginButton(){
+    return LayoutBuilder(
+      builder: (context, parSize) {
+        return _loading == false
+            ? Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            color: colorLoginPageMain.withOpacity(0.6),
+          ),
+          child: InkWell(
+            splashColor: Colors.black12,
+            borderRadius: BorderRadius.circular(100),
+            onTap: () => _loginHandler(),
+            child: Container(
+                height: fontSizeMain40 * 2.8,
+                width: parSize.maxWidth * 0.5,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: FlyText.title45('登录', color: Colors.white)),
+          ),
+        )
+            : Container(
+          alignment: Alignment.topCenter,
+          height: fontSizeMain40 * 2.8,
+          width: parSize.maxWidth * 0.7,
+          child: loadingAnimationTwoCircles(),
+        );
+      },
+    );
+  }
+  Widget _buildBackground() {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Image.asset(
+            'images/loginBack.png',
+            fit: BoxFit.cover,
+          ),
+        ),
+        Positioned.fill(
+          child: ClipRect(
+            //背景过滤器
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              child: Container(
+                color: Colors.black.withOpacity(0.4),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 //                  RichText(

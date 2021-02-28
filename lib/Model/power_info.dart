@@ -1,60 +1,36 @@
 /// status : 200
 /// msg : "ok"
-/// data : {"home":"梅2楼","num":"B4211","balance":87.59}
+/// data : 794.77
 
 class PowerInfo {
-  int status;
-  String msg;
-  Data data;
+  int _status;
+  String _msg;
+  double _data;
+
+  int get status => _status;
+  String get msg => _msg;
+  double get data => _data;
 
   PowerInfo({
-      this.status, 
-      this.msg, 
-      this.data});
-
-  PowerInfo.fromJson(dynamic json) {
-    status = json["status"];
-    msg = json["msg"];
-    data = json["data"] != null ? Data.fromJson(json["data"]) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["status"] = status;
-    map["msg"] = msg;
-    if (data != null) {
-      map["data"] = data.toJson();
-    }
-    return map;
-  }
-
+      int status, 
+      String msg, 
+      double data}){
+    _status = status;
+    _msg = msg;
+    _data = data;
 }
 
-/// home : "梅2楼"
-/// num : "B4211"
-/// balance : 87.59
-
-class Data {
-  String home;
-  String num;
-  double balance;
-
-  Data({
-      this.home, 
-      this.num, 
-      this.balance});
-
-  Data.fromJson(dynamic json) {
-    home = json["home"];
-    num = json["num"];
-    balance = json["balance"];
+  PowerInfo.fromJson(dynamic json) {
+    _status = json["status"];
+    _msg = json["msg"];
+    _data = json["data"];
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map["home"] = home;
-    map["num"] = num;
-    map["balance"] = balance;
+    map["status"] = _status;
+    map["msg"] = _msg;
+    map["data"] = _data;
     return map;
   }
 

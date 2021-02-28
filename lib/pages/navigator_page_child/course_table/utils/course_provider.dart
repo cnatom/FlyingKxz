@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/components/point_area.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/components/point_components/point_matrix.dart';
 
 import 'bean.dart';
 import 'course_data.dart';
