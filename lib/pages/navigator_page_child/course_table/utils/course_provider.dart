@@ -36,6 +36,7 @@ class CourseProvider extends ChangeNotifier{
   ///初始化课表数据
   ///CourseProvider().init();
   init(){
+    if(loading)return;
     debugPrint("@init");
     if(Prefs.courseData!=null){
       debugPrint("@already init");

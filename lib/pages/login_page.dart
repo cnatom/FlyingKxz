@@ -188,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
           height: fontSizeMini38 * 2,
         ),
         _buildInputBar(
-            context, '教务系统密码', _passWordController,
+            context, '统一身份认证密码', _passWordController,
             onSaved: (String value) =>
             _password = value,
             obscureText: true,),
@@ -202,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildInputBar(BuildContext context,String hintText, TextEditingController controller,
       {FormFieldSetter<String> onSaved,bool obscureText = false,}) =>
       Container(
-        padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB/4, spaceCardPaddingRL, spaceCardPaddingTB/4),
+        padding: EdgeInsets.fromLTRB(spaceCardPaddingRL*1.4, spaceCardPaddingTB/4, spaceCardPaddingRL, spaceCardPaddingTB/4),
         decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.2),
             borderRadius: BorderRadius.circular(100)
@@ -228,9 +228,8 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment:
           MainAxisAlignment.center,
           children: <Widget>[
-            _buildFlatButton("忘记密码",
-                onPressed: () => showToast(context,
-                    '初始密码为身份证后六位\n即教务系统密码')),
+            _buildFlatButton("找回密码",
+                onPressed: () => launch("http://ids.cumt.edu.cn/authserver/getBackPasswordMainPage.do?service=http://my.cumt.edu.cn/login.portal")),
             Container(
               height: ScreenUtil().setWidth(35),
               width: 1,
@@ -256,24 +255,17 @@ class _LoginPageState extends State<LoginPage> {
                             CrossAxisAlignment
                                 .start,
                             children: [
-                              FlyText.main35(
-                                  "@建议先尝试如下解决方案：\n"
-                                      "1.进入my.cumt.edu.cn网站成功登录自己的账号。\n"
-                                      "2.重新登录矿小助。\n",
-                                  maxLine: 10),
+                              FlyText.main40("矿小助的密码与统一身份认证平台网站的密码保持一致\n",maxLine: 10,),
                               InkWell(
                                 onTap: () => launch(
                                     "http://my.cumt.edu.cn"),
                                 child: FlyText.main35(
-                                    "➡️点我跳转至my.cumt.edu.cn",
+                                    "➡️点我跳转至统一身份认证平台验证或找回密码",maxLine: 10,
                                     color: Colors.blue),
                               ),
-                              FlyText.main35(
-                                  "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）\n",
-                                  maxLine: 10),
                               FlyText.mainTip35(
-                                  "失败原因：\n多次登录失败后，my.cumt.edu.cn会出现验证码\n在该网站中成功登录账号即可取消验证码\n我们正在解决这个问题～",
-                                  maxLine: 5)
+                                  "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）",
+                                  maxLine: 10),
                             ],
                           ),
                         ],

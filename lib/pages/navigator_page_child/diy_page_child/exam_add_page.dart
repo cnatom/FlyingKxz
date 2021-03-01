@@ -77,7 +77,7 @@ class _ExamAddViewState extends State<ExamAddView> {
         day: date.day
     );
     Global.examDiyInfo.data.add(newCountDownInfo);
-    Prefs.examData = jsonEncode(Global.examDiyInfo.toJson());
+    Prefs.examDataDiy = jsonEncode(Global.examDiyInfo.toJson());
     Navigator.pop(context);
   }
   @override

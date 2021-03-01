@@ -45,8 +45,7 @@ class CoursePageState extends State<CoursePage>
     super.build(context);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: CourseProvider()),
-        ChangeNotifierProvider.value(value: ThemeProvider()),],
+        ChangeNotifierProvider.value(value: CourseProvider()),],
       builder: (context,_){
         courseProvider = Provider.of<CourseProvider>(context);
         themeProvider = Provider.of<ThemeProvider>(context);
