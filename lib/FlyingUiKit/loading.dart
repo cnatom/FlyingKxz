@@ -24,10 +24,10 @@ class _FlyWidgetBuilderState extends State<FlyWidgetBuilder> {
 }
 
 
-Widget loadingAnimationWave=Tool.getIndicatorWidget(
+Widget loadingAnimationWave(Color color)=>Tool.getIndicatorWidget(
     EasyHubIndicatorType.beatingRects,
     circleValueColor:
-    AlwaysStoppedAnimation(colorMain));
+    AlwaysStoppedAnimation(color));
 
 Widget loadingAnimationWave1=Tool.getIndicatorWidget(
     EasyHubIndicatorType.foldingRect,

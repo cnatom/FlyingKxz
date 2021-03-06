@@ -143,7 +143,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
   Widget cumtLoginButton(int type,String title,{@required GestureTapCallback onTap})=>Material(
     borderRadius: BorderRadius.circular(5),
     elevation: 0,
-    color: type==0?colorMain.withOpacity(0.5):Theme.of(context).disabledColor.withOpacity(0.5),
+    color: type==0?colorMain.withOpacity(0.8):Theme.of(context).disabledColor.withOpacity(0.5),
     child: InkWell(
       splashColor: Colors.black12,
       borderRadius: BorderRadius.circular(5),

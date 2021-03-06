@@ -41,7 +41,6 @@ Future<void> getSchoolYearTerm()async{
 }
 
 class Global{
-  static ApiUrl apiUrl = new ApiUrl();//网络请求url汇总
   static CourseInfo courseInfo = new CourseInfo(); //课表信息
   static LoginInfo loginInfo = new LoginInfo();//登录信息
   static ScoreInfo scoreInfo = new ScoreInfo();//成绩信息
@@ -69,18 +68,30 @@ class Global{
 }
 
 class ApiUrl{
-  String loginUrl = "https://api.kxz.atcumt.com/jwxt/login";//登录请求
-  String newLoginUrl = "https://api.kxz.atcumt.com/new/login";//登录请求
-  String courseUrl = "https://api.kxz.atcumt.com/jwxt/kb";//课表查询
-  String scoreUrl = "https://api.kxz.atcumt.com/jwxt/grade";//成绩查询
-  String examUrl = "https://api.kxz.atcumt.com/jwxt/exam";//考试查询
-  String bookUrl = "https://api.kxz.atcumt.com/lib/book";//书籍查询
-  String powerAutoUrl = "https://api.kxz.atcumt.com/daily/au_df";//自动电量查询
-  String powerUrl = "https://api.kxz.atcumt.com/daily/df";//电量手动查询
-  String swiperUrl = "http://api.kxz.atcumt.com/daily/home_image";//轮播图
-  String rankUrl = "https://api.kxz.atcumt.com/admin/user_id";//用户内测排名
-  String feedbackUrl = "https://api.kxz.atcumt.com/admin/feedback";//反馈
-  String cumtLoginUrl = "http://10.2.5.251:801/eportal/";//校园网登陆
-  String appUpgradeUrl = "https://api.kxz.atcumt.com/admin/version";//检查App更新
-  String balanceUrl = "https://api.kxz.atcumt.com/new/simpleBalance";//校园卡余额
+  //http://175.27.131.122:5000
+  //https://api.kxz.atcumt.com
+  static String _pubUrl = "https://api.kxz.atcumt.com";
+  
+  static String loginUrl = "$_pubUrl/new/login";//新登录请求
+  static String loginCheckUrl = "http://authserver.cumt.edu.cn/authserver/checkNeedCaptcha.htl";
+  static String courseUrl = "$_pubUrl/jwxt/kb";//课表查询
+  static String scoreUrl = "$_pubUrl/jwxt/grade";//成绩查询
+  static String scoreAllUrl = "$_pubUrl/jwxt/grades";//全成绩查询
+  static String examUrl = "$_pubUrl/jwxt/exam";//考试查询
+  static String bookUrl = "$_pubUrl/lib/book";//书籍查询
+  static String powerAutoUrl = "$_pubUrl/daily/au_df";//自动电量查询
+  static String powerUrl = "$_pubUrl/daily/df";//电量手动查询
+  static String swiperUrl = "$_pubUrl/daily/home_image";//轮播图
+  static String rankUrl = "$_pubUrl/admin/user_id";//用户内测排名
+  static String feedbackUrl = "$_pubUrl/admin/feedback";//反馈
+  static String cumtLoginUrl = "http://10.2.5.251:801/eportal/";//校园网登陆
+  static String appUpgradeUrl = "$_pubUrl/admin/version";//检查App更新
+  static String balanceUrl = "$_pubUrl/new/simpleBalance";//校园卡余额
+
+static List<String> newsUrlList = [
+  "$_pubUrl/daily/sd_news",//视点新闻
+  "$_pubUrl/daily/xx_news",//信息公告
+  "$_pubUrl/daily/rw_news",//人文课堂
+  "$_pubUrl/daily/xs_news",//学术聚焦
+];
 }

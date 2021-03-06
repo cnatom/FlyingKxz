@@ -6,7 +6,7 @@ import 'package:flying_kxz/Model/exam_info.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 
-//获取课表数据
+//获取考试
 //xnm: '2019' 代表2019-2020学年
 //xqm: '3' 代表第1学期  '12' 代表第2学期  '16' 代表第3学期
 
@@ -19,8 +19,8 @@ Future<bool> examPost(BuildContext context,
     Response res;
     Dio dio = Dio();
     //配置dio信息
-    res = await dio.get(Global.apiUrl.examUrl,
-        queryParameters: _jsonMap, options: Options(headers: {"token": token}));
+    res = await dio.get(ApiUrl.examUrl,
+        queryParameters: _jsonMap, options: Options(headers: {"token": token,"action":"jwxt"}));
     //Json解码为Map
     Map<String, dynamic> map = jsonDecode(res.toString());
     debugPrint(res.toString());
@@ -29,7 +29,6 @@ Future<bool> examPost(BuildContext context,
       Global.examInfo = ExamInfo.fromJson(map);
       return true;
     } else {
-      showToast(context, map['msg']);
       return false;
     }
   } catch (e) {

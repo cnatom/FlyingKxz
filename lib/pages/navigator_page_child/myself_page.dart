@@ -32,7 +32,6 @@ import 'package:flying_kxz/pages/backImage_view.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/about_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/activeStep_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -87,10 +86,10 @@ class _MyselfPageState extends State<MyselfPage>
                 children: <Widget>[
                   _buildInfoCard(context,
                       imageResource: 'images/avatar.png',
-                      name: Prefs.name,
-                      id: Prefs.username,
-                      classs: Prefs.iClass,
-                      college: Prefs.college),
+                      name: Prefs.name??'',
+                      id: Prefs.username??'',
+                      classs: Prefs.iClass??'',
+                      college: Prefs.college??''),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,
                   //   children: <Widget>[
@@ -123,6 +122,17 @@ class _MyselfPageState extends State<MyselfPage>
                 runSpacing: spaceCardMarginTB,
                 children: [
                   _buttonList(children: <Widget>[
+                    FlyFlexibleButton(
+                      icon: Icons.language_outlined,
+                      title: '校园网登录',
+                      secondChild: CumtLoginView(),),
+                    FlyFlexibleButton(
+                      title: "个性化",
+                      icon: LineariconsFree.shirt,
+                      secondChild: _buildPersonalise(),
+                    ),
+                  ]),
+                  _buttonList(children: <Widget>[
 
                     FlyFlexibleButton(
                       title: "校园卡余额",
@@ -130,8 +140,8 @@ class _MyselfPageState extends State<MyselfPage>
                       previewStr: (Prefs.balance??"0.0")+"元",
                       secondChild: Padding(
                         padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
-                        child: _buildDiyButton("激活此功能",
-                            onTap: ()=> toActiveStepPage(context),
+                        child: _buildDiyButton("校园卡流水",
+                            onTap: ()=> showToast(context, "开发中……请保持最新版本"),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -148,21 +158,11 @@ class _MyselfPageState extends State<MyselfPage>
                     FlyFlexibleButton(
                       title: "宿舍电量",
                       icon: Icons.flash_on,
-                      previewStr: (Prefs.power??"0.0")+"度",
+                      previewStr: Prefs.power==null?"未绑定":"${Prefs.power}度",
                       secondChild: _buildPower(),
                     )
                   ]),
-                  _buttonList(children: <Widget>[
-                    FlyFlexibleButton(
-                      icon: Icons.language_outlined,
-                      title: '校园网登录',
-                      secondChild: CumtLoginView(),),
-                    FlyFlexibleButton(
-                      title: "个性化",
-                      icon: LineariconsFree.shirt,
-                      secondChild: _buildPersonalise(),
-                    ),
-                  ]),
+
                   _buttonList(children: <Widget>[
                     _buildIconTitleButton(
                         icon: Icons.people_outline,
@@ -221,6 +221,7 @@ class _MyselfPageState extends State<MyselfPage>
 
   Widget _buildPower(){
     void _handlePower()async{
+      FocusScope.of(context).requestFocus(FocusNode());
       setState(() {
         powerLoading = true;
       });
@@ -397,7 +398,7 @@ class _MyselfPageState extends State<MyselfPage>
         token: Prefs.token, num: Prefs.powerNum, home: Prefs.powerHome);
     await rankGet(username: Prefs.username);
     await balanceGet(
-        newToken: Prefs.newToken);
+        newToken: Prefs.token);
     setState(() {});
   }
 

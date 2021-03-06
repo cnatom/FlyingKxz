@@ -163,6 +163,7 @@ class _CourseAddViewState extends State<CourseAddView> {
     return true;
   }
   _onDetermine(){
+    FocusScope.of(context).requestFocus(FocusNode());
     //确定回调
     if(_checkCompleteness()){
       for(var courseData in courseDataList){

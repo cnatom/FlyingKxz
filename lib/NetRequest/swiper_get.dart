@@ -5,7 +5,7 @@ import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/swiper_info.dart';
 
 //获取轮播图json数据
-swiperGet() async {
+Future<void> swiperGet() async {
   try{
     Response res;
     Dio dio = Dio();

@@ -10,8 +10,10 @@ import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/cumt_login.dart';
+import 'package:flying_kxz/NetRequest/swiper_get.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/info_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
@@ -72,6 +74,7 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
             children: [
               CoursePage(),
               DiyPage(),
+              InfoPage(),
               MyselfPage()
             ],
             controller: navigatorPageController,
@@ -91,6 +94,7 @@ class _FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepA
               items: [
                 _bottomNavigationBar('主页',FeatherIcons.home,),
                 _bottomNavigationBar('发现',OMIcons.explore,),
+                _bottomNavigationBar("资讯", Icons.article_outlined),
                 _bottomNavigationBar('我的',Icons.person_outline,),
               ],
               currentIndex: _currentIndex,

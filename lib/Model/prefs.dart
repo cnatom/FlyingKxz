@@ -18,7 +18,6 @@ class Prefs{
   static String _username = 'username';//用户名
   static String _name = 'name';
   static String _token = 'token';//token信息
-  static String _newToken = 'newToken';//新版登录的token信息
   static String _college = 'college';//学院
   static String _class = 'class';//班级
   static String _power = 'power';//宿舍电量
@@ -43,7 +42,6 @@ class Prefs{
   static String get username => prefs.getString(_username);
   static String get name => prefs.getString(_name);
   static String get token => prefs.getString(_token);
-  static String get newToken => prefs.getString(_newToken);
   static String get college => prefs.getString(_college);
   static String get iClass => prefs.getString(_class);
   static String get power => prefs.getString(_power);
@@ -67,7 +65,6 @@ class Prefs{
   static set username(String value) =>prefs.setString(_username, value);
   static set name(String value) =>prefs.setString(_name, value);
   static set token(String value) =>prefs.setString(_token, value);
-  static set newToken(String value) =>prefs.setString(_newToken, value);
   static set college(String value) =>prefs.setString(_college, value);
   static set iClass(String value) =>prefs.setString(_class, value);
 

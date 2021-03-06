@@ -26,7 +26,7 @@ Future<Null> upgradeApp(BuildContext context,{bool auto = false})async{
   Dio dio = Dio();
   try{
     res = await dio.get(
-        Global.apiUrl.appUpgradeUrl,
+        ApiUrl.appUpgradeUrl,
         queryParameters: {'version':Global.curVersion.toString()}
     );
     debugPrint(res.toString());

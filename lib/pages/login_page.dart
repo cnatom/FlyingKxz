@@ -22,6 +22,7 @@ import 'package:flying_kxz/FlyingUiKit/text_editer.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
+import 'package:flying_kxz/NetRequest/login_check_get.dart';
 import 'package:flying_kxz/NetRequest/login_post.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -119,17 +120,17 @@ class _LoginPageState extends State<LoginPage> {
             'Hi 欢迎使用矿小助',
             style: TextStyle(
               color: Colors.white,
-              fontSize: ScreenUtil().setSp(75),
+              fontSize: ScreenUtil().setSp(80),
               fontWeight: FontWeight.bold,),
           ),
           SizedBox(
             height: fontSizeMini38/2,
           ),
           Text(
-            '矿大人自己的App。',
+            '矿大人自己的App',
             style: TextStyle(
               color: Colors.white.withOpacity(0.6),
-              fontSize: ScreenUtil().setSp(33),),
+              fontSize: ScreenUtil().setSp(40),),
           ),
 
         ],
@@ -152,15 +153,17 @@ class _LoginPageState extends State<LoginPage> {
       });
       return;
     }
-    //登录请求并决定是否跳转
-    if (await loginPost(context, loginCount++,
-        username: _username, password: _password)) {
-      toNavigatorPage(context);
-    } else {
-      setState(() {
-        _loading = false;
-      });
+    //检测是否激活&验证码
+    if(await loginCheckGet(context, username: _username)){
+      //登录请求并决定是否跳转
+      if (await loginPost(context, loginCount++,
+          username: _username, password: _password)) {
+        toNavigatorPage(context);
+      }
     }
+    setState(() {
+      _loading = false;
+    });
   }
   void _visitorHandler()async{
     FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
@@ -188,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
           height: fontSizeMini38 * 2,
         ),
         _buildInputBar(
-            context, '统一身份认证密码', _passWordController,
+            context, '融合门户密码(默认身份证后6位）', _passWordController,
             onSaved: (String value) =>
             _password = value,
             obscureText: true,),
@@ -228,49 +231,55 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment:
           MainAxisAlignment.center,
           children: <Widget>[
-            _buildFlatButton("找回密码",
-                onPressed: () => launch("http://ids.cumt.edu.cn/authserver/getBackPasswordMainPage.do?service=http://my.cumt.edu.cn/login.portal")),
+            Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                _buildFlatButton("游客访问",
+                    onPressed: () => _visitorHandler())
+              ],
+            ),),
             Container(
               height: ScreenUtil().setWidth(35),
               width: 1,
               color: Colors.white.withOpacity(0.5),
             ),
-            _buildFlatButton("游客身份访问",
-                onPressed: () => _visitorHandler()),
-            Container(
-              height: ScreenUtil().setWidth(35),
-              width: 1,
-              color: Colors.white.withOpacity(0.5),
-            ),
-            _buildFlatButton("无法登陆",
-                onPressed: () async {
-                  Clipboard.setData(
-                      ClipboardData(text: "839372371"));
-                  showToast(context, "已复制反馈QQ群号至剪切板");
-                  FlyDialogDIYShow(context,
-                      content: Wrap(
-                        children: [
-                          Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment
-                                .start,
-                            children: [
-                              FlyText.main40("矿小助的密码与统一身份认证平台网站的密码保持一致\n",maxLine: 10,),
-                              InkWell(
-                                onTap: () => launch(
-                                    "http://my.cumt.edu.cn"),
-                                child: FlyText.main35(
-                                    "➡️点我跳转至统一身份认证平台验证或找回密码",maxLine: 10,
-                                    color: Colors.blue),
-                              ),
-                              FlyText.mainTip35(
-                                  "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）",
-                                  maxLine: 10),
-                            ],
-                          ),
-                        ],
-                      ));
-                }),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildFlatButton("无法登录",
+                      onPressed: () async {
+                        Clipboard.setData(
+                            ClipboardData(text: "839372371"));
+                        showToast(context, "已复制反馈QQ群号至剪切板");
+                        FlyDialogDIYShow(context,
+                            content: Wrap(
+                              children: [
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment
+                                      .start,
+                                  children: [
+                                    FlyText.main40("矿小助的密码与融合门户的密码保持一致\n",maxLine: 10,),
+                                    InkWell(
+                                      onTap: () => launch(
+                                          "http://authserver.cumt.edu.cn/authserver/login"),
+                                      child: FlyText.main35(
+                                          "➡️点我跳转至融合门户验证或找回密码",maxLine: 10,
+                                          color: Colors.blue),
+                                    ),
+                                    FlyText.mainTip35(
+                                        "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）",
+                                        maxLine: 10),
+                                  ],
+                                ),
+                              ],
+                            ));
+                      })
+                ],
+              ),
+            )
           ],
         ),
         SizedBox(

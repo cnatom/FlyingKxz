@@ -19,7 +19,7 @@ Future<bool> bookGet({@required String book,@required String page,@required Stri
     Dio dio = Dio();
     //配置dio信息
     res = await dio.get(
-        Global.apiUrl.bookUrl, queryParameters: _jsonMap,
+      ApiUrl.bookUrl, queryParameters: _jsonMap,
     );
     //Json解码为Map
     Map<String,dynamic> map = jsonDecode(res.toString());

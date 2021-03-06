@@ -123,37 +123,7 @@ Widget FlyGreyFlatButton(String text, {VoidCallback onPressed,double fontSize}) 
   child: FlyText.mainTip35(text),
 );
 
-Widget FlySearchBarButton(String title,String content,{GestureTapCallback onTap}){
-  return Material(
-    color: Colors.transparent,
-    child: InkWell(
-      borderRadius: BorderRadius.circular(10),
-      highlightColor: Colors.black12,
-      onTap: onTap,
-      child: Container(
-        height: fontSizeMini38*3.5,
-        padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
-        child: Row(
-          mainAxisAlignment:MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                FlyText.main35(title,),
-                FlyText.miniTip30(content,),
-              ],
-            ),
-            Icon(
-              Icons.search,
-            )
-          ],
-        ),
-      ),
-    ),
-  );
-}
+
 Widget FlyFloatButton(String heroTag,{@required IconData iconData,@required VoidCallback onPressed,bool mini = false}){
   return FloatingActionButton(
     heroTag: heroTag,

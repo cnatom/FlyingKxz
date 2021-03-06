@@ -241,11 +241,12 @@ class CourseProvider extends ChangeNotifier{
     CourseBean courseBean = new CourseBean();
     Dio dio = new Dio();
     try{
-      Response res = await dio.get(Global.apiUrl.courseUrl, queryParameters: {
+      Response res = await dio.get(ApiUrl.courseUrl, queryParameters: {
         "xnm":year,
         "xqm":term
       }, options: Options(headers: {
-        "token": token
+        "token": token,
+        "action":"jwxt"
       }));
       debugPrint(res.toString());
       var map = jsonDecode(res.toString());

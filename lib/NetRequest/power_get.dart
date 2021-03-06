@@ -12,7 +12,7 @@ Future<bool> powerGet(BuildContext context,
     Response res;
     Dio dio = Dio();
     //配置dio信息
-    res = await dio.get(Global.apiUrl.powerUrl,queryParameters: {"home":home,"num":num},
+    res = await dio.get(ApiUrl.powerUrl,queryParameters: {"home":home,"num":num},
         options: Options(headers: {"token": token}));
     //Json解码为Map
     Map<String, dynamic> map = jsonDecode(res.toString());

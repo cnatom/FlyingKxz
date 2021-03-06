@@ -9,7 +9,7 @@ Future<Null> feedbackPost(BuildContext context,{@required String text}) async {
     Map _jsonMap = {'data': text,};
     Response res;
     Dio dio = Dio();
-    res = await dio.post(Global.apiUrl.feedbackUrl, data: _jsonMap);
+    res = await dio.post(ApiUrl.feedbackUrl, data: _jsonMap);
     debugPrint(res.toString());
   } catch (e) {
     debugPrint(e.toString());

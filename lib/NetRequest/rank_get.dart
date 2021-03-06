@@ -15,7 +15,7 @@ Future<bool> rankGet({@required String username}) async {
     Dio dio = Dio();
     //配置dio信息
     res = await dio.get(
-      Global.apiUrl.rankUrl, queryParameters: _jsonMap,
+      ApiUrl.rankUrl, queryParameters: _jsonMap,
     );
     //Json解码为Map
     Map<String,dynamic> map = jsonDecode(res.toString());

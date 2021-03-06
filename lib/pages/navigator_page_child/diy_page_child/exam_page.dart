@@ -88,7 +88,6 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
           year: Prefs.schoolYear, term: Prefs.schoolTerm)){
         setState(() {});
       }
-
     }else{
       getShowExamView(year: Prefs.schoolYear, term: Prefs.schoolTerm);//首次使用
     }

@@ -18,13 +18,12 @@ Future<bool> balanceGet({@required String newToken}) async {
     Dio dio = Dio();
     //配置dio信息
     res = await dio.get(
-      Global.apiUrl.balanceUrl,
+        ApiUrl.balanceUrl,
       options: Options(headers: _headerMap)
     );
     //Json解码为Map
     Map<String,dynamic> map = jsonDecode(res.toString());
     debugPrint("@balanceGet:"+res.toString());
-    debugPrint(res.toString());
     if (map['status']==200) {
       Global.balanceInfo = BalanceInfo.fromJson(map);
       String balance = Global.balanceInfo.data.balance.toString();
