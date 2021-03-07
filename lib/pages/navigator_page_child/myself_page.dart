@@ -38,6 +38,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'myself_page_child/cumtLogin_view.dart';
 
@@ -189,7 +190,7 @@ class _MyselfPageState extends State<MyselfPage>
                         onTap: () {
                           FlyDialogDIYShow(context, content: InvitePage());
                         }),
-                    Platform.isIOS
+                    UniversalPlatform.isIOS
                         ? Container()
                         : _buildIconTitleButton(
                         icon: CommunityMaterialIcons.download_outline,
@@ -281,35 +282,38 @@ class _MyselfPageState extends State<MyselfPage>
               themeProvider.darkMode = !themeProvider.darkMode;
             });
           })),
-
-          _buildDiyButton("更换背景",
-              onTap: ()=> _changeBackgroundImage(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Icon(
-                    Icons.arrow_right_sharp,
-                    size: sizeIconMain50,
-                    color: themeProvider.colorNavText.withOpacity(0.5),
+          !UniversalPlatform.isWindows?Wrap(
+            children: [
+              _buildDiyButton("更换背景",
+                  onTap: ()=> _changeBackgroundImage(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(
+                        Icons.arrow_right_sharp,
+                        size: sizeIconMain50,
+                        color: themeProvider.colorNavText.withOpacity(0.5),
+                      )
+                    ],
                   )
-                ],
-              )
               ),
-          _buildDiyButton("背景透明",
-              child: _buildSliver(themeProvider.transBack, onChanged: (v) {
-                themeProvider.transBack = v;
-              })
-          ),
-          _buildDiyButton("背景模糊",
-              child: _buildSliver(themeProvider.blurBack,max: 30.0, onChanged: (v) {
-                themeProvider.blurBack = v;
-              })
-          ),
-          _buildDiyButton("卡片透明",
-              child: _buildSliver(themeProvider.transCard,min: 0.01,max:themeProvider.darkMode?0.8:0.2, onChanged: (v) {
-                themeProvider.transCard = v;
-              })
-          ),
+              _buildDiyButton("背景透明",
+                  child: _buildSliver(themeProvider.transBack, onChanged: (v) {
+                    themeProvider.transBack = v;
+                  })
+              ),
+              _buildDiyButton("背景模糊",
+                  child: _buildSliver(themeProvider.blurBack,max: 30.0, onChanged: (v) {
+                    themeProvider.blurBack = v;
+                  })
+              ),
+              _buildDiyButton("卡片透明",
+                  child: _buildSliver(themeProvider.transCard,min: 0.01,max:themeProvider.darkMode?0.8:0.2, onChanged: (v) {
+                    themeProvider.transCard = v;
+                  })
+              ),
+            ],
+          ):Container()
 
         ],
       ),

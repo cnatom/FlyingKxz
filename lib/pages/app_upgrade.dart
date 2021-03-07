@@ -12,11 +12,12 @@ import 'package:flying_kxz/Model/global.dart';
 import 'package:open_file/open_file.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void checkUpgrade(BuildContext context)async{
-  if(Platform.isAndroid){
+  if(UniversalPlatform.isAndroid){
     await upgradeApp(context,auto: true);//用户没有忽略过则检查更新
   }
 }
@@ -270,9 +271,9 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
     // 必须保证当前状态安全，才能进行状态刷新
     if (mounted) setState(() {});
     // 进行平台判断
-    if (Platform.isAndroid) {
+    if (UniversalPlatform.isAndroid) {
       _androidUpdate();
-    } else if (Platform.isIOS) {
+    } else if (UniversalPlatform.isIOS) {
       _iosUpdate();
     }
   }
