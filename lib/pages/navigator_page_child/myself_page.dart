@@ -16,6 +16,7 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
+import 'package:flying_kxz/FlyingUiKit/notice.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
 import 'package:flying_kxz/FlyingUiKit/text_editer.dart';
@@ -49,7 +50,7 @@ class _MyselfPageState extends State<MyselfPage>
     with AutomaticKeepAliveClientMixin {
   ThemeProvider themeProvider;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController _powerNumController = new TextEditingController();
+  TextEditingController _powerNumController = new TextEditingController(text: Prefs.powerNum??'');
   bool powerLoading = false;
 
   @override
@@ -121,6 +122,7 @@ class _MyselfPageState extends State<MyselfPage>
               Wrap(
                 runSpacing: spaceCardMarginTB,
                 children: [
+                  NoticeCard(),
                   _buttonList(children: <Widget>[
                     FlyFlexibleButton(
                       icon: Icons.language_outlined,
@@ -321,7 +323,7 @@ class _MyselfPageState extends State<MyselfPage>
   Widget _buildInputBar(String hintText,TextEditingController controller){
     return TextFormField(
       textAlign: TextAlign.end,
-      style: TextStyle(fontSize: fontSizeMain40,color: themeProvider.colorNavText.withOpacity(0.8)),
+      style: TextStyle(fontSize: fontSizeMain40,color: themeProvider.colorNavText.withOpacity(0.7)),
       controller: controller, //控制正在编辑的文本。通过其可以拿到输入的文本值
       cursorColor: colorMain,
       decoration: InputDecoration(
@@ -394,16 +396,19 @@ class _MyselfPageState extends State<MyselfPage>
   }
 
   void getPreviewInfo() async {
-    await powerGet(context,
-        token: Prefs.token, num: Prefs.powerNum, home: Prefs.powerHome);
-    await rankGet(username: Prefs.username);
     await balanceGet(
         newToken: Prefs.token);
+    Future.delayed(Duration(seconds: 2),(){
+      powerGet(context,
+          token: Prefs.token, num: Prefs.powerNum, home: Prefs.powerHome);
+      rankGet(username: Prefs.username);
+    });
     setState(() {});
   }
 
   void signOut() {
     Global.clearPrefsData();
+    backImgFile = null;
     toLoginPage(context);
   }
   void _changeBackgroundImage() async {
@@ -427,7 +432,8 @@ class _MyselfPageState extends State<MyselfPage>
           builder: (context) => AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10))),
-            content: FlyText.main40('你确定要退出登录吗?'),
+            content: FlyText.main40('你确定要退出登录吗?\n\n'
+                '这会清除所有本地缓存\n\n（包括自定义背景、自定义课表、自定义倒计时、校园网登录账户信息、宿舍电量绑定信息……）',maxLine: 100,),
             actions: <Widget>[
               FlatButton(
                 onPressed: () => signOut(),
@@ -605,6 +611,7 @@ class _MyselfPageState extends State<MyselfPage>
   bool get wantKeepAlive => true;
 }
 
+
 class FlyFlexibleButton extends StatefulWidget {
   final Widget secondChild;
   final String title;
@@ -633,7 +640,6 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
       child: Column(
         children: [
           _button(),
-
           AnimatedCrossFade(
             alignment: Alignment.topCenter,
             firstCurve: Curves.easeOutCubic,

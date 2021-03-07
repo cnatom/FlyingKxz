@@ -12,12 +12,13 @@ import 'package:shared_preferences/shared_preferences.dart';
  *
  */
 class Prefs{
+
   static SharedPreferences prefs;
   static String _isFirstLogin = 'isFirstLogin';//是否初次登陆
   static String _backImg = 'backImg';//背景图
   static String _username = 'username';//用户名
   static String _name = 'name';
-  static String _token = 'token';//token信息
+  static String _token = 'tokenNew';//token信息
   static String _college = 'college';//学院
   static String _class = 'class';//班级
   static String _power = 'power';//宿舍电量

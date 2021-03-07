@@ -161,7 +161,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
   @override
   void initState() {
     super.initState();
-    _userNameController = new TextEditingController(text: Prefs.cumtLoginUsername??"");
+    _userNameController = new TextEditingController(text: Prefs.cumtLoginUsername??Prefs.username??"");
     _passWordController = new TextEditingController(text: Prefs.cumtLoginPassword??"");
   }
 

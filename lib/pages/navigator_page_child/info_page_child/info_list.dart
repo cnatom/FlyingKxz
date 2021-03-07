@@ -9,6 +9,7 @@ import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/Model/news_info.dart';
+import 'package:flying_kxz/pages/navigator_page_child/info_page_child/news_detail.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -37,12 +38,11 @@ class _InfoListState extends State<InfoList> {
     return loading==false?Wrap(
       runSpacing: spaceCardMarginTB,
       children: newsInfo.data.map((item){
-        return _buildInfoCard(item.title,item.link,item.time);
+        return _buildInfoCard(item.title,item.time,item.location,item.link);
       }).toList(),
-    ):Center(
-      child: loadingAnimationWave(themeProvider.colorNavText.withOpacity(0.6)),
-    );
+    ):Container();
   }
+
   void _getInfo(int page)async{
     if(!loading){
       setState(() {
@@ -67,20 +67,21 @@ class _InfoListState extends State<InfoList> {
       }
     }
   }
-  void _toDetail(String link){
-    if(link!=null){
-      debugPrint(link);
+  void _toDetail(String location,String link){
+    if(location!=null){
+      toNewsDetailPage(context, location,link);
+    }else{
       launch(link);
     }
   }
-  Widget _buildInfoCard(String title,String link,String time) {
+  Widget _buildInfoCard(String title,String time,String location,String link) {
     return Column(
       children: [
         InkWell(
-          onTap: ()=>_toDetail(link),
+          onTap: ()=>_toDetail(location,link),
           child: Container(
             width: double.infinity,
-            height: ScreenUtil().setSp(time!=null?230:170),
+            height: ScreenUtil().setSp(time!=null?230:200),
             padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB,
                 spaceCardPaddingRL, spaceCardPaddingTB),
             decoration: BoxDecoration(
@@ -92,8 +93,8 @@ class _InfoListState extends State<InfoList> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                FlyText.main40(
-                  title,
+                FlyText.title45(
+                  title+(location==null?"  ↗  ":""),
                   fontWeight: FontWeight.w400,
                   color: themeProvider.colorNavText,
                   maxLine: 2,

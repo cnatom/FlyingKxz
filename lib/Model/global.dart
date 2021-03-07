@@ -70,8 +70,9 @@ class Global{
 class ApiUrl{
   //http://175.27.131.122:5000
   //https://api.kxz.atcumt.com
+  //http://119.45.171.211:5000
   static String _pubUrl = "https://api.kxz.atcumt.com";
-  
+
   static String loginUrl = "$_pubUrl/new/login";//新登录请求
   static String loginCheckUrl = "http://authserver.cumt.edu.cn/authserver/checkNeedCaptcha.htl";
   static String courseUrl = "$_pubUrl/jwxt/kb";//课表查询

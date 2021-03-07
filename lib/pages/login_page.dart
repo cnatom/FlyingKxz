@@ -18,6 +18,7 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
+import 'package:flying_kxz/FlyingUiKit/notice.dart';
 import 'package:flying_kxz/FlyingUiKit/text_editer.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
@@ -50,7 +51,6 @@ class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>(); //表单状态
   bool _loading = false;
   int loginCount = 1; //登陆次数,>=3则特别提示
-
 
   @override
   void initState() {
@@ -90,6 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           _buildInputBody(),
+                          Opacity(opacity: 0.95,child: NoticeCard(),),
                           _buildBottom()
                         ],
                       ),
@@ -183,6 +184,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildInputBody(){
     return Column(
       children: [
+
         _buildInputBar(
           context, '输入学号', _userNameController,
           onSaved: (String value) =>
@@ -227,6 +229,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildBottom(){
     return Column(
       children: [
+
         Row(
           mainAxisAlignment:
           MainAxisAlignment.center,

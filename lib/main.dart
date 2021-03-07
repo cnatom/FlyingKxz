@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FlyingUiKit/Text/text.dart';
 import 'FlyingUiKit/config.dart';
+import 'FlyingUiKit/notice.dart';
 import 'Model/global.dart';
 import 'dart:io';
 
@@ -95,17 +96,17 @@ class _StartPageState extends State<StartPage> {
         height: deviceHeight, width: deviceWidth); //初始化参考屏幕信息
     initSize();
 
-
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists())
         backImgFile = File(Prefs.backImg);
     }
     await getSchoolYearTerm();
     //是否登录过
-    if (Prefs.username != null) {
+    if (Prefs.token != null) {
       toNavigatorPage(context);
     } else {
       Prefs.isFirstLogin = true;
+      Global.clearPrefsData();
       toLoginPage(context); //第一次登录进入登录页
     }
 
