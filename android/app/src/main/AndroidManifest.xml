@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.atcumt.flying_kxz">
    <application
+       android:networkSecurityConfig="@xml/network_security_config"
         android:label="矿小助"
         android:icon="@mipmap/ic_launcher">
         <activity
