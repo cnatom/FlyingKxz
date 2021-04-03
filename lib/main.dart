@@ -7,9 +7,11 @@ import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/test.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'FlyingUiKit/Text/text.dart';
 import 'FlyingUiKit/config.dart';
 import 'FlyingUiKit/notice.dart';
@@ -18,7 +20,7 @@ import 'dart:io';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isAndroid) {
+  if (UniversalPlatform.isAndroid) {
     //设置android状态栏为透明的沉浸。
     SystemUiOverlayStyle systemUiOverlayStyle =
         SystemUiOverlayStyle(statusBarColor: Colors.transparent);
@@ -101,6 +103,8 @@ class _StartPageState extends State<StartPage> {
         backImgFile = File(Prefs.backImg);
     }
     await getSchoolYearTerm();
+    toTestPage(context);
+    return;
     //是否登录过
     if (Prefs.token != null) {
       toNavigatorPage(context);

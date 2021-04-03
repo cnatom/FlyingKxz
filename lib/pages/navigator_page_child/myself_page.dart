@@ -416,7 +416,10 @@ class _MyselfPageState extends State<MyselfPage>
     toLoginPage(context);
   }
   void _changeBackgroundImage() async {
-    File tempImgFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    // PickedFile pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    final File tempImgFile = File(pickedFile.path);
+
     String imageFileName = tempImgFile.path.substring(
         tempImgFile.path.lastIndexOf('/') + 1, tempImgFile.path.length);
     Directory tempDir = await getApplicationDocumentsDirectory();
