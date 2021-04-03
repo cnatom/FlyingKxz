@@ -37,7 +37,7 @@ class ThemeProvider extends ChangeNotifier {
     "darkMode": false,
     "simpleMode":true,
     "transBack": 0.5,
-    "blurBack": 8.0,
+    "blurBack": 10.0,
     "transCard": 0.1,
   };
   static Map _darkDefault = {

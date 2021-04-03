@@ -18,8 +18,9 @@ class FlyContainer extends StatefulWidget {
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
   final Decoration decoration;
+  final Key key;
   FlyContainer(
-      {@required this.child, this.margin, this.padding, this.decoration});
+      {@required this.child, this.margin, this.padding, this.decoration, this.key});
   @override
   _FlyContainerState createState() => _FlyContainerState();
 }
@@ -30,6 +31,7 @@ class _FlyContainerState extends State<FlyContainer> {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Container(
+      key: widget.key,
       margin: widget.margin,
       padding: widget.padding,
       decoration: widget.decoration??BoxDecoration(
@@ -64,7 +66,9 @@ class _FlyNavBackgroundState extends State<FlyNavBackground> {
         Positioned.fill(
           child: FlyWidgetBuilder(
             whenFirst: themeProvider.simpleMode,
-            firstChild: Container(color: Color(0xfff2f5f7),),
+            firstChild: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: themeProvider.blurBack,sigmaY: themeProvider.blurBack),
+                child: Container(color: Colors.white.withOpacity(0.9),)),
             secondChild: ClipRect(
               //背景过滤器
               child: BackdropFilter(

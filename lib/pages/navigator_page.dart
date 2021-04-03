@@ -18,6 +18,7 @@ import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/info_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
+import 'package:flying_kxz/test.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'app_upgrade.dart';
@@ -90,7 +91,8 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
               CoursePage(),
               InfoPage(),
               DiyPage(),
-              MyselfPage()
+              MyselfPage(),
+              TestPage()
             ],
             controller: navigatorPageController,
             onPageChanged: (int index){
@@ -111,6 +113,8 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
                 _bottomNavigationBar("资讯", Icons.article_outlined,badgeShowList[1]),
                 _bottomNavigationBar('发现',OMIcons.explore,badgeShowList[2]),
                 _bottomNavigationBar('我的',Icons.person_outline,badgeShowList[3]),
+                _bottomNavigationBar('我的',Icons.person_outline,badgeShowList[3]),
+
               ],
               currentIndex: _currentIndex,
               onTap: (int index) {
