@@ -4,12 +4,11 @@ import 'dart:core';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-/*获取本地信息
- * Prefs.init()
- * Prefs.getSchoolYear()
- * Prefs.setSchoolYear()
- *
- */
+//获取本地信息
+//Prefs.init()
+//Prefs.getSchoolYear()
+//Prefs.setSchoolYear()
+
 class Prefs{
 
   static SharedPreferences prefs;

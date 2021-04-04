@@ -23,8 +23,11 @@ void main() {
         SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
+  /// Prefs.init() 提取存储在本地的信息
   Future.wait([Prefs.init()]).whenComplete((){
+    // 初始化主题
     ThemeProvider.init();
+    //启动App
     runApp(MyApp());
   });
 }
@@ -77,24 +80,24 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  //获取当前App版本
-  void _getAppVersion() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    Global.curVersion = packageInfo.version;
-  }
+
 
   Future<void> initFunc(BuildContext context) async {
-    _getAppVersion();
+    //获取当前App版本
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    Global.curVersion = packageInfo.version;
     initConfigInfo();
+    //宽屏设备时，修改屏幕信息
     if (MediaQuery.of(context).size.height / MediaQuery.of(context).size.width <
         1.5) {
       deviceHeight = 1080;
       deviceWidth = 1920;
     }
+    //初始化参考屏幕信息
     ScreenUtil.init(context,
-        height: deviceHeight, width: deviceWidth); //初始化参考屏幕信息
+        height: deviceHeight, width: deviceWidth);
     initSize();
-
+    //初始化背景图路径
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists())
         backImgFile = File(Prefs.backImg);
