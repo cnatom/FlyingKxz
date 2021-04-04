@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/point_components/point_matrix.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/bean.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 
-import 'bean.dart';
-import 'course_data.dart';
 
 /* 课程数据类
  * CourseProvider().init("myToken","2019","1");

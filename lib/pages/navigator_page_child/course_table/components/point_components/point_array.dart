@@ -2,25 +2,24 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';
 
 class PointArray extends StatefulWidget {
-  PointArray({Key key}):super(key: key);
+  final BuildContext context;
+  PointArray({Key key, this.context}):super(key: key);
   @override
   _PointArrayState createState() => _PointArrayState();
 }
 
 class _PointArrayState extends State<PointArray> {
   double widgetWidth;//容器边长
-  ThemeProvider themeProvider;
   CourseProvider courseProvider;
   @override
   Widget build(BuildContext context) {
     this.widgetWidth = MediaQuery.of(context).size.height/50;
-    courseProvider = Provider.of<CourseProvider>(context);
+    courseProvider = Provider.of<CourseProvider>(widget.context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [

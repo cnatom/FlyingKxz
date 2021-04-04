@@ -4,7 +4,8 @@ import 'package:flying_kxz/pages/navigator_page_child/course_table/components/po
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 
 class PointMain extends StatefulWidget {
-  PointMain({Key key}):super(key:key);
+  final BuildContext context;
+  PointMain({Key key, this.context}):super(key:key);
   @override
   PointMainState createState() => PointMainState();
 }
@@ -32,7 +33,7 @@ class PointMainState extends State<PointMain> {
             secondCurve: Curves.easeOutCubic,
             sizeCurve: Curves.easeOutCubic,
             firstChild: Container(),
-            secondChild: PointArray(),
+            secondChild: PointArray(context: widget.context,),
             duration: Duration(milliseconds: 200),
             crossFadeState: showRight?CrossFadeState.showFirst:CrossFadeState.showSecond,
           ),
@@ -40,7 +41,7 @@ class PointMainState extends State<PointMain> {
             firstCurve: Curves.easeOutCubic,
             secondCurve: Curves.easeOutCubic,
             sizeCurve: Curves.easeOutCubic,
-            firstChild: PointMatrix(key:pointAreaKey),
+            firstChild: PointMatrix(context: context,key:pointAreaKey),
             secondChild: Container(),
             duration: Duration(milliseconds: 200),
             crossFadeState: showRight?CrossFadeState.showFirst:CrossFadeState.showSecond,

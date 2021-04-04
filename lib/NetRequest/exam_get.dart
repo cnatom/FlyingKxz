@@ -20,7 +20,7 @@ Future<bool> examPost(BuildContext context,
     Dio dio = Dio();
     //配置dio信息
     res = await dio.get(ApiUrl.examUrl,
-        queryParameters: _jsonMap, options: Options(headers: {"token": token,"action":"jwxt"}));
+        queryParameters: _jsonMap, options: Options(headers: {"token": token,"action":"jwxt"},receiveTimeout: 5,sendTimeout: 5));
     //Json解码为Map
     Map<String, dynamic> map = jsonDecode(res.toString());
     debugPrint(res.toString());

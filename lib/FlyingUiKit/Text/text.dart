@@ -1,7 +1,6 @@
 //一般字体
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 double fontSizeTitle50; //headline1
 double fontSizeTitle45; //headline2
 double fontSizeMain40; //body1

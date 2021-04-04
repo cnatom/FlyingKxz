@@ -1,19 +1,16 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumtLogin_view.dart';
+import 'package:flying_kxz/test_page/child/newExam_view.dart';
+import 'package:flying_kxz/test_page/child/newPower_view.dart';
 import 'package:provider/provider.dart';
-
-import 'FlyingUiKit/container.dart';
-import 'FlyingUiKit/custome_router.dart';
-import 'Model/prefs.dart';
-import 'newCumtLogin_view.dart';
+import '../FlyingUiKit/container.dart';
+import '../FlyingUiKit/custome_router.dart';
+import 'child/newCumtLogin_view.dart';
 
 //跳转到当前页面
 void toTestPage(BuildContext context) {
@@ -61,6 +58,7 @@ class _TestPageState extends State<TestPage> {
                   Container(),
                   _buildIconsArea(),
                   NewCumtLoginView(),
+                  NewExamView(),
                   _buildUnitCard(0xe610, "校园卡余额", "0.84 元",
                       child: Wrap(
                         children: [
@@ -80,17 +78,8 @@ class _TestPageState extends State<TestPage> {
                           )
                         ],
                       )),
-                  _buildUnitCard(
-                    0xe611,
-                    "宿舍电量",
-                    "66 度",
-                  ),
-                  _buildUnitCard(
-                      0xe61b,
-                      "考试倒计时",
-                      "暂无考试",
-                      child: ExamPage()
-                  ),
+                  NewPowerView(),
+
                   TextButton(onPressed: ()=>themeProvider.simpleMode=!themeProvider.simpleMode, child: Text('调整')),
 
                   TextButton(
@@ -267,59 +256,6 @@ class _TestPageState extends State<TestPage> {
           FlyText.mini30(
             title,
             color: themeProvider.colorNavText,
-          )
-        ],
-      ),
-    );
-  }
-}
-class FlyUnitCard extends StatefulWidget {
-  final int codePoint;
-  final String title;
-  final String previewText;
-  final Widget child;
-  FlyUnitCard(this.codePoint, this.title, this.previewText,
-      {this.child});
-  @override
-  _FlyUnitCardState createState() => _FlyUnitCardState();
-}
-
-class _FlyUnitCardState extends State<FlyUnitCard> {
-  ThemeProvider themeProvider;
-  @override
-  Widget build(BuildContext context) {
-    themeProvider = Provider.of<ThemeProvider>(context);
-    return FlyContainer(
-      padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB * 1.4,
-          spaceCardPaddingRL, spaceCardPaddingTB * 1.2),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                IconData(widget.codePoint, fontFamily: "CY"),
-                color: themeProvider.colorMain,
-                size: fontSizeMain40 * 1.7,
-              ),
-              SizedBox(
-                width: fontSizeMain40 / 2,
-              ),
-              FlyText.mini30(widget.title,fontWeight: FontWeight.w600,color: themeProvider.colorNavText.withOpacity(0.7),),
-              FlyText.main40(
-                "    \\    ",
-                color: themeProvider.colorNavText.withOpacity(0.3),
-              ),
-              FlyText.mini30(
-                widget.previewText,
-                color: themeProvider.colorNavText.withOpacity(0.6),
-              )
-            ],
-          ),
-          Divider(height: spaceCardPaddingTB*1.8,),
-          Padding(
-            padding: EdgeInsets.fromLTRB(spaceCardPaddingRL/4, 0, spaceCardPaddingRL/4, spaceCardPaddingTB),
-            child: widget.child ?? Container(),
           )
         ],
       ),

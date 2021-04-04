@@ -13,7 +13,8 @@ import 'package:provider/provider.dart';
 import '../../course_page.dart';
 
 class PointMatrix extends StatefulWidget {
-  PointMatrix({Key key}):super(key: key);
+  final BuildContext context;
+  PointMatrix({Key key, this.context}):super(key: key);
   @override
   PointMatrixState createState() => PointMatrixState();
 
@@ -35,8 +36,8 @@ class PointMatrixState extends State<PointMatrix> {
 
   @override
   Widget build(BuildContext context) {
-    courseProvider = Provider.of<CourseProvider>(context);
-    themeProvider = Provider.of<ThemeProvider>(context);
+    courseProvider = Provider.of<CourseProvider>(widget.context);
+    themeProvider = Provider.of<ThemeProvider>(widget.context);
     _init(context);
     return SingleChildScrollView(
       controller: scrollController,

@@ -1,19 +1,10 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
-import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/Model/news_info.dart';
-import 'package:flying_kxz/NetRequest/swiper_get.dart';
 import 'package:flying_kxz/pages/navigator_page_child/info_page_child/info_list.dart';
 import 'package:flying_kxz/pages/navigator_page_child/info_page_child/swiper_widget.dart';
 import 'package:provider/provider.dart';

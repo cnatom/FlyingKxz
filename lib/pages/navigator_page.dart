@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:badges/badges.dart';
 import 'package:dio/dio.dart';
@@ -13,16 +12,13 @@ import 'package:flying_kxz/FlyingUiKit/notice.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/cumt_login.dart';
-import 'package:flying_kxz/NetRequest/swiper_get.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/info_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
-import 'package:flying_kxz/test.dart';
+import 'package:flying_kxz/test_page/test.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'app_upgrade.dart';
-import 'backImage_view.dart';
 import 'navigator_page_child/course_table/course_page.dart';
 
 //跳转到当前页面

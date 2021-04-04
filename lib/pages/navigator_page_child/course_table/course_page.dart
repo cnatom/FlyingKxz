@@ -7,29 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_picker/Picker.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
-import 'package:flying_kxz/FlyingUiKit/bottom_sheet.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/container.dart';
-import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
-import 'package:flying_kxz/FlyingUiKit/notice.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
-import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
-import 'package:provider/provider.dart';
 
+import 'package:provider/provider.dart';
 import 'components/add_components/course_add_view.dart';
 import 'components/course_table_child.dart';
 import 'components/point_components/point_main.dart';
-import 'components/point_components/point_matrix.dart';
+
 PageController coursePageController = new PageController(initialPage: CourseProvider.curWeek-1,);
 class CoursePage extends StatefulWidget {
   @override
@@ -48,7 +39,8 @@ class CoursePageState extends State<CoursePage>
     super.build(context);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: CourseProvider()),],
+        ChangeNotifierProvider.value(value: CourseProvider()),
+      ],
       builder: (context,_){
         courseProvider = Provider.of<CourseProvider>(context);
         themeProvider = Provider.of<ThemeProvider>(context);
@@ -74,7 +66,7 @@ class CoursePageState extends State<CoursePage>
                   ],
                 ),
               ),
-              PointMain(key: _rightGlobalKey,)
+              PointMain(context: context,key: _rightGlobalKey,)
             ],
           ),
         );

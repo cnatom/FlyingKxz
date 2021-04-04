@@ -13,7 +13,8 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/cumt_login.dart';
-import 'package:flying_kxz/test.dart';
+import 'package:flying_kxz/test_page/component/unit_card.dart';
+import 'file:///C:/Flying/flying_kxz/lib/test_page/test.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -28,8 +29,7 @@ class _NewCumtLoginViewState extends State<NewCumtLoginView> {
   ThemeProvider themeProvider;
   String _username; //账号
   String _password; //密码
-  bool autoLogin = false;
-  bool ok = false;
+  bool loading = false;
   int loginType = Prefs.cumtLoginMethod??1;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>(); //表单状态
   @override
@@ -45,6 +45,7 @@ class _NewCumtLoginViewState extends State<NewCumtLoginView> {
       0xe619,
       "校园网登录",
       Prefs.cumtLoginPassword!=null?"已开启自动登录":"未开启自动登录",
+      loading: loading,
       child: Form(
         key: _formKey,
         child: Wrap(
@@ -94,7 +95,15 @@ class _NewCumtLoginViewState extends State<NewCumtLoginView> {
                       onSaved: (String value) => _username = value),
                 ),
                 SizedBox(width: spaceCardPaddingRL/2,),
-                cumtLoginButton(0,"登录",onTap: ()=>_loginFunc())
+                cumtLoginButton(0,"登录",onTap: ()async{
+                  setState(() {
+                    loading = true;
+                  });
+                  await _loginFunc();
+                  setState(() {
+                    loading = false;
+                  });
+                })
               ],
             ),
             Row(
@@ -104,7 +113,15 @@ class _NewCumtLoginViewState extends State<NewCumtLoginView> {
                       onSaved: (String value) => _password = value,obscureText:true),
                 ),
                 SizedBox(width: spaceCardPaddingRL/2,),
-                cumtLoginButton(1,"注销",onTap: ()=>cumtLogoutGet(context)),
+                cumtLoginButton(1,"注销",onTap: ()async{
+                  setState(() {
+                    loading = true;
+                  });
+                  await cumtLogoutGet(context);
+                  setState(() {
+                    loading = false;
+                  });
+                }),
               ],
             )
 
@@ -186,7 +203,7 @@ class _NewCumtLoginViewState extends State<NewCumtLoginView> {
   Widget cumtLoginButton(int type,String title,{@required GestureTapCallback onTap})=>Material(
     borderRadius: BorderRadius.circular(5),
     elevation: 0,
-    color: type==0?themeProvider.colorMain.withOpacity(0.1):Theme.of(context).disabledColor.withOpacity(0.5),
+    color: type==0?themeProvider.colorMain.withOpacity(0.2):Theme.of(context).disabledColor.withOpacity(0.5),
     child: InkWell(
       splashColor: Colors.black12,
       borderRadius: BorderRadius.circular(5),

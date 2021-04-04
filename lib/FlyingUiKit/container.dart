@@ -6,11 +6,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_easyhub/animation/easy_falling_ball.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/pages/backImage_view.dart';
 import 'package:provider/provider.dart';
+import 'Theme/theme.dart';
 import 'config.dart';
 
 class FlyContainer extends StatefulWidget {
@@ -38,7 +38,7 @@ class _FlyContainerState extends State<FlyContainer> {
           borderRadius: BorderRadius.circular(borderRadiusValue),
           color: Theme.of(context)
               .cardColor
-              .withOpacity(themeProvider.simpleMode?1:themeProvider.transCard),
+              .withOpacity(themeProvider.transCard),
           boxShadow: [
             boxShadowMain
           ]),
@@ -68,7 +68,7 @@ class _FlyNavBackgroundState extends State<FlyNavBackground> {
             whenFirst: themeProvider.simpleMode,
             firstChild: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: themeProvider.blurBack,sigmaY: themeProvider.blurBack),
-                child: Container(color: Colors.white.withOpacity(0.9),)),
+                child: Container(color: Colors.white.withOpacity(themeProvider.transBack),)),
             secondChild: ClipRect(
               //背景过滤器
               child: BackdropFilter(

@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
-import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/NetRequest/swiper_get.dart';
 import 'package:flying_kxz/pages/navigator_page_child/info_page_child/info_view.dart';
 import 'package:provider/provider.dart';
 

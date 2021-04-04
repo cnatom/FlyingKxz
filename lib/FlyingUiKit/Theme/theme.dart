@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
@@ -36,9 +35,9 @@ class ThemeProvider extends ChangeNotifier {
   static Map _lightDefault = {
     "darkMode": false,
     "simpleMode":true,
-    "transBack": 0.5,
+    "transBack": 0.9,
     "blurBack": 10.0,
-    "transCard": 0.1,
+    "transCard": 0.9,
   };
   static Map _darkDefault = {
     "darkMode": true,

@@ -2,7 +2,6 @@
 
 import 'dart:core';
 
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /*获取本地信息

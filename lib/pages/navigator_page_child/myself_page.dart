@@ -7,11 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttericon/entypo_icons.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
-import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
@@ -19,17 +17,14 @@ import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/notice.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
-import 'package:flying_kxz/FlyingUiKit/text_editer.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/balance_get.dart';
-import 'package:flying_kxz/NetRequest/cumt_login.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
 import 'package:flying_kxz/NetRequest/power_get.dart';
 import 'package:flying_kxz/NetRequest/rank_get.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
-import 'package:flying_kxz/pages/backImage_view.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/about_page.dart';
@@ -39,7 +34,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'myself_page_child/cumtLogin_view.dart';
 
 class MyselfPage extends StatefulWidget {
@@ -308,7 +302,7 @@ class _MyselfPageState extends State<MyselfPage>
                   })
               ),
               _buildDiyButton("卡片透明",
-                  child: _buildSliver(themeProvider.transCard,min: 0.01,max:themeProvider.darkMode?0.8:0.2, onChanged: (v) {
+                  child: _buildSliver(themeProvider.transCard,min: 0.01,max:themeProvider.darkMode?0.8:themeProvider.simpleMode?1.0:0.2, onChanged: (v) {
                     themeProvider.transCard = v;
                   })
               ),

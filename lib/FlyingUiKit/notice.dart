@@ -4,12 +4,12 @@ import 'package:badges/badges.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:provider/provider.dart';
 
 import 'Text/text.dart';
+import 'Theme/theme.dart';
 import 'container.dart';
 
 void noticeGetInfo()async{
