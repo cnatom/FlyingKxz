@@ -35,34 +35,34 @@ void initSize(){
 
 class FlyText extends StatelessWidget {
   FlyText.title50(
-    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine}
+    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
   ) : fontSize = fontSizeTitle50;
   FlyText.title45(
-    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine}
+    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
   ) : fontSize = fontSizeTitle45;
   FlyText.main40(
-    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine}
+    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
   ) : fontSize = fontSizeMain40;
   FlyText.mainTip40(
-      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine}
+      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration}
       ) : fontSize = fontSizeMain40,color = Color(0xff8d8d93);
   FlyText.main35(
-    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine}
+    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
   ) : fontSize = fontSizeMini38;
   FlyText.mainTip35(
-      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine}
+      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration}
       ) : fontSize = fontSizeMini38,color = Color(0xff8d8d93);
   FlyText.mini30(
-      this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine}
+      this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
   ) : fontSize = fontSizeTip33;
   FlyText.miniTip30(
-      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine}
+      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration}
       ) : fontSize = fontSizeTip33,color = Color(0xff8d8d93);
   FlyText.mini25(
-    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine}
+    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
   ) : fontSize = fontSizeTipMini25;
   FlyText.miniTip25(
-      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine}
+      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration}
       ) : fontSize = fontSizeTipMini25,color = Color(0xff8d8d93);
   final TextAlign textAlign;
   final String text;
@@ -71,10 +71,12 @@ class FlyText extends StatelessWidget {
   final int maxLine;
   final int letterSpacing;
   final FontWeight fontWeight;
+  final TextDecoration textDecoration;
   Widget build(BuildContext context) {
     return Text(
       text,
       style: TextStyle(
+        decoration: textDecoration??TextDecoration.none,
         color: color==null?null:color,
         fontSize: fontSize,
         fontWeight: fontWeight==null?null:fontWeight

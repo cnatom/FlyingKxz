@@ -32,7 +32,7 @@ class _CourseAddViewState extends State<CourseAddView> {
   int durationNum;
   @override
   Widget build(BuildContext context) {
-    return flyBottomSheetScaffold(context,
+    return FlyBottomSheetScaffold(context,
         title: "添加课程",
         onDetermine: ()=>_onDetermine(),
         onCancel: ()=>Navigator.of(context).pop(),
@@ -106,7 +106,17 @@ class _CourseAddViewState extends State<CourseAddView> {
     int weekNum;
     int lessonNum;
     int durationNum;
-    result = await FlyDialogDIYShow(context, content: LessonWeekNumPicker());
+    result = await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Theme.of(context).cardColor.withOpacity(1),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadiusValue)
+      ),
+      builder: (BuildContext context) {
+        return LessonWeekNumPicker();
+      },
+    );
     if(result==null) return;
     weekNum = result[0];
     lessonNum = result[1];

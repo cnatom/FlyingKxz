@@ -36,8 +36,8 @@ class PointMatrixState extends State<PointMatrix> {
 
   @override
   Widget build(BuildContext context) {
-    courseProvider = Provider.of<CourseProvider>(widget.context);
-    themeProvider = Provider.of<ThemeProvider>(widget.context);
+    courseProvider = Provider.of<CourseProvider>(context);
+    themeProvider = Provider.of<ThemeProvider>(context);
     _init(context);
     return SingleChildScrollView(
       controller: scrollController,

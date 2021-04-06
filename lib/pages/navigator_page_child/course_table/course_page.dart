@@ -1,9 +1,11 @@
 //主页
 import 'dart:ui';
 
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -15,11 +17,11 @@ import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
-
 import 'package:provider/provider.dart';
 import 'components/add_components/course_add_view.dart';
 import 'components/course_table_child.dart';
 import 'components/point_components/point_main.dart';
+import 'components/back_curWeek.dart';
 
 PageController coursePageController = new PageController(initialPage: CourseProvider.curWeek-1,);
 class CoursePage extends StatefulWidget {
@@ -32,8 +34,6 @@ class CoursePageState extends State<CoursePage>
   ThemeProvider themeProvider;
   GlobalKey<PointMainState> _rightGlobalKey = new GlobalKey<PointMainState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -48,25 +48,34 @@ class CoursePageState extends State<CoursePage>
           key: _scaffoldKey,
           backgroundColor: Colors.transparent,
           appBar: _buildAppBar(),
-          body: Row(
+          body: Stack(
             children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    _buildTop(),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(child: _buildLeft(),),
-                          Expanded(child: _buildBody(), flex: 8,)
-                        ],
-                      ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        _buildTop(),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Expanded(child: _buildLeft(),),
+                              Expanded(child: _buildBody(), flex: 8,)
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: fontSizeTip33 / 5,),
+                      ],
                     ),
-                    SizedBox(height: fontSizeTip33 / 5,),
-                  ],
-                ),
+                  ),
+                  PointMain(key: _rightGlobalKey,)
+                ],
               ),
-              PointMain(key: _rightGlobalKey,)
+              BackCurWeekButton(
+                themeProvider: themeProvider,
+                onTap: ()=>_backToCurWeek(),
+                show: CourseProvider.curWeek!=CourseProvider.initialWeek,
+              )
             ],
           ),
         );
@@ -77,7 +86,6 @@ class CoursePageState extends State<CoursePage>
     return AppBar(
       backgroundColor: Colors.transparent,
       brightness: themeProvider.simpleMode?Brightness.light:Brightness.dark,
-      centerTitle: true,
       title: FlyText.title45('第${CourseProvider.curWeek}周',
           fontWeight: FontWeight.w600, color: themeProvider.colorNavText),
       leading: _buildCourseImportView(),
@@ -85,7 +93,10 @@ class CoursePageState extends State<CoursePage>
         _buildRefreshButton(),
         _buildAddButton(),
         _buildShowRightButton(),
-        // IconButton(icon: Icon(Icons.build), onPressed: ()=>courseProvider.test(),color: Colors.white,),
+        IconButton(
+          icon: Icon(CommunityMaterialIcons.calendar_import),
+          onPressed: ()=>_importCourse(),
+          color: themeProvider.colorNavText,)
       ],
     );
   }
@@ -107,7 +118,11 @@ class CoursePageState extends State<CoursePage>
         });
 
   }
-
+  _backToCurWeek(){
+    courseProvider.changeWeek(CourseProvider.initialWeek);
+    coursePageController.jumpToPage(CourseProvider.initialWeek-1,);
+    _rightGlobalKey.currentState.initScroll();
+  }
   Widget _buildRefreshButton(){
     return FlyWidgetBuilder(
         whenFirst: CourseProvider.curWeek!=CourseProvider.initialWeek,
@@ -116,11 +131,7 @@ class CoursePageState extends State<CoursePage>
             EvilIcons.refresh,
             color: themeProvider.colorNavText,
           ),
-          onPressed: (){
-            courseProvider.changeWeek(CourseProvider.initialWeek);
-            coursePageController.jumpToPage(CourseProvider.initialWeek-1,);
-            _rightGlobalKey.currentState.initScroll();
-          },
+          onPressed: ()=>_backToCurWeek(),
         ),
         secondChild: Container());
   }
@@ -385,8 +396,6 @@ class CoursePageState extends State<CoursePage>
   @override
   bool get wantKeepAlive => true;
 }
-
-
 
 
 

@@ -16,7 +16,9 @@ import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_
  * CourseProvider.add(CourseData(map));
  */
 class CourseProvider extends ChangeNotifier{
+  // ignore: deprecated_member_use
   static var info = new List<List<CourseData>>(26);
+  // ignore: deprecated_member_use
   static var _infoByCourse = new List<CourseData>();
   static var pointArray = new List(26);
 
@@ -178,12 +180,6 @@ class CourseProvider extends ChangeNotifier{
     if(curWeek<=0) curWeek = 1;
     initialWeek = curWeek;
     curMondayDate = admissionDate.add(Duration(days: 7*(curWeek-1)));
-  }
-  
-  @override
-  void notifyListeners() {
-    super.notifyListeners();
-    debugPrint("notifyListeners");
   }
   _handleCourseBean(CourseBean courseBean){
     if(courseBean!=null){
