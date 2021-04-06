@@ -66,7 +66,7 @@ class CoursePageState extends State<CoursePage>
                   ],
                 ),
               ),
-              PointMain(context: context,key: _rightGlobalKey,)
+              PointMain(key: _rightGlobalKey,)
             ],
           ),
         );

@@ -7,8 +7,7 @@ import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_
 import 'package:provider/provider.dart';
 
 class PointArray extends StatefulWidget {
-  final BuildContext context;
-  PointArray({Key key, this.context}):super(key: key);
+  PointArray({Key key}):super(key: key);
   @override
   _PointArrayState createState() => _PointArrayState();
 }
@@ -19,7 +18,7 @@ class _PointArrayState extends State<PointArray> {
   @override
   Widget build(BuildContext context) {
     this.widgetWidth = MediaQuery.of(context).size.height/50;
-    courseProvider = Provider.of<CourseProvider>(widget.context);
+    courseProvider = Provider.of<CourseProvider>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
