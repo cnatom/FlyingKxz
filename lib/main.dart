@@ -106,8 +106,8 @@ class _StartPageState extends State<StartPage> {
     // toTestPage(context);
     // return;
     //是否登录过
-    toNavigatorPage(context);
-    return;
+    // toNavigatorPage(context);
+    // return;
     if (Prefs.token != null) {
       toNavigatorPage(context);
     } else {

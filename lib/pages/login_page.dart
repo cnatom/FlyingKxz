@@ -138,11 +138,13 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+  //点击登录
   _loginHandler() async {
     FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
+    //开始加载
     setState(() {
       _loading = true;
-    }); //开始加载
+    });
     //提取输入框数据
     var _form = _formKey.currentState;
     _form.save();

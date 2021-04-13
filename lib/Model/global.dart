@@ -73,7 +73,7 @@ class ApiUrl{
   //http://119.45.171.211:5000
   static String _pubUrl = "https://api.kxz.atcumt.com";
 
-  static String loginUrl = "$_pubUrl/new/login";//新登录请求
+  static String loginUrl = "$_pubUrl/login";//新登录请求
   static String loginCheckUrl = "http://authserver.cumt.edu.cn/authserver/checkNeedCaptcha.htl";
   static String courseUrl = "$_pubUrl/jwxt/kb";//课表查询
   static String scoreUrl = "$_pubUrl/jwxt/grade";//成绩查询
