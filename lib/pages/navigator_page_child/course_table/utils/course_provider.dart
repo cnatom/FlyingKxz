@@ -184,7 +184,7 @@ class CourseProvider extends ChangeNotifier{
   _handleCourseBean(CourseBean courseBean){
     if(courseBean!=null){
       // var nameMap = new Map();
-      for(var course in courseBean.data.kbList){
+      for(var course in courseBean.kbList){
         // //防止添加重复课程
         // if(nameMap.containsKey(course.kcmc)){
         //   continue;
@@ -238,12 +238,11 @@ class CourseProvider extends ChangeNotifier{
     CourseBean courseBean = new CourseBean();
     Dio dio = new Dio();
     try{
-      Response res = await dio.get(ApiUrl.courseUrl, queryParameters: {
+      Response res = await dio.post(ApiUrl.courseUrl, data: {
         "xnm":year,
         "xqm":term
       }, options: Options(headers: {
-        "token": token,
-        "action":"jwxt"
+        "Authorization": "Bearer "+token,
       }));
       debugPrint(res.toString());
       var map = jsonDecode(res.toString());

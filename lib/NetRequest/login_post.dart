@@ -9,23 +9,20 @@ import 'package:flying_kxz/Model/prefs.dart';
 //获取登录json数据
 Future<bool> loginPost(BuildContext context, int loginCount,
     {@required String username, @required String password}) async {
+  Response res;
+  Dio dio = Dio();
   try {
     Map _jsonMap = {'username': username, 'password': password};
-    Response res;
-    Dio dio = Dio();
-    //配置dio信息
-
     res = await dio.post(ApiUrl.loginUrl, data: _jsonMap);
     Map<String, dynamic> map = jsonDecode(res.toString());
     debugPrint(res.toString());
-    if (map['code'] == 0) {
+    if (res.statusCode == 200) {
       //登录成功
       Global.loginInfo = LoginInfo.fromJson(map);
-      Prefs.token = Global.loginInfo.data.token.toString();
+      Prefs.token = Global.loginInfo.token;
+      Prefs.name = Global.loginInfo.name;
       Prefs.username = username;
-      Prefs.name = Global.loginInfo.data.name;
-      Prefs.iClass = Global.loginInfo.data.classname;
-      Prefs.college = Global.loginInfo.data.college;
+      Prefs.phone = Global.loginInfo.phone;
       Prefs.isFirstLogin = true;
       return true;
     } else {

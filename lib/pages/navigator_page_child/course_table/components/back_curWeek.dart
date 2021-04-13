@@ -44,7 +44,7 @@ class _BackCurWeekButtonState extends State<BackCurWeekButton> {
       builder: (BuildContext context, Object value, Widget child) {
         return Positioned(
           right: double.parse(value.toString())*(-50.0),
-          top: _dy-kToolbarHeight-ScreenUtil.statusBarHeight,
+          bottom: ScreenUtil.bottomBarHeight+100,
           child: Opacity(
             opacity: 1.0-value,
             child: Draggable(

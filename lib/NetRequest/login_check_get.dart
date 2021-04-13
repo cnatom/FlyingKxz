@@ -13,9 +13,10 @@ Future<bool> loginCheckGet(BuildContext context,
   try {
     Response res;
     Dio dio = Dio();
+    debugPrint("@@@");
     //配置dio信息
     res = await dio
-        .get(ApiUrl.loginCheckUrl, queryParameters: {"username": username});
+        .get(ApiUrl.loginCheckUrl, queryParameters: {"username": username},);
     Map<String, dynamic> map = jsonDecode(res.toString());
     debugPrint(res.toString());
     if (map['isNeedActive']!=null&&map['isNeedActive']) {

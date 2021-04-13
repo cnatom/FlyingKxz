@@ -71,11 +71,15 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             _buildBackground(),
             Padding(
-              padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(deviceWidth * 0.08), 0, ScreenUtil().setWidth(deviceWidth * 0.08), 0),
+              padding: EdgeInsets.fromLTRB(
+                  ScreenUtil().setWidth(deviceWidth * 0.08),
+                  0,
+                  ScreenUtil().setWidth(deviceWidth * 0.08),
+                  0),
               child: Column(
                 children: <Widget>[
                   Expanded(
-                    flex:2,
+                    flex: 2,
                     child: Container(),
                   ),
                   Expanded(
@@ -90,7 +94,10 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           _buildInputBody(),
-                          Opacity(opacity: 0.95,child: NoticeCard(),),
+                          Opacity(
+                            opacity: 0.95,
+                            child: NoticeCard(),
+                          ),
                           _buildBottom()
                         ],
                       ),
@@ -104,7 +111,8 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-  Widget _buildHeader(){
+
+  Widget _buildHeader() {
     return Container(
       width: double.infinity,
       child: Column(
@@ -122,22 +130,24 @@ class _LoginPageState extends State<LoginPage> {
             style: TextStyle(
               color: Colors.white,
               fontSize: ScreenUtil().setSp(80),
-              fontWeight: FontWeight.bold,),
+              fontWeight: FontWeight.bold,
+            ),
           ),
           SizedBox(
-            height: fontSizeMini38/2,
+            height: fontSizeMini38 / 2,
           ),
           Text(
             '矿大人自己的App',
             style: TextStyle(
               color: Colors.white.withOpacity(0.6),
-              fontSize: ScreenUtil().setSp(40),),
+              fontSize: ScreenUtil().setSp(40),
+            ),
           ),
-
         ],
       ),
     );
   }
+
   //点击登录
   _loginHandler() async {
     FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
@@ -156,49 +166,59 @@ class _LoginPageState extends State<LoginPage> {
       });
       return;
     }
-    //检测是否激活&验证码
-    if(await loginCheckGet(context, username: _username)){
-      //登录请求并决定是否跳转
-      if (await loginPost(context, loginCount++,
-          username: _username, password: _password)) {
-        toNavigatorPage(context);
-      }
+    // //检测是否激活&验证码
+    // if (await loginCheckGet(context, username: _username)) {
+    //   //登录请求并决定是否跳转
+    //   if (await loginPost(context, loginCount++,
+    //       username: _username, password: _password)) {
+    //     toNavigatorPage(context);
+    //   }
+    // }
+    //登录请求并决定是否跳转
+    if (await loginPost(context, loginCount++,
+        username: _username, password: _password)) {
+      toNavigatorPage(context);
     }
     setState(() {
       _loading = false;
     });
   }
-  void _visitorHandler()async{
+
+  void _visitorHandler() async {
     FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
     setState(() {
       _loading = true;
     }); //开始加载
     //登录请求并决定是否跳转
     if (await loginPost(context, 1,
-    username: "12345678", password: "12345678")) {
-    toNavigatorPage(context);
+        username: "12345678", password: "12345678")) {
+      toNavigatorPage(context);
     } else {
-    setState(() {
-    _loading = false;
-    });
+      setState(() {
+        _loading = false;
+      });
     }
   }
-  Widget _buildInputBody(){
+
+  Widget _buildInputBody() {
     return Column(
       children: [
-
         _buildInputBar(
-          context, '输入学号', _userNameController,
-          onSaved: (String value) =>
-          _username = value,),
+          context,
+          '输入学号',
+          _userNameController,
+          onSaved: (String value) => _username = value,
+        ),
         SizedBox(
           height: fontSizeMini38 * 2,
         ),
         _buildInputBar(
-            context, '融合门户密码(默认身份证后6位）', _passWordController,
-            onSaved: (String value) =>
-            _password = value,
-            obscureText: true,),
+          context,
+          '融合门户密码(默认身份证后6位）',
+          _passWordController,
+          onSaved: (String value) => _password = value,
+          obscureText: true,
+        ),
         SizedBox(
           height: fontSizeMini38 * 5,
         ),
@@ -206,44 +226,49 @@ class _LoginPageState extends State<LoginPage> {
       ],
     );
   }
-  Widget _buildInputBar(BuildContext context,String hintText, TextEditingController controller,
-      {FormFieldSetter<String> onSaved,bool obscureText = false,}) =>
+
+  Widget _buildInputBar(
+    BuildContext context,
+    String hintText,
+    TextEditingController controller, {
+    FormFieldSetter<String> onSaved,
+    bool obscureText = false,
+  }) =>
       Container(
-        padding: EdgeInsets.fromLTRB(spaceCardPaddingRL*1.4, spaceCardPaddingTB/4, spaceCardPaddingRL, spaceCardPaddingTB/4),
+        padding: EdgeInsets.fromLTRB(spaceCardPaddingRL * 1.4,
+            spaceCardPaddingTB / 4, spaceCardPaddingRL, spaceCardPaddingTB / 4),
         decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(100)
-        ),
+            borderRadius: BorderRadius.circular(100)),
         child: TextFormField(
           textAlign: TextAlign.start,
-          style: TextStyle(fontSize: fontSizeMain40,color: Colors.white),
+          style: TextStyle(fontSize: fontSizeMain40, color: Colors.white),
           obscureText: obscureText, //是否是密码
           controller: controller, //控制正在编辑的文本。通过其可以拿到输入的文本值
           cursorColor: colorMain,
           decoration: InputDecoration(
-            hintStyle: TextStyle(fontSize: fontSizeMain40,color: Colors.white.withOpacity(0.8)),
+            hintStyle: TextStyle(
+                fontSize: fontSizeMain40, color: Colors.white.withOpacity(0.8)),
             border: InputBorder.none, //下划线
             hintText: hintText, //点击后显示的提示语
           ),
           onSaved: onSaved,
         ),
       );
-  Widget _buildBottom(){
+  Widget _buildBottom() {
     return Column(
       children: [
-
         Row(
-          mainAxisAlignment:
-          MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                _buildFlatButton("游客访问",
-                    onPressed: () => _visitorHandler())
-              ],
-            ),),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _buildFlatButton("游客访问", onPressed: () => _visitorHandler())
+                ],
+              ),
+            ),
             Container(
               height: ScreenUtil().setWidth(35),
               width: 1,
@@ -253,35 +278,33 @@ class _LoginPageState extends State<LoginPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildFlatButton("无法登录",
-                      onPressed: () async {
-                        Clipboard.setData(
-                            ClipboardData(text: "839372371"));
-                        showToast(context, "已复制反馈QQ群号至剪切板");
-                        FlyDialogDIYShow(context,
-                            content: Wrap(
+                  _buildFlatButton("无法登录", onPressed: () async {
+                    Clipboard.setData(ClipboardData(text: "839372371"));
+                    showToast(context, "已复制反馈QQ群号至剪切板");
+                    FlyDialogDIYShow(context,
+                        content: Wrap(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .start,
-                                  children: [
-                                    FlyText.main40("矿小助的密码与融合门户的密码保持一致\n",maxLine: 10,),
-                                    InkWell(
-                                      onTap: () => launch(
-                                          "http://authserver.cumt.edu.cn/authserver/login"),
-                                      child: FlyText.main35(
-                                          "➡️点我跳转至融合门户验证或找回密码",maxLine: 10,
-                                          color: Colors.blue),
-                                    ),
-                                    FlyText.mainTip35(
-                                        "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）",
-                                        maxLine: 10),
-                                  ],
+                                FlyText.main40(
+                                  "矿小助的密码与融合门户的密码保持一致\n",
+                                  maxLine: 10,
                                 ),
+                                InkWell(
+                                  onTap: () => launch(
+                                      "http://authserver.cumt.edu.cn/authserver/login"),
+                                  child: FlyText.main35("➡️点我跳转至融合门户验证或找回密码",
+                                      maxLine: 10, color: Colors.blue),
+                                ),
+                                FlyText.mainTip35(
+                                    "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）",
+                                    maxLine: 10),
                               ],
-                            ));
-                      })
+                            ),
+                          ],
+                        ));
+                  })
                 ],
               ),
             )
@@ -293,46 +316,53 @@ class _LoginPageState extends State<LoginPage> {
       ],
     );
   }
+
   //小按钮
-  Widget _buildFlatButton(String text, {VoidCallback onPressed,double fontSize}) => FlatButton(
-    onPressed: onPressed,
-    highlightColor: Colors.transparent, //点击后的颜色为透明
-    splashColor: Colors.transparent, //点击波纹的颜色为透明
-    child: FlyText.main35(text,color: Colors.white.withOpacity(0.6),),
-  );
+  Widget _buildFlatButton(String text,
+          {VoidCallback onPressed, double fontSize}) =>
+      FlatButton(
+        onPressed: onPressed,
+        highlightColor: Colors.transparent, //点击后的颜色为透明
+        splashColor: Colors.transparent, //点击波纹的颜色为透明
+        child: FlyText.main35(
+          text,
+          color: Colors.white.withOpacity(0.6),
+        ),
+      );
   //登录按钮
-  Widget _buildLoginButton(){
+  Widget _buildLoginButton() {
     return LayoutBuilder(
       builder: (context, parSize) {
         return _loading == false
             ? Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            color: colorLoginPageMain.withOpacity(0.6),
-          ),
-          child: InkWell(
-            splashColor: Colors.black12,
-            borderRadius: BorderRadius.circular(100),
-            onTap: () => _loginHandler(),
-            child: Container(
-                height: fontSizeMain40 * 2.8,
-                width: parSize.maxWidth * 0.5,
-                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
+                  color: colorLoginPageMain.withOpacity(0.6),
                 ),
-                child: FlyText.title45('登录', color: Colors.white)),
-          ),
-        )
+                child: InkWell(
+                  splashColor: Colors.black12,
+                  borderRadius: BorderRadius.circular(100),
+                  onTap: () => _loginHandler(),
+                  child: Container(
+                      height: fontSizeMain40 * 2.8,
+                      width: parSize.maxWidth * 0.5,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: FlyText.title45('登录', color: Colors.white)),
+                ),
+              )
             : Container(
-          alignment: Alignment.topCenter,
-          height: fontSizeMain40 * 2.8,
-          width: parSize.maxWidth * 0.7,
-          child: loadingAnimationTwoCircles(),
-        );
+                alignment: Alignment.topCenter,
+                height: fontSizeMain40 * 2.8,
+                width: parSize.maxWidth * 0.7,
+                child: loadingAnimationTwoCircles(),
+              );
       },
     );
   }
+
   Widget _buildBackground() {
     return Stack(
       children: [

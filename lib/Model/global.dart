@@ -74,8 +74,8 @@ class ApiUrl{
   static String _pubUrl = "https://api.kxz.atcumt.com";
 
   static String loginUrl = "$_pubUrl/login";//新登录请求
-  static String loginCheckUrl = "http://authserver.cumt.edu.cn/authserver/checkNeedCaptcha.htl";
-  static String courseUrl = "$_pubUrl/jwxt/kb";//课表查询
+  static String loginCheckUrl = "http://authserver.cumt.edu.cn/authserver/checkNeedCaptcha.htl";//检测是否激活
+  static String courseUrl = "$_pubUrl/jwxt/timetable";//课表查询
   static String scoreUrl = "$_pubUrl/jwxt/grade";//成绩查询
   static String scoreAllUrl = "$_pubUrl/jwxt/grades";//全成绩查询
   static String examUrl = "$_pubUrl/jwxt/exam";//考试查询

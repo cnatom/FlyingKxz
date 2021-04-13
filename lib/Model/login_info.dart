@@ -1,83 +1,28 @@
-/// code : 0
-/// data : {"name":"牟金腾","college":"计算机科学与技术学院","classname":"数据科学与大数据技术2019-02班","token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MDQ5Nzc1NTQuMTEwNjk1MSwiZGF0YSI6eyJ1c2VybmFtZSI6IjA4MTkyOTg4IiwicGFzc3dvcmQiOiJSZWRzdW5qaW55aSJ9fQ.LdbQsBgf_PPSrPW9Cf8ANLTHWM5O0Pv1FCM1vVlMAbE"}
-/// msg : "登录成功"
+/// name : "牟金腾"
+/// phone : "13070708211"
+/// token : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IkZUQUdTK1dXL1Fyb2x6aDkrOGFZNnc9PSIsInRpbWVVbml4IjoxNjE4Mjk4NDUzLCJ1c2VybmFtZSI6IjA4MTkyOTg4In0.5DCcJ79h4s9o9OltqB0lqspnIO-h4D-yxjhPgdxJRCs"
 
 class LoginInfo {
-  int _code;
-  Data _data;
-  String _msg;
-
-  int get code => _code;
-  Data get data => _data;
-  String get msg => _msg;
+  String name;
+  String phone;
+  String token;
 
   LoginInfo({
-      int code, 
-      Data data, 
-      String msg}){
-    _code = code;
-    _data = data;
-    _msg = msg;
-}
+      this.name, 
+      this.phone, 
+      this.token});
 
   LoginInfo.fromJson(dynamic json) {
-    _code = json["code"];
-    _data = json["data"] != null ? Data.fromJson(json["data"]) : null;
-    _msg = json["msg"];
+    name = json["name"];
+    phone = json["phone"];
+    token = json["token"];
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map["code"] = _code;
-    if (_data != null) {
-      map["data"] = _data.toJson();
-    }
-    map["msg"] = _msg;
-    return map;
-  }
-
-}
-
-/// name : "牟金腾"
-/// college : "计算机科学与技术学院"
-/// classname : "数据科学与大数据技术2019-02班"
-/// token : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MDQ5Nzc1NTQuMTEwNjk1MSwiZGF0YSI6eyJ1c2VybmFtZSI6IjA4MTkyOTg4IiwicGFzc3dvcmQiOiJSZWRzdW5qaW55aSJ9fQ.LdbQsBgf_PPSrPW9Cf8ANLTHWM5O0Pv1FCM1vVlMAbE"
-
-class Data {
-  String _name;
-  String _college;
-  String _classname;
-  String _token;
-
-  String get name => _name;
-  String get college => _college;
-  String get classname => _classname;
-  String get token => _token;
-
-  Data({
-      String name, 
-      String college, 
-      String classname, 
-      String token}){
-    _name = name;
-    _college = college;
-    _classname = classname;
-    _token = token;
-}
-
-  Data.fromJson(dynamic json) {
-    _name = json["name"];
-    _college = json["college"];
-    _classname = json["classname"];
-    _token = json["token"];
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["name"] = _name;
-    map["college"] = _college;
-    map["classname"] = _classname;
-    map["token"] = _token;
+    map["name"] = name;
+    map["phone"] = phone;
+    map["token"] = token;
     return map;
   }
 

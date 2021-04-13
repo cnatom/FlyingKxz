@@ -119,9 +119,7 @@ class CoursePageState extends State<CoursePage>
 
   }
   _backToCurWeek(){
-    courseProvider.changeWeek(CourseProvider.initialWeek);
-    coursePageController.jumpToPage(CourseProvider.initialWeek-1,);
-    _rightGlobalKey.currentState.initScroll();
+    coursePageController.animateToPage(CourseProvider.initialWeek-1, curve: Curves.easeInOutQuint, duration: Duration(seconds: 1),);
   }
   Widget _buildRefreshButton(){
     return FlyWidgetBuilder(
@@ -212,9 +210,7 @@ class CoursePageState extends State<CoursePage>
                 ),
             ],
           ),
-        )
-
-      ],
+        )],
     );
   }
 

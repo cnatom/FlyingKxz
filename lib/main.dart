@@ -84,8 +84,8 @@ class _StartPageState extends State<StartPage> {
 
   Future<void> initFunc(BuildContext context) async {
     //获取当前App版本
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    Global.curVersion = packageInfo.version;
+    // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    // Global.curVersion = packageInfo.version;
     initConfigInfo();
     //宽屏设备时，修改屏幕信息
     if (MediaQuery.of(context).size.height / MediaQuery.of(context).size.width <
