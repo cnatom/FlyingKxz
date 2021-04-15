@@ -19,12 +19,12 @@ Future<bool> examPost(BuildContext context,
     Response res;
     Dio dio = Dio();
     //配置dio信息
-    res = await dio.get(ApiUrl.examUrl,
-        queryParameters: _jsonMap, options: Options(headers: {"token": token,"action":"jwxt"},receiveTimeout: 5,sendTimeout: 5));
+    res = await dio.post(ApiUrl.examUrl,
+        data: _jsonMap, options: Options(headers: {"Authorization": "Bearer "+token},));
     //Json解码为Map
     Map<String, dynamic> map = jsonDecode(res.toString());
     debugPrint(res.toString());
-    if (map['status'] == 200) {
+    if (res.statusCode == 200) {
       Prefs.examData = res.toString();
       Global.examInfo = ExamInfo.fromJson(map);
       return true;

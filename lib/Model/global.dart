@@ -45,7 +45,7 @@ class Global{
   static LoginInfo loginInfo = new LoginInfo();//登录信息
   static ScoreInfo scoreInfo = new ScoreInfo();//成绩信息
   static ExamInfo examInfo = new ExamInfo();//考试信息
-  static ExamInfo examDiyInfo = new ExamInfo(msg: '',status: '0',data: []);//自定义倒计时
+  static ExamInfo examDiyInfo = new ExamInfo(data: []);//自定义倒计时
   static BookInfo bookInfo = new BookInfo();//图书馆书籍信息
   static BookDetailInfo bookDetailInfo = new BookDetailInfo();
   static DateTime nowDate = DateTime.now(); //当前日期
@@ -76,8 +76,8 @@ class ApiUrl{
   static String loginUrl = "$_pubUrl/login";//新登录请求
   static String loginCheckUrl = "http://authserver.cumt.edu.cn/authserver/checkNeedCaptcha.htl";//检测是否激活
   static String courseUrl = "$_pubUrl/jwxt/timetable";//课表查询
-  static String scoreUrl = "$_pubUrl/jwxt/grade";//成绩查询
-  static String scoreAllUrl = "$_pubUrl/jwxt/grades";//全成绩查询
+  static String scoreUrl = "$_pubUrl/jwxt/grades";//成绩查询
+  static String scoreAllUrl = "$_pubUrl/jwxt/makeup/grades";//全成绩查询
   static String examUrl = "$_pubUrl/jwxt/exam";//考试查询
   static String bookUrl = "$_pubUrl/lib/book";//书籍查询
   static String powerAutoUrl = "$_pubUrl/daily/au_df";//自动电量查询

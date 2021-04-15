@@ -1,28 +1,16 @@
-/// status : 200
-/// msg : "请求成功"
-/// data : [{"courseName":"大学生心理健康教育","xuefen":"0.5","jidian":"4.00","zongping":"87","type":"正常考试","scoreDetail":[{"name":"平时(30%)","score":"98"},{"name":"期末(70%)","score":"83"},{"name":"总评","score":"88"}]},null]
+/// data : [{"courseName":"创新创业实践","xuefen":"2.0","jidian":"2.5","zongping":"75","type":"正常考试","scoreDetail":[{"name":"期末(100%)","score":"中等"},{"name":"总评","score":"中等"}]},null]
 
 class ScoreInfo {
-  int _status;
-  String _msg;
   List<Data> _data;
 
-  int get status => _status;
-  String get msg => _msg;
   List<Data> get data => _data;
 
   ScoreInfo({
-      int status, 
-      String msg, 
       List<Data> data}){
-    _status = status;
-    _msg = msg;
     _data = data;
 }
 
   ScoreInfo.fromJson(dynamic json) {
-    _status = json["status"];
-    _msg = json["msg"];
     if (json["data"] != null) {
       _data = [];
       json["data"].forEach((v) {
@@ -33,8 +21,6 @@ class ScoreInfo {
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map["status"] = _status;
-    map["msg"] = _msg;
     if (_data != null) {
       map["data"] = _data.map((v) => v.toJson()).toList();
     }
@@ -43,12 +29,12 @@ class ScoreInfo {
 
 }
 
-/// courseName : "大学生心理健康教育"
-/// xuefen : "0.5"
-/// jidian : "4.00"
-/// zongping : "87"
+/// courseName : "创新创业实践"
+/// xuefen : "2.0"
+/// jidian : "2.5"
+/// zongping : "75"
 /// type : "正常考试"
-/// scoreDetail : [{"name":"平时(30%)","score":"98"},{"name":"期末(70%)","score":"83"},{"name":"总评","score":"88"}]
+/// scoreDetail : [{"name":"期末(100%)","score":"中等"},{"name":"总评","score":"中等"}]
 
 class Data {
   String _courseName;
@@ -109,8 +95,8 @@ class Data {
 
 }
 
-/// name : "平时(30%)"
-/// score : "98"
+/// name : "期末(100%)"
+/// score : "中等"
 
 class ScoreDetail {
   String _name;

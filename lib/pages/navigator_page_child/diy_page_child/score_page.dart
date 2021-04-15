@@ -1,8 +1,5 @@
-import 'dart:convert';
 import 'dart:ui';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -11,18 +8,13 @@ import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/Model/score_info.dart';
-import 'package:flying_kxz/pages/backImage_view.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
-
-import 'package:flying_kxz/NetRequest/exam_get.dart';
 import 'package:flying_kxz/NetRequest/score_get.dart';
 //跳转到当前页面
 void toScorePage(BuildContext context) {
