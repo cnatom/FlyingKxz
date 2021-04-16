@@ -70,6 +70,7 @@ dependencies:
   add_2_calendar: ^2.0.1
   webview_flutter: ^2.0.4
   percent_indicator: ^3.0.1
+  share: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

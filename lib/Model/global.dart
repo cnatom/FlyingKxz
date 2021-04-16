@@ -11,6 +11,7 @@ import 'package:flying_kxz/Model/user_info.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'balance_detail_info.dart';
 import 'book_detail_info.dart';
 import 'book_info.dart';
 import 'course_info.dart';
@@ -42,7 +43,7 @@ Future<void> getSchoolYearTerm()async{
 class Global{
   static CourseInfo courseInfo = new CourseInfo(); //课表信息
   static LoginInfo loginInfo = new LoginInfo();//登录信息
-  static UserInfo userInfo = new UserInfo();
+  static UserInfo userInfo = new UserInfo();//用户信息
   static ScoreInfo scoreInfo = new ScoreInfo();//成绩信息
   static ExamInfo examInfo = new ExamInfo();//考试信息
   static ExamInfo examDiyInfo = new ExamInfo(data: []);//自定义倒计时
@@ -51,6 +52,7 @@ class Global{
   static DateTime nowDate = DateTime.now(); //当前日期
   static SwiperInfo swiperInfo = new SwiperInfo();//轮播图
   static RankInfo rankInfo = new RankInfo();//内测用户排名
+  static BalanceDetailInfo balanceDetailInfo = new BalanceDetailInfo();//校园卡流水
   static bool igUpgrade;//是否忽略更新
   static String curVersion;
   static clearPrefsData(){
@@ -87,6 +89,8 @@ class ApiUrl{
   static String cumtLoginUrl = "http://10.2.5.251:801/eportal/";//校园网登陆
   static String appUpgradeUrl = "$_pubUrl/admin/version";//检查App更新
   static String balanceUrl = "$_pubUrl/card/balance";//校园卡余额
+  static String balanceDetailUrl = "$_pubUrl/card/history";//校园卡流水
+  static String rechargeUrl = "$_pubUrl/card/recharge";//校园卡充值
 
 static List<String> newsUrlList = [
   "$_pubUrl/daily/sd_news",//视点新闻

@@ -12,6 +12,7 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InvitePage extends StatefulWidget {
@@ -42,7 +43,7 @@ class _InvitePageState extends State<InvitePage> {
                     ),
                     SizedBox(width: ScreenUtil().setSp(35),),
                     Text(
-                      "邀请好友",
+                      "分享App",
                       style: TextStyle(
                         fontSize: fontSizeTitle45,
                         fontWeight: FontWeight.bold,
@@ -50,7 +51,7 @@ class _InvitePageState extends State<InvitePage> {
                     ),
                   ],
                 ),
-                FlyText.miniTip30("点击复制链接"),
+                FlyText.miniTip30("点击分享"),
 
               ],
             ),
@@ -58,8 +59,7 @@ class _InvitePageState extends State<InvitePage> {
 
             InkWell(
               onTap: (){
-                Clipboard.setData(ClipboardData(text: "http://kxz.atcumt.com/"));
-                showToast(context,"已复制官网链接\n快分享给好友吧～！",);
+                Share.share("http://kxz.atcumt.com/");
               },
               child: Container(
                 height: fontSizeMain40*3,
@@ -80,8 +80,7 @@ class _InvitePageState extends State<InvitePage> {
             ),
             InkWell(
               onTap: (){
-                Clipboard.setData(ClipboardData(text: "839372371"));
-                showToast(context,"已复制QQ群号\n快分享给好友吧！～",);
+                Share.share("https://jq.qq.com/?_wv=1027&k=272EhIWK");
               },
               child: Container(
                 height: fontSizeMain40*3,

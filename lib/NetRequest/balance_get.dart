@@ -25,6 +25,7 @@ Future<bool> balancePost({@required String token}) async {
       String balance = map['balance'];
       balance = (double.parse(balance)/100).toStringAsFixed(2);
       Prefs.balance = balance;
+      Prefs.cardNum = map['cardNumber'];
       return true;
     }else{
       return false;

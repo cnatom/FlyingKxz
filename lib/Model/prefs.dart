@@ -23,6 +23,7 @@ class Prefs{
   static String _powerHome = "powerHome";//梅2楼
   static String _powerNum = "powerNum";//B1052
   static String _balance = 'balance';//校园卡余额
+  static String _cardNum = 'cardNum';//卡号
   static String _rank = 'rank';//用户内测排名
   static String _courseData = 'courseData';//课表
   static String _examData = 'examData';//考试
@@ -47,6 +48,7 @@ class Prefs{
   static String get powerHome => prefs.getString(_powerHome);
   static String get powerNum => prefs.getString(_powerNum);
   static String get balance => prefs.getString(_balance);
+  static String get cardNum => prefs.getString(_cardNum);
   static String get rank => prefs.getString(_rank);
   static String get courseData => prefs.getString(_courseData);
   static String get examData => prefs.getString(_examData);
@@ -70,6 +72,7 @@ class Prefs{
   static set powerHome(String value) =>prefs.setString(_powerHome, value);
   static set powerNum(String value) =>prefs.setString(_powerNum, value);
   static set balance(String value) =>prefs.setString(_balance, value);
+  static set cardNum(String value) =>prefs.setString(_cardNum, value);
   static set rank(String value) =>prefs.setString(_rank, value);
   static set courseData(String value) =>prefs.setString(_courseData, value);
   static set examData(String value) =>prefs.setString(_examData, value);

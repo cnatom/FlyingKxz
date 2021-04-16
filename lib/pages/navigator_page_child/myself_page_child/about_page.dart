@@ -13,6 +13,7 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flutter/services.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/pages/backImage_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 //跳转到当前页面

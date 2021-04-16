@@ -214,8 +214,8 @@ class _MyselfPageState extends State<MyselfPage>
                             }
                           }),
                       _buildIconTitleButton(
-                          icon: MdiIcons.heartOutline,
-                          title: '邀请好友',
+                          icon: Icons.share_outlined,
+                          title: '分享App',
                           onTap: () {
                             FlyDialogDIYShow(context, content: InvitePage());
                           }),
