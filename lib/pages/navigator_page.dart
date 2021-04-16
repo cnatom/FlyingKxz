@@ -12,10 +12,9 @@ import 'package:flying_kxz/FlyingUiKit/notice.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/cumt_login.dart';
+import 'package:flying_kxz/NetRequest/userInfo_post.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/info_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
-import 'package:flying_kxz/test_page/test.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'app_upgrade.dart';
@@ -32,9 +31,10 @@ class FlyNavigatorPage extends StatefulWidget {
 var navigatorPageController = PageController();
 class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAliveClientMixin{
   int _currentIndex = 0; //数组索引，通过改变索引值改变视图
-  static List<bool> badgeShowList = [false,false,false,false];
+  static List<bool> badgeShowList = [false,false,false];
   ThemeProvider themeProvider;
-  void initFunc() async{
+  //统计用户信息
+  void countUser()async{
     try{
       Response res;
       res = await Dio().get(
@@ -49,6 +49,9 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
     }catch(e){
       debugPrint("统计用户失败");
     }
+  }
+  //校园网自动登录
+  void cumtAutoLogin()async{
     if(Prefs.cumtLoginUsername!=null){
       await cumtAutoLoginGet(context,
           username: Prefs.cumtLoginUsername,
@@ -56,13 +59,20 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
           loginMethod: Prefs.cumtLoginMethod);
     }
   }
-
+  //获取用户信息
+  getUserInfo()async{
+    if(Prefs.college==null||Prefs.className==null){
+      await userInfoPost(context, token: Prefs.token);
+    }
+  }
   @override
   void initState() {
     super.initState();
-    initFunc();
-    checkUpgrade(context);
-    noticeGetInfo();
+    cumtAutoLogin();//自动登录校园网
+    getUserInfo();//获取用户信息
+    noticeGetInfo();//获取通知信息
+    checkUpgrade(context);//检查软件更新
+    countUser();//统计用户信息
   }
   BottomNavigationBarItem _bottomNavigationBar(String title,IconData iconData,bool showBadge,{double size})=>BottomNavigationBarItem(
       label: title,
@@ -85,10 +95,10 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
             physics: NeverScrollableScrollPhysics(),
             children: [
               CoursePage(),
-              InfoPage(),
+              // InfoPage(),
               DiyPage(),
               MyselfPage(),
-              TestPage()
+              // TestPage()
             ],
             controller: navigatorPageController,
             onPageChanged: (int index){
@@ -106,10 +116,10 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
               unselectedItemColor: themeProvider.simpleMode?Colors.black45:null,
               items: [
                 _bottomNavigationBar('主页',FeatherIcons.home,badgeShowList[0]),
-                _bottomNavigationBar("资讯", Icons.article_outlined,badgeShowList[1]),
-                _bottomNavigationBar('发现',OMIcons.explore,badgeShowList[2]),
-                _bottomNavigationBar('我的',Icons.person_outline,badgeShowList[3]),
-                _bottomNavigationBar('我的',Icons.person_outline,badgeShowList[3]),
+                // _bottomNavigationBar("资讯", Icons.article_outlined,badgeShowList[1]),
+                _bottomNavigationBar('发现',OMIcons.explore,badgeShowList[1]),
+                _bottomNavigationBar('我的',Icons.person_outline,badgeShowList[2]),
+                // _bottomNavigationBar('我的',Icons.person_outline,badgeShowList[3]),
 
               ],
               currentIndex: _currentIndex,

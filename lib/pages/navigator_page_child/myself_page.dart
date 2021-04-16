@@ -84,7 +84,7 @@ class _MyselfPageState extends State<MyselfPage>
                       imageResource: 'images/avatar.png',
                       name: Prefs.name??'',
                       id: Prefs.username??'',
-                      classs: Prefs.iClass??'',
+                      classs: Prefs.className??'',
                       college: Prefs.college??''),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,
@@ -155,7 +155,7 @@ class _MyselfPageState extends State<MyselfPage>
                     FlyFlexibleButton(
                       title: "宿舍电量",
                       icon: Icons.flash_on,
-                      previewStr: Prefs.power==null?"未绑定":"${Prefs.power}度",
+                      previewStr: Prefs.power==null?"未绑定":"${Prefs.power}",
                       secondChild: _buildPower(),
                     )
                   ]),
@@ -224,7 +224,7 @@ class _MyselfPageState extends State<MyselfPage>
       });
       if(_powerNumController.text.isNotEmpty||Prefs.powerHome!=null){
         Prefs.powerNum = _powerNumController.text.toString();
-        bool ok = await powerGet(context, token: Prefs.token, home: Prefs.powerHome, num: Prefs.powerNum);
+        bool ok = await powerPost(context, token: Prefs.token, home: Prefs.powerHome, num: Prefs.powerNum);
         if(!ok) showToast(context, "获取失败，请再检查一下参数");
       }else{
         showToast(context, "请输入完整");
@@ -394,10 +394,10 @@ class _MyselfPageState extends State<MyselfPage>
   }
 
   void getPreviewInfo() async {
-    await balanceGet(
-        newToken: Prefs.token);
+    await balancePost(
+        token: Prefs.token);
     Future.delayed(Duration(seconds: 2),(){
-      powerGet(context,
+      powerPost(context,
           token: Prefs.token, num: Prefs.powerNum, home: Prefs.powerHome);
       rankGet(username: Prefs.username);
     });

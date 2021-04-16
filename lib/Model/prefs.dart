@@ -12,14 +12,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Prefs{
 
   static SharedPreferences prefs;
-  static String _isFirstLogin = 'isFirstLogin';//是否初次登陆
   static String _backImg = 'backImg';//背景图
   static String _username = 'username';//用户名
   static String _phone = 'phone';//电话号码
   static String _name = 'name';
-  static String _token = 'tokenNew';//token信息
+  static String _token = 'newToken';//token信息
   static String _college = 'college';//学院
-  static String _class = 'class';//班级
+  static String _className = 'className';//班级
   static String _power = 'power';//宿舍电量
   static String _powerHome = "powerHome";//梅2楼
   static String _powerNum = "powerNum";//B1052
@@ -37,14 +36,13 @@ class Prefs{
   static String _themeData = "themeData";
 
   static String get examDataDiy => prefs.getString(_examDataDiy);
-  static bool get isFirstLogin => prefs.getBool(_isFirstLogin);
   static String get backImg => prefs.getString(_backImg);
   static String get username => prefs.getString(_username);
   static String get phone => prefs.getString(_phone);
   static String get name => prefs.getString(_name);
   static String get token => prefs.getString(_token);
   static String get college => prefs.getString(_college);
-  static String get iClass => prefs.getString(_class);
+  static String get className => prefs.getString(_className);
   static String get power => prefs.getString(_power);
   static String get powerHome => prefs.getString(_powerHome);
   static String get powerNum => prefs.getString(_powerNum);
@@ -61,14 +59,13 @@ class Prefs{
   static String get themeData => prefs.getString(_themeData);
 
   static set examDataDiy(String value) =>prefs.setString(_examDataDiy, value);
-  static set isFirstLogin(bool value) =>prefs.setBool(_isFirstLogin, value);
   static set backImg(String value) =>prefs.setString(_backImg, value);
   static set username(String value) =>prefs.setString(_username, value);
   static set phone(String value) =>prefs.setString(_phone, value);
   static set name(String value) =>prefs.setString(_name, value);
   static set token(String value) =>prefs.setString(_token, value);
   static set college(String value) =>prefs.setString(_college, value);
-  static set iClass(String value) =>prefs.setString(_class, value);
+  static set className(String value) =>prefs.setString(_className, value);
   static set power(String value) =>prefs.setString(_power, value);
   static set powerHome(String value) =>prefs.setString(_powerHome, value);
   static set powerNum(String value) =>prefs.setString(_powerNum, value);

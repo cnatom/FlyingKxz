@@ -83,9 +83,9 @@ class _StartPageState extends State<StartPage> {
 
 
   Future<void> initFunc(BuildContext context) async {
-    //获取当前App版本
-    // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    // Global.curVersion = packageInfo.version;
+    // 获取当前App版本
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    Global.curVersion = packageInfo.version;
     initConfigInfo();
     //宽屏设备时，修改屏幕信息
     if (MediaQuery.of(context).size.height / MediaQuery.of(context).size.width <
@@ -111,8 +111,8 @@ class _StartPageState extends State<StartPage> {
     if (Prefs.token != null) {
       toNavigatorPage(context);
     } else {
-      Prefs.isFirstLogin = true;
       Global.clearPrefsData();
+      backImgFile = null;
       toLoginPage(context); //第一次登录进入登录页
     }
 

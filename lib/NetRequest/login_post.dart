@@ -23,7 +23,6 @@ Future<bool> loginPost(BuildContext context, int loginCount,
       Prefs.name = Global.loginInfo.name;
       Prefs.username = username;
       Prefs.phone = Global.loginInfo.phone;
-      Prefs.isFirstLogin = true;
       return true;
     } else {
       showToast(

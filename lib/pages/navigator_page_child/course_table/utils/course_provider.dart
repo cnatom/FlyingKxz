@@ -39,9 +39,7 @@ class CourseProvider extends ChangeNotifier{
   ///CourseProvider().init();
   init(){
     if(loading)return;
-    debugPrint("@init");
     if(Prefs.courseData!=null){
-      debugPrint("@already init");
       if(!_haveInit){
         _initDateTime();
         _initData();
@@ -112,6 +110,7 @@ class CourseProvider extends ChangeNotifier{
         }
       }
     }
+    _savePrefs();
     notifyListeners();
   }
   /// 设置开学日期
@@ -146,6 +145,7 @@ class CourseProvider extends ChangeNotifier{
     if(courseData1.title==courseData2.title&&
     courseData1.lessonNum==courseData2.lessonNum&&
     courseData1.weekNum==courseData2.weekNum){
+      debugPrint(courseData1.title+"==="+courseData2.title);
       return true;
     }
     return false;

@@ -72,10 +72,8 @@ class _LoginPageState extends State<LoginPage> {
             _buildBackground(),
             Padding(
               padding: EdgeInsets.fromLTRB(
-                  ScreenUtil().setWidth(deviceWidth * 0.08),
-                  0,
-                  ScreenUtil().setWidth(deviceWidth * 0.08),
-                  0),
+                  ScreenUtil().setWidth(deviceWidth * 0.08), 0,
+                  ScreenUtil().setWidth(deviceWidth * 0.08), 0),
               child: Column(
                 children: <Widget>[
                   Expanded(
@@ -368,7 +366,7 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         Positioned.fill(
           child: Image.asset(
-            'images/loginBack.png',
+            'images/background.png',
             fit: BoxFit.cover,
           ),
         ),
@@ -376,9 +374,9 @@ class _LoginPageState extends State<LoginPage> {
           child: ClipRect(
             //背景过滤器
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
               child: Container(
-                color: Colors.black.withOpacity(0.4),
+                color: Colors.black.withOpacity(0.2),
               ),
             ),
           ),

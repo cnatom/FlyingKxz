@@ -164,8 +164,7 @@ class _CourseCardState extends State<CourseCard> {
 
     return Container(
       padding: EdgeInsets.fromLTRB(
-          fontSizeMini38 * 2,
-          0,
+          fontSizeMini38 * 2, 0,
           fontSizeMini38,
           fontSizeMini38),
       decoration: BoxDecoration(

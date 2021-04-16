@@ -90,13 +90,12 @@ class CoursePageState extends State<CoursePage>
           fontWeight: FontWeight.w600, color: themeProvider.colorNavText),
       leading: _buildCourseImportView(),
       actions: [
-        _buildRefreshButton(),
         _buildAddButton(),
         _buildShowRightButton(),
-        IconButton(
-          icon: Icon(CommunityMaterialIcons.calendar_import),
-          onPressed: ()=>_importCourse(),
-          color: themeProvider.colorNavText,)
+        // IconButton(
+        //   icon: Icon(CommunityMaterialIcons.calendar_import),
+        //   onPressed: ()=>_importCourse(),
+        //   color: themeProvider.colorNavText,)
       ],
     );
   }
@@ -119,19 +118,7 @@ class CoursePageState extends State<CoursePage>
 
   }
   _backToCurWeek(){
-    coursePageController.animateToPage(CourseProvider.initialWeek-1, curve: Curves.easeInOutQuint, duration: Duration(seconds: 1),);
-  }
-  Widget _buildRefreshButton(){
-    return FlyWidgetBuilder(
-        whenFirst: CourseProvider.curWeek!=CourseProvider.initialWeek,
-        firstChild: IconButton(
-          icon: Icon(
-            EvilIcons.refresh,
-            color: themeProvider.colorNavText,
-          ),
-          onPressed: ()=>_backToCurWeek(),
-        ),
-        secondChild: Container());
+    coursePageController.animateToPage(CourseProvider.initialWeek-1, curve: Curves.easeOutQuint, duration: Duration(seconds: 1),);
   }
   Widget _buildAddButton(){
     return IconButton(
@@ -367,25 +354,22 @@ class CoursePageState extends State<CoursePage>
     return FlyWidgetBuilder(
       whenFirst: CourseProvider.loading,
       firstChild: Center(child: loadingAnimationTwoCircles(),),
-      secondChild: Padding(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: LayoutBuilder(
-          builder: (context, parSize) {
-            List<Widget> children = [];
-            double height = parSize.maxHeight;
-            double width = parSize.maxWidth;
-            for(int i = 1;i<=22;i++){
-              children.add(new CourseTableChild(CourseProvider.info[i], width, height));
-            }
-            return PageView(
-              physics: BouncingScrollPhysics(),
-              controller: coursePageController,
-              onPageChanged: (value)=>courseProvider.changeWeek(value+1),
-              scrollDirection: Axis.vertical,
-              children: children,
-            );
-          },
-        ),
+      secondChild: LayoutBuilder(
+        builder: (context, parSize) {
+          List<Widget> children = [];
+          double height = parSize.maxHeight;
+          double width = parSize.maxWidth;
+          for(int i = 1;i<=22;i++){
+            children.add(new CourseTableChild(CourseProvider.info[i], width, height));
+          }
+          return PageView(
+            physics: BouncingScrollPhysics(),
+            controller: coursePageController,
+            onPageChanged: (value)=>courseProvider.changeWeek(value+1),
+            scrollDirection: Axis.vertical,
+            children: children,
+          );
+        },
       ),
     );
   }

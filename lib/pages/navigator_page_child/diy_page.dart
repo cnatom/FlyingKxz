@@ -8,6 +8,7 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/test_page/child/newCumtLogin_view.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -59,6 +60,7 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
                             children: [
                               Wrap(
                                 children: [
+
                                   funcButton(imageResource: 'images/tushuguan.png',title: '图书馆',color:colorFuncButton[0],subTitle: '馆藏查询、图书推荐',onTap: ()=>toBookPage(context)),
                                   funcButton(imageResource: 'images/chengji.png',title: '成绩',color:colorFuncButton[5],subTitle: '查看学分绩点',onTap: ()=>toScorePage(context)),
                                   funcButton(imageResource: 'images/xiaoche.png',title: '校车',color:colorFuncButton[1],subTitle: '通勤班车时间表',onTap: ()=>toSchoolBusPage(context)),

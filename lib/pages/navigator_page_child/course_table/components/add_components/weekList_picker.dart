@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 
@@ -11,13 +12,33 @@ class WeekListPicker extends StatefulWidget {
 
 class _WeekListPickerState extends State<WeekListPicker> {
   List<int> weekList = [];
+  bool chooseAll = false;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Wrap(
         runSpacing: 20,
         children: [
-          _buildTitle('选择周次(多选)'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildTitle('选择周次'),
+              FlyTextButton(chooseAll?"取消全选":"全部选择",onTap: (){
+                setState(() {
+                  chooseAll = !chooseAll;
+                });
+                if(chooseAll){
+                  weekList.clear();
+                  for(int i = 1;i<=22;i++){
+                    weekList.add(i);
+                  }
+                }else{
+                  weekList.clear();
+                }
+              })
+            ],
+          ),
+
           _buildWeekPicker(),
           Wrap(
             runSpacing: 20,

@@ -153,22 +153,27 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
         false;
   }
   Widget examCard(String courseName,String location,String dateTime,int year,int month,int day,){
-    Color colorCard;
+    Color colorCardText;
+    Color colorLine;
     //计算剩余天数
     DateTime examDateTime = DateTime(year,month,day,);
     int timeLeftInt = examDateTime.difference(Global.nowDate).inDays+1;
     String timeLeft = timeLeftInt.toString();
     if(timeLeftInt<=0){
-      colorCard = colorExamCard[4];
+      colorLine = colorExamCard[4];
       return Container();
     }else if(timeLeftInt<=7){
-      colorCard = colorExamCard[0];
+      colorLine = colorExamCard[0];
     }else if(timeLeftInt<=15){
-      colorCard = colorExamCard[1];
+      colorLine = colorExamCard[1];
     }else if(timeLeftInt<=30){
-      colorCard = colorExamCard[2];
+      colorLine = colorExamCard[2];
     }else{
-      colorCard = colorExamCard[3];
+      colorLine = colorExamCard[3];
+    }
+    colorCardText = colorLine;
+    if(!themeProvider.simpleMode&&!themeProvider.darkMode){
+      colorCardText = themeProvider.colorNavText;
     }
     return FlyContainer(
       margin: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginBigTB),
@@ -188,18 +193,18 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text('',style: TextStyle(fontSize: ScreenUtil().setSp(60),),),
-                  FlyText.title45('今天',color: colorCard.withAlpha(200),fontWeight: FontWeight.w600),
-                  FlyText.mini30(' 加油 !!~',color: colorCard.withAlpha(200)),
+                  FlyText.title45('今天',color: colorCardText.withAlpha(200),fontWeight: FontWeight.w600),
+                  FlyText.mini30(' 加油 !!~',color: colorCardText.withAlpha(200)),
 
                 ],
               ):Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  FlyText.mini30('剩余',color: colorCard.withAlpha(200)),
+                  FlyText.mini30('剩余',color: colorCardText),
                   SizedBox(width: 10,),
-                  Text(timeLeft.toString(),style: TextStyle(fontSize: ScreenUtil().setSp(60),color: colorCard,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
+                  Text(timeLeft.toString(),style: TextStyle(fontSize: ScreenUtil().setSp(60),color: colorCardText,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
                   SizedBox(width: 10,),
-                  FlyText.mini30('天',color: colorCard.withAlpha(200))
+                  FlyText.mini30('天',color: colorCardText)
                 ],
               )
             ],
@@ -209,7 +214,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
             backgroundColor: Theme.of(context).unselectedWidgetColor.withOpacity(0.2),
             minHeight: 7,
             value: timeLeftInt/30,
-            valueColor: new AlwaysStoppedAnimation<Color>(colorCard.withAlpha(180)),
+            valueColor: new AlwaysStoppedAnimation<Color>(colorLine.withOpacity(0.8)),
           ),
           SizedBox(height: spaceCardPaddingTB/3,),
           //考试地点 + 考试时间
@@ -217,7 +222,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               FlyText.main35(location,color: themeProvider.colorNavText.withOpacity(0.5),),
-              FlyText.main35(dateTime,color: colorCard.withAlpha(180))
+              FlyText.main35(dateTime,color: colorCardText.withAlpha(180))
             ],
           )
         ],
@@ -293,7 +298,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
         ),
 
         padding: EdgeInsets.all(spaceCardPaddingRL/1.5),
-        child: Icon(Icons.add,color: themeProvider.colorMain,),
+        child: Icon(Icons.add,color: themeProvider.colorNavText,),
       ),
     );
   }

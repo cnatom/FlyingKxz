@@ -28,16 +28,16 @@ class ThemeProvider extends ChangeNotifier {
   static Map _diyDefault = {
     "darkMode": false,
     "simpleMode":false,
-    "transBack": 0.5,
+    "transBack": 0.25,
     "blurBack": 8.0,
-    "transCard": 0.05,
+    "transCard": 0.1,
   };
   static Map _lightDefault = {
     "darkMode": false,
     "simpleMode":true,
-    "transBack": 0.9,
-    "blurBack": 10.0,
-    "transCard": 0.9,
+    "transBack": 0.85,
+    "blurBack": 20.0,
+    "transCard": 0.8,
   };
   static Map _darkDefault = {
     "darkMode": true,

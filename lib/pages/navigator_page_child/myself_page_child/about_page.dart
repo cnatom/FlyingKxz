@@ -7,11 +7,13 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
+import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/pages/backImage_view.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 //跳转到当前页面
 void toAboutPage(BuildContext context) {
@@ -35,16 +37,17 @@ class _AboutPageState extends State<AboutPage> {
       @required String imageResource,
       @required String title,
       @required subTitle,
-      @required String qqNumber}) {
+      String qqNumber,
+    GestureTapCallback onTap}) {
     return Container(
       width: ScreenUtil().setWidth(deviceWidth / 2) - spaceCardPaddingTB / 2,
       padding: EdgeInsets.fromLTRB(spaceCardPaddingTB / 2, spaceCardPaddingTB,
           spaceCardPaddingTB / 2, 0),
       child: InkWell(
-        onTap: () {
+        onTap: onTap==null?() {
           Clipboard.setData(ClipboardData(text: qqNumber));
           showToast(context, "已复制QQ号至剪切板", duration: 1);
-        },
+        }:onTap,
         child: Container(
           padding: EdgeInsets.all(spaceCardMarginRL),
           decoration: BoxDecoration(
@@ -56,12 +59,12 @@ class _AboutPageState extends State<AboutPage> {
                 width: fontSizeMini38 * 2.5,
                 height: fontSizeMini38 * 2.5,
                 child: ClipOval(
-                  child: Image.network(
+                  child: qqNumber!=null?Image.network(
                     type == 0
                         ? "http://q1.qlogo.cn/g?b=qq&nk=$qqNumber&s=640"
                         : "http://p.qlogo.cn/gh/$qqNumber/$qqNumber/640/",
                     fit: BoxFit.cover,
-                  ),
+                  ):Image.asset("images/avatar.png"),
                 ),
               ),
               SizedBox(
@@ -110,14 +113,25 @@ class _AboutPageState extends State<AboutPage> {
                   height: fontSizeMini38 * 4,
                 ),
                 SizedBox(
-                  height: fontSizeMini38,
+                  height: fontSizeMini38*2,
                 ),
                 Text(
-                  '翔工作室出品',
+                  '翔工作室',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       color: colorLoginPageMain,
                       fontSize: fontSizeMain40,
                       fontWeight: FontWeight.bold,
+                      letterSpacing: 3),
+                ),
+                SizedBox(
+                  height: fontSizeMini38/2,
+                ),
+                Text(
+                  '—用心做好产品，期待你的加入—',
+                  style: TextStyle(
+                      color: colorLoginPageMain,
+                      fontSize: fontSizeTip33,
                       letterSpacing: 3),
                 )
               ],
@@ -145,6 +159,7 @@ class _AboutPageState extends State<AboutPage> {
                                 ),
                               ),
                           children: [
+
                             Column(
                               children: [
                                 Padding(
@@ -242,14 +257,14 @@ class _AboutPageState extends State<AboutPage> {
                                     funcButton(
                                       type: 1,
                                         imageResource: 'images/jiaoliuqun.jpg',
-                                        title: "校园App交流群",
+                                        title: "App交流1群",
                                         subTitle: "发布、反馈中心",
                                         qqNumber: "839372371"),
                                     funcButton(
                                       type: 1,
                                         imageResource: 'images/duiwai.jpg',
-                                        title: "对外交流群",
-                                        subTitle: "加群了解翔工作室",
+                                        title: "App交流2群",
+                                        subTitle: "发布、反馈中心",
                                         qqNumber: "957634136"),
                                   ],
                                 ),
@@ -260,36 +275,26 @@ class _AboutPageState extends State<AboutPage> {
                                 SizedBox(
                                   height: fontSizeMini38 * 2,
                                 ),
-                                FlyTitle('关于翔工作室'),
-                                Container(
-                                  margin: EdgeInsets.all(spaceCardMarginRL),
-                                  padding: EdgeInsets.all(spaceCardMarginRL),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          borderRadiusValue),
-                                      color: Theme.of(context).cardColor),
-                                  child: Transform.translate(
-                                    offset: Offset(0, fontSize * leading / 2),
-                                    child: Text(
-                                      "        这里是一个合作探索的团队，我们渴望新知，不断挑战自我."
-                                      "我们以翔工作室为舞台，致力于为师生打造精彩的校园产品和网络生活。"
-                                      "我们相信，没有完美的个人，但有完美的团队。\n",
-                                      strutStyle: StrutStyle(
-                                          forceStrutHeight: true,
-                                          height: textLineHeight,
-                                          leading: leading),
-                                      style: TextStyle(
-                                        fontSize: fontSize,
-                                        //backgroundColor: Colors.greenAccent),
-                                      ),
+                                FlyTitle('关于工作室'),
+                                Row(
+                                  children: [
+                                    SizedBox(width: spaceCardPaddingTB / 2,),
+                                    funcButton(
+                                        type: 1,
+                                        imageResource: 'images/jiaoliuqun.jpg',
+                                        title: "长期招聘↗",
+                                        subTitle: "点我了解更多",
+                                        onTap: ()=>Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>AboutFlyingWebView()))
                                     ),
-                                  ),
+                                  ],
                                 ),
+
                                 SizedBox(
-                                  height: fontSizeMini38 * 2,
+                                  height: fontSizeMini38 * 10,
                                 ),
+
                               ],
-                            )
+                            ),
                           ]),
                     ),
                   ),
@@ -298,6 +303,44 @@ class _AboutPageState extends State<AboutPage> {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+class AboutFlyingWebView extends StatefulWidget {
+  @override
+  _AboutFlyingWebViewState createState() => _AboutFlyingWebViewState();
+}
+
+class _AboutFlyingWebViewState extends State<AboutFlyingWebView> {
+  double progress = 0;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: FlyAppBar(context, "Flying Studio",
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(3.0),
+        child: LinearProgressIndicator(
+          backgroundColor: Colors.white70.withOpacity(0),
+          value: progress>0.99?0:progress,
+          valueColor: new AlwaysStoppedAnimation<Color>(colorMain),
+        ),
+      ),),
+      body: WebView(
+          initialUrl: "https://mp.weixin.qq.com/s/vydbW7dYvjiCTz1e-xNzcw",
+          javascriptMode: JavascriptMode.unrestricted,
+        onProgress: (value){
+            setState(() {
+              progress = value/100.0;
+            });
+        },
+        onPageStarted: (start){
+            start.toString();
+        },
+        onPageFinished: (finish){
+            debugPrint(finish.toString());
+        },
       ),
     );
   }

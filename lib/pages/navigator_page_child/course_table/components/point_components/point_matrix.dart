@@ -59,7 +59,6 @@ class PointMatrixState extends State<PointMatrix> {
   }
 
   void _init(BuildContext context){
-    debugPrint("PointInit");
     this.gridHeight = MediaQuery.of(context).size.height/13.0;
     this.gridWidth = gridHeight*0.618;
     this.themeData = Theme.of(context);

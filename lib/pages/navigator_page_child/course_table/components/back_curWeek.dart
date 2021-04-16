@@ -5,6 +5,7 @@ import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:provider/provider.dart';
 class BackCurWeekButton extends StatefulWidget {
   final GestureTapCallback onTap;
   final bool show;
@@ -22,10 +23,11 @@ class BackCurWeekButton extends StatefulWidget {
 class _BackCurWeekButtonState extends State<BackCurWeekButton> {
   double _dy;
   String prefsStr = "BackToCurWeek";
+  ThemeProvider themeProvider;
   _initHisLoc(){
     _dy = Prefs.prefs.getDouble(prefsStr);
     if(_dy==null){
-      _dy = 120;
+      _dy = ScreenUtil.bottomBarHeight+200;
       Prefs.prefs.setDouble(prefsStr, _dy);
     }
   }
@@ -37,14 +39,15 @@ class _BackCurWeekButtonState extends State<BackCurWeekButton> {
 
   @override
   Widget build(BuildContext context) {
+    themeProvider = Provider.of<ThemeProvider>(context);
     return TweenAnimationBuilder(
       duration: Duration(seconds: 1),
       tween: Tween(end: widget.show?0.0:1.0),
-      curve: Curves.easeOutCirc,
+      curve: Curves.easeOutQuint,
       builder: (BuildContext context, Object value, Widget child) {
         return Positioned(
           right: double.parse(value.toString())*(-50.0),
-          bottom: ScreenUtil.bottomBarHeight+100,
+          top: _dy-ScreenUtil.statusBarHeight-kToolbarHeight,
           child: Opacity(
             opacity: 1.0-value,
             child: Draggable(
@@ -85,7 +88,7 @@ class _BackCurWeekButtonState extends State<BackCurWeekButton> {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-          color: Theme.of(context).cardColor.withOpacity(backTrans),
+          color: Theme.of(context).cardColor.withOpacity(themeProvider.simpleMode?backTrans*0.5:backTrans),
           border: Border.all(color: widget.themeProvider.colorNavText.withOpacity(0.5)),
           borderRadius: BorderRadius.horizontal(
             left: Radius.circular(100),)
