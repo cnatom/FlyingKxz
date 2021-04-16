@@ -11,7 +11,7 @@ Widget FlyAppBar(BuildContext context, String title,
       actions: actions,
       centerTitle: true,
       bottom: bottom,
-      title: FlyText.main40(title,fontWeight: FontWeight.bold,color: Theme.of(context).primaryColor,),
+      title: FlyText.title45(title,fontWeight: FontWeight.w500,color: Theme.of(context).primaryColor,),
       leading: IconButton(
         icon: Icon(
           Icons.arrow_back_ios,

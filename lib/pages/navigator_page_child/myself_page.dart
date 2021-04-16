@@ -28,6 +28,7 @@ import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/about_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -61,10 +62,13 @@ class _MyselfPageState extends State<MyselfPage>
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        leading: Container(),
-        backgroundColor: Colors.transparent,
-        brightness: themeProvider.simpleMode?Brightness.light:Brightness.dark,
+      appBar: PreferredSize(
+        preferredSize: Size.zero,
+        child: AppBar(
+          leading: Container(),
+          backgroundColor: Colors.transparent,
+          brightness: themeProvider.simpleMode?Brightness.light:Brightness.dark,
+        ),
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -74,143 +78,209 @@ class _MyselfPageState extends State<MyselfPage>
             // 触摸收起键盘
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: Column(
-            children: <Widget>[
-              //个人资料区域
-              Wrap(
-                runSpacing: spaceCardMarginBigTB * 3,
-                children: <Widget>[
-                  _buildInfoCard(context,
-                      imageResource: 'images/avatar.png',
-                      name: Prefs.name??'',
-                      id: Prefs.username??'',
-                      classs: Prefs.className??'',
-                      college: Prefs.college??''),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: <Widget>[
-                  //     Expanded(
-                  //         flex: 1,
-                  //         child: previewItem(
-                  //           title:
-                  //               "${Prefs.balance ?? '0.0'}",
-                  //           subTitle: "校园卡余额 (元)",
-                  //         )),
-                  //     Container(
-                  //       color: themeProvider.colorNavText.withOpacity(0.2),
-                  //       height: fontSizeMini38 * 2,
-                  //       width: 1,
-                  //     ),
-                  //     Expanded(
-                  //       flex: 1,
-                  //       child: previewItem(
-                  //           title:
-                  //               "${Prefs.power ?? '0.0'}",
-                  //           subTitle: "宿舍电量 (度)"),
-                  //     ),
-                  //   ],
-                  // ),
-                  Container()
-                ],
-              ),
-              //可滚动功能区
-              Wrap(
-                runSpacing: spaceCardMarginTB,
-                children: [
-                  NoticeCard(),
-                  _buttonList(children: <Widget>[
-                    FlyFlexibleButton(
-                      icon: Icons.language_outlined,
-                      title: '校园网登录',
-                      secondChild: CumtLoginView(),),
-                    FlyFlexibleButton(
-                      title: "个性化",
-                      icon: LineariconsFree.shirt,
-                      secondChild: _buildPersonalise(),
-                    ),
-                  ]),
-                  _buttonList(children: <Widget>[
-
-                    FlyFlexibleButton(
-                      title: "校园卡余额",
-                      icon: Icons.monetization_on_outlined,
-                      previewStr: (Prefs.balance??"0.0")+"元",
-                      secondChild: Padding(
-                        padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
-                        child: _buildDiyButton("校园卡流水",
-                            onTap: ()=> showToast(context, "开发中……请保持最新版本"),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Icon(
-                                  Icons.arrow_right_sharp,
-                                  size: sizeIconMain50,
-                                  color: themeProvider.colorNavText.withOpacity(0.5),
-                                )
-                              ],
-                            )
-                        ),
-                      ),
-                    ),
-                    FlyFlexibleButton(
-                      title: "宿舍电量",
-                      icon: Icons.flash_on,
-                      previewStr: Prefs.power==null?"未绑定":"${Prefs.power}",
-                      secondChild: _buildPower(),
-                    )
-                  ]),
-
-                  _buttonList(children: <Widget>[
-                    _buildIconTitleButton(
-                        icon: Icons.people_outline,
-                        title: '关于我们',
-                        onTap: () => toAboutPage(context)),
-                    _buildIconTitleButton(
-                        icon: Icons.feedback_outlined,
-                        title: '反馈与建议',
-                        onTap: () async {
-                          String text = await FlyDialogInputShow(context,
-                              hintText:
-                              "感谢您提出宝贵的建议，这对我们非常重要！\n*｡٩(ˊᗜˋ*)و*｡\n\n(也可以留下您的联系方式，方便我们及时联络您)",
-                              confirmText: "发送",
-                              maxLines: 10);
-                          if (text != null) {
-                            await feedbackPost(context, text: text);
-                          }
-                        }),
-                    _buildIconTitleButton(
-                        icon: MdiIcons.heartOutline,
-                        title: '邀请好友',
-                        onTap: () {
-                          FlyDialogDIYShow(context, content: InvitePage());
-                        }),
-                    UniversalPlatform.isIOS
-                        ? Container()
-                        : _buildIconTitleButton(
-                        icon: CommunityMaterialIcons.download_outline,
-                        title: '检查更新',
-                        onTap: () {
-                          upgradeApp(context, auto: false);
-                        }),
-
-                  ]),
-                  _buttonList(children: [
-                    _buildIconTitleButton(icon: Icons.logout, title: "退出登录",onTap: ()=>willSignOut(context))
-                  ])
-                ],
-              ),
-              Center(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: fontSizeMini38,
-                    ),
-                    FlyText.miniTip30("矿小助-正式版 ${Global.curVersion} "),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(spaceCardMarginRL,0,spaceCardMarginRL,0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: kToolbarHeight,),
+                //个人资料区域
+                Wrap(
+                  runSpacing: spaceCardMarginBigTB * 2,
+                  children: <Widget>[
+                    _buildInfoCard(context,
+                        imageResource: 'images/avatar.png',
+                        name: Prefs.name??'',
+                        id: Prefs.username??'',
+                        classs: Prefs.className??'',
+                        college: Prefs.college??''),
+                    Container(),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: <Widget>[
+                    //     Expanded(
+                    //         flex: 1,
+                    //         child: previewItem(
+                    //           title:
+                    //               "${Prefs.balance ?? '0.0'}",
+                    //           subTitle: "校园卡余额 (元)",
+                    //         )),
+                    //     Container(
+                    //       color: themeProvider.colorNavText.withOpacity(0.2),
+                    //       height: fontSizeMini38 * 2,
+                    //       width: 1,
+                    //     ),
+                    //     Expanded(
+                    //       flex: 1,
+                    //       child: previewItem(
+                    //           title:
+                    //               "${Prefs.power ?? '0.0'}",
+                    //           subTitle: "宿舍电量 (度)"),
+                    //     ),
+                    //   ],
+                    // ),
+                    Container()
                   ],
                 ),
-              )
-            ],
+                //可滚动功能区
+                Wrap(
+                  runSpacing: spaceCardMarginTB,
+                  children: [
+                    // NoticeCard(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: _buildHalfButton(
+                            "校园卡", "余额  "+(Prefs.balance??"0.0")+"元", Icons.monetization_on_outlined,
+                            onTap: ()=>toBalancePage(context)),
+                        ),
+                        SizedBox(width: spaceCardMarginRL,),
+                        Expanded(
+                          child: InkWell(
+                            child:FlyContainer(
+                              padding: EdgeInsets.fromLTRB(spaceCardPaddingRL,spaceCardPaddingTB*1.5,spaceCardPaddingRL,spaceCardPaddingTB*1.5),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.power_outlined,
+                                    size: sizeIconMain50,
+                                    color: themeProvider.colorNavText,
+                                  ),
+                                  SizedBox(
+                                    width: spaceCardPaddingTB * 2,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      FlyText.main40(
+                                        "宿舍电量",
+                                        color: themeProvider.colorNavText,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      SizedBox(height: spaceCardPaddingTB/2,),
+                                      FlyText.main35(Prefs.power==null?"点击绑定宿舍":"剩余  ${Prefs.power}",
+                                        color: themeProvider.colorNavText.withOpacity(0.5),)
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    _buttonList(children: <Widget>[
+                      FlyFlexibleButton(
+                        icon: Icons.language_outlined,
+                        title: '校园网登录',
+                        secondChild: CumtLoginView(),),
+                      FlyFlexibleButton(
+                        title: "个性化",
+                        icon: LineariconsFree.shirt,
+                        secondChild: _buildPersonalise(),
+                      ),
+                    ]),
+                    // _buttonList(children: <Widget>[
+                    //
+                    //   FlyFlexibleButton(
+                    //     title: "校园卡余额",
+                    //     icon: Icons.monetization_on_outlined,
+                    //     previewStr: (Prefs.balance??"0.0")+"元",
+                    //   ),
+                    //   FlyFlexibleButton(
+                    //     title: "宿舍电量",
+                    //     icon: Icons.flash_on,
+                    //     previewStr: Prefs.power==null?"未绑定":"${Prefs.power}",
+                    //     secondChild: _buildPower(),
+                    //   )
+                    // ]),
+
+                    _buttonList(children: <Widget>[
+                      _buildIconTitleButton(
+                          icon: Icons.people_outline,
+                          title: '关于我们',
+                          onTap: () => toAboutPage(context)),
+                      _buildIconTitleButton(
+                          icon: Icons.feedback_outlined,
+                          title: '反馈与建议',
+                          onTap: () async {
+                            String text = await FlyDialogInputShow(context,
+                                hintText:
+                                "感谢您提出宝贵的建议，这对我们非常重要！\n*｡٩(ˊᗜˋ*)و*｡\n\n(也可以留下您的联系方式，方便我们及时联络您)",
+                                confirmText: "发送",
+                                maxLines: 10);
+                            if (text != null) {
+                              await feedbackPost(context, text: text);
+                            }
+                          }),
+                      _buildIconTitleButton(
+                          icon: MdiIcons.heartOutline,
+                          title: '邀请好友',
+                          onTap: () {
+                            FlyDialogDIYShow(context, content: InvitePage());
+                          }),
+                      UniversalPlatform.isIOS
+                          ? Container()
+                          : _buildIconTitleButton(
+                          icon: CommunityMaterialIcons.download_outline,
+                          title: '检查更新',
+                          onTap: () {
+                            upgradeApp(context, auto: false);
+                          }),
+
+                    ]),
+                    _buttonList(children: [
+                      _buildIconTitleButton(icon: Icons.logout, title: "退出登录",onTap: ()=>willSignOut(context))
+                    ])
+                  ],
+                ),
+                Center(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: fontSizeMini38,
+                      ),
+                      FlyText.mini30("矿小助-正式版 ${Global.curVersion} ",color: themeProvider.colorNavText.withOpacity(0.5),),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
+        ),
+      ),
+    );
+  }
+
+  InkWell _buildHalfButton(String title,String subText,IconData iconData,{GestureTapCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child:FlyContainer(
+        padding: EdgeInsets.fromLTRB(spaceCardPaddingRL,spaceCardPaddingTB*1.5,spaceCardPaddingRL,spaceCardPaddingTB*1.5),
+        child: Row(
+          children: [
+            Icon(
+              Icons.monetization_on_outlined,
+              size: sizeIconMain50,
+              color: themeProvider.colorNavText,
+            ),
+            SizedBox(
+              width: spaceCardPaddingTB * 2,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FlyText.main40(
+                  "校园卡",
+                  color: themeProvider.colorNavText,
+                  fontWeight: FontWeight.bold,
+                ),
+                SizedBox(height: spaceCardPaddingTB/2,),
+                FlyText.main35("余额  "+(Prefs.balance??"0.0")+"元",
+                  color: themeProvider.colorNavText.withOpacity(0.5),)
+              ],
+            )
+          ],
         ),
       ),
     );
@@ -453,13 +523,10 @@ class _MyselfPageState extends State<MyselfPage>
   }
 
   Widget _buttonList({List<Widget> children = const <Widget>[]}) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-      child: FlyContainer(
-          child: Column(
-        children: children,
-      )),
-    );
+    return FlyContainer(
+        child: Column(
+          children: children,
+        ));
   }
 
 
@@ -504,68 +571,109 @@ class _MyselfPageState extends State<MyselfPage>
           String name = "",
           String id = "",
           String classs = "",
-          String college = ""}) =>
-      Container(
-        width: double.infinity,
-        child: Column(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: Colors.white, width: 3)),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.asset(
-                  imageResource,
-                  height: ScreenUtil().setWidth(120),
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                FlyText.title45(name,
-                    color: themeProvider.colorNavText, fontWeight: FontWeight.bold),
-                // Row(
-                //   children: [
-                //     Container(
-                //       padding: EdgeInsets.fromLTRB(
-                //           fontSizeMini38 / 2, 0, fontSizeMini38 / 2, 0),
-                //       decoration: BoxDecoration(
-                //           color: colorMain.withAlpha(200),
-                //           borderRadius: BorderRadius.circular(2)),
-                //       child: (Prefs.rank!=null&&int.parse(Prefs.rank)<=2000)?Row(
-                //         children: [
-                //           FlyText.mini30("内测会员",
-                //               color: Colors.white,
-                //               textAlign: TextAlign.center),
-                //           FlyText.mini30(
-                //               " No.${Prefs.rank}",
-                //               color: Colors.white)
-                //         ],
-                //       ):Container(),
-                //     ),
-                //   ],
-                // ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  child: FlyText.mini30(
-                    college,
-                    color: themeProvider.colorNavText,
+          String college = ""}){
+    String title = "早上好";
+    Map subText = {
+      0:"☺️ 该睡觉了哦～。",
+      1:"🌙 偷偷努力，我们都会成为别人的梦想。",
+      2:"🌙 偷偷努力，我们都会成为别人的梦想。",
+      3:"😪 小助快要熬不动了～",
+      4:"😴 呼噜噜噜噜噜～",
+      5:"️🥰 早起的鸟儿有虫吃。",
+      6:"😉 ‍一日之计在于晨。",
+      7:"🏃 没有醒不来的早晨，只有不敢追的梦。",
+      8:"🌦 越是憧憬，就越要风雨兼程。",
+      9:"⛅️ 要开心，你迟早是别人的宝藏。",
+      10:"🌟 这吹不出褶的平静日子，也在闪光。",
+      11:"🌈 前路漫漫亦灿灿。",
+      12:"🥳 下课啦，去吃饭吧～",
+      13:"☀️ 玻璃晴朗，橘子辉煌。",
+      14:"☘️ 信手拈来的从容，都是厚积薄发的沉淀。",
+      15:"☘️ 信手拈来的从容，都是厚积薄发的沉淀。",
+      16:"☺️ 保持热爱，奔赴山河。",
+      17:"☺️ 保持热爱，奔赴山河。",
+      18:"🤗 晚饭时间到～",
+      19:"💫 别慌，月亮也在大海某处迷茫。",
+      20:"⭐️ 错过落日余晖，请记得还有漫天星辰。",
+      21:"✨ 星光不问赶路人，时光不负有心人。",
+      22:"✨ 星光不问赶路人，时光不负有心人。",
+      23:"🌙 还有星月可寄望，还有宇宙浪漫不止。",
+    };
+    int hour = DateTime.now().hour;
+    String sentence = subText[hour];
+    if(hour<5) title = "夜深了";
+    if(hour>=19){
+      title = "晚上好";
+    }else if(hour>=18){
+      title = "傍晚了";
+    }else if(hour>=14){
+      title = "下午好";
+    }else if(hour>=11){
+      title = "中午好";
+    }else if(hour>=8){
+      title = "上午好";
+    }
+
+
+
+    return Container(
+      width: double.infinity,
+      child: Row(
+        children: <Widget>[
+          SizedBox(width: spaceCardMarginRL*2,),
+          Column(
+            children: [
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "$title，"+name,
+                    style: TextStyle(
+                        color: themeProvider.colorNavText,
+                        fontWeight: FontWeight.bold,
+                        fontSize: ScreenUtil().setSp(60)),
                   ),
-                ),
-              ],
-            )
-          ],
-        ),
-      );
+                  // Row(
+                  //   children: [
+                  //     Container(
+                  //       padding: EdgeInsets.fromLTRB(
+                  //           fontSizeMini38 / 2, 0, fontSizeMini38 / 2, 0),
+                  //       decoration: BoxDecoration(
+                  //           color: colorMain.withAlpha(200),
+                  //           borderRadius: BorderRadius.circular(2)),
+                  //       child: (Prefs.rank!=null&&int.parse(Prefs.rank)<=2000)?Row(
+                  //         children: [
+                  //           FlyText.mini30("内测会员",
+                  //               color: Colors.white,
+                  //               textAlign: TextAlign.center),
+                  //           FlyText.mini30(
+                  //               " No.${Prefs.rank}",
+                  //               color: Colors.white)
+                  //         ],
+                  //       ):Container(),
+                  //     ),
+                  //   ],
+                  // ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    child: FlyText.main40(
+                      sentence,
+                      color: themeProvider.colorNavText.withOpacity(0.5),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          )
+        ],
+      ),
+    );
+
+  }
   Widget previewItem({@required String title, @required String subTitle}) =>
       Container(
         alignment: Alignment.center,
@@ -618,7 +726,8 @@ class FlyFlexibleButton extends StatefulWidget {
   final String title;
   final IconData icon;
   final String previewStr;
-  const FlyFlexibleButton({Key key, this.secondChild, this.title, this.icon, this.previewStr})
+  final GestureTapCallback onTap;
+  const FlyFlexibleButton({Key key, this.secondChild, this.title, this.icon, this.previewStr, this.onTap})
       : super(key: key);
   @override
   _FlyFlexibleButtonState createState() => _FlyFlexibleButtonState();
@@ -660,7 +769,7 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
                       padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
                       child: Divider(height: 0,),
                     ):Container(),
-                    widget.secondChild
+                    widget.secondChild??Container()
                   ],
                 ),
               ),
@@ -675,7 +784,7 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
   }
 
   Widget _button() => InkWell(
-        onTap: () {
+        onTap: widget.onTap??() {
           setState(() {
             showSecond = !showSecond;
             if(showSecond){

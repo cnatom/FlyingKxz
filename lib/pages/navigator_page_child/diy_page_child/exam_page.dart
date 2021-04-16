@@ -21,6 +21,7 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_add_pa
 import 'package:left_scroll_actions/cupertinoLeftScroll.dart';
 import 'package:left_scroll_actions/global/actionListener.dart';
 import 'package:left_scroll_actions/leftScroll.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 class ExamPage extends StatefulWidget {
   @override
@@ -160,7 +161,6 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
     int timeLeftInt = examDateTime.difference(Global.nowDate).inDays+1;
     String timeLeft = timeLeftInt.toString();
     if(timeLeftInt<=0){
-      colorLine = colorExamCard[4];
       return Container();
     }else if(timeLeftInt<=7){
       colorLine = colorExamCard[0];
@@ -174,6 +174,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
     colorCardText = colorLine;
     if(!themeProvider.simpleMode&&!themeProvider.darkMode){
       colorCardText = themeProvider.colorNavText;
+      colorLine = themeProvider.colorNavText.withOpacity((timeLeftInt%30)/30.0);
     }
     return FlyContainer(
       margin: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginBigTB),
@@ -209,14 +210,17 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
               )
             ],
           ),
-          SizedBox(height: spaceCardPaddingTB/3,),
-          LinearProgressIndicator(
+          SizedBox(height: spaceCardPaddingTB/2,),
+          LinearPercentIndicator(
+            animation: true,
+            lineHeight: 7,
+            animationDuration: 500,
+            percent: timeLeftInt/30,
+            linearStrokeCap: LinearStrokeCap.roundAll,
+            progressColor: colorLine,
             backgroundColor: Theme.of(context).unselectedWidgetColor.withOpacity(0.2),
-            minHeight: 7,
-            value: timeLeftInt/30,
-            valueColor: new AlwaysStoppedAnimation<Color>(colorLine.withOpacity(0.8)),
           ),
-          SizedBox(height: spaceCardPaddingTB/3,),
+          SizedBox(height: spaceCardPaddingTB/2,),
           //考试地点 + 考试时间
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

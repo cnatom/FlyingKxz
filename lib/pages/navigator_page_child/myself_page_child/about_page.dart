@@ -110,10 +110,10 @@ class _AboutPageState extends State<AboutPage> {
               children: [
                 Image.asset(
                   'images/logo.png',
-                  height: fontSizeMini38 * 4,
+                  height: fontSizeMini38 * 3.5,
                 ),
                 SizedBox(
-                  height: fontSizeMini38*2,
+                  height: fontSizeMini38*1.5,
                 ),
                 Text(
                   '翔工作室',
@@ -125,7 +125,7 @@ class _AboutPageState extends State<AboutPage> {
                       letterSpacing: 3),
                 ),
                 SizedBox(
-                  height: fontSizeMini38/2,
+                  height: fontSizeMini38*0.8,
                 ),
                 Text(
                   '—用心做好产品，期待你的加入—',

@@ -16,6 +16,7 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/NetRequest/score_get.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 //跳转到当前页面
 void toScorePage(BuildContext context) {
   Navigator.push(
@@ -348,10 +349,20 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     }
     //圆形进度指示器
     Widget progressIndicator({Color color = Colors.grey}) => Container(
-          child: CircularProgressIndicator(
-            strokeWidth: 3,
-            valueColor: new AlwaysStoppedAnimation<Color>(color.withAlpha(180)),
-            value: zongpingInt / 100.0,
+          child: Container(
+            margin: EdgeInsets.fromLTRB(0, 0, spaceCardPaddingRL*0.8, 0),
+            child: CircularPercentIndicator(
+              radius: fontSizeMain40*3,
+              lineWidth: 3.0,
+              animation: true,
+              animationDuration: 800,
+              percent: zongpingInt / 100.0,
+              center: FlyText.main40(zongping,
+                  color: colorCard, fontWeight: FontWeight.bold),
+              circularStrokeCap: CircularStrokeCap.round,
+              progressColor: color,
+              backgroundColor: Theme.of(context).disabledColor,
+            ),
           ),
         );
     //水平内容
@@ -407,25 +418,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                //圆形进度圈
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, spaceCardPaddingRL*0.8, 0),
-//                              color: Colors.red,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      FlyText.main40(zongping,
-                          color: colorCard, fontWeight: FontWeight.bold),
-                      LayoutBuilder(
-                        builder: (context, parSize) {
-                          return Container(
-                            child: progressIndicator(color: colorCard),
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                ),
+                progressIndicator(color: colorCard),
                 //进度圈右侧信息区域
                 Expanded(
                   flex: 3,

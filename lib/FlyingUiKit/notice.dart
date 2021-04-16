@@ -69,34 +69,31 @@ class NoticeCardState extends State<NoticeCard> {
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
-    return info==''?Container():Padding(
-      padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-      child: FlyContainer(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, fontSizeMain40 * 1.3,
-                spaceCardPaddingRL, fontSizeMain40 * 1.3),
-            child:Row(
-              children: <Widget>[
-                Badge(
-                  showBadge: true,
-                  child: Icon(
-                    Icons.info_outline,
-                    size: sizeIconMain50,
-                    color: themeProvider.colorNavText,
-                  ),
+    return info==''?Container():FlyContainer(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, fontSizeMain40 * 1.3,
+              spaceCardPaddingRL, fontSizeMain40 * 1.3),
+          child:Row(
+            children: <Widget>[
+              Badge(
+                showBadge: true,
+                child: Icon(
+                  Icons.info_outline,
+                  size: sizeIconMain50,
+                  color: themeProvider.colorNavText,
                 ),
-                SizedBox(
-                  width: spaceCardPaddingTB * 3,
+              ),
+              SizedBox(
+                width: spaceCardPaddingTB * 3,
+              ),
+              Expanded(
+                child:   FlyText.main40(
+                  info,
+                  color: themeProvider.colorNavText,maxLine: 100,fontWeight: FontWeight.bold,
                 ),
-                Expanded(
-                  child:   FlyText.main40(
-                    info,
-                    color: themeProvider.colorNavText,maxLine: 100,fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
-            ),
-          )),
-    );
+              )
+            ],
+          ),
+        ));
   }
 }

@@ -55,7 +55,7 @@ class ThemeProvider extends ChangeNotifier {
   ///初始化主题数据
   static init() {
     if (Prefs.themeData == null) {
-      _initFromJson(_lightDefault);
+      _initFromJson(_diyDefault);
       _themeMode = ThemeMode.light;
       _savePrefs();
     } else {

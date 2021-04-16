@@ -27,7 +27,7 @@ class _BackCurWeekButtonState extends State<BackCurWeekButton> {
   _initHisLoc(){
     _dy = Prefs.prefs.getDouble(prefsStr);
     if(_dy==null){
-      _dy = ScreenUtil.bottomBarHeight+200;
+      _dy = ScreenUtil.bottomBarHeight+ScreenUtil().setHeight(deviceHeight/2);
       Prefs.prefs.setDouble(prefsStr, _dy);
     }
   }
