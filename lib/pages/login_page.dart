@@ -22,9 +22,11 @@ import 'package:flying_kxz/FlyingUiKit/notice.dart';
 import 'package:flying_kxz/FlyingUiKit/text_editer.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
 import 'package:flying_kxz/NetRequest/login_check_get.dart';
 import 'package:flying_kxz/NetRequest/login_post.dart';
+import 'package:flying_kxz/NetRequest/userInfo_post.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -175,6 +177,7 @@ class _LoginPageState extends State<LoginPage> {
     //登录请求并决定是否跳转
     if (await loginPost(context, loginCount++,
         username: _username, password: _password)) {
+      await userInfoPost(context, token: Prefs.token);
       toNavigatorPage(context);
     }
     setState(() {

@@ -25,15 +25,14 @@ Future<bool> loginPost(BuildContext context, int loginCount,
       Prefs.phone = Global.loginInfo.phone;
       return true;
     } else {
-      showToast(
-          context,
-          map['msg'].toString() +
-              (loginCount > 2 ? '\n\n多次登陆失败请点击"无法登录"联系我们' : ""));
       return false;
     }
-  } catch (e) {
-    debugPrint(e.toString());
-    showToast(context, '连接失败（X_X)');
+  }on DioError catch (e) {
+    if(e.response != null){
+      showToast(context, e.response.toString());
+    }else{
+      showToast(context, "请检查网络连接");
+    }
     return false;
   }
 }

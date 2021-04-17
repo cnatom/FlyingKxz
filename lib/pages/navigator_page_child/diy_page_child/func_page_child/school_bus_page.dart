@@ -1,16 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttericon/entypo_icons.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/FlyingUiKit/container.dart';
 
 import 'package:photo_view/photo_view.dart';
-
+import 'package:provider/provider.dart';
 
 //跳转到当前页面
 void toSchoolBusPage(BuildContext context) {
-
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => SchoolBusPage()));
 }
@@ -25,75 +28,48 @@ class SchoolBusPage extends StatefulWidget {
   _SchoolBusPageState createState() => _SchoolBusPageState();
 }
 
-class _SchoolBusPageState extends State<SchoolBusPage> with SingleTickerProviderStateMixin{
+class _SchoolBusPageState extends State<SchoolBusPage>
+    with SingleTickerProviderStateMixin {
   TabController _tabController;
-  final List<List> busTimeData1 = [
-    [0,"文昌中心路始末站发车时间","南湖路线安排","南湖公教楼始末站发车时间"],
-    [1,"7:10","南线","7:10、7:40"],
-    [1,"7:30","北线","8:00"],
-    [1,"7:50","北线","8:30"],
-    [1,"8:10","北线","9:00"],
-    [1,"8:30","北线","9:30"],
-    [1,"8:50","北线","10:10"],
-    [1,"9:20","南线","10:40"],
-    [1,"9:40","北线","11:00"],
-    [1,"10:00","北线","11:20"],
-    [1,"10:40","北线","11:40"],
-    [1,"11:10","南线","12:10"],
-    [1,"11:40","南线","12:20"],
-    [0,"下午班车",],
-    [1,"12:50","南线","1:20"],
-    [1,"1:10","南线","1:40"],
-    [1,"1:40、2:00","北线","2:10"],
-    [1,"2:10","北线","2:40"],
-    [1,"2:40、3:00","北线","3:10、3:30"],
-    [1,"3:20","南线","3:50"],
-    [1,"3:50","北线","4:10"],
-    [1,"4:10","北线","4:30"],
-    [1,"4:20","北线","5:00"],
-    [1,"4:30","北线","5:10"],
-    [1,"4:50","北线","5:30"],
-    [1,"5:00","南线","5:50"],
-    [1,"5:40","南线","6:00、6:10"],
-    [1,"6:00","南线","6:30"],
-    [0,"晚上班车"],
-    [1,"6:10","中心路始发","6:40"],
-    [1,"以下时段由电教馆始发，人满后循环发车",],
-    [1,"10:00","末班车","10:00"],
+  bool showRest = false;
+  List<List> listRest = [];
+  List<List> listWork = [];
+  List<List> finalList = [];
+  //南湖 北线 工作日
+  final List<String> nNorthWork = [
+    "7:40","7:50","8:10","8:20","8:30","8:50","9:40","10:00","10:40","11:00","11:20",
+    "14:10","14:40","15:00","15:20","15:25","16:00","16:05","16:30","17:00","17:10","17:30",
+    "22:00"
   ];
-  final List<List> busTimeData2 = [
-    [0,"文昌中心路始末站发车时间","南湖公教楼始末站发车时间"],
-    [1,"7:10","7:50"],
-    [1,"7:40","8:10"],
-    [1,"8:00","8:30"],
-    [1,"8:20","8:50"],
-    [1,"8:40","9:10"],
-    [1,"9:10","9:40"],
-    [1,"9:30","10:10"],
-    [1,"9:50","10:20"],
-    [1,"10:10","10:40"],
-    [1,"10:40","11:10"],
-    [1,"11:10","11:40"],
-    [1,"11:30","12:10"],
-    [0,"下午班车"],
-    [1,"1:00","1:30"],
-    [1,"1:20","1:50"],
-    [1,"1:40","2:10"],
-    [1,"2:00","2:30"],
-    [1,"2:20","2:50"],
-    [1,"3:00","3:30"],
-    [1,"3:20","3:50"],
-    [1,"3:40","4:10"],
-    [1,"4:00","4:50"],
-    [1,"4:20","5:00"],
-    [1,"4:40","5:20"],
-    [1,"4:50","5:40"],
-    [1,"5:20","6:00"],
-    [1,"5:40","6:20"],
-    [0,"晚上班车"],
-    [1,"6:10","6:40"],
-    [1,"注：以下时段由电教馆始发，人满后循环发车。"],
-    [1,"10:00","10:00"]
+  //南湖 南线 工作日
+  final List<String> nSouthWork = [
+    "7:10","7:15","9:20","9:25","11:40","12:10","12:20",
+    "13:10","13:15","13:40","15:50","17:50",
+    "18:10","18:15","18:30","18:40","21:00","21:20","21:40","22:00"
+  ];
+  //文昌 北线 工作日
+  final List<String> wNorthWork = [
+    "7:40","7:50","8:10","8:20","8:30","8:50","9:40","10:00","10:40","11:00","11:20",
+    "14:00","14:10","14:40","15:00","15:50","16:00","16:05","16:20","16:30","16:50",
+    "22:00"
+  ];
+  //文昌 南线 工作日
+  final List<String> wSouthWork = [
+    "7:10","7:15","9:20","9:25","11:40","12:10","12:20",
+    "13:10","13:15","13:40","15:20","15:25","17:10","17:30","17:50","18:00",
+    "18:10","18:15","21:00","21:20","21:40","22:00",
+  ];
+  //南湖 休息日
+  final List<String> nRest = [
+    "7:10","7:15","7:50","8:00","8:20","8:40","9:10","9:20","9:40","10:00","10:40","11:10","12:15",
+    "13:10","13:50","14:10","14:30","14:50","15:25","15:50","16:00","16:40","16:50","17:00","17:10","17:40",
+    "18:10","18:15","18:40","21:00","21:20","21:40","22:00",
+  ];
+  //文昌 休息日
+  final List<String> wRest = [
+    "7:10","7:15","7:50","8:00","8:20","8:40","9:10","9:20","9:40","10:00","10:40","11:10","12:15",
+    "13:10","13:20","13:30","13:40","14:00","14:20","15:00","15:25","15:40","16:00","16:20","16:40","16:50","17:10","17:40",
+    "18:10","18:15","21:00","21:20","21:40","22:00"
   ];
   @override
   void initState() {
@@ -101,9 +77,18 @@ class _SchoolBusPageState extends State<SchoolBusPage> with SingleTickerProvider
     _tabController = TabController(
       initialIndex: 0,
       length: 2,
-      vsync: this,);
+      vsync: this,
+    );
+    listRest..add(nRest)..add(nRest)..add(wRest)..add(wRest);
+    listWork..add(nNorthWork)..add(nSouthWork)..add(wNorthWork)..add(wSouthWork);
+    if(DateTime.now().weekday>=6){
+      finalList = listRest;
+      showRest = true;
+    }else{
+      finalList = listWork;
+      showRest = false;
+    }
   }
-
 
   @override
   void dispose() {
@@ -113,93 +98,168 @@ class _SchoolBusPageState extends State<SchoolBusPage> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
+    if(showRest){
+      finalList = listRest;
+    }else{
+      finalList = listWork;
+    }
     return Scaffold(
-      appBar: FlyAppBar(context, "2020年班车时刻表",
+      appBar: FlyAppBar(context, "班车时刻"+(showRest?"（休息日）":"（工作日）"),
+          actions: [
+            IconButton(icon: Icon(Entypo.switch_icon,color: Theme.of(context).primaryColor,), onPressed: (){
+              setState(() {
+                showRest = !showRest;
+              });
+            })
+          ],
           bottom: TabBar(
-            labelColor: Theme.of(context).primaryColor,
+              labelColor: Theme.of(context).primaryColor,
               controller: _tabController,
-              labelStyle: TextStyle(fontSize: fontSizeMini38,fontWeight: FontWeight.bold),
-              unselectedLabelStyle: TextStyle(fontSize: fontSizeMini38,fontWeight: FontWeight.bold,),
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicator: UnderlineTabIndicator(
-                  borderSide: BorderSide(width: 2,color: Theme.of(context).primaryColor),
-                  insets: EdgeInsets.fromLTRB(fontSizeMain40*1.2, 0, fontSizeMain40*1.2, 0)
+              labelStyle: TextStyle(
+                  fontSize: fontSizeMini38, fontWeight: FontWeight.bold),
+              unselectedLabelStyle: TextStyle(
+                fontSize: fontSizeMini38,
+                fontWeight: FontWeight.bold,
               ),
+              indicatorSize: TabBarIndicatorSize.label,
+              indicator: UnderlineTabIndicator(
+                  borderSide: BorderSide(
+                      width: 2, color: Theme.of(context).primaryColor),
+                  insets: EdgeInsets.fromLTRB(
+                      fontSizeMain40 * 1.2, 0, fontSizeMain40 * 1.2, 0)),
               tabs: [
                 Tab(
-                  text: "工作日安排",
+                  text: "南湖公教楼",
                 ),
                 Tab(
-                  text: "休息日安排",
+                  text: "文昌中心路",
                 ),
-
               ])),
-      body: TabBarView(
-        controller: _tabController,
+      body: Column(
         children: [
-          BusTimeListView(busTimeData1),
-          BusTimeListView(busTimeData2),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                BusTimeListView(finalList[0], finalList[1]),
+                BusTimeListView(finalList[2], finalList[3])
+              ],
+            ),
+          ),
+          SizedBox(
+            height: ScreenUtil.bottomBarHeight,
+          )
         ],
       ),
     );
   }
 }
+
 class BusTimeListView extends StatefulWidget {
-  BusTimeListView(this.busTimeData);
-  List<List> busTimeData;
+  BusTimeListView(this.north, this.south);
+  final List<String> north;
+  final List<String> south;
   @override
   _BusTimeListViewState createState() => _BusTimeListViewState();
 }
 
 class _BusTimeListViewState extends State<BusTimeListView> {
+  ThemeProvider themeProvider;
   @override
   Widget build(BuildContext context) {
+    this.themeProvider = Provider.of<ThemeProvider>(context);
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: _buildColumn("北 线", widget.north),
+          ),
+          VerticalDivider(
+            width: 0,
+          ),
+          Expanded(
+            child: _buildColumn("南 线", widget.south),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildColumn(String title, List<String> timeList) {
+    bool temp = false;
+    //检查是否即将到该时间点
+    bool checkTime(String timeStr) {
+      DateTime now = DateTime.now();
+      debugPrint(now.weekday.toString());
+      List timeSpl = timeStr.split(":");
+      DateTime dateTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          int.parse(timeSpl[0]),
+          int.parse(timeSpl[1]),
+          now.second,
+          now.millisecond,
+          now.microsecond);
+      if (now.isAfter(dateTime.add(Duration(hours: -1))) &&
+          now.isBefore(dateTime)) {
+        return true;
+      } else
+        return false;
+    }
+
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(5),
+          width: double.infinity,
+          alignment: Alignment.center,
+          padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+          margin: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB / 2,
+              spaceCardMarginRL, spaceCardMarginTB / 2),
           decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: colorMainText.withOpacity(0.2)))
-          ),
-          child: Row(
-            children: [
-              for(int j = 1;j<widget.busTimeData[0].length;j++) widget.busTimeData[0][0]==0?
-              Expanded(
-                child: FlyText.main40(widget.busTimeData[0][j],maxLine: 2,fontWeight: FontWeight.bold,textAlign: TextAlign.center),
-              ):Expanded(
-                child: FlyText.main40(widget.busTimeData[0][j],maxLine: 2,textAlign: TextAlign.center),
-              ),
-            ],
+              borderRadius: BorderRadius.circular(borderRadiusValue)),
+          child: FlyText.title50(
+            title,
+            fontWeight: FontWeight.bold,
           ),
         ),
         Expanded(
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
-              children: [
-                for(int i = 1;i<widget.busTimeData.length;i++)
-                  Container(
-                    padding: EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                        border: Border(top: BorderSide(color: colorMainText.withOpacity(0.1)))
-                    ),
-                    child: Row(
-                      children: [
-                        for(int j = 1;j<widget.busTimeData[i].length;j++) widget.busTimeData[i][0]==0?
-                        Expanded(
-                          child: FlyText.main40(widget.busTimeData[i][j],maxLine: 2,fontWeight: FontWeight.bold,textAlign: TextAlign.center),
-                        ):Expanded(
-                          child: FlyText.main40(widget.busTimeData[i][j],maxLine: 2,textAlign: TextAlign.center),
-                        ),
-                      ],
-                    ),
+              children: timeList.map((item) {
+                temp = !temp;
+                bool comingSoon = false;
+                if (checkTime(item)) comingSoon = true;
+                return Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.fromLTRB(
+                      spaceCardMarginRL,
+                      spaceCardMarginTB / 2,
+                      spaceCardMarginRL,
+                      spaceCardMarginTB / 2),
+                  decoration: BoxDecoration(
+                      color: comingSoon
+                          ? themeProvider.colorMain.withOpacity(0.8)
+                          : temp
+                              ? themeProvider.colorMain.withOpacity(0.1)
+                              : themeProvider.colorMain.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(borderRadiusValue)),
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: FlyText.title50(
+                    comingSoon ? "将达 ${item.toString()}" : item.toString(),
+                    color: comingSoon
+                        ? Colors.white
+                        : Colors.black.withOpacity(0.8),
+                    fontWeight:
+                        comingSoon ? FontWeight.bold : FontWeight.normal,
                   ),
-                SizedBox(height: 40,),
-                FlyText.main40("团体用车联系电话：83885871、17851181688\n",color: Colors.black38,textAlign: TextAlign.left),
-                FlyText.main40("更新时间：2020 年 9 月 19 日",color: Colors.black38),
-                SizedBox(height: 60,),
-
-              ],
+                );
+              }).toList(),
             ),
           ),
         )

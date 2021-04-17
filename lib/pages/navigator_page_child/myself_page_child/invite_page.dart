@@ -56,7 +56,7 @@ class _InvitePageState extends State<InvitePage> {
               ],
             ),
             Container(),Container(),
-
+            //分享矿小助官网
             InkWell(
               onTap: (){
                 Share.share("http://kxz.atcumt.com/");
@@ -78,6 +78,7 @@ class _InvitePageState extends State<InvitePage> {
                 ),
               ),
             ),
+            //分享群号
             InkWell(
               onTap: (){
                 Share.share("https://jq.qq.com/?_wv=1027&k=272EhIWK");

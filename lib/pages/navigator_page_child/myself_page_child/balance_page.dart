@@ -2,16 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/balanceDetail_post.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance_recharge_page.dart';
 import 'package:provider/provider.dart';
 //跳转到当前页面
 void toBalancePage(BuildContext context) {
@@ -35,6 +34,9 @@ class _BalancePageState extends State<BalancePage> {
     }
     setState(() {
     });
+  }
+  void rechargeHandler()async{
+
   }
   @override
   void initState() {
@@ -69,25 +71,25 @@ class _BalancePageState extends State<BalancePage> {
 
   Widget _buildBalanceDetail(BuildContext context) {
     return _container(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FlyText.main40("校园卡流水",color: Theme.of(context).primaryColor.withOpacity(0.5)),
-                      ],
-                    ),
-                    SizedBox(height: spaceCardPaddingTB*2,),
-                    Global.balanceDetailInfo.data!=null?Wrap(
-                      runSpacing: spaceCardPaddingTB*1.5,
-                      children: Global.balanceDetailInfo.data.map((item){
-                        return _buildDetailItem(item.location, item.time, item.costMoney, item.balance);
-                      }).toList(),
-                    ):loadingAnimationIOS(),
-                    SizedBox(height: spaceCardPaddingTB,)
-                  ],
-                )
-              );
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FlyText.main40("校园卡流水",color: Theme.of(context).primaryColor.withOpacity(0.5)),
+              ],
+            ),
+            SizedBox(height: spaceCardPaddingTB*2,),
+            Global.balanceDetailInfo.data!=null?Wrap(
+              runSpacing: spaceCardPaddingTB*1.5,
+              children: Global.balanceDetailInfo.data.map((item){
+                return _buildDetailItem(item.location, item.time, item.costMoney, item.balance);
+              }).toList(),
+            ):loadingAnimationIOS(),
+            SizedBox(height: spaceCardPaddingTB,)
+          ],
+        )
+    );
   }
 
   Row _buildDetailItem(String title,String time,String change,String balance) {
@@ -105,42 +107,42 @@ class _BalancePageState extends State<BalancePage> {
     }
     //19283->192.83
     return Row(
-                      children: [
-                        Container(
-                          height: fontSizeMain40*3,
-                          width: 5,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: colorItem,
-                          ),
-                        ),
-                        SizedBox(width: spaceCardPaddingRL/1.5,),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  FlyText.title45(title),
-                                  SizedBox(height: spaceCardPaddingTB/2,),
-                                  FlyText.mini30(time,color: Theme.of(context).primaryColor.withOpacity(0.5),)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  FlyText.title50(change,fontWeight: FontWeight.bold,),
-                                  SizedBox(height: spaceCardPaddingTB/2,),
-                                  FlyText.mini30("余额 "+balance,color: Theme.of(context).primaryColor.withOpacity(0.5),)
-                                ],
-                              ),
+      children: [
+        Container(
+          height: fontSizeMain40*3,
+          width: 5,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            color: colorItem,
+          ),
+        ),
+        SizedBox(width: spaceCardPaddingRL/1.5,),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FlyText.title45(title),
+                  SizedBox(height: spaceCardPaddingTB/2,),
+                  FlyText.mini30(time,color: Theme.of(context).primaryColor.withOpacity(0.5),)
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  FlyText.title50(change,fontWeight: FontWeight.bold,),
+                  SizedBox(height: spaceCardPaddingTB/2,),
+                  FlyText.mini30("余额 "+balance,color: Theme.of(context).primaryColor.withOpacity(0.5),)
+                ],
+              ),
 
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
+            ],
+          ),
+        ),
+      ],
+    );
   }
   Widget _container({@required Widget child}){
     return Container(
@@ -170,16 +172,17 @@ class _BalancePageState extends State<BalancePage> {
 
   InkWell _buildRechargeButton() {
     return InkWell(
-                    child: Container(
-                      padding: EdgeInsets.all(spaceCardMarginRL),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(borderRadiusValue),
-                        color: themeProvider.colorMain
-                      ),
-                      child: Center(
-                        child: FlyText.title45("充 值",color: Colors.white,fontWeight: FontWeight.bold,),
-                      ),
-                    ),
-                  );
+      onTap: ()=>toBalanceRechargePage(context),
+      child: Container(
+        padding: EdgeInsets.all(spaceCardMarginRL),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadiusValue),
+            color: themeProvider.colorMain
+        ),
+        child: Center(
+          child: FlyText.title45("充 值",color: Colors.white,fontWeight: FontWeight.bold,),
+        ),
+      ),
+    );
   }
 }
