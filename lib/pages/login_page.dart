@@ -28,6 +28,7 @@ import 'package:flying_kxz/NetRequest/login_check_get.dart';
 import 'package:flying_kxz/NetRequest/login_post.dart';
 import 'package:flying_kxz/NetRequest/userInfo_post.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'app_upgrade.dart';

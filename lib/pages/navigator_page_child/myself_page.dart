@@ -22,7 +22,7 @@ import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/balance_get.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
-import 'package:flying_kxz/NetRequest/power_get.dart';
+import 'package:flying_kxz/NetRequest/power_post.dart';
 import 'package:flying_kxz/NetRequest/rank_get.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
@@ -30,6 +30,7 @@ import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/about_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -45,9 +46,7 @@ class MyselfPage extends StatefulWidget {
 class _MyselfPageState extends State<MyselfPage>
     with AutomaticKeepAliveClientMixin {
   ThemeProvider themeProvider;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController _powerNumController = new TextEditingController(text: Prefs.powerNum??'');
-  bool powerLoading = false;
+
 
   @override
   void initState() {
@@ -60,7 +59,6 @@ class _MyselfPageState extends State<MyselfPage>
     super.build(context);
     themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      key: _scaffoldKey,
       backgroundColor: Colors.transparent,
       appBar: PreferredSize(
         preferredSize: Size.zero,
@@ -136,36 +134,14 @@ class _MyselfPageState extends State<MyselfPage>
                         ),
                         SizedBox(width: spaceCardMarginRL,),
                         Expanded(
-                          child: InkWell(
-                            child:FlyContainer(
-                              padding: EdgeInsets.fromLTRB(spaceCardPaddingRL,spaceCardPaddingTB*1.5,spaceCardPaddingRL,spaceCardPaddingTB*1.5),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.power_outlined,
-                                    size: sizeIconMain50,
-                                    color: themeProvider.colorNavText,
-                                  ),
-                                  SizedBox(
-                                    width: spaceCardPaddingTB * 2,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      FlyText.main40(
-                                        "宿舍电量",
-                                        color: themeProvider.colorNavText,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      SizedBox(height: spaceCardPaddingTB/2,),
-                                      FlyText.main35(Prefs.power==null?"点击绑定宿舍":"剩余  ${Prefs.power}",
-                                        color: themeProvider.colorNavText.withOpacity(0.5),)
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
+                          child: _buildHalfButton(
+                              "宿舍电量", Prefs.power==null?"点击绑定宿舍":"剩余  ${Prefs.power}度", Icons.power_outlined,
+                              onTap: ()async{
+                                await Navigator.push(context, CupertinoPageRoute(builder: (context)=>PowerPage()));
+                                setState(() {
+
+                                });
+                              }),
                         ),
                       ],
                     ),
@@ -271,12 +247,12 @@ class _MyselfPageState extends State<MyselfPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FlyText.main40(
-                  "校园卡",
+                  title,
                   color: themeProvider.colorNavText,
                   fontWeight: FontWeight.bold,
                 ),
                 SizedBox(height: spaceCardPaddingTB/2,),
-                FlyText.main35("余额  "+(Prefs.balance??"0.0")+"元",
+                FlyText.main35(subText,
                   color: themeProvider.colorNavText.withOpacity(0.5),)
               ],
             )
@@ -286,51 +262,8 @@ class _MyselfPageState extends State<MyselfPage>
     );
   }
 
-  Widget _buildPower(){
-    void _handlePower()async{
-      FocusScope.of(context).requestFocus(FocusNode());
-      setState(() {
-        powerLoading = true;
-      });
-      if(_powerNumController.text.isNotEmpty||Prefs.powerHome!=null){
-        Prefs.powerNum = _powerNumController.text.toString();
-        bool ok = await powerPost(context, token: Prefs.token, home: Prefs.powerHome, num: Prefs.powerNum);
-        if(!ok) showToast(context, "获取失败，请再检查一下参数");
-      }else{
-        showToast(context, "请输入完整");
-      }
-      setState(() {
-        powerLoading = false;
-      });
-    }
-    return Padding(
-      padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
-      child: Wrap(
-        children: [
-          _buildPreviewButton("宿舍楼",Prefs.powerHome??"未选择",onTap: ()=>_handlePowerPicker()),
-          _buildInputButton("宿舍号", Prefs.powerNum??"未选择"),
-          FlyWidgetBuilder(
-            whenFirst: powerLoading,
-            firstChild: _buildTitleCenterButton(context, "加载中……"),
-            secondChild: _buildTitleCenterButton(context, "绑定",onTap: ()=>_handlePower(),
-          ))
-        ]
-      ),
-    );
-  }
-  void _handlePowerPicker()async{
-    showPicker(context, _scaffoldKey,
-        title: "选择宿舍楼",
-        pickerDatas: PickerData.apartment,
-        isArray: false,
-        onConfirm: (Picker picker, List value) {
-          String home = picker.getSelectedValues()[1].toString();
-          Prefs.powerHome = home;
-          setState(() {
 
-          });
-        });
-  }
+
   Widget _buildPersonalise() {
     return Padding(
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
@@ -383,41 +316,9 @@ class _MyselfPageState extends State<MyselfPage>
       ),
     );
   }
-  Widget _buildInputButton(String title,String previewStr,{GestureTapCallback onTap}){
-    return _buildDiyButton(title,
-        child: _buildInputBar("输入寝室号(如B1052)", _powerNumController)
-    );
-  }
-  Widget _buildInputBar(String hintText,TextEditingController controller){
-    return TextFormField(
-      textAlign: TextAlign.end,
-      style: TextStyle(fontSize: fontSizeMain40,color: themeProvider.colorNavText.withOpacity(0.7)),
-      controller: controller, //控制正在编辑的文本。通过其可以拿到输入的文本值
-      cursorColor: colorMain,
-      decoration: InputDecoration(
-        hintStyle: TextStyle(fontSize: fontSizeMain40,color: themeProvider.colorNavText.withOpacity(0.5)),
-        border: InputBorder.none, //下划线
-        hintText: hintText, //点击后显示的提示语
-      ),
-    );
-  }
-  Widget _buildPreviewButton(String title,String previewStr,{GestureTapCallback onTap}){
-    return _buildDiyButton(title,
-        onTap: onTap,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FlyText.main35(previewStr,color: themeProvider.colorNavText.withOpacity(0.5),),
-            SizedBox(width: fontSizeMini38,),
-            Icon(
-              Icons.arrow_right_sharp,
-              size: sizeIconMain50,
-              color: themeProvider.colorNavText.withOpacity(0.5),
-            )
-          ],
-        )
-    );
-  }
+
+
+
   Widget _buildDiyButton(String title,{@required Widget child,GestureTapCallback onTap}){
     return InkWell(
       onTap: onTap,
@@ -467,8 +368,10 @@ class _MyselfPageState extends State<MyselfPage>
     await balancePost(
         token: Prefs.token);
     Future.delayed(Duration(seconds: 2),(){
-      powerPost(context,
-          token: Prefs.token, num: Prefs.powerNum, home: Prefs.powerHome);
+      if(Prefs.powerHome!=null&&Prefs.powerNum!=null){
+        powerPost(context,
+            token: Prefs.token, num: Prefs.powerNum, home: Prefs.powerHome);
+      }
       rankGet(username: Prefs.username);
     });
     setState(() {});
@@ -694,27 +597,7 @@ class _MyselfPageState extends State<MyselfPage>
           ],
         ),
       );
-  Widget _buildTitleCenterButton(BuildContext context, String title,
-      {GestureTapCallback onTap,}) {
-    return InkWell(
-      onTap: onTap,
-      child: FlyContainer(
-        margin: EdgeInsets.fromLTRB(
-            0, spaceCardPaddingTB , 0, spaceCardPaddingTB ),
-        padding: EdgeInsets.fromLTRB(
-            0, spaceCardPaddingTB , 0, spaceCardPaddingTB ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FlyText.main35(
-              title,
-              color: themeProvider.colorNavText,
-            )
-          ],
-        ),
-      ),
-    );
-  }
+
 
   @override
   bool get wantKeepAlive => true;

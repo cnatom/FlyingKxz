@@ -72,6 +72,7 @@ class ApiUrl{
   //https://api.kxz.atcumt.com
   //http://119.45.171.211:5000
   static String _pubUrl = "https://api.kxz.atcumt.com";
+  static String _userUrl = "https://user.kxz.atcumt.com";
 
   static String loginUrl = "$_pubUrl/login";//新登录请求
   static String loginCheckUrl = "http://authserver.cumt.edu.cn/authserver/checkNeedCaptcha.htl";//检测是否激活
@@ -80,7 +81,7 @@ class ApiUrl{
   static String scoreUrl = "$_pubUrl/jwxt/grades";//成绩查询
   static String scoreAllUrl = "$_pubUrl/jwxt/makeup/grades";//全成绩查询
   static String examUrl = "$_pubUrl/jwxt/exam";//考试查询
-  static String bookUrl = "$_pubUrl/lib/book";//书籍查询
+  static String bookUrl = "$_userUrl/lib/book";//书籍查询
   static String powerAutoUrl = "$_pubUrl/daily/au_df";//自动电量查询
   static String powerUrl = "$_pubUrl/electric";//电量手动查询
   static String swiperUrl = "$_pubUrl/daily/home_image";//轮播图

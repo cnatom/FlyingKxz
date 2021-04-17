@@ -1,6 +1,7 @@
 
 
 import 'dart:core';
+import 'dart:ffi';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +23,7 @@ class Prefs{
   static String _power = 'power';//宿舍电量
   static String _powerHome = "powerHome";//梅2楼
   static String _powerNum = "powerNum";//B1052
+  static String _powerMax = "powerMax";//最大电量
   static String _balance = 'balance';//校园卡余额
   static String _cardNum = 'cardNum';//卡号
   static String _rank = 'rank';//用户内测排名
@@ -44,9 +46,10 @@ class Prefs{
   static String get token => prefs.getString(_token);
   static String get college => prefs.getString(_college);
   static String get className => prefs.getString(_className);
-  static String get power => prefs.getString(_power);
+  static double get power => prefs.getDouble(_power);
   static String get powerHome => prefs.getString(_powerHome);
   static String get powerNum => prefs.getString(_powerNum);
+  static double get powerMax => prefs.getDouble(_powerMax);
   static String get balance => prefs.getString(_balance);
   static String get cardNum => prefs.getString(_cardNum);
   static String get rank => prefs.getString(_rank);
@@ -68,9 +71,11 @@ class Prefs{
   static set token(String value) =>prefs.setString(_token, value);
   static set college(String value) =>prefs.setString(_college, value);
   static set className(String value) =>prefs.setString(_className, value);
-  static set power(String value) =>prefs.setString(_power, value);
+  static set power(double value) =>prefs.setDouble(_power, value);
   static set powerHome(String value) =>prefs.setString(_powerHome, value);
   static set powerNum(String value) =>prefs.setString(_powerNum, value);
+  static set powerMax(double value) =>prefs.setDouble(_powerMax, value);
+
   static set balance(String value) =>prefs.setString(_balance, value);
   static set cardNum(String value) =>prefs.setString(_cardNum, value);
   static set rank(String value) =>prefs.setString(_rank, value);

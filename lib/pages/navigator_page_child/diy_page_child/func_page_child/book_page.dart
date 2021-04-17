@@ -403,7 +403,6 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                     ),
                     Expanded(
                       child: TextField(
-                        autofocus: true,
                         focusNode: searchBarFocus,
                         decoration: InputDecoration(
                           hintText: "输入书名",

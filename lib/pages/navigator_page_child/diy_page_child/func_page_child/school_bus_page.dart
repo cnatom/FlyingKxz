@@ -221,7 +221,7 @@ class _BusTimeListViewState extends State<BusTimeListView> {
               spaceCardMarginRL, spaceCardMarginTB / 2),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(borderRadiusValue)),
-          child: FlyText.title50(
+          child: FlyText.main40(
             title,
             fontWeight: FontWeight.bold,
           ),
@@ -250,8 +250,8 @@ class _BusTimeListViewState extends State<BusTimeListView> {
                               : themeProvider.colorMain.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(borderRadiusValue)),
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: FlyText.title50(
-                    comingSoon ? "将达 ${item.toString()}" : item.toString(),
+                  child: FlyText.main40(
+                    comingSoon ? "${item.toString()} 即将到达" : item.toString(),
                     color: comingSoon
                         ? Colors.white
                         : Colors.black.withOpacity(0.8),
