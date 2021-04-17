@@ -116,7 +116,7 @@ class _BalanceRechargePageState extends State<BalanceRechargePage> {
         padding: EdgeInsets.fromLTRB(spaceCardPaddingRL * 1.4,
             spaceCardPaddingTB / 4, spaceCardPaddingRL, spaceCardPaddingTB / 4),
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(borderRadiusValue)),
         child: TextFormField(
           textAlign: TextAlign.center,

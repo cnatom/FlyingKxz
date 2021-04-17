@@ -244,9 +244,9 @@ class _BusTimeListViewState extends State<BusTimeListView> {
                       spaceCardMarginTB / 2),
                   decoration: BoxDecoration(
                       color: comingSoon
-                          ? themeProvider.colorMain.withOpacity(0.8)
+                          ? themeProvider.colorMain.withOpacity(0.7)
                           : temp
-                              ? themeProvider.colorMain.withOpacity(0.1)
+                              ? themeProvider.colorMain.withOpacity(0.05)
                               : themeProvider.colorMain.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(borderRadiusValue)),
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -254,7 +254,7 @@ class _BusTimeListViewState extends State<BusTimeListView> {
                     comingSoon ? "${item.toString()} 即将到达" : item.toString(),
                     color: comingSoon
                         ? Colors.white
-                        : Colors.black.withOpacity(0.8),
+                        : Theme.of(context).primaryColor.withOpacity(0.9),
                     fontWeight:
                         comingSoon ? FontWeight.bold : FontWeight.normal,
                   ),
