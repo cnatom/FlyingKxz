@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/bottom_sheet.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:provider/provider.dart';
 
 class LessonWeekNumPicker extends StatefulWidget {
   @override
@@ -17,6 +19,7 @@ class _LessonWeekNumPickerState extends State<LessonWeekNumPicker> {
   int lessonNum = 1;
   int duration = 1;
   int step = 0;
+  ThemeProvider themeProvider;
   PageController controller = PageController();
   void _switchStep() {
     if (step == 0) {
@@ -47,6 +50,7 @@ class _LessonWeekNumPickerState extends State<LessonWeekNumPicker> {
 
   @override
   Widget build(BuildContext context) {
+    themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
       height: ScreenUtil().setHeight(deviceHeight * 0.7),
       child: FlyBottomSheetScaffold(context,
@@ -101,7 +105,7 @@ class _LessonWeekNumPickerState extends State<LessonWeekNumPicker> {
                       whenFirst: weekNum == i,
                       firstChild: FlyText.mini30(
                         '周$i',
-                        color: colorMain,
+                        color: themeProvider.colorMain,
                         fontWeight: FontWeight.bold,
                       ),
                       secondChild: FlyText.miniTip30(
@@ -174,7 +178,7 @@ class _LessonWeekNumPickerState extends State<LessonWeekNumPicker> {
                   whenFirst: lesson == lessonNum,
                   firstChild: FlyText.mini30(
                     '$lesson',
-                    color: colorMain,
+                    color: themeProvider.colorMain,
                     fontWeight: FontWeight.bold,
                   ),
                   secondChild: FlyText.miniTip30(

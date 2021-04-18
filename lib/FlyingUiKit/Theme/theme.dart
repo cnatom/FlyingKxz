@@ -12,9 +12,10 @@ class ThemeProvider extends ChangeNotifier {
   static double _transBack; //背景透明度
   static double _blurBack; //背景模糊度
   static double _transCard; //卡片透明度 最大0.5
-  static Color _colorMain = Color(0xff00c5a8); //主题色彩
+  static Color _colorMain;
   static Color _colorNavText;///卡片内的文字,过白时变黑;
 
+  static final int _colorDefaultValue = 4278240425;
 
   bool get simpleMode => _simpleMode;
   ThemeMode get themeMode => _themeMode;
@@ -31,6 +32,7 @@ class ThemeProvider extends ChangeNotifier {
     "transBack": 0.25,
     "blurBack": 8.0,
     "transCard": 0.1,
+    "colorMain": _colorDefaultValue
   };
   static Map _lightDefault = {
     "darkMode": false,
@@ -38,6 +40,7 @@ class ThemeProvider extends ChangeNotifier {
     "transBack": 0.85,
     "blurBack": 20.0,
     "transCard": 0.8,
+    "colorMain": _colorDefaultValue
   };
   static Map _darkDefault = {
     "darkMode": true,
@@ -45,17 +48,12 @@ class ThemeProvider extends ChangeNotifier {
     "transBack": 1.0,
     "blurBack": 8.0,
     "transCard": 0.8,
+    "colorMain": _colorDefaultValue
   };
-  ThemeProvider(){
-    notifyListeners();
-  }
-  notify(){
-    notifyListeners();
-  }
   ///初始化主题数据
   static init() {
     if (Prefs.themeData == null) {
-      _initFromJson(_diyDefault);
+      _initFromJson(_lightDefault);
       _themeMode = ThemeMode.light;
       _savePrefs();
     } else {
@@ -65,13 +63,21 @@ class ThemeProvider extends ChangeNotifier {
   //恢复默认配置
   _restore(){
     debugPrint("@restore");
-    _initFromJson(_diyDefault);
+    _changeTheme(_diyDefault);
   }
   ///本地化存储
   static _savePrefs() {
     Prefs.themeData = jsonEncode(_toJson());
   }
-
+  static _changeTheme(dynamic json){
+    _darkMode = json["darkMode"];
+    _simpleMode = json["simpleMode"];
+    _blurBack = json["blurBack"];
+    _transCard = json["transCard"];
+    _transBack = json["transBack"];
+    _colorNavText = _simpleMode?Colors.black:Colors.white;
+    _themeMode = _darkMode ? ThemeMode.dark : ThemeMode.light;
+  }
   ///Map->类的变量
   static _initFromJson(dynamic json) {
     _darkMode = json["darkMode"];
@@ -79,6 +85,7 @@ class ThemeProvider extends ChangeNotifier {
     _blurBack = json["blurBack"];
     _transCard = json["transCard"];
     _transBack = json["transBack"];
+    _colorMain = Color(json['colorMain']);
     _colorNavText = _simpleMode?Colors.black:Colors.white;
     _themeMode = _darkMode ? ThemeMode.dark : ThemeMode.light;
   }
@@ -91,6 +98,7 @@ class ThemeProvider extends ChangeNotifier {
     map["transBack"] = _transBack;
     map["blurBack"] = _blurBack;
     map["transCard"] = _transCard;
+    map['colorMain'] = _colorToHex(_colorMain);
     return map;
   }
 
@@ -103,7 +111,7 @@ class ThemeProvider extends ChangeNotifier {
   set simpleMode(bool value) {
     _simpleMode = value;
     if(_simpleMode){
-      _initFromJson(_lightDefault);
+      _changeTheme(_lightDefault);
     }else{
       _restore();
     }
@@ -113,7 +121,7 @@ class ThemeProvider extends ChangeNotifier {
   set darkMode(bool value) {
     _darkMode = value;
     if (darkMode) {
-      _initFromJson(_darkDefault);
+      _changeTheme(_darkDefault);
     } else {
       _restore();
     }
@@ -142,10 +150,20 @@ class ThemeProvider extends ChangeNotifier {
     _savePrefs();
   }
 
-  set colorMain(Color value) {
-    _colorMain = value;
+  set colorMain(Color color) {
+    _colorMain = color;
     notifyListeners();
     _savePrefs();
+  }
+  static int _colorToHex(Color color){
+    int result;
+    try{
+      result = int.parse('0x${color.value.toRadixString(16).padLeft(8, '0')}');
+    }catch(e){
+      debugPrint(e.toString());
+      result = 0x00bafd;
+    }
+    return result;
   }
 
 }
@@ -175,7 +193,10 @@ class FlyThemes {
       cardColor: Color(0xff151517),
       //指示器色彩
       indicatorColor: Colors.white,
-      cursorColor: colorMain,
+      //输入指示器颜色
+      textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Colors.white
+      ),
       //Chip未选中色彩
       canvasColor: Color(0xff6C6C6C).withOpacity(0.5),
       appBarTheme: AppBarTheme(
@@ -233,6 +254,10 @@ class FlyThemes {
     ),
     //卡片背景
     cardColor: Colors.white,
+    //指示器颜色
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: Colors.black
+    )
     // //chip按钮主题
     // chipTheme: ChipThemeData(
     //   //选中项背景色彩，两个最好是一样

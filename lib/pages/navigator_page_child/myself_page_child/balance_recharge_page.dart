@@ -43,20 +43,21 @@ class _BalanceRechargePageState extends State<BalanceRechargePage> {
             child: Wrap(
               runSpacing: spaceCardMarginTB*2,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FlyText.main40("  支付方式",color: Theme.of(context).primaryColor.withOpacity(0.5),),
+                    FlyText.main40("校园卡绑定的银行卡  ",fontWeight: FontWeight.bold,color: themeProvider.colorMain,),
+                  ],
+                ),
                 _buildInputBar(context, "输入充值金额（元）", controller,onSaved: (value)=>num = value),
                 !loading?Wrap(
                   runSpacing: spaceCardMarginTB*2,
                   children: [
                     _buildRechargeButton(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FlyText.main40("  支付方式",color: Theme.of(context).primaryColor.withOpacity(0.5),),
-                        FlyText.main40("校园卡绑定的银行卡  ",fontWeight: FontWeight.bold,color: themeProvider.colorMain,),
-                      ],
-                    )
+                    FlyText.main40("实际到账会有延迟，属正常现象。",color: Theme.of(context).primaryColor.withOpacity(0.5),),
                   ],
-                ):Center(child: loadingAnimationTwoCircles(),)
+                ):Center(child: loadingAnimationIOS(),)
               ],
             ),
           ),

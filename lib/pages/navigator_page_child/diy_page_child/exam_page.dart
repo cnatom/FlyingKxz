@@ -143,7 +143,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
         actions: <Widget>[
           FlatButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: FlyText.main40('确定',color: colorMain),),
+            child: FlyText.main40('确定',color: themeProvider.colorMain),),
           FlatButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: FlyText.mainTip40('取消',),
@@ -215,7 +215,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
             animation: true,
             lineHeight: 7,
             animationDuration: 500,
-            percent: timeLeftInt/30,
+            percent: timeLeftInt>30?1.0:timeLeftInt/30,
             linearStrokeCap: LinearStrokeCap.roundAll,
             progressColor: colorLine,
             backgroundColor: Theme.of(context).unselectedWidgetColor.withOpacity(0.2),
@@ -294,7 +294,7 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
       onTap: ()=>addDiyExamFunc(),
       child: FlyContainer(
         decoration: BoxDecoration(
-            color: Theme.of(context).cardColor.withOpacity(themeProvider.simpleMode?1:themeProvider.transCard),
+            color: Theme.of(context).cardColor.withOpacity(themeProvider.transCard),
             borderRadius: BorderRadius.circular(100),
             boxShadow: [
               boxShadowMain

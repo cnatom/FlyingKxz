@@ -54,7 +54,6 @@ class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>(); //表单状态
   bool _loading = false;
   int loginCount = 1; //登陆次数,>=3则特别提示
-
   @override
   void initState() {
     super.initState();
@@ -167,25 +166,27 @@ class _LoginPageState extends State<LoginPage> {
       });
       return;
     }
-    // //检测是否激活&验证码
-    // if (await loginCheckGet(context, username: _username)) {
-    //   //登录请求并决定是否跳转
-    //   if (await loginPost(context, loginCount++,
-    //       username: _username, password: _password)) {
-    //     toNavigatorPage(context);
-    //   }
-    // }
-    //登录请求并决定是否跳转
-    if (await loginPost(context, loginCount++,
-        username: _username, password: _password)) {
-      await userInfoPost(context, token: Prefs.token);
-      toNavigatorPage(context);
+    //检测是否激活&验证码
+    if (await loginCheckGet(context, username: _username)) {
+      //登录请求并决定是否跳转
+      if (await loginPost(context, loginCount++,
+          username: _username, password: _password)) {
+        await userInfoPost(context, token: Prefs.token);
+        toNavigatorPage(context);
+      }
+    }else{
+      setState(() {
+        _loading = false;
+      });
     }
-    setState(() {
-      _loading = false;
-    });
-  }
+    // //登录请求并决定是否跳转
+    // if (await loginPost(context, loginCount++,
+    //     username: _username, password: _password)) {
+    //   await userInfoPost(context, token: Prefs.token);
+    //   toNavigatorPage(context);
+    // }
 
+  }
   void _visitorHandler() async {
     FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
     setState(() {
@@ -263,22 +264,22 @@ class _LoginPageState extends State<LoginPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            // Expanded(
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     children: [
+            //       _buildFlatButton("游客访问", onPressed: () => _visitorHandler())
+            //     ],
+            //   ),
+            // ),
+            // Container(
+            //   height: ScreenUtil().setWidth(35),
+            //   width: 1,
+            //   color: Colors.white.withOpacity(0.5),
+            // ),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _buildFlatButton("游客访问", onPressed: () => _visitorHandler())
-                ],
-              ),
-            ),
-            Container(
-              height: ScreenUtil().setWidth(35),
-              width: 1,
-              color: Colors.white.withOpacity(0.5),
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildFlatButton("无法登录", onPressed: () async {
                     Clipboard.setData(ClipboardData(text: "839372371"));

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
+import 'package:flying_kxz/FlyingUiKit/buttons.dart';
+import 'package:provider/provider.dart';
 
 import 'Text/text.dart';
 import 'config.dart';
@@ -28,8 +31,10 @@ class FlyBottomSheetScaffold extends StatefulWidget {
 }
 
 class _FlyBottomSheetScaffoldState extends State<FlyBottomSheetScaffold> {
+  ThemeProvider themeProvider;
   @override
   Widget build(BuildContext context) {
+    themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
         height: ScreenUtil().setHeight(deviceHeight * 0.8),
         padding: EdgeInsets.all(spaceCardPaddingRL),
@@ -38,17 +43,18 @@ class _FlyBottomSheetScaffoldState extends State<FlyBottomSheetScaffold> {
             borderRadius: BorderRadius.circular(borderRadiusValue)),
         child: Column(
           children: <Widget>[
+            SizedBox(height: spaceCardPaddingTB,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                SizedBox(width: spaceCardMarginRL,),
                 Expanded(
                   child: Container(
                     alignment: Alignment.centerLeft,
-                    child: TextButton(
-                      onPressed: widget.onCancel,
-                      child: FlyText.mainTip40(
-                        widget.leftText,
-                      ),
+                    child: FlyTextButton(
+                      widget.leftText,
+                      onTap: widget.onCancel,
+                      color: Theme.of(context).primaryColor.withOpacity(0.5),
                     ),
                   ),
                 ),
@@ -59,18 +65,20 @@ class _FlyBottomSheetScaffoldState extends State<FlyBottomSheetScaffold> {
                 Expanded(
                   child: Container(
                     alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: widget.onDetermine,
-                      child: FlyText.main40(widget.rightText, color: colorMain),
+                    child: FlyTextButton(
+                      widget.rightText,
+                      onTap: widget.onDetermine,
                     ),
                   ),
-                )
+                ),
+                SizedBox(width: spaceCardMarginRL,)
               ],
             ),
             SizedBox(
               height: spaceCardMarginBigTB * 2,
             ),
-            Expanded(child: widget.child)
+
+            Expanded(child: widget.child),
           ],
         ));
   }

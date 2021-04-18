@@ -11,14 +11,15 @@ import 'package:flying_kxz/Model/prefs.dart';
 Future<bool> balanceRechargePost(BuildContext context, {@required String num}) async {
   Response res;
   Dio dio = Dio();
+  double numDouble = double.parse(num)*100;
   try {
-    res = await dio.post(ApiUrl.rechargeUrl,data:{'num': num.toString()},options: Options(
+    res = await dio.post(ApiUrl.rechargeUrl,data:{'num': numDouble.toString()},options: Options(
         headers: {"Authorization":"Bearer "+Prefs.token}
     ));
     Map<String, dynamic> map = jsonDecode(res.toString());
     debugPrint(res.toString());
     if (res.statusCode == 200) {
-      Global.balanceDetailInfo = BalanceDetailInfo.fromJson(map);
+      showToast(context, "充值成功！",duration: 3);
       return true;
     } else {
       return false;

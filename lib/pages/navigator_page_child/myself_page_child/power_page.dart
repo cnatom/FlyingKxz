@@ -92,6 +92,7 @@ class _PowerPageState extends State<PowerPage> {
     showPicker(context, _scaffoldKey,
         title: "选择宿舍楼",
         pickerDatas: PickerData.apartment,
+        colorRight: themeProvider.colorMain,
         isArray: false,
         onConfirm: (Picker picker, List value) {
           String home = picker.getSelectedValues()[1].toString();

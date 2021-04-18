@@ -31,7 +31,6 @@ class CourseProvider extends ChangeNotifier{
   int get getCurWeek=>curWeek;
   DateTime get getCurMondayDate=>curMondayDate;
   List get getPointArray => pointArray;
-
   CourseProvider(){
     init();
   }
@@ -55,7 +54,6 @@ class CourseProvider extends ChangeNotifier{
   ///获取2019年第1学期课表
   ///CourseProvider().get("token","2019","1");
   get(String token,String year,String term) {
-    debugPrint('@get');
     loading = true;
     notifyListeners();
     String newDateTimeStr;
@@ -162,7 +160,6 @@ class CourseProvider extends ChangeNotifier{
   }
   //Prefs列表-> info,pointArray,infoByCourse
   _handlePrefs(){
-    debugPrint("@handlePrefs");
     List courseList = jsonDecode(Prefs.courseData);
     for(Map courseMap in courseList){
       CourseData courseData = CourseData.fromJson(courseMap);

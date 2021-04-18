@@ -93,10 +93,8 @@ class _WeekListPickerState extends State<WeekListPicker> {
   }
   Widget _buildButton({GestureTapCallback onTap}){
     return Center(
-      child:  InkWell(
-        child: FlyText.main40('确定',color: colorMain,fontWeight: FontWeight.bold,),
-        onTap: onTap,
-      ),
+      child: FlyTextButton("确定",
+        onTap: onTap,),
     );
   }
 

@@ -141,7 +141,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
   Widget cumtLoginButton(int type,String title,{@required GestureTapCallback onTap})=>Material(
     borderRadius: BorderRadius.circular(5),
     elevation: 0,
-    color: type==0?colorMain.withOpacity(0.8):Theme.of(context).disabledColor.withOpacity(0.5),
+    color: type==0?themeProvider.colorMain.withOpacity(0.8):Theme.of(context).disabledColor.withOpacity(0.5),
     child: InkWell(
       splashColor: Colors.black12,
       borderRadius: BorderRadius.circular(5),
@@ -208,10 +208,13 @@ class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
                   '1、在系统设置中连接校园网CUMT_Stu，并等待上方出现wifi标志'),
               helpItem("images/cumtLoginHelp2.png",
                   '2、打开矿小助输入账号密码就可以登录了\n（第二次打开这个框框就不用填账号密码了哦）'),
+              helpItem("images/cumtLoginHelp0.png",
+                  '此外，可以在wifi设置中关闭自动登录功能，可以防止连接wifi后强制弹窗（还得手动输入，怪麻烦，叹气～'),
               helpItem('images/cumtLoginHelp1.png',
                   "你以为这就结束了？？？\n用脚趾头想想也知道那必不可能（滑稽\n\n矿小助还可以一键登录校园网\n(前提是你已经用上述1、2步骤手动登录过了)\n\n1、连接wifi，等待出现wifi标志"),
               helpItem('images/cumtLoginHelp3.png',
                   "2、打开矿小助"),
+
               helpItem('images/cumtLoginHelp4.png',
                   "然后就可以愉快的上网了～\n\n"
                       "特别注意：如果无法自动登录，就重启矿小助。\n\n"

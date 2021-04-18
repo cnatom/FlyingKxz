@@ -86,9 +86,9 @@ class ApiUrl{
   static String powerUrl = "$_pubUrl/electric";//电量手动查询
   static String swiperUrl = "$_pubUrl/daily/home_image";//轮播图
   static String rankUrl = "$_pubUrl/admin/user_id";//用户内测排名
-  static String feedbackUrl = "$_pubUrl/admin/feedback";//反馈
+  static String feedbackUrl = "$_userUrl/admin/feedback";//反馈
   static String cumtLoginUrl = "http://10.2.5.251:801/eportal/";//校园网登陆
-  static String appUpgradeUrl = "$_pubUrl/admin/version";//检查App更新
+  static String appUpgradeUrl = "$_userUrl/admin/version";//检查App更新
   static String balanceUrl = "$_pubUrl/card/balance";//校园卡余额
   static String balanceDetailUrl = "$_pubUrl/card/history";//校园卡流水
   static String rechargeUrl = "$_pubUrl/card/recharge";//校园卡充值

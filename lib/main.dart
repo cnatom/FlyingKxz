@@ -25,6 +25,10 @@ void main() {
   }
   /// Prefs.init() 提取存储在本地的信息
   Future.wait([Prefs.init()]).whenComplete((){
+    if(Prefs.token==null){
+      Global.clearPrefsData();
+      backImgFile = null;
+    }
     // 初始化主题
     ThemeProvider.init();
     //启动App

@@ -140,7 +140,7 @@ class PointMatrixState extends State<PointMatrix> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
             color: light > 0
-                ? colorMain.withOpacity(0.8)
+                ? themeProvider.colorMain.withOpacity(0.8)
                 : themeData.unselectedWidgetColor.withOpacity(0.2)),
       );
     }

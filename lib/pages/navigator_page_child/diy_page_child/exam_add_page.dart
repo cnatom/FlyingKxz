@@ -7,6 +7,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flying_kxz/FlyingUiKit/bottom_sheet.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
@@ -87,58 +88,43 @@ class _ExamAddViewState extends State<ExamAddView> {
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
-      child: Container(
-        height: ScreenUtil().setHeight(deviceHeight*0.8),
-          padding: EdgeInsets.all(spaceCardPaddingRL),
-          child: Wrap(
-            runSpacing: spaceCardMarginBigTB*2,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: ()=>Navigator.pop(context,false),
-                    child: FlyText.mainTip40('取消',),
-                  ),
-                  FlyText.title45('新建倒计时',fontWeight: FontWeight.bold),
-                  TextButton(
-                    onPressed: ()=>determineFunc(),
-                    child: FlyText.main40('保存',color: colorMain),
-                  )
-                ],
-              ),
-
-
-              inputBar('事项', courseController,autofocus: true),
-              inputBar('地点', localController),
-              InkWell(
-                onTap: ()=>_showDataPicker(),
-                child: Padding(
-                  padding: EdgeInsets.all(spaceCardMarginRL),
-                  child: Row(
-                    children: [
-                      FlyText.title45('日期'),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            date==null?FlyText.mainTip40('未选择',):
-                            FlyText.main40("${date.year}-${date.month}-${date.day}")
-                            ,
-                            Icon(Icons.keyboard_arrow_right_rounded,)
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+      child: FlyBottomSheetScaffold(context,
+        onCancel: ()=>Navigator.pop(context,false),
+        onDetermine: ()=>determineFunc(),
+        child:Wrap(
+          runSpacing: spaceCardMarginBigTB*2,
+          children: [
+            inputBar('事项', courseController,autofocus: true),
+            inputBar('地点', localController),
+            InkWell(
+              onTap: ()=>_showDataPicker(),
+              child: Padding(
+                padding: EdgeInsets.all(spaceCardMarginRL),
+                child: Row(
+                  children: [
+                    FlyText.title45('日期'),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          date==null?FlyText.mainTip40('未选择',):
+                          FlyText.main40("${date.year}-${date.month}-${date.day}")
+                          ,
+                          Icon(Icons.keyboard_arrow_right_rounded,)
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               ),
-              Divider(height: 0,),
-              Center(
-                child: FlyText.miniTip30('Tip：点击倒计时卡片可以将其删除（从教务系统提取的除外）'),
-              )
-            ],
-          )),
+            ),
+            Divider(height: 0,),
+            Center(
+              child: FlyText.miniTip30('Tip：点击倒计时卡片可以将其删除（从教务系统提取的除外）'),
+            )
+          ],
+        )
+      ),
     );
   }
 }

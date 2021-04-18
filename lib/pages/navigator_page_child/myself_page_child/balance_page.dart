@@ -25,7 +25,7 @@ class BalancePage extends StatefulWidget {
 class _BalancePageState extends State<BalancePage> {
   ThemeProvider themeProvider;
   bool loading = true;
-  void _getBalanceDetail()async{
+  Future<void> _getBalanceDetail()async{
     if(await balanceDetailPost()){
       loading = false;
     }else{
@@ -34,9 +34,6 @@ class _BalancePageState extends State<BalancePage> {
     }
     setState(() {
     });
-  }
-  void rechargeHandler()async{
-
   }
   @override
   void initState() {
@@ -52,16 +49,23 @@ class _BalancePageState extends State<BalancePage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardMarginTB, spaceCardPaddingRL, spaceCardMarginTB),
-            child: Wrap(
-              runSpacing: spaceCardMarginTB,
-              children: [
-                _buildHeadCard(context),
-                _buildBalanceDetail(context)
-              ],
+        child: RefreshIndicator(
+          color: themeProvider.colorMain,
+          onRefresh: ()async{
+            await _getBalanceDetail();
+            showToast(context, "刷新成功");
+          },
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardMarginTB, spaceCardPaddingRL, spaceCardMarginTB),
+              child: Wrap(
+                runSpacing: spaceCardMarginTB,
+                children: [
+                  _buildHeadCard(context),
+                  _buildBalanceDetail(context)
+                ],
+              ),
             ),
           ),
         ),

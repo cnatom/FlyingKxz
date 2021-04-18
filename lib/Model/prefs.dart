@@ -16,8 +16,8 @@ class Prefs{
   static String _backImg = 'backImg';//背景图
   static String _username = 'username';//用户名
   static String _phone = 'phone';//电话号码
-  static String _name = 'name';
-  static String _token = 'newToken';//token信息
+  static String _name = 'name';//姓名
+  static String _token = 'NewToken1.2.0';//token信息
   static String _college = 'college';//学院
   static String _className = 'className';//班级
   static String _power = 'power';//宿舍电量

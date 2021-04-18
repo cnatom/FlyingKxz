@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
@@ -17,6 +18,7 @@ import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/NetRequest/score_get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:provider/provider.dart';
 //跳转到当前页面
 void toScorePage(BuildContext context) {
   Navigator.push(
@@ -46,6 +48,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   bool loading;//是否显示加载动画
   bool selectAll =  true;
   double opacityFloatButton = 0.0;//是否显示回到顶部按钮
+  ThemeProvider themeProvider;
   var topCrossFadeState = CrossFadeState.showFirst; 
   Color selectedMainColor = colorMainText;
   @override
@@ -59,6 +62,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   }
   @override
   Widget build(BuildContext context) {
+    themeProvider = Provider.of<ThemeProvider>(context);
     super.build(context);
     return Scaffold(
       key: scaffoldKey,
@@ -92,6 +96,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                     "$curScoreYearStr $curScoreTermStr",
                     onTap: ()=>showPicker(context, scaffoldKey,
                         pickerDatas: PickerData.xqxnWithAllTermPickerData,
+                        colorRight: themeProvider.colorMain,
                         onConfirm: (Picker picker, List value) {
                           debugPrint(value.toString());
                           getShowScoreView(year: picker.getSelectedValues()[0].toString(),term: '${(value[1]).toString()}');
@@ -157,7 +162,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
         children: [
           FlyText.main35("包含补考成绩（带补考无明细）"),
           CupertinoSwitch(
-              activeColor: colorMain.withAlpha(200),
+              activeColor: themeProvider.colorMain.withAlpha(200),
               value: makeupFilter,
               onChanged: (v){
                 if(!loading){
@@ -284,14 +289,14 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     FlyText.mini30("加权：", ),
-                    Text(jiaquanTotal!=null&&jiaquanTotal!='NaN'?jiaquanTotal:"00.00", style: TextStyle(color: colorMain,fontWeight: FontWeight.bold,fontSize: fontSizeMain40),)
+                    Text(jiaquanTotal!=null&&jiaquanTotal!='NaN'?jiaquanTotal:"00.00", style: TextStyle(color: themeProvider.colorMain,fontWeight: FontWeight.bold,fontSize: fontSizeMain40),)
                   ],
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     FlyText.mini30("绩点：",),
-                    Text(jidianTotal!=null&&jiaquanTotal!='NaN'?jidianTotal:"0.00", style: TextStyle(color: colorMain,fontWeight: FontWeight.bold,fontSize: fontSizeMain40),)
+                    Text(jidianTotal!=null&&jiaquanTotal!='NaN'?jidianTotal:"0.00", style: TextStyle(color: themeProvider.colorMain,fontWeight: FontWeight.bold,fontSize: fontSizeMain40),)
                   ],
                 ),
                 Container(),
@@ -463,7 +468,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                     padding: EdgeInsets.fromLTRB(fontSizeMini38, 0, 0, 0),
                     height: fontSizeMini38*3,
                     child: CupertinoSwitch(
-                        activeColor: colorMain.withAlpha(200),
+                        activeColor: themeProvider.colorMain.withAlpha(200),
                         value: scoreFilter[curIndex],
                         onChanged: (v){
                           setState(() {
@@ -551,8 +556,10 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     );
   }
   Widget loadingView(){
-    return Center(
-      child: loadingAnimationTwoCircles(),
+    return Container(
+      padding: EdgeInsets.all(spaceCardMarginTB),
+      alignment: Alignment.center,
+      child: loadingAnimationIOS(),
     );
   }
   Widget infoView(){

@@ -309,6 +309,9 @@ class _MyselfPageState extends State<MyselfPage>
                     themeProvider.transCard = v;
                   })
               ),
+              _buildDiyButton("主题颜色",
+                  child: _buildColorSelector()
+              ),
             ],
           ):Container()
 
@@ -317,8 +320,45 @@ class _MyselfPageState extends State<MyselfPage>
     );
   }
 
+  Widget _buildColorSelector(){
+    List<Color> themeColors = [
+      Color.fromARGB(255, 0, 196, 169),
+      Color.fromARGB(255, 0, 186, 253),
+      Color.fromARGB(255, 255, 64, 58),
+      Color.fromARGB(255, 255, 116, 152),
+      Color.fromARGB(255, 0, 109, 252),
+      Color.fromARGB(255, 255, 206, 38),
+      Color.fromARGB(255, 48, 54, 56),
+      Color.fromARGB(255, 200, 200, 200),
 
-
+    ];
+    return Container(
+      padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, 0, 0),
+      child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: Wrap(
+          spacing: 10,
+          children: themeColors.map((item){
+            return _buildColorCir(item);
+          }).toList(),
+        ),
+      ),
+    );
+  }
+  Widget _buildColorCir(Color color){
+    return InkWell(
+      onTap: ()=>themeProvider.colorMain = color,
+      child: Container(
+        height: fontSizeMain40*2,
+        width: fontSizeMain40*2,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            color: color
+        ),
+      ),
+    );
+  }
   Widget _buildDiyButton(String title,{@required Widget child,GestureTapCallback onTap}){
     return InkWell(
       onTap: onTap,

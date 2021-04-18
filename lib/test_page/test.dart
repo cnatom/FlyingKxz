@@ -81,13 +81,6 @@ class _TestPageState extends State<TestPage> {
                   NewPowerView(),
 
                   TextButton(onPressed: ()=>themeProvider.simpleMode=!themeProvider.simpleMode, child: Text('调整')),
-
-                  TextButton(
-                      onPressed: () => themeProvider.colorMain =
-                      themeProvider.colorMain != Colors.pink
-                          ? Colors.pink
-                          : colorMain,
-                      child: Text('切换主题'))
                 ],
               ),
             ),

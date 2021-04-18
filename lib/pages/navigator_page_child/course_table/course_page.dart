@@ -110,6 +110,7 @@ class CoursePageState extends State<CoursePage>
     showPicker(context, _scaffoldKey,
         title: "导入课表",
         pickerDatas: PickerData.xqxnPickerData,
+        colorRight: themeProvider.colorMain,
         onConfirm: (Picker picker, List value) {
       String yearStr = picker.getSelectedValues()[0].toString().substring(0, 4);
       String termStr = '${value[1] + 1}';
@@ -204,11 +205,11 @@ class CoursePageState extends State<CoursePage>
   Widget _buildTopTodayItem(String week, DateTime subDate) {
     return Container(
       decoration: BoxDecoration(
-          color: colorMain.withOpacity(0.1),
+          color: themeProvider.colorMain.withOpacity(0.1),
           border: Border(
               top: BorderSide(
                   width: 5,
-                  color: colorMain
+                  color: themeProvider.colorMain
               )
           )
       ),
@@ -325,11 +326,11 @@ class CoursePageState extends State<CoursePage>
       return Container(
         width: parSize.maxWidth,
         decoration: BoxDecoration(
-          color: colorMain.withOpacity(0.1),
+          color: themeProvider.colorMain.withOpacity(0.1),
           border: Border(
             left: BorderSide(
               width: 5,//宽度
-              color: colorMain, //边框颜色
+              color: themeProvider.colorMain, //边框颜色
             ),
           ),
         ),
@@ -353,7 +354,7 @@ class CoursePageState extends State<CoursePage>
   Widget _buildBody() {
     return FlyWidgetBuilder(
       whenFirst: CourseProvider.loading,
-      firstChild: Center(child: loadingAnimationTwoCircles(),),
+      firstChild: Center(child: loadingAnimationTwoCircles(color: themeProvider.colorMain),),
       secondChild: LayoutBuilder(
         builder: (context, parSize) {
           List<Widget> children = [];
