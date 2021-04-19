@@ -36,6 +36,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'myself_page_child/cumtLogin_view.dart';
 
 class MyselfPage extends StatefulWidget {
@@ -201,7 +202,11 @@ class _MyselfPageState extends State<MyselfPage>
                           icon: CommunityMaterialIcons.download_outline,
                           title: '检查更新',
                           onTap: () {
-                            upgradeApp(context, auto: false);
+                            if(UniversalPlatform.isWindows){
+                              launch("https://kxz.atcumt.com");
+                            }else{
+                              upgradeApp(context, auto: false);
+                            }
                           }),
 
                     ]),

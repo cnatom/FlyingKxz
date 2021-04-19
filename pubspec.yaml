@@ -21,13 +21,13 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 dependencies:
   flutter_localizations: # 添加国际化
-    sdk: flutter         # 添加
+    sdk: flutter # 添加
   flutter:
     sdk: flutter
   photo_view: any
   cached_network_image: any
   flutter_swiper: any
-  dio: ^3.0.10
+  dio: any
   badges: any
   flui: any
   flutter_page_indicator:
@@ -71,6 +71,7 @@ dependencies:
   webview_flutter: ^2.0.4
   percent_indicator: ^3.0.1
   share: ^2.0.1
+  package_info_plus: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

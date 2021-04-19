@@ -1,5 +1,4 @@
 //关于我们
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,12 +6,10 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
-import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-
 import 'package:flutter/services.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
-import 'package:flying_kxz/pages/backImage_view.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -285,7 +282,13 @@ class _AboutPageState extends State<AboutPage> {
                                         imageResource: 'images/jiaoliuqun.jpg',
                                         title: "长期招聘↗",
                                         subTitle: "点我了解更多",
-                                        onTap: ()=>Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>AboutFlyingWebView()))
+                                        onTap: (){
+                                          if(UniversalPlatform.isWindows){
+                                            launch("https://mp.weixin.qq.com/s?__biz=MzIyNjAxNDkwMA==&mid=502587667&idx=1&sn=940336553beac7fb1e5d53fb3a0d0584");
+                                          }else{
+                                            Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>AboutFlyingWebView()));
+                                          }
+                                        }
                                     ),
                                   ],
                                 ),

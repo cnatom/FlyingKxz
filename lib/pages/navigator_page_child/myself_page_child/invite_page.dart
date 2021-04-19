@@ -13,6 +13,7 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:share/share.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InvitePage extends StatefulWidget {
@@ -59,7 +60,13 @@ class _InvitePageState extends State<InvitePage> {
             //分享矿小助官网
             InkWell(
               onTap: (){
-                Share.share("http://kxz.atcumt.com/");
+                if(UniversalPlatform.isWindows){
+                  Clipboard.setData(ClipboardData(text: "http://kxz.atcumt.com/"));
+                  showToast(context, "已复制到粘贴板，快分享给好友吧~");
+                }else{
+                  Share.share("http://kxz.atcumt.com/");
+
+                }
               },
               child: Container(
                 height: fontSizeMain40*3,
@@ -81,7 +88,12 @@ class _InvitePageState extends State<InvitePage> {
             //分享群号
             InkWell(
               onTap: (){
-                Share.share("https://jq.qq.com/?_wv=1027&k=272EhIWK");
+                if(UniversalPlatform.isWindows){
+                  Clipboard.setData(ClipboardData(text: "https://jq.qq.com/?_wv=1027&k=272EhIWK"));
+                  showToast(context, "已复制到粘贴板，快分享给好友吧~");
+                }else{
+                  Share.share("https://jq.qq.com/?_wv=1027&k=272EhIWK");
+                }
               },
               child: Container(
                 height: fontSizeMain40*3,
