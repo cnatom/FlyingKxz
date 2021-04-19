@@ -329,7 +329,7 @@ class _AboutFlyingWebViewState extends State<AboutFlyingWebView> {
         ),
       ),),
       body: WebView(
-          initialUrl: "https://mp.weixin.qq.com/s/vydbW7dYvjiCTz1e-xNzcw",
+          initialUrl: "https://mp.weixin.qq.com/s?__biz=MzIyNjAxNDkwMA==&mid=502587667&idx=1&sn=940336553beac7fb1e5d53fb3a0d0584",
           javascriptMode: JavascriptMode.unrestricted,
         onProgress: (value){
             setState(() {

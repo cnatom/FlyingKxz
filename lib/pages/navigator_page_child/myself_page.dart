@@ -236,7 +236,7 @@ class _MyselfPageState extends State<MyselfPage>
         child: Row(
           children: [
             Icon(
-              Icons.monetization_on_outlined,
+              iconData,
               size: sizeIconMain50,
               color: themeProvider.colorNavText,
             ),

@@ -7,7 +7,8 @@ import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_
 import 'package:provider/provider.dart';
 
 class PointArray extends StatefulWidget {
-  PointArray({Key key}):super(key: key);
+  final Color colorMain;
+  PointArray({Key key, this.colorMain}):super(key: key);
   @override
   _PointArrayState createState() => _PointArrayState();
 }
@@ -45,7 +46,7 @@ class _PointArrayState extends State<PointArray> {
       height: index==courseProvider.getCurWeek?size*1.5:size,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          color: index==courseProvider.getCurWeek?colorMain:Theme.of(context).unselectedWidgetColor
+          color: index==courseProvider.getCurWeek?widget.colorMain:Theme.of(context).unselectedWidgetColor
       ),
     );
   }

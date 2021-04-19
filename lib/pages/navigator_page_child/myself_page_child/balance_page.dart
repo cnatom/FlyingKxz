@@ -166,7 +166,12 @@ class _BalancePageState extends State<BalancePage> {
         children: [
           Text(Prefs.balance??"0.00",style: TextStyle(fontSize: ScreenUtil().setSp(90),fontWeight: FontWeight.bold),),
           SizedBox(height: spaceCardPaddingTB/2,),
-          FlyText.mini30("卡号："+(Prefs.cardNum==null?"000000":Prefs.cardNum),color: Theme.of(context).primaryColor.withOpacity(0.5),),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FlyText.mini30("卡号："+(Prefs.cardNum==null?"000000":Prefs.cardNum),color: Theme.of(context).primaryColor.withOpacity(0.5),),
+            ],
+          ),
           SizedBox(height: spaceCardPaddingTB*1.5,),
           _buildRechargeButton()
         ],

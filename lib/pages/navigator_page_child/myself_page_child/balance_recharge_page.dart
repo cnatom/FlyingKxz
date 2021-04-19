@@ -55,7 +55,7 @@ class _BalanceRechargePageState extends State<BalanceRechargePage> {
                   runSpacing: spaceCardMarginTB*2,
                   children: [
                     _buildRechargeButton(),
-                    FlyText.main40("实际到账会有延迟，属正常现象。",color: Theme.of(context).primaryColor.withOpacity(0.5),),
+                    FlyText.main40("充值后请去食堂刷卡消费，才会更新卡内余额数据。",color: Theme.of(context).primaryColor.withOpacity(0.5),maxLine: 3,),
                   ],
                 ):Center(child: loadingAnimationIOS(),)
               ],
@@ -65,7 +65,7 @@ class _BalanceRechargePageState extends State<BalanceRechargePage> {
       ),
     );
   }
-  //点击登录后的行为
+  //点击充值
   rechargeHandler() async {
     setState(() {
       loading = true;
