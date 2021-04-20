@@ -410,7 +410,7 @@ class _MyselfPageState extends State<MyselfPage>
   }
 
   void getPreviewInfo() async {
-    await balancePost(
+    balancePost(
         token: Prefs.token);
     Future.delayed(Duration(seconds: 2),(){
       if(Prefs.powerHome!=null&&Prefs.powerNum!=null){

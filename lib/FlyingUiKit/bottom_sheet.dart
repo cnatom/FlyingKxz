@@ -59,6 +59,7 @@ class _FlyBottomSheetScaffoldState extends State<FlyBottomSheetScaffold> {
                   ),
                 ),
                 Expanded(
+                  flex: 2,
                     child: Center(
                         child: FlyText.title45(widget.title,
                             fontWeight: FontWeight.bold))),

@@ -10,6 +10,7 @@ import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
+import 'package:flying_kxz/FlyingUiKit/my_bottom_sheet.dart';
 
 import 'package:flying_kxz/Model/exam_info.dart';
 import 'package:flying_kxz/Model/global.dart';
@@ -119,9 +120,9 @@ class _ExamPageState extends State<ExamPage> with AutomaticKeepAliveClientMixin{
   }
   //添加自定义倒计时
   void addDiyExamFunc()async{
-     await showModalBottomSheet(
+     await showFlyModalBottomSheet(
       context: context,
-      isScrollControlled: true,
+      isScrollControlled: false,
       backgroundColor: Theme.of(context).cardColor.withOpacity(1),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10)),

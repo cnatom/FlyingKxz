@@ -19,7 +19,7 @@ import 'components/add_components/course_add_view.dart';
 import 'components/course_table_child.dart';
 import 'components/point_components/point_main.dart';
 import 'components/back_curWeek.dart';
-
+import 'package:flying_kxz/FlyingUiKit/my_bottom_sheet.dart';
 PageController coursePageController = new PageController(initialPage: CourseProvider.curWeek-1,);
 class CoursePage extends StatefulWidget {
   @override
@@ -129,9 +129,9 @@ class CoursePageState extends State<CoursePage>
   }
   _addCourse()async{
     List newCourseDataList;
-    newCourseDataList = await showModalBottomSheet(
+    newCourseDataList = await showFlyModalBottomSheet(
         context: context,
-        isScrollControlled: true,
+        isScrollControlled: false,
         backgroundColor: Theme.of(context).cardColor.withOpacity(1),
     shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(borderRadiusValue)
