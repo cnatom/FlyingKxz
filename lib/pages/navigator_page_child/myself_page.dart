@@ -410,15 +410,13 @@ class _MyselfPageState extends State<MyselfPage>
   }
 
   void getPreviewInfo() async {
-    balancePost(
+    await balancePost(
         token: Prefs.token);
-    Future.delayed(Duration(seconds: 2),(){
-      if(Prefs.powerHome!=null&&Prefs.powerNum!=null){
-        powerPost(context,
-            token: Prefs.token, num: Prefs.powerNum, home: Prefs.powerHome);
-      }
-      rankGet(username: Prefs.username);
-    });
+    if(Prefs.powerHome!=null&&Prefs.powerNum!=null){
+      await powerPost(context,
+          token: Prefs.token, num: Prefs.powerNum, home: Prefs.powerHome);
+    }
+    await rankGet(username: Prefs.username);
     setState(() {});
   }
 

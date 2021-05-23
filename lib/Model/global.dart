@@ -71,7 +71,8 @@ class ApiUrl{
   //http://175.27.131.122:5000
   //https://api.kxz.atcumt.com
   //http://119.45.171.211:5000
-  static String _pubUrl = "https://api.kxz.atcumt.com";
+  // static String _pubUrl = "https://api.kxz.atcumt.com";
+  static String _pubUrl = "https://user.kxz.atcumt.com";
   static String _userUrl = "https://user.kxz.atcumt.com";
 
   static String loginUrl = "$_pubUrl/login";//新登录请求
@@ -89,8 +90,8 @@ class ApiUrl{
   static String feedbackUrl = "$_userUrl/admin/feedback";//反馈
   static String cumtLoginUrl = "http://10.2.5.251:801/eportal/";//校园网登陆
   static String appUpgradeUrl = "$_userUrl/admin/version";//检查App更新
-  static String balanceUrl = "$_pubUrl/card/balance";//校园卡余额
-  static String balanceDetailUrl = "$_pubUrl/card/history";//校园卡流水
+  static String balanceUrl = "https://api.kxz.atcumt.com/card/balance";//校园卡余额
+  static String balanceDetailUrl = "https://api.kxz.atcumt.com/card/history";//校园卡流水
   static String rechargeUrl = "$_pubUrl/card/recharge";//校园卡充值
 
 static List<String> newsUrlList = [

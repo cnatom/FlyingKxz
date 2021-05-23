@@ -94,10 +94,10 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           _buildInputBody(),
-                          Opacity(
-                            opacity: 0.95,
-                            child: NoticeCard(),
-                          ),
+                          // Opacity(
+                          //   opacity: 0.95,
+                          //   child: NoticeCard(),
+                          // ),
                           _buildBottom()
                         ],
                       ),
@@ -159,13 +159,13 @@ class _LoginPageState extends State<LoginPage> {
     var _form = _formKey.currentState;
     _form.save();
     //判空
-    if (_password.isEmpty || _username.isEmpty) {
-      showToast(context, "请填写学号密码");
-      setState(() {
-        _loading = false;
-      });
-      return;
-    }
+    // if (_password.isEmpty || _username.isEmpty) {
+    //   showToast(context, "请填写学号密码");
+    //   setState(() {
+    //     _loading = false;
+    //   });
+    //   return;
+    // }
     //检测是否激活&验证码
     if (await loginCheckGet(context, username: _username)) {
       //登录请求并决定是否跳转

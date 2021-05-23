@@ -23,8 +23,8 @@ Future<bool> balanceDetailPost() async {
     } else {
       return false;
     }
-  } catch (e) {
-    debugPrint(e.toString());
+  }on DioError catch (e) {
+    debugPrint(e.response.toString());
     return false;
   }
 }
