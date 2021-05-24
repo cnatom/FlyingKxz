@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
@@ -13,26 +12,18 @@ import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
-import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
-import 'package:flying_kxz/FlyingUiKit/notice.dart';
-import 'package:flying_kxz/FlyingUiKit/text_editer.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
-import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/NetRequest/feedback_post.dart';
 import 'package:flying_kxz/NetRequest/login_check_get.dart';
 import 'package:flying_kxz/NetRequest/login_post.dart';
 import 'package:flying_kxz/NetRequest/userInfo_post.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'app_upgrade.dart';
-import 'navigator_page_child/myself_page_child/cumtLogin_view.dart';
+import 'package:flying_kxz/cumt_spider/cumt.dart';
 
 //跳转到当前页面
 void toLoginPage(BuildContext context) async {
@@ -59,7 +50,63 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     checkUpgrade(context);
   }
+  //用户登录
+  _loginHandler() async {
+    FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
+    setState(() {_loading = true;});
+    var _form = _formKey.currentState;
+    _form.save();
+    //判空
+    if (_password.isEmpty || _username.isEmpty) {
+      showToast(context, "请填写学号密码");
+      setState(() {
+        _loading = false;
+      });
+      return;
+    }
+    //检测是否激活&验证码
+    if (await loginCheckGet(context, username: _username)) {
+      //新登录
+      if(await cumt.login(_username, _password)){
+        Prefs.visitor = false;
+        var namePhoneMap = await cumt.getNamePhone();
+        Prefs.name = namePhoneMap['name'];
+        Prefs.phone = namePhoneMap['phone'];
+        toNavigatorPage(context);
+      }else{
+        setState(() {
+          _loading = false;
+        });
+      }
+      // //旧登录
+      // if (await loginPost(context, loginCount++,
+      //     username: _username, password: _password)) {
+      //   await userInfoPost(context, token: Prefs.token);
+      //   toNavigatorPage(context);
+      // }
+    }else{
+      setState(() {
+        _loading = false;
+      });
+    }
 
+  }
+  //游客访问
+  void _visitorHandler() async {
+    FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
+    setState(() {
+      _loading = true;
+    });
+    if (await loginVisitor(context, 1,
+        username: "12345678", password: "12345678")) {
+      Prefs.visitor = true;
+      toNavigatorPage(context);
+    } else {
+      setState(() {
+        _loading = false;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -148,60 +195,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  //点击登录
-  _loginHandler() async {
-    FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
-    //开始加载
-    setState(() {
-      _loading = true;
-    });
-    //提取输入框数据
-    var _form = _formKey.currentState;
-    _form.save();
-    //判空
-    // if (_password.isEmpty || _username.isEmpty) {
-    //   showToast(context, "请填写学号密码");
-    //   setState(() {
-    //     _loading = false;
-    //   });
-    //   return;
-    // }
-    //检测是否激活&验证码
-    if (await loginCheckGet(context, username: _username)) {
-      //登录请求并决定是否跳转
-      if (await loginPost(context, loginCount++,
-          username: _username, password: _password)) {
-        await userInfoPost(context, token: Prefs.token);
-        toNavigatorPage(context);
-      }
-    }else{
-      setState(() {
-        _loading = false;
-      });
-    }
-    // //登录请求并决定是否跳转
-    // if (await loginPost(context, loginCount++,
-    //     username: _username, password: _password)) {
-    //   await userInfoPost(context, token: Prefs.token);
-    //   toNavigatorPage(context);
-    // }
 
-  }
-  void _visitorHandler() async {
-    FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
-    setState(() {
-      _loading = true;
-    }); //开始加载
-    //登录请求并决定是否跳转
-    if (await loginPost(context, 1,
-        username: "12345678", password: "12345678")) {
-      toNavigatorPage(context);
-    } else {
-      setState(() {
-        _loading = false;
-      });
-    }
-  }
 
   Widget _buildInputBody() {
     return Column(
@@ -264,22 +258,22 @@ class _LoginPageState extends State<LoginPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Expanded(
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.end,
-            //     children: [
-            //       _buildFlatButton("游客访问", onPressed: () => _visitorHandler())
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   height: ScreenUtil().setWidth(35),
-            //   width: 1,
-            //   color: Colors.white.withOpacity(0.5),
-            // ),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _buildFlatButton("游客访问", onPressed: () => _visitorHandler())
+                ],
+              ),
+            ),
+            Container(
+              height: ScreenUtil().setWidth(35),
+              width: 1,
+              color: Colors.white.withOpacity(0.5),
+            ),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   _buildFlatButton("无法登录", onPressed: () async {
                     Clipboard.setData(ClipboardData(text: "839372371"));

@@ -65,7 +65,7 @@ class PointMatrixState extends State<PointMatrix> {
   }
   void handleCurWeekChange(int week){
     courseProvider.changeWeek(week);
-    coursePageController.jumpToPage(week-1,);
+    CoursePageState.coursePageController.jumpToPage(week-1,);
   }
   Widget _buildColumn(){
     final List<Widget> col = [];

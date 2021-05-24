@@ -24,6 +24,7 @@ import 'package:flying_kxz/NetRequest/balance_get.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
 import 'package:flying_kxz/NetRequest/power_post.dart';
 import 'package:flying_kxz/NetRequest/rank_get.dart';
+import 'package:flying_kxz/cumt_spider/cumt.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
@@ -422,6 +423,7 @@ class _MyselfPageState extends State<MyselfPage>
 
   void signOut() {
     Global.clearPrefsData();
+    cumt.cookieJar.deleteAll();
     backImgFile = null;
     toLoginPage(context);
   }

@@ -1,5 +1,6 @@
 //主页
 import 'dart:ui';
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -13,6 +14,7 @@ import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/cumt_spider/cumt.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';
 import 'components/add_components/course_add_view.dart';
@@ -20,13 +22,14 @@ import 'components/course_table_child.dart';
 import 'components/point_components/point_main.dart';
 import 'components/back_curWeek.dart';
 import 'package:flying_kxz/FlyingUiKit/my_bottom_sheet.dart';
-PageController coursePageController = new PageController(initialPage: CourseProvider.curWeek-1,);
 class CoursePage extends StatefulWidget {
   @override
   CoursePageState createState() => CoursePageState();
 }
 class CoursePageState extends State<CoursePage>
     with AutomaticKeepAliveClientMixin {
+  static PageController coursePageController = new PageController(initialPage: CourseProvider.curWeek-1,);
+
   CourseProvider courseProvider;
   ThemeProvider themeProvider;
   GlobalKey<PointMainState> _rightGlobalKey = new GlobalKey<PointMainState>();
@@ -90,8 +93,16 @@ class CoursePageState extends State<CoursePage>
         _buildAddButton(),
         _buildShowRightButton(),
         // IconButton(
-        //   icon: Icon(CommunityMaterialIcons.calendar_import),
-        //   onPressed: ()=>_importCourse(),
+        //   icon: Icon(Icons.build),
+        //   onPressed: ()async{
+        //     await cumt.getNamePhone();
+        //   },
+        //   color: themeProvider.colorNavText,),
+        // IconButton(
+        //   icon: Icon(Icons.logout),
+        //   onPressed: ()async{
+        //     await cumt.logout();
+        //   },
         //   color: themeProvider.colorNavText,)
       ],
     );
@@ -100,7 +111,7 @@ class CoursePageState extends State<CoursePage>
   Widget _buildCourseImportView(){
     return IconButton(
       icon: Icon(Icons.cloud_download_outlined),
-      onPressed: ()=>_importCourse(),
+      onPressed: ()=>CourseProvider.loading?{}:_importCourse(),
       color: themeProvider.colorNavText,);
   }
   _importCourse()async{
@@ -111,7 +122,7 @@ class CoursePageState extends State<CoursePage>
         onConfirm: (Picker picker, List value) {
       String yearStr = picker.getSelectedValues()[0].toString().substring(0, 4);
       String termStr = '${value[1] + 1}';
-      courseProvider.get(Prefs.token,yearStr , termStr);
+      courseProvider.get(yearStr , termStr);
         });
 
   }
@@ -363,7 +374,10 @@ class CoursePageState extends State<CoursePage>
           return PageView(
             physics: BouncingScrollPhysics(),
             controller: coursePageController,
-            onPageChanged: (value)=>courseProvider.changeWeek(value+1),
+            onPageChanged: (value){
+              print(CourseProvider.curWeek.toString()+'->'+(value+1).toString());
+              courseProvider.changeWeek(value+1);
+            },
             scrollDirection: Axis.vertical,
             children: children,
           );

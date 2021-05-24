@@ -1,14 +1,25 @@
-/// data : [{"courseName":"创新创业实践","xuefen":"2.0","jidian":"2.5","zongping":"75","type":"正常考试","scoreDetail":[{"name":"期末(100%)","score":"中等"},{"name":"总评","score":"中等"}]},null]
+// var a = [
+//   {
+//     "courseName": "创新创业实践",
+//     "xuefen": "2.0",
+//     "jidian": "2.5",
+//     "zongping": "75",
+//     "type": "正常考试",
+//     "scoreDetail": [
+//       {"name": "期末(100%)", "score": "中等"},
+//       {"name": "总评", "score": "中等"}
+//     ]
+//   }
+// ];
 
 class ScoreInfo {
   List<Data> _data;
 
   List<Data> get data => _data;
 
-  ScoreInfo({
-      List<Data> data}){
+  ScoreInfo({List<Data> data}) {
     _data = data;
-}
+  }
 
   ScoreInfo.fromJson(dynamic json) {
     if (json["data"] != null) {
@@ -26,7 +37,6 @@ class ScoreInfo {
     }
     return map;
   }
-
 }
 
 /// courseName : "创新创业实践"
@@ -51,20 +61,20 @@ class Data {
   String get type => _type;
   List<ScoreDetail> get scoreDetail => _scoreDetail;
 
-  Data({
-      String courseName, 
-      String xuefen, 
-      String jidian, 
-      String zongping, 
-      String type, 
-      List<ScoreDetail> scoreDetail}){
+  Data(
+      {String courseName,
+      String xuefen,
+      String jidian,
+      String zongping,
+      String type,
+      List<ScoreDetail> scoreDetail}) {
     _courseName = courseName;
     _xuefen = xuefen;
     _jidian = jidian;
     _zongping = zongping;
     _type = type;
     _scoreDetail = scoreDetail;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _courseName = json["courseName"];
@@ -92,7 +102,6 @@ class Data {
     }
     return map;
   }
-
 }
 
 /// name : "期末(100%)"
@@ -105,12 +114,10 @@ class ScoreDetail {
   String get name => _name;
   String get score => _score;
 
-  ScoreDetail({
-      String name, 
-      String score}){
+  ScoreDetail({String name, String score}) {
     _name = name;
     _score = score;
-}
+  }
 
   ScoreDetail.fromJson(dynamic json) {
     _name = json["name"];
@@ -123,5 +130,4 @@ class ScoreDetail {
     map["score"] = _score;
     return map;
   }
-
 }

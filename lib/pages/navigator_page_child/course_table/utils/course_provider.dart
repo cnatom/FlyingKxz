@@ -4,7 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/cumt_spider/cumt.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/point_components/point_matrix.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/course_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/bean.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 
@@ -47,13 +49,13 @@ class CourseProvider extends ChangeNotifier{
       }
 
     }else{
-      get(Prefs.token,Prefs.schoolYear,Prefs.schoolTerm);
+      get(Prefs.schoolYear,Prefs.schoolTerm);
     }
     _haveInit = true;
   }
   ///获取2019年第1学期课表
   ///CourseProvider().get("token","2019","1");
-  get(String token,String year,String term) {
+  get(String year,String term) {
     loading = true;
     notifyListeners();
     String newDateTimeStr;
@@ -63,8 +65,7 @@ class CourseProvider extends ChangeNotifier{
       newDateTimeStr = '${int.parse(year)+1}-03-01';
     }
     setAdmissionDateTime(newDateTimeStr);
-    _initData();
-    Future.wait([_getJsonInfo(token, year, term)]).then((courseBeans){
+    Future.wait([_getJsonInfo(year, term)]).then((courseBeans){
       var courseBean = courseBeans[0];
       _handleCourseBean(courseBean);
       _savePrefs();
@@ -120,6 +121,8 @@ class CourseProvider extends ChangeNotifier{
     curWeek = difference.inDays~/7 + 1;
     if(curWeek<=0||curWeek>22) curWeek = 1;
     initialWeek = curWeek;
+    CoursePageState.coursePageController.dispose();
+    CoursePageState.coursePageController = new PageController(initialPage: curWeek-1,);
     curMondayDate = admissionDate.add(Duration(days: 7*(curWeek-1)));
     notifyListeners();
   }
@@ -154,7 +157,6 @@ class CourseProvider extends ChangeNotifier{
     var result = [];
     for(CourseData courseData in _infoByCourse){
       result.add(courseData.toJson());
-      debugPrint(courseData.title);
     }
     Prefs.courseData = jsonEncode(result);
   }
@@ -174,12 +176,13 @@ class CourseProvider extends ChangeNotifier{
     admissionDate = DateTime.parse(Prefs.admissionDate);
     var difference = DateTime.now().difference(admissionDate);
     curWeek = difference.inDays~/7 + 1;
-    if(curWeek<=0) curWeek = 1;
+    if(curWeek<=0||curWeek>22) curWeek = 1;
     initialWeek = curWeek;
     curMondayDate = admissionDate.add(Duration(days: 7*(curWeek-1)));
   }
   _handleCourseBean(CourseBean courseBean){
     if(courseBean!=null){
+      _initData();
       // var nameMap = new Map();
       for(var course in courseBean.kbList){
         // //防止添加重复课程
@@ -230,23 +233,19 @@ class CourseProvider extends ChangeNotifier{
       ];
     }
   }
-  Future<CourseBean> _getJsonInfo(String token,String year,String term)async{
+  Future<CourseBean> _getJsonInfo(String year,String term)async{
     debugPrint('@getJsonInfo');
     CourseBean courseBean = new CourseBean();
-    Dio dio = new Dio();
     try{
-      Response res = await dio.post(ApiUrl.courseUrl, data: {
-        "xnm":year,
-        "xqm":term
-      }, options: Options(headers: {
-        "Authorization": "Bearer "+token,
-      }));
-      debugPrint(res.toString());
-      var map = jsonDecode(res.toString());
-      courseBean = CourseBean.fromJson(map);
-      return courseBean;
+      var res = await cumt.inquiry(InquiryType.Course, year, term);
+      if(res!=''){
+        var map = jsonDecode(res);
+        courseBean = CourseBean.fromJson(map);
+        return courseBean;
+      }
+      return null;
     }catch(e){
-      debugPrint(e.toString());
+      debugPrint('获取课表失败: '+e.toString());
       return null;
     }
   }

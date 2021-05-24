@@ -14,6 +14,7 @@ class Prefs{
   static SharedPreferences prefs;
   static String _backImg = 'backImg';//背景图
   static String _username = 'username';//用户名
+  static String _password = 'password';//密码
   static String _phone = 'phone';//电话号码
   static String _name = 'name';//姓名
   static String _token = 'NewToken1.2.0';//token信息
@@ -36,10 +37,12 @@ class Prefs{
   static String _cumtLoginMethod = "cumtLoginMethod";//登录方式
   static String _admissionDate = "admissionDate";//开学日期
   static String _themeData = "themeData";
+  static String _visitor = "visitor";//游客模式
 
   static String get examDataDiy => prefs.getString(_examDataDiy);
   static String get backImg => prefs.getString(_backImg);
   static String get username => prefs.getString(_username);
+  static String get password => prefs.getString(_password);
   static String get phone => prefs.getString(_phone);
   static String get name => prefs.getString(_name);
   static String get token => prefs.getString(_token);
@@ -61,10 +64,12 @@ class Prefs{
   static int get cumtLoginMethod => prefs.getInt(_cumtLoginMethod);
   static String get admissionDate=> prefs.getString(_admissionDate);
   static String get themeData => prefs.getString(_themeData);
+  static bool get visitor => prefs.getBool(_visitor);
 
   static set examDataDiy(String value) =>prefs.setString(_examDataDiy, value);
   static set backImg(String value) =>prefs.setString(_backImg, value);
   static set username(String value) =>prefs.setString(_username, value);
+  static set password(String value) =>prefs.setString(_password, value);
   static set phone(String value) =>prefs.setString(_phone, value);
   static set name(String value) =>prefs.setString(_name, value);
   static set token(String value) =>prefs.setString(_token, value);
@@ -74,7 +79,6 @@ class Prefs{
   static set powerHome(String value) =>prefs.setString(_powerHome, value);
   static set powerNum(String value) =>prefs.setString(_powerNum, value);
   static set powerMax(double value) =>prefs.setDouble(_powerMax, value);
-
   static set balance(String value) =>prefs.setString(_balance, value);
   static set cardNum(String value) =>prefs.setString(_cardNum, value);
   static set rank(String value) =>prefs.setString(_rank, value);
@@ -87,6 +91,8 @@ class Prefs{
   static set cumtLoginMethod(int value) =>prefs.setInt(_cumtLoginMethod, value);
   static set admissionDate(String value) =>prefs.setString(_admissionDate, value);
   static set themeData(String value) =>prefs.setString(_themeData, value);
+  static set visitor(bool value) =>prefs.setBool(_visitor, value);
+
   static Future<void> init()async{
     prefs = await SharedPreferences.getInstance();
     _initSchoolYearTerm();

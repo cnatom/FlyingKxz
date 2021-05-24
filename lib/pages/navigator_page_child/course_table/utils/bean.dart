@@ -1,459 +1,417 @@
-/// kbList : [{"cd_id":"sgw0000538","cdmc":"博4-C206","cxbj":"1","date":"二○二一年四月十三日","dateDigit":"2021年4月13日","dateDigitSeparator":"2021-4-13","day":"13","jc":"1-2节","jcor":"1-2","jcs":"1-2","jgh_id":"050059","jgpxzd":"1","jxb_id":"A63764864E7601EAE053C0A86D5D77B4","jxbmc":"微机原理与应用B-0004","jxbsftkbj":"0","kch_id":"M04213","kclb":"A","kcmc":"微机原理与应用B","kcxszc":"讲课:40","kcxz":"必修","khfsmc":"考试","kkzt":"1","listnav":"false","localeKey":"zh_CN","month":"4","oldjc":"3","oldzc":"494","pageable":true,"pkbj":"1","queryModel":{"currentPage":1,"currentResult":0,"entityOrField":false,"limit":15,"offset":0,"pageNo":0,"pageSize":15,"showCount":10,"totalCount":0,"totalPage":0,"totalResult":0},"rangeable":true,"rk":"4","rsdzjs":0,"skfsmc":"面授讲课","sxbj":"1","totalResult":"0","userModel":{"monitor":false,"roleCount":0,"roleKeys":"","roleValues":"","status":0,"usable":false},"xf":"2.5","xkbz":"无","xm":"陈兴新","xnm":"2020","xqdm":"0","xqh1":"2,","xqh_id":"2","xqj":"1","xqjmc":"星期一","xqm":"3","xqmc":"南湖校区","xsdm":"01","xslxbj":"★","year":"2021","zcd":"2-4周,6-9周","zcmc":"讲师","zhxs":"6","zxs":"40","zyfxmc":"无方向","zzrl":"71"},null]
-/// zckbsfxssj : "1"
-/// sfxsd : "1"
-/// xnxqsfkz : "false"
+/// kbList : [{"cdmc":"博3-B102","date":"二○二一年五月二十三日","dateDigit":"2021年5月23日","dateDigitSeparator":"2021-5-23","day":"23","jc":"1-2节","jcor":"1-2","jcs":"1-2","jgh_id":"080101","jgpxzd":"1","jxb_id":"B58B450385DC0292E053C0A86D5D6A08","jxbmc":"数据库原理-0003","jxbsftkbj":"0","kch":"M08103","kch_id":"M08103","kclb":"A","kcmc":"数据库原理","kcxszc":"讲课:48,实验:0","kcxz":"学科","khfsmc":"考试","kkzt":"1","listnav":"false","localeKey":"zh_CN","month":"5","oldjc":"3","oldzc":"479","pageable":true,"pkbj":"1","rangeable":true,"rk":"5","rsdzjs":0,"skfsmc":"面授讲课","sxbj":"1","xf":"3","xkbz":"无","xm":"闫秋艳","xnm":"2020","xqdm":"0","xqh1":"2,","xqh_id":"2","xqj":"1","xqjmc":"星期一","xqm":"12","xqmc":"南湖校区","xsdm":"01","xslxbj":"★","year":"2021","zcd":"1-5周,7-9周","zcmc":"副教授","zhxs":"6","zxs":"48","zyfxmc":"无方向","zzrl":"65"}]
 
 class CourseBean {
-  List<KbList> kbList;
-  String zckbsfxssj;
-  String sfxsd;
-  String xnxqsfkz;
+  List<KbList> _kbList;
+
+  List<KbList> get kbList => _kbList;
 
   CourseBean({
-    this.kbList,
-    this.zckbsfxssj,
-    this.sfxsd,
-    this.xnxqsfkz});
+      List<KbList> kbList}){
+    _kbList = kbList;
+}
 
   CourseBean.fromJson(dynamic json) {
     if (json["kbList"] != null) {
-      kbList = [];
+      _kbList = [];
       json["kbList"].forEach((v) {
-        kbList.add(KbList.fromJson(v));
+        _kbList.add(KbList.fromJson(v));
       });
     }
-    zckbsfxssj = json["zckbsfxssj"];
-    sfxsd = json["sfxsd"];
-    xnxqsfkz = json["xnxqsfkz"];
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    if (kbList != null) {
-      map["kbList"] = kbList.map((v) => v.toJson()).toList();
+    if (_kbList != null) {
+      map["kbList"] = _kbList.map((v) => v.toJson()).toList();
     }
-    map["zckbsfxssj"] = zckbsfxssj;
-    map["sfxsd"] = sfxsd;
-    map["xnxqsfkz"] = xnxqsfkz;
     return map;
   }
 
 }
 
-/// cd_id : "sgw0000538"
-/// cdmc : "博4-C206"
-/// cxbj : "1"
-/// date : "二○二一年四月十三日"
-/// dateDigit : "2021年4月13日"
-/// dateDigitSeparator : "2021-4-13"
-/// day : "13"
+/// cdmc : "博3-B102"
+/// date : "二○二一年五月二十三日"
+/// dateDigit : "2021年5月23日"
+/// dateDigitSeparator : "2021-5-23"
+/// day : "23"
 /// jc : "1-2节"
 /// jcor : "1-2"
 /// jcs : "1-2"
-/// jgh_id : "050059"
+/// jgh_id : "080101"
 /// jgpxzd : "1"
-/// jxb_id : "A63764864E7601EAE053C0A86D5D77B4"
-/// jxbmc : "微机原理与应用B-0004"
+/// jxb_id : "B58B450385DC0292E053C0A86D5D6A08"
+/// jxbmc : "数据库原理-0003"
 /// jxbsftkbj : "0"
-/// kch_id : "M04213"
+/// kch : "M08103"
+/// kch_id : "M08103"
 /// kclb : "A"
-/// kcmc : "微机原理与应用B"
-/// kcxszc : "讲课:40"
-/// kcxz : "必修"
+/// kcmc : "数据库原理"
+/// kcxszc : "讲课:48,实验:0"
+/// kcxz : "学科"
 /// khfsmc : "考试"
 /// kkzt : "1"
 /// listnav : "false"
 /// localeKey : "zh_CN"
-/// month : "4"
+/// month : "5"
 /// oldjc : "3"
-/// oldzc : "494"
+/// oldzc : "479"
 /// pageable : true
 /// pkbj : "1"
-/// queryModel : {"currentPage":1,"currentResult":0,"entityOrField":false,"limit":15,"offset":0,"pageNo":0,"pageSize":15,"showCount":10,"totalCount":0,"totalPage":0,"totalResult":0}
 /// rangeable : true
-/// rk : "4"
+/// rk : "5"
 /// rsdzjs : 0
 /// skfsmc : "面授讲课"
 /// sxbj : "1"
-/// totalResult : "0"
-/// userModel : {"monitor":false,"roleCount":0,"roleKeys":"","roleValues":"","status":0,"usable":false}
-/// xf : "2.5"
+/// xf : "3"
 /// xkbz : "无"
-/// xm : "陈兴新"
+/// xm : "闫秋艳"
 /// xnm : "2020"
 /// xqdm : "0"
 /// xqh1 : "2,"
 /// xqh_id : "2"
 /// xqj : "1"
 /// xqjmc : "星期一"
-/// xqm : "3"
+/// xqm : "12"
 /// xqmc : "南湖校区"
 /// xsdm : "01"
 /// xslxbj : "★"
 /// year : "2021"
-/// zcd : "2-4周,6-9周"
-/// zcmc : "讲师"
+/// zcd : "1-5周,7-9周"
+/// zcmc : "副教授"
 /// zhxs : "6"
-/// zxs : "40"
+/// zxs : "48"
 /// zyfxmc : "无方向"
-/// zzrl : "71"
+/// zzrl : "65"
 
 class KbList {
-  String cdId;
-  String cdmc;
-  String cxbj;
-  String date;
-  String dateDigit;
-  String dateDigitSeparator;
-  String day;
-  String jc;
-  String jcor;
-  String jcs;
-  String jghId;
-  String jgpxzd;
-  String jxbId;
-  String jxbmc;
-  String jxbsftkbj;
-  String kchId;
-  String kclb;
-  String kcmc;
-  String kcxszc;
-  String kcxz;
-  String khfsmc;
-  String kkzt;
-  String listnav;
-  String localeKey;
-  String month;
-  String oldjc;
-  String oldzc;
-  bool pageable;
-  String pkbj;
-  QueryModel queryModel;
-  bool rangeable;
-  String rk;
-  int rsdzjs;
-  String skfsmc;
-  String sxbj;
-  String totalResult;
-  UserModel userModel;
-  String xf;
-  String xkbz;
-  String xm;
-  String xnm;
-  String xqdm;
-  String xqh1;
-  String xqhId;
-  String xqj;
-  String xqjmc;
-  String xqm;
-  String xqmc;
-  String xsdm;
-  String xslxbj;
-  String year;
-  String zcd;
-  String zcmc;
-  String zhxs;
-  String zxs;
-  String zyfxmc;
-  String zzrl;
+  String _cdmc;
+  String _date;
+  String _dateDigit;
+  String _dateDigitSeparator;
+  String _day;
+  String _jc;
+  String _jcor;
+  String _jcs;
+  String _jghId;
+  String _jgpxzd;
+  String _jxbId;
+  String _jxbmc;
+  String _jxbsftkbj;
+  String _kch;
+  String _kchId;
+  String _kclb;
+  String _kcmc;
+  String _kcxszc;
+  String _kcxz;
+  String _khfsmc;
+  String _kkzt;
+  String _listnav;
+  String _localeKey;
+  String _month;
+  String _oldjc;
+  String _oldzc;
+  bool _pageable;
+  String _pkbj;
+  bool _rangeable;
+  String _rk;
+  int _rsdzjs;
+  String _skfsmc;
+  String _sxbj;
+  String _xf;
+  String _xkbz;
+  String _xm;
+  String _xnm;
+  String _xqdm;
+  String _xqh1;
+  String _xqhId;
+  String _xqj;
+  String _xqjmc;
+  String _xqm;
+  String _xqmc;
+  String _xsdm;
+  String _xslxbj;
+  String _year;
+  String _zcd;
+  String _zcmc;
+  String _zhxs;
+  String _zxs;
+  String _zyfxmc;
+  String _zzrl;
+
+  String get cdmc => _cdmc;
+  String get date => _date;
+  String get dateDigit => _dateDigit;
+  String get dateDigitSeparator => _dateDigitSeparator;
+  String get day => _day;
+  String get jc => _jc;
+  String get jcor => _jcor;
+  String get jcs => _jcs;
+  String get jghId => _jghId;
+  String get jgpxzd => _jgpxzd;
+  String get jxbId => _jxbId;
+  String get jxbmc => _jxbmc;
+  String get jxbsftkbj => _jxbsftkbj;
+  String get kch => _kch;
+  String get kchId => _kchId;
+  String get kclb => _kclb;
+  String get kcmc => _kcmc;
+  String get kcxszc => _kcxszc;
+  String get kcxz => _kcxz;
+  String get khfsmc => _khfsmc;
+  String get kkzt => _kkzt;
+  String get listnav => _listnav;
+  String get localeKey => _localeKey;
+  String get month => _month;
+  String get oldjc => _oldjc;
+  String get oldzc => _oldzc;
+  bool get pageable => _pageable;
+  String get pkbj => _pkbj;
+  bool get rangeable => _rangeable;
+  String get rk => _rk;
+  int get rsdzjs => _rsdzjs;
+  String get skfsmc => _skfsmc;
+  String get sxbj => _sxbj;
+  String get xf => _xf;
+  String get xkbz => _xkbz;
+  String get xm => _xm;
+  String get xnm => _xnm;
+  String get xqdm => _xqdm;
+  String get xqh1 => _xqh1;
+  String get xqhId => _xqhId;
+  String get xqj => _xqj;
+  String get xqjmc => _xqjmc;
+  String get xqm => _xqm;
+  String get xqmc => _xqmc;
+  String get xsdm => _xsdm;
+  String get xslxbj => _xslxbj;
+  String get year => _year;
+  String get zcd => _zcd;
+  String get zcmc => _zcmc;
+  String get zhxs => _zhxs;
+  String get zxs => _zxs;
+  String get zyfxmc => _zyfxmc;
+  String get zzrl => _zzrl;
 
   KbList({
-    this.cdId,
-    this.cdmc,
-    this.cxbj,
-    this.date,
-    this.dateDigit,
-    this.dateDigitSeparator,
-    this.day,
-    this.jc,
-    this.jcor,
-    this.jcs,
-    this.jghId,
-    this.jgpxzd,
-    this.jxbId,
-    this.jxbmc,
-    this.jxbsftkbj,
-    this.kchId,
-    this.kclb,
-    this.kcmc,
-    this.kcxszc,
-    this.kcxz,
-    this.khfsmc,
-    this.kkzt,
-    this.listnav,
-    this.localeKey,
-    this.month,
-    this.oldjc,
-    this.oldzc,
-    this.pageable,
-    this.pkbj,
-    this.queryModel,
-    this.rangeable,
-    this.rk,
-    this.rsdzjs,
-    this.skfsmc,
-    this.sxbj,
-    this.totalResult,
-    this.userModel,
-    this.xf,
-    this.xkbz,
-    this.xm,
-    this.xnm,
-    this.xqdm,
-    this.xqh1,
-    this.xqhId,
-    this.xqj,
-    this.xqjmc,
-    this.xqm,
-    this.xqmc,
-    this.xsdm,
-    this.xslxbj,
-    this.year,
-    this.zcd,
-    this.zcmc,
-    this.zhxs,
-    this.zxs,
-    this.zyfxmc,
-    this.zzrl});
+      String cdmc, 
+      String date, 
+      String dateDigit, 
+      String dateDigitSeparator, 
+      String day, 
+      String jc, 
+      String jcor, 
+      String jcs, 
+      String jghId, 
+      String jgpxzd, 
+      String jxbId, 
+      String jxbmc, 
+      String jxbsftkbj, 
+      String kch, 
+      String kchId, 
+      String kclb, 
+      String kcmc, 
+      String kcxszc, 
+      String kcxz, 
+      String khfsmc, 
+      String kkzt, 
+      String listnav, 
+      String localeKey, 
+      String month, 
+      String oldjc, 
+      String oldzc, 
+      bool pageable, 
+      String pkbj, 
+      bool rangeable, 
+      String rk, 
+      int rsdzjs, 
+      String skfsmc, 
+      String sxbj, 
+      String xf, 
+      String xkbz, 
+      String xm, 
+      String xnm, 
+      String xqdm, 
+      String xqh1, 
+      String xqhId, 
+      String xqj, 
+      String xqjmc, 
+      String xqm, 
+      String xqmc, 
+      String xsdm, 
+      String xslxbj, 
+      String year, 
+      String zcd, 
+      String zcmc, 
+      String zhxs, 
+      String zxs, 
+      String zyfxmc, 
+      String zzrl}){
+    _cdmc = cdmc;
+    _date = date;
+    _dateDigit = dateDigit;
+    _dateDigitSeparator = dateDigitSeparator;
+    _day = day;
+    _jc = jc;
+    _jcor = jcor;
+    _jcs = jcs;
+    _jghId = jghId;
+    _jgpxzd = jgpxzd;
+    _jxbId = jxbId;
+    _jxbmc = jxbmc;
+    _jxbsftkbj = jxbsftkbj;
+    _kch = kch;
+    _kchId = kchId;
+    _kclb = kclb;
+    _kcmc = kcmc;
+    _kcxszc = kcxszc;
+    _kcxz = kcxz;
+    _khfsmc = khfsmc;
+    _kkzt = kkzt;
+    _listnav = listnav;
+    _localeKey = localeKey;
+    _month = month;
+    _oldjc = oldjc;
+    _oldzc = oldzc;
+    _pageable = pageable;
+    _pkbj = pkbj;
+    _rangeable = rangeable;
+    _rk = rk;
+    _rsdzjs = rsdzjs;
+    _skfsmc = skfsmc;
+    _sxbj = sxbj;
+    _xf = xf;
+    _xkbz = xkbz;
+    _xm = xm;
+    _xnm = xnm;
+    _xqdm = xqdm;
+    _xqh1 = xqh1;
+    _xqhId = xqhId;
+    _xqj = xqj;
+    _xqjmc = xqjmc;
+    _xqm = xqm;
+    _xqmc = xqmc;
+    _xsdm = xsdm;
+    _xslxbj = xslxbj;
+    _year = year;
+    _zcd = zcd;
+    _zcmc = zcmc;
+    _zhxs = zhxs;
+    _zxs = zxs;
+    _zyfxmc = zyfxmc;
+    _zzrl = zzrl;
+}
 
   KbList.fromJson(dynamic json) {
-    cdId = json["cd_id"];
-    cdmc = json["cdmc"];
-    cxbj = json["cxbj"];
-    date = json["date"];
-    dateDigit = json["dateDigit"];
-    dateDigitSeparator = json["dateDigitSeparator"];
-    day = json["day"];
-    jc = json["jc"];
-    jcor = json["jcor"];
-    jcs = json["jcs"];
-    jghId = json["jgh_id"];
-    jgpxzd = json["jgpxzd"];
-    jxbId = json["jxb_id"];
-    jxbmc = json["jxbmc"];
-    jxbsftkbj = json["jxbsftkbj"];
-    kchId = json["kch_id"];
-    kclb = json["kclb"];
-    kcmc = json["kcmc"];
-    kcxszc = json["kcxszc"];
-    kcxz = json["kcxz"];
-    khfsmc = json["khfsmc"];
-    kkzt = json["kkzt"];
-    listnav = json["listnav"];
-    localeKey = json["localeKey"];
-    month = json["month"];
-    oldjc = json["oldjc"];
-    oldzc = json["oldzc"];
-    pageable = json["pageable"];
-    pkbj = json["pkbj"];
-    queryModel = json["queryModel"] != null ? QueryModel.fromJson(json["queryModel"]) : null;
-    rangeable = json["rangeable"];
-    rk = json["rk"];
-    rsdzjs = json["rsdzjs"];
-    skfsmc = json["skfsmc"];
-    sxbj = json["sxbj"];
-    totalResult = json["totalResult"];
-    userModel = json["userModel"] != null ? UserModel.fromJson(json["userModel"]) : null;
-    xf = json["xf"];
-    xkbz = json["xkbz"];
-    xm = json["xm"];
-    xnm = json["xnm"];
-    xqdm = json["xqdm"];
-    xqh1 = json["xqh1"];
-    xqhId = json["xqh_id"];
-    xqj = json["xqj"];
-    xqjmc = json["xqjmc"];
-    xqm = json["xqm"];
-    xqmc = json["xqmc"];
-    xsdm = json["xsdm"];
-    xslxbj = json["xslxbj"];
-    year = json["year"];
-    zcd = json["zcd"];
-    zcmc = json["zcmc"];
-    zhxs = json["zhxs"];
-    zxs = json["zxs"];
-    zyfxmc = json["zyfxmc"];
-    zzrl = json["zzrl"];
+    _cdmc = json["cdmc"];
+    _date = json["date"];
+    _dateDigit = json["dateDigit"];
+    _dateDigitSeparator = json["dateDigitSeparator"];
+    _day = json["day"];
+    _jc = json["jc"];
+    _jcor = json["jcor"];
+    _jcs = json["jcs"];
+    _jghId = json["jgh_id"];
+    _jgpxzd = json["jgpxzd"];
+    _jxbId = json["jxb_id"];
+    _jxbmc = json["jxbmc"];
+    _jxbsftkbj = json["jxbsftkbj"];
+    _kch = json["kch"];
+    _kchId = json["kch_id"];
+    _kclb = json["kclb"];
+    _kcmc = json["kcmc"];
+    _kcxszc = json["kcxszc"];
+    _kcxz = json["kcxz"];
+    _khfsmc = json["khfsmc"];
+    _kkzt = json["kkzt"];
+    _listnav = json["listnav"];
+    _localeKey = json["localeKey"];
+    _month = json["month"];
+    _oldjc = json["oldjc"];
+    _oldzc = json["oldzc"];
+    _pageable = json["pageable"];
+    _pkbj = json["pkbj"];
+    _rangeable = json["rangeable"];
+    _rk = json["rk"];
+    _rsdzjs = json["rsdzjs"];
+    _skfsmc = json["skfsmc"];
+    _sxbj = json["sxbj"];
+    _xf = json["xf"];
+    _xkbz = json["xkbz"];
+    _xm = json["xm"];
+    _xnm = json["xnm"];
+    _xqdm = json["xqdm"];
+    _xqh1 = json["xqh1"];
+    _xqhId = json["xqh_id"];
+    _xqj = json["xqj"];
+    _xqjmc = json["xqjmc"];
+    _xqm = json["xqm"];
+    _xqmc = json["xqmc"];
+    _xsdm = json["xsdm"];
+    _xslxbj = json["xslxbj"];
+    _year = json["year"];
+    _zcd = json["zcd"];
+    _zcmc = json["zcmc"];
+    _zhxs = json["zhxs"];
+    _zxs = json["zxs"];
+    _zyfxmc = json["zyfxmc"];
+    _zzrl = json["zzrl"];
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map["cd_id"] = cdId;
-    map["cdmc"] = cdmc;
-    map["cxbj"] = cxbj;
-    map["date"] = date;
-    map["dateDigit"] = dateDigit;
-    map["dateDigitSeparator"] = dateDigitSeparator;
-    map["day"] = day;
-    map["jc"] = jc;
-    map["jcor"] = jcor;
-    map["jcs"] = jcs;
-    map["jgh_id"] = jghId;
-    map["jgpxzd"] = jgpxzd;
-    map["jxb_id"] = jxbId;
-    map["jxbmc"] = jxbmc;
-    map["jxbsftkbj"] = jxbsftkbj;
-    map["kch_id"] = kchId;
-    map["kclb"] = kclb;
-    map["kcmc"] = kcmc;
-    map["kcxszc"] = kcxszc;
-    map["kcxz"] = kcxz;
-    map["khfsmc"] = khfsmc;
-    map["kkzt"] = kkzt;
-    map["listnav"] = listnav;
-    map["localeKey"] = localeKey;
-    map["month"] = month;
-    map["oldjc"] = oldjc;
-    map["oldzc"] = oldzc;
-    map["pageable"] = pageable;
-    map["pkbj"] = pkbj;
-    if (queryModel != null) {
-      map["queryModel"] = queryModel.toJson();
-    }
-    map["rangeable"] = rangeable;
-    map["rk"] = rk;
-    map["rsdzjs"] = rsdzjs;
-    map["skfsmc"] = skfsmc;
-    map["sxbj"] = sxbj;
-    map["totalResult"] = totalResult;
-    if (userModel != null) {
-      map["userModel"] = userModel.toJson();
-    }
-    map["xf"] = xf;
-    map["xkbz"] = xkbz;
-    map["xm"] = xm;
-    map["xnm"] = xnm;
-    map["xqdm"] = xqdm;
-    map["xqh1"] = xqh1;
-    map["xqh_id"] = xqhId;
-    map["xqj"] = xqj;
-    map["xqjmc"] = xqjmc;
-    map["xqm"] = xqm;
-    map["xqmc"] = xqmc;
-    map["xsdm"] = xsdm;
-    map["xslxbj"] = xslxbj;
-    map["year"] = year;
-    map["zcd"] = zcd;
-    map["zcmc"] = zcmc;
-    map["zhxs"] = zhxs;
-    map["zxs"] = zxs;
-    map["zyfxmc"] = zyfxmc;
-    map["zzrl"] = zzrl;
-    return map;
-  }
-
-}
-
-/// monitor : false
-/// roleCount : 0
-/// roleKeys : ""
-/// roleValues : ""
-/// status : 0
-/// usable : false
-
-class UserModel {
-  bool monitor;
-  int roleCount;
-  String roleKeys;
-  String roleValues;
-  int status;
-  bool usable;
-
-  UserModel({
-    this.monitor,
-    this.roleCount,
-    this.roleKeys,
-    this.roleValues,
-    this.status,
-    this.usable});
-
-  UserModel.fromJson(dynamic json) {
-    monitor = json["monitor"];
-    roleCount = json["roleCount"];
-    roleKeys = json["roleKeys"];
-    roleValues = json["roleValues"];
-    status = json["status"];
-    usable = json["usable"];
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["monitor"] = monitor;
-    map["roleCount"] = roleCount;
-    map["roleKeys"] = roleKeys;
-    map["roleValues"] = roleValues;
-    map["status"] = status;
-    map["usable"] = usable;
-    return map;
-  }
-
-}
-
-/// currentPage : 1
-/// currentResult : 0
-/// entityOrField : false
-/// limit : 15
-/// offset : 0
-/// pageNo : 0
-/// pageSize : 15
-/// showCount : 10
-/// totalCount : 0
-/// totalPage : 0
-/// totalResult : 0
-
-class QueryModel {
-  int currentPage;
-  int currentResult;
-  bool entityOrField;
-  int limit;
-  int offset;
-  int pageNo;
-  int pageSize;
-  int showCount;
-  int totalCount;
-  int totalPage;
-  int totalResult;
-
-  QueryModel({
-    this.currentPage,
-    this.currentResult,
-    this.entityOrField,
-    this.limit,
-    this.offset,
-    this.pageNo,
-    this.pageSize,
-    this.showCount,
-    this.totalCount,
-    this.totalPage,
-    this.totalResult});
-
-  QueryModel.fromJson(dynamic json) {
-    currentPage = json["currentPage"];
-    currentResult = json["currentResult"];
-    entityOrField = json["entityOrField"];
-    limit = json["limit"];
-    offset = json["offset"];
-    pageNo = json["pageNo"];
-    pageSize = json["pageSize"];
-    showCount = json["showCount"];
-    totalCount = json["totalCount"];
-    totalPage = json["totalPage"];
-    totalResult = json["totalResult"];
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["currentPage"] = currentPage;
-    map["currentResult"] = currentResult;
-    map["entityOrField"] = entityOrField;
-    map["limit"] = limit;
-    map["offset"] = offset;
-    map["pageNo"] = pageNo;
-    map["pageSize"] = pageSize;
-    map["showCount"] = showCount;
-    map["totalCount"] = totalCount;
-    map["totalPage"] = totalPage;
-    map["totalResult"] = totalResult;
+    map["cdmc"] = _cdmc;
+    map["date"] = _date;
+    map["dateDigit"] = _dateDigit;
+    map["dateDigitSeparator"] = _dateDigitSeparator;
+    map["day"] = _day;
+    map["jc"] = _jc;
+    map["jcor"] = _jcor;
+    map["jcs"] = _jcs;
+    map["jgh_id"] = _jghId;
+    map["jgpxzd"] = _jgpxzd;
+    map["jxb_id"] = _jxbId;
+    map["jxbmc"] = _jxbmc;
+    map["jxbsftkbj"] = _jxbsftkbj;
+    map["kch"] = _kch;
+    map["kch_id"] = _kchId;
+    map["kclb"] = _kclb;
+    map["kcmc"] = _kcmc;
+    map["kcxszc"] = _kcxszc;
+    map["kcxz"] = _kcxz;
+    map["khfsmc"] = _khfsmc;
+    map["kkzt"] = _kkzt;
+    map["listnav"] = _listnav;
+    map["localeKey"] = _localeKey;
+    map["month"] = _month;
+    map["oldjc"] = _oldjc;
+    map["oldzc"] = _oldzc;
+    map["pageable"] = _pageable;
+    map["pkbj"] = _pkbj;
+    map["rangeable"] = _rangeable;
+    map["rk"] = _rk;
+    map["rsdzjs"] = _rsdzjs;
+    map["skfsmc"] = _skfsmc;
+    map["sxbj"] = _sxbj;
+    map["xf"] = _xf;
+    map["xkbz"] = _xkbz;
+    map["xm"] = _xm;
+    map["xnm"] = _xnm;
+    map["xqdm"] = _xqdm;
+    map["xqh1"] = _xqh1;
+    map["xqh_id"] = _xqhId;
+    map["xqj"] = _xqj;
+    map["xqjmc"] = _xqjmc;
+    map["xqm"] = _xqm;
+    map["xqmc"] = _xqmc;
+    map["xsdm"] = _xsdm;
+    map["xslxbj"] = _xslxbj;
+    map["year"] = _year;
+    map["zcd"] = _zcd;
+    map["zcmc"] = _zcmc;
+    map["zhxs"] = _zhxs;
+    map["zxs"] = _zxs;
+    map["zyfxmc"] = _zyfxmc;
+    map["zzrl"] = _zzrl;
     return map;
   }
 

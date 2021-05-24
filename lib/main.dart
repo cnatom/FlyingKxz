@@ -6,6 +6,7 @@ import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/pages/null_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -14,6 +15,7 @@ import 'FlyingUiKit/Theme/theme.dart';
 import 'FlyingUiKit/config.dart';
 import 'Model/global.dart';
 import 'dart:io';
+import 'cumt_spider/cumt.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,12 +27,12 @@ void main() {
   }
   /// Prefs.init() 提取存储在本地的信息
   Future.wait([Prefs.init()]).whenComplete((){
-    if(Prefs.token==null){
+    if(Prefs.password==null){
       Global.clearPrefsData();
       backImgFile = null;
     }
-    // 初始化主题
-    ThemeProvider.init();
+    ThemeProvider.init();// 初始化主题
+    cumt.init();//初始化爬虫模块
     //启动App
     runApp(MyApp());
   });
@@ -87,6 +89,7 @@ class _StartPageState extends State<StartPage> {
 
 
   Future<void> initFunc(BuildContext context) async {
+
     // 获取当前App版本
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     Global.curVersion = packageInfo.version;
@@ -101,6 +104,10 @@ class _StartPageState extends State<StartPage> {
     ScreenUtil.init(context,
         height: deviceHeight, width: deviceWidth);
     initSize();
+    if(DateTime.now().isAfter(DateTime(2021,6,1))){
+      toNullPage(context);
+      return;
+    }
     //初始化背景图路径
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists())
@@ -112,7 +119,7 @@ class _StartPageState extends State<StartPage> {
     //是否登录过
     // toNavigatorPage(context);
     // return;
-    if (Prefs.token != null) {
+    if (Prefs.password != null) {
       toNavigatorPage(context);
     } else {
       Global.clearPrefsData();

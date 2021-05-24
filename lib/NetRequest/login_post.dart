@@ -7,7 +7,7 @@ import 'package:flying_kxz/Model/login_info.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 
 //获取登录json数据
-Future<bool> loginPost(BuildContext context, int loginCount,
+Future<bool> loginVisitor(BuildContext context, int loginCount,
     {@required String username, @required String password}) async {
   Response res;
   Dio dio = Dio();

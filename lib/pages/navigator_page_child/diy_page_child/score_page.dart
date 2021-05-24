@@ -12,6 +12,7 @@ import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/Model/score_info.dart';
+import 'package:flying_kxz/cumt_spider/cumt.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
@@ -34,7 +35,6 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   ScrollController controller = new ScrollController();
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   String curScoreYearStr = "全部学年",curScoreTermStr = "全部学期";//当前所选的学期学年信息
-  String curScoreYear,curScoreTerm;
   String jiaquanTotal;//总加权
   String jidianTotal;//总绩点
   double xfjdSum;//学分*绩点的和
@@ -56,9 +56,32 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     super.initState();
     curScoreYearStr = Prefs.schoolYear+'-'+(int.parse(Prefs.schoolYear)+1).toString();
     curScoreTermStr = "第${Prefs.schoolTerm}学期";
-    curScoreTerm = Prefs.schoolTerm;
-    curScoreYear = Prefs.schoolYear;
-    getShowScoreView(year: curScoreYearStr,term: Prefs.schoolTerm);
+    getShowScoreView(year: curScoreYearStr,term: curScoreTermStr);
+  }
+  //getShowScoreView('2021-2022','全部学期')
+  getShowScoreView({@required String year,@required String term})async{
+    //学年转换
+    List<String> yearTerm = Cumt.transYearTerm(year, term);
+    curScoreYearStr = year;
+    curScoreTermStr = term;
+    setState(() {
+      loading = true;
+      jiaquanTotal = null;
+      jidianTotal = null;
+    });
+    //发送请求
+    InquiryType type = makeupFilter?InquiryType.ScoreAll:InquiryType.Score;
+    await scoreGet(context,type,year: yearTerm[0],term: yearTerm[1]);
+    //打理后事
+    scoreDetailCrossFadeState.clear();
+    scoreFilter.clear();
+    //添加开展动画控制器 并 计算总加权和总绩点
+    for(int i = 0;i < Global.scoreInfo.data.length;i++){
+      scoreFilter.add(true);
+      scoreDetailCrossFadeState.add(CrossFadeState.showFirst);
+    }
+    calcuTotalScore();
+    setState(() {loading = false;});
   }
   @override
   Widget build(BuildContext context) {
@@ -98,8 +121,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                         pickerDatas: PickerData.xqxnWithAllTermPickerData,
                         colorRight: themeProvider.colorMain,
                         onConfirm: (Picker picker, List value) {
-                          debugPrint(value.toString());
-                          getShowScoreView(year: picker.getSelectedValues()[0].toString(),term: '${(value[1]).toString()}');
+                          getShowScoreView(year: picker.getSelectedValues()[0].toString(),term: picker.getSelectedValues()[1].toString());
                         })),
               ],
             ),
@@ -167,7 +189,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
               onChanged: (v){
                 if(!loading){
                   makeupFilter = !makeupFilter;
-                  getShowScoreView(year: curScoreYear,term: curScoreTerm);
+                  getShowScoreView(year: curScoreYearStr,term: curScoreTermStr);
                 }
               }
           )
@@ -527,28 +549,6 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     super.dispose();
   }
 
-  getShowScoreView({@required String year,@required String term})async{
-    setState(() {
-      loading = true;
-      jiaquanTotal = null;
-      jidianTotal = null;
-    });
-    int type = makeupFilter?1:0;
-    await scoreGet(context,type, token:Prefs.token,year: year,term: term);
-    curScoreYear = year;
-    curScoreTerm = term;
-    curScoreYearStr = year;
-    curScoreTermStr = term=="0"?"全部学期":"第$term学期";
-    scoreDetailCrossFadeState.clear();
-    scoreFilter.clear();
-    //添加开展动画控制器 并 计算总加权和总绩点
-    for(int i = 0;i < Global.scoreInfo.data.length;i++){
-      scoreFilter.add(true);
-      scoreDetailCrossFadeState.add(CrossFadeState.showFirst);
-    }
-    calcuTotalScore();
-    setState(() {loading = false;});
-  }
 
   Widget nullView(){
     return Center(
