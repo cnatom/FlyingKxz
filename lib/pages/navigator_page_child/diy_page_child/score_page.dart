@@ -12,7 +12,7 @@ import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/Model/score_info.dart';
-import 'package:flying_kxz/cumt_spider/cumt.dart';
+import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
@@ -96,7 +96,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
               FlyText.main40('【加权筛选】"筛选"功能可忽略某些不计入加权的学科成绩\n\n'
                   '【成绩明细】点击成绩卡片可查看其明细\n\n'
                   '【全选操作】点击筛选后还可进行"全选""取消全选"操作，你注意到了吗？\n',maxLine: 100,),
-              FlyText.miniTip30("平均成绩仅供参考\n实际数据请参照学生手册自行计算。",maxLine: 100,)
+              FlyText.miniTip30("平均成绩仅供参考\n实际数据请参照学生手册自行计算。\n若出现总评(或平均分)不一致的情况，请以“包含补考成绩”的数据为准",maxLine: 100,)
             ],
           ));
         })

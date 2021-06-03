@@ -1,7 +1,5 @@
 PODS:
-  - add_2_calendar (0.0.1):
-    - Flutter
-  - connectivity (0.0.1):
+  - connectivity_plus (0.0.1):
     - Flutter
     - Reachability
   - Flutter (1.0.0)
@@ -13,6 +11,8 @@ PODS:
   - image_gallery_saver (1.5.0):
     - Flutter
   - image_picker (0.0.1):
+    - Flutter
+  - network_info_plus (0.0.1):
     - Flutter
   - open_file (0.0.1):
     - Flutter
@@ -36,12 +36,12 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - add_2_calendar (from `.symlinks/plugins/add_2_calendar/ios`)
-  - connectivity (from `.symlinks/plugins/connectivity/ios`)
+  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
   - image_crop (from `.symlinks/plugins/image_crop/ios`)
   - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - network_info_plus (from `.symlinks/plugins/network_info_plus/ios`)
   - open_file (from `.symlinks/plugins/open_file/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -58,10 +58,8 @@ SPEC REPOS:
     - Reachability
 
 EXTERNAL SOURCES:
-  add_2_calendar:
-    :path: ".symlinks/plugins/add_2_calendar/ios"
-  connectivity:
-    :path: ".symlinks/plugins/connectivity/ios"
+  connectivity_plus:
+    :path: ".symlinks/plugins/connectivity_plus/ios"
   Flutter:
     :path: Flutter
   image_crop:
@@ -70,6 +68,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_gallery_saver/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  network_info_plus:
+    :path: ".symlinks/plugins/network_info_plus/ios"
   open_file:
     :path: ".symlinks/plugins/open_file/ios"
   package_info:
@@ -90,13 +90,13 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
-  add_2_calendar: c201b1c7dc0299280f1b1a8158aa80e15a8f8912
-  connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
+  connectivity_plus: f5e5e0b894ec1187bfab9816d6c2f034da8d46da
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_crop: e0a67085d3ebf3cf46ca46d61c53a082507b0bc3
   image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
   image_picker: 66aa71bc96850a90590a35d4c4a2907b0d823109
+  network_info_plus: b78876159360f5580608c2cea620d6ceffabd0ad
   open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e

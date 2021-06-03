@@ -20,8 +20,9 @@ class FlyContainer extends StatefulWidget {
   final Decoration decoration;
   final double width;
   final Key key;
+  final double transValue;
   FlyContainer(
-      {@required this.child, this.margin, this.padding, this.decoration, this.key, this.width});
+      {@required this.child, this.margin, this.padding, this.decoration, this.key, this.width, this.transValue});
   @override
   _FlyContainerState createState() => _FlyContainerState();
 }
@@ -40,7 +41,7 @@ class _FlyContainerState extends State<FlyContainer> {
           borderRadius: BorderRadius.circular(borderRadiusValue),
           color: Theme.of(context)
               .cardColor
-              .withOpacity(themeProvider.transCard),
+              .withOpacity(widget.transValue??themeProvider.transCard),
           boxShadow: [
             boxShadowMain
           ]),

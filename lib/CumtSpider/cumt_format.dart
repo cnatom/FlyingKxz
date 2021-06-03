@@ -1,5 +1,45 @@
 /// 数据清洗模块
 class CumtFormat{
+  //校园卡流水
+  static Map<String,dynamic> parseBalanceHis(Map<String,dynamic> data){
+    var l1 = [];
+    for(var a in data['data']){
+      l1.add({
+        "cardNumber": a['XGH'],
+        "Type": a['JYLX'],
+        "Location": a['ZDMC'],
+        "name": a['SHMC'],
+        "costMoney": a['JYE'],
+        "balance": a['YE'],
+        "time": a['JYSJ']
+      });
+    }
+    return {
+      'data':l1
+    };
+  }
+  //考试
+  static Map<String,dynamic> parseExam(Map<String,dynamic> data){
+    var exam_list = [];
+    for(var single_data in data['items']){
+      print('@@');
+      print(single_data.toString());
+      var item = {
+        "local": single_data['cdbh'],
+        "time": single_data['kssj'],
+        "course": single_data['kcmc'],
+        "type": single_data['ksmc'],
+        "year": int.parse(single_data['kssj'].substring(0,4)),
+        "month": int.parse(single_data['kssj'].substring(5,7)),
+        "day": int.parse(single_data['kssj'].substring(8,10))
+      };
+      exam_list.add(item);
+    }
+    var result = {
+      'data':exam_list
+    };
+    return result;
+  }
   //成绩（包括补考无明细）
   static Map<String,dynamic> parseScoreAll(Map<String,dynamic> data){
     var grades_list = data['items'];

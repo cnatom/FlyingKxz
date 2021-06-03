@@ -11,6 +11,7 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/exam_info.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_page.dart';
 
 class ExamAddView extends StatefulWidget {
   @override
@@ -112,18 +113,17 @@ class _ExamAddViewState extends State<ExamAddView> {
       showToast(context, '请填写完整~');
       return;
     }
-    var newCountDownInfo = ExamData(
-        course: courseController.text,
-        local: localController.text,
-        time: "${date.year}-${date.month}-${date.day}",
-            // "(${startTime.hour}:${startTime.minute}-"
-            // "${endTime.hour}:${endTime.minute})",
+    var newCountDownInfo = ExamUnit(
+        courseName: courseController.text,
+        location: localController.text,
+        dateTime: "${date.year}-${date.month}-${date.day}",
         year: date.year,
         month: date.month,
-        day: date.day
+        day: date.day,
+        diy: true
     );
-    Global.examDiyInfo.data.add(newCountDownInfo);
-    Prefs.examDataDiy = jsonEncode(Global.examDiyInfo.toJson());
+    Global.examList.add(newCountDownInfo);
+    Prefs.examData = ExamUnit.examJsonEncode(Global.examList);
     Navigator.pop(context);
   }
 

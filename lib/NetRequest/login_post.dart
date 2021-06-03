@@ -22,6 +22,7 @@ Future<bool> loginVisitor(BuildContext context, int loginCount,
       Prefs.token = Global.loginInfo.token;
       Prefs.name = Global.loginInfo.name;
       Prefs.username = username;
+      Prefs.password = password;
       Prefs.phone = Global.loginInfo.phone;
       return true;
     } else {

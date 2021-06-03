@@ -13,6 +13,7 @@ import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/power_post.dart';
+import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +40,7 @@ class _PowerPageState extends State<PowerPage> {
 
   @override
   Widget build(BuildContext context) {
-    percent = (Prefs.power??0)/(Prefs.powerMax??1);
+    percent = (Prefs.power??0.0)/(Prefs.powerMax??1.0);
     themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       key: _scaffoldKey,
@@ -198,7 +199,7 @@ class _PowerPageState extends State<PowerPage> {
       });
       if(_powerNumController.text.isNotEmpty||Prefs.powerHome!=null){
         powerNum = _powerNumController.text.toString();
-        bool ok = await powerPost(context, token: Prefs.token, home: powerHome, num: powerNum);
+        bool ok = await cumt.getPower(powerHome, powerNum);
         if(!ok) showToast(context, "获取失败，请再检查一下参数");
       }else{
         showToast(context, "请输入完整");

@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flying_kxz/pages/tip_page.dart';
 class CumtInterceptors extends Interceptor {
   String t = '  ';
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     print('————————————————————————————————————————————————');
-    print("发送 " + options.method+ " " + options.uri.toString());
+    print("发送 " + options.method+ " " + (options.uri??'').toString());
     print(t + "请求头:");
     printMap(options.headers);
     print(t + "参数:");

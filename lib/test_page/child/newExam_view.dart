@@ -47,22 +47,22 @@ class _NewExamViewState extends State<NewExamView> with AutomaticKeepAliveClient
             width: double.infinity,
             child: curView()
         ),
-        Column(
-          children: Global.examDiyInfo.data.map((item){
-            return InkWell(
-              onTap: ()async{
-                if(await willSignOut(context)){
-                  var delIndex = Global.examDiyInfo.data.indexOf(item);
-                  Global.examDiyInfo.data.removeAt(delIndex);
-                  Prefs.examDataDiy = jsonEncode(Global.examDiyInfo.toJson());
-                  setState(() {
-                  });
-                }
-              },
-              child: examCard(item.course, item.local, item.time, item.year, item.month, item.day),
-            );
-          }).toList(),
-        ),
+        // Column(
+        //   children: Global.examDiyInfo.data.map((item){
+        //     return InkWell(
+        //       onTap: ()async{
+        //         if(await willSignOut(context)){
+        //           var delIndex = Global.examDiyInfo.data.indexOf(item);
+        //           Global.examDiyInfo.data.removeAt(delIndex);
+        //           Prefs.examDataDiy = jsonEncode(Global.examDiyInfo.toJson());
+        //           setState(() {
+        //           });
+        //         }
+        //       },
+        //       child: examCard(item.course, item.local, item.time, item.year, item.month, item.day),
+        //     );
+        //   }).toList(),
+        // ),
         SizedBox(height: spaceCardMarginTB,),
         addDiyExamButton()
       ],
@@ -71,7 +71,7 @@ class _NewExamViewState extends State<NewExamView> with AutomaticKeepAliveClient
 
   getShowExamView({@required String year,@required String term})async{
     setState(() {loading = true;});
-    if(await examPost(context, token:Prefs.token, year: year, term: term))
+    if(await examPost(context,year: year, term: term))
       setState(() {loading = false;});
   }
   initExamData()async{
@@ -79,7 +79,7 @@ class _NewExamViewState extends State<NewExamView> with AutomaticKeepAliveClient
     if(localExamInfo!=null){
       Global.examInfo = ExamInfo.fromJson(jsonDecode(localExamInfo));
       loading = true;
-      await examPost(context, token:Prefs.token,
+      await examPost(context,
           year: Prefs.schoolYear, term: Prefs.schoolTerm);
       loading = false;
     }else{
@@ -90,7 +90,7 @@ class _NewExamViewState extends State<NewExamView> with AutomaticKeepAliveClient
   initDiyData()async{
     var localDiyInfo = Prefs.examDataDiy;
     if(localDiyInfo!=null){
-      Global.examDiyInfo = ExamInfo.fromJson(jsonDecode(localDiyInfo));
+      // Global.examDiyInfo = ExamInfo.fromJson(jsonDecode(localDiyInfo));
       setState(() {
       });
     }

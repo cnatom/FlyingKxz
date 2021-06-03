@@ -6,8 +6,8 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/Model/score_info.dart';
-import 'package:flying_kxz/cumt_spider/cumt.dart';
-import 'package:flying_kxz/cumt_spider/cumt_format.dart';
+import 'package:flying_kxz/CumtSpider/cumt.dart';
+import 'package:flying_kxz/CumtSpider/cumt_format.dart';
 import 'package:html/parser.dart';
 
 

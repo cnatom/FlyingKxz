@@ -46,7 +46,7 @@ class Global{
   static UserInfo userInfo = new UserInfo();//用户信息
   static ScoreInfo scoreInfo = new ScoreInfo();//成绩信息
   static ExamInfo examInfo = new ExamInfo();//考试信息
-  static ExamInfo examDiyInfo = new ExamInfo(data: []);//自定义倒计时
+  static List<ExamUnit> examList = [];//考试列表
   static BookInfo bookInfo = new BookInfo();//图书馆书籍信息
   static BookDetailInfo bookDetailInfo = new BookDetailInfo();
   static DateTime nowDate = DateTime.now(); //当前日期
@@ -60,6 +60,7 @@ class Global{
     courseInfo = new CourseInfo();
     scoreInfo = new ScoreInfo();
     examInfo = new ExamInfo();
+    examList = [];
     Prefs.prefs.clear();
     getSchoolYearTerm();
   }

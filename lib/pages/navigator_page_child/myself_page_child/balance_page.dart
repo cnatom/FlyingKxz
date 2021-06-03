@@ -10,6 +10,7 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/balanceDetail_post.dart';
+import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance_recharge_page.dart';
 import 'package:provider/provider.dart';
 //跳转到当前页面
@@ -26,7 +27,7 @@ class _BalancePageState extends State<BalancePage> {
   ThemeProvider themeProvider;
   bool loading = true;
   Future<void> _getBalanceDetail()async{
-    if(await balanceDetailPost()){
+    if(await cumt.getBalanceHistory()){
       loading = false;
     }else{
       loading = true;

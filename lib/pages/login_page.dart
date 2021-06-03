@@ -19,11 +19,10 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/login_check_get.dart';
 import 'package:flying_kxz/NetRequest/login_post.dart';
-import 'package:flying_kxz/NetRequest/userInfo_post.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'app_upgrade.dart';
-import 'package:flying_kxz/cumt_spider/cumt.dart';
+import 'package:flying_kxz/CumtSpider/cumt.dart';
 
 //跳转到当前页面
 void toLoginPage(BuildContext context) async {
@@ -67,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
     //检测是否激活&验证码
     if (await loginCheckGet(context, username: _username)) {
       //新登录
-      if(await cumt.login(_username, _password)){
+      if(await cumt.login(_username, _password,context: context)){
         Prefs.visitor = false;
         var namePhoneMap = await cumt.getNamePhone();
         Prefs.name = namePhoneMap['name'];
@@ -78,12 +77,6 @@ class _LoginPageState extends State<LoginPage> {
           _loading = false;
         });
       }
-      // //旧登录
-      // if (await loginPost(context, loginCount++,
-      //     username: _username, password: _password)) {
-      //   await userInfoPost(context, token: Prefs.token);
-      //   toNavigatorPage(context);
-      // }
     }else{
       setState(() {
         _loading = false;

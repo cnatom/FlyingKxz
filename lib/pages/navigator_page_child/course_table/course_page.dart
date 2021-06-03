@@ -14,7 +14,7 @@ import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/cumt_spider/cumt.dart';
+import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';
 import 'components/add_components/course_add_view.dart';
@@ -92,18 +92,21 @@ class CoursePageState extends State<CoursePage>
       actions: [
         _buildAddButton(),
         _buildShowRightButton(),
-        // IconButton(
-        //   icon: Icon(Icons.build),
-        //   onPressed: ()async{
-        //     await cumt.getNamePhone();
-        //   },
-        //   color: themeProvider.colorNavText,),
-        // IconButton(
-        //   icon: Icon(Icons.logout),
-        //   onPressed: ()async{
-        //     await cumt.logout();
-        //   },
-        //   color: themeProvider.colorNavText,)
+        IconButton(
+          icon: Icon(Icons.build),
+          onPressed: ()async{
+            // await cumt.getNamePhone();
+            // await cumt.getBalance();
+            // await cumt.getBalanceHistory();
+            await cumt.getPower('梅2楼','B1052');
+          },
+          color: themeProvider.colorNavText,),
+        IconButton(
+          icon: Icon(Icons.logout),
+          onPressed: ()async{
+            await cumt.logout();
+          },
+          color: themeProvider.colorNavText,)
       ],
     );
   }

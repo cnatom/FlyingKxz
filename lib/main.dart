@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,7 +16,7 @@ import 'FlyingUiKit/Theme/theme.dart';
 import 'FlyingUiKit/config.dart';
 import 'Model/global.dart';
 import 'dart:io';
-import 'cumt_spider/cumt.dart';
+import 'CumtSpider/cumt.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,6 +57,8 @@ class _MyAppState extends State<MyApp> {
           themeMode: themeProvider.themeMode,
           theme: FlyThemes.lightTheme,
           darkTheme: FlyThemes.darkTheme,
+          builder: BotToastInit(), //1.调用BotToastInit
+          navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
           //添加国际化
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
@@ -104,7 +107,7 @@ class _StartPageState extends State<StartPage> {
     ScreenUtil.init(context,
         height: deviceHeight, width: deviceWidth);
     initSize();
-    if(DateTime.now().isAfter(DateTime(2021,6,1))){
+    if(DateTime.now().isAfter(DateTime(2021,6,10))){
       toNullPage(context);
       return;
     }

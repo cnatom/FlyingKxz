@@ -16,7 +16,7 @@ class _TemplatePageState extends State<TemplatePage> {
   bool loading;
   getShowExamView()async{
     setState(() {loading = true;});
-    await examPost(context, token:Prefs.token, year: '2019', term: '1');
+    await examPost(context, year: '2019', term: '1');
     setState(() {loading = false;});
   }
 
