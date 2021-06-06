@@ -34,8 +34,7 @@ void main() {
     }
     ThemeProvider.init();// 初始化主题
     cumt.init();//初始化爬虫模块
-    //启动App
-    runApp(MyApp());
+    runApp(MyApp());//启动App
   });
 }
 
@@ -92,10 +91,10 @@ class _StartPageState extends State<StartPage> {
 
 
   Future<void> initFunc(BuildContext context) async {
-
     // 获取当前App版本
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     Global.curVersion = packageInfo.version;
+    //初始化配置（无需context）
     initConfigInfo();
     //宽屏设备时，修改屏幕信息
     if (MediaQuery.of(context).size.height / MediaQuery.of(context).size.width <
@@ -106,8 +105,10 @@ class _StartPageState extends State<StartPage> {
     //初始化参考屏幕信息
     ScreenUtil.init(context,
         height: deviceHeight, width: deviceWidth);
+    //初始化配置（需要context）
     initSize();
-    if(DateTime.now().isAfter(DateTime(2021,6,10))){
+    //内测结束跳转
+    if(DateTime.now().isAfter(DateTime(2021,6,15))){
       toNullPage(context);
       return;
     }
@@ -116,12 +117,9 @@ class _StartPageState extends State<StartPage> {
       if (await File(Prefs.backImg).exists())
         backImgFile = File(Prefs.backImg);
     }
-    await getSchoolYearTerm();
-    // toTestPage(context);
-    // return;
-    //是否登录过
-    // toNavigatorPage(context);
-    // return;
+    //获取本学期学年
+    getSchoolYearTerm();
+    //选择进入界面
     if (Prefs.password != null) {
       toNavigatorPage(context);
     } else {
@@ -129,13 +127,6 @@ class _StartPageState extends State<StartPage> {
       backImgFile = null;
       toLoginPage(context); //第一次登录进入登录页
     }
-
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
   }
 
   @override

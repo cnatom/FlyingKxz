@@ -23,7 +23,7 @@ Future<Null> scoreGet(BuildContext context,InquiryType type,{@required String te
       Global.scoreInfo = ScoreInfo.fromJson(map);
     }else{
       //非游客模式
-      var res = await cumt.inquiry(type, year, term);
+      var res = await cumt.inquiryJw(type, year, term);
       if(res!=''){
         Map<String, dynamic> map = jsonDecode(res.toString());
         if(type == InquiryType.ScoreAll) map = CumtFormat.parseScoreAll(map);
@@ -33,7 +33,7 @@ Future<Null> scoreGet(BuildContext context,InquiryType type,{@required String te
     }
   }catch(e){
     debugPrint(e.toString());
-    showToast(context, '获取失败QAQ');
+    showToast('获取失败QAQ');
   }
 }
 

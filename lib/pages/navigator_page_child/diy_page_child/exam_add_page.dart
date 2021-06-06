@@ -110,7 +110,7 @@ class _ExamAddViewState extends State<ExamAddView> {
   }
   determineFunc(){
     if(courseController.text.isEmpty||localController.text.isEmpty||date==null){
-      showToast(context, '请填写完整~');
+      showToast('请填写完整~');
       return;
     }
     var newCountDownInfo = ExamUnit(

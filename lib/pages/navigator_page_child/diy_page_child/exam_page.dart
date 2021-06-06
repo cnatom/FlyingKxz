@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/buttons.dart';
@@ -13,6 +14,7 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/my_bottom_sheet.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
 
 import 'package:flying_kxz/Model/exam_info.dart';
 import 'package:flying_kxz/Model/global.dart';
@@ -27,13 +29,15 @@ import 'package:left_scroll_actions/leftScroll.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
+import '../../tip_page.dart';
+
 class ExamView extends StatefulWidget {
   @override
   _ExamViewState createState() => _ExamViewState();
 }
 
 class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
-  bool loading = true;
+  bool loading = false;
   Timer timer;
   bool show = false;
   int countdownTime = 0;
@@ -46,12 +50,24 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
     _init();
   }
   getShowExamView({@required String year,@required String term})async{
+
     setState(() {loading = true;});
     if(await examPost(context,year: year, term: term))
       setState(() {loading = false;});
   }
-  _refresh(){
-    getShowExamView(year: Prefs.schoolYear, term: Prefs.schoolTerm);
+  _refresh()async{
+    setState(() {loading = true;});
+    if(await Cumt.checkConnect()){
+      if(await examPost(context,year: Prefs.schoolYear, term: Prefs.schoolTerm)){
+        showToast('刷新成功');
+      }else{
+        showToast('刷新失败');
+      }
+    }else{
+      toTipPage(context);
+    }
+    setState(() {loading = false;});
+
   }
   List<ExamUnit> _parseToCurList(List<ExamUnit> examList,){
     List<ExamUnit> result = [];
@@ -75,7 +91,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
       examOutList.clear();
       examCurList = _parseToCurList(Global.examList);
     }
-    setState(() {loading = false;});
+    setState(() {});
   }
   //添加自定义倒计时
   void addDiyExamFunc()async{
@@ -131,14 +147,14 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 curView(examCurList),
+                filterButton(),
                 AnimatedCrossFade(
                   firstCurve: Curves.easeOutCubic,
                   secondCurve: Curves.easeOutCubic,
                   sizeCurve: Curves.easeOutCubic,
-                  firstChild: filterButton(),
+                  firstChild: Container(),
                   secondChild:Column(
                     children: [
-                      filterButton(),
                       SizedBox(height: spaceCardPaddingTB,),
                       curView(examOutList,outView: true)
                     ],

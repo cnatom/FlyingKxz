@@ -30,9 +30,9 @@ Future<bool> loginVisitor(BuildContext context, int loginCount,
     }
   }on DioError catch (e) {
     if(e.response != null){
-      showToast(context, e.response.toString());
+      showToast( e.response.toString());
     }else{
-      showToast(context, "请检查网络连接");
+      showToast("请检查网络连接");
     }
     return false;
   }

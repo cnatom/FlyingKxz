@@ -31,7 +31,7 @@ class _BalancePageState extends State<BalancePage> {
       loading = false;
     }else{
       loading = true;
-      showToast(context, "请检查网络连接");
+      showToast("请检查网络连接");
     }
     setState(() {
     });
@@ -54,17 +54,18 @@ class _BalancePageState extends State<BalancePage> {
           color: themeProvider.colorMain,
           onRefresh: ()async{
             await _getBalanceDetail();
-            showToast(context, "刷新成功");
+            showToast( "刷新成功");
           },
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             child: Padding(
               padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardMarginTB, spaceCardPaddingRL, spaceCardMarginTB),
-              child: Wrap(
-                runSpacing: spaceCardMarginTB,
+              child: Column(
                 children: [
                   _buildHeadCard(context),
-                  _buildBalanceDetail(context)
+                  SizedBox(height: spaceCardMarginTB,),
+                  _buildBalanceDetail(context),
+                  SizedBox(height: 300,),
                 ],
               ),
             ),
@@ -182,7 +183,10 @@ class _BalancePageState extends State<BalancePage> {
 
   InkWell _buildRechargeButton() {
     return InkWell(
-      onTap: ()=>toBalanceRechargePage(context),
+      onTap: (){
+        // toBalanceRechargePage(context);
+        showToast('暂未开放');
+      },
       child: Container(
         padding: EdgeInsets.all(spaceCardMarginRL),
         decoration: BoxDecoration(

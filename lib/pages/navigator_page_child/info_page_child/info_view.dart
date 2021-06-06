@@ -87,7 +87,7 @@ class _InfoViewState extends State<InfoView>
   Future<void> _refresh() async {
     infoList.clear();
     await _getInfo(curPage = 1);
-    showToast(context, "刷新成功");
+    showToast("刷新成功");
   }
 
   Future<void> _getInfo(int page) async {

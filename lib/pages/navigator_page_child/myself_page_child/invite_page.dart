@@ -62,7 +62,7 @@ class _InvitePageState extends State<InvitePage> {
               onTap: (){
                 if(UniversalPlatform.isWindows){
                   Clipboard.setData(ClipboardData(text: "http://kxz.atcumt.com/"));
-                  showToast(context, "已复制到粘贴板，快分享给好友吧~");
+                  showToast("已复制到粘贴板，快分享给好友吧~");
                 }else{
                   Share.share("http://kxz.atcumt.com/");
 
@@ -90,7 +90,7 @@ class _InvitePageState extends State<InvitePage> {
               onTap: (){
                 if(UniversalPlatform.isWindows){
                   Clipboard.setData(ClipboardData(text: "https://jq.qq.com/?_wv=1027&k=272EhIWK"));
-                  showToast(context, "已复制到粘贴板，快分享给好友吧~");
+                  showToast( "已复制到粘贴板，快分享给好友吧~");
                 }else{
                   Share.share("https://jq.qq.com/?_wv=1027&k=272EhIWK");
                 }

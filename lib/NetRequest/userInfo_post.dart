@@ -13,6 +13,7 @@ import 'package:flying_kxz/Model/user_info.dart';
 
 Future<bool> userInfoPost(BuildContext context,
     {@required String token,}) async {
+  print("hello");
   try {
     Response res;
     Dio dio = Dio();

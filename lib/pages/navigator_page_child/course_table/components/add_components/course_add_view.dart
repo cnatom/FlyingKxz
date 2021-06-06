@@ -162,12 +162,12 @@ class _CourseAddViewState extends State<CourseAddView> {
   bool _checkCompleteness(){
     for(int i = 0;i<lessonStrList.length;i++){
       if(lessonStrList[i]=="未选择"||weekStrList[i]=="未选择"){
-        showToast(context, "请填写完整哦");
+        showToast("请填写完整哦");
         return false;
       }
     }
     if(titleController.text.isEmpty){
-      showToast(context, "请填写完整哦");
+      showToast( "请填写完整哦");
       return false;
     }
     return true;

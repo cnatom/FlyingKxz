@@ -8,6 +8,7 @@ import 'package:flying_kxz/Model/rank_info.dart';
 import 'package:flying_kxz/Model/score_info.dart';
 import 'package:flying_kxz/Model/swiper_info.dart';
 import 'package:flying_kxz/Model/user_info.dart';
+import 'package:flying_kxz/Model/video__data.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,7 +20,7 @@ import 'exam_info.dart';
 import 'login_info.dart';
 
 //获取当前学年学期
-Future<void> getSchoolYearTerm()async{
+void getSchoolYearTerm(){
   /******************
    * 2021年修复的第一个bug
    * 希望2021年少点bug,多点关爱
@@ -47,6 +48,7 @@ class Global{
   static ScoreInfo scoreInfo = new ScoreInfo();//成绩信息
   static ExamInfo examInfo = new ExamInfo();//考试信息
   static List<ExamUnit> examList = [];//考试列表
+  static VideoInfo videoInfo = new VideoInfo();
   static BookInfo bookInfo = new BookInfo();//图书馆书籍信息
   static BookDetailInfo bookDetailInfo = new BookDetailInfo();
   static DateTime nowDate = DateTime.now(); //当前日期

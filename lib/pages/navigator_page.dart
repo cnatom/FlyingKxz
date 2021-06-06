@@ -45,7 +45,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
             "platform":Platform.operatingSystem
           }
       );
-      debugPrint(res.toString());
+      debugPrint('统计成功');
     }catch(e){
       debugPrint("统计用户失败");
     }
@@ -60,16 +60,16 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
     }
   }
   //获取用户信息
-  getUserInfo()async{
-    if(Prefs.college==null||Prefs.className==null){
-      await userInfoPost(context, token: Prefs.token);
-    }
-  }
+  // getUserInfo()async{
+  //   if(Prefs.college==null||Prefs.className==null){
+  //     await userInfoPost(context, token: Prefs.token);
+  //   }
+  // }
   @override
   void initState() {
     super.initState();
     cumtAutoLogin();//自动登录校园网
-    getUserInfo();//获取用户信息
+    // getUserInfo();//获取用户信息
     noticeGetInfo();//获取通知信息
     checkUpgrade(context);//检查软件更新
     countUser();//统计用户信息

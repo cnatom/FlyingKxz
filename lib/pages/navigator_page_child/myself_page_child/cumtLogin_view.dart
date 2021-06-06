@@ -110,7 +110,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
     _form.save();
     //判空
     if (_password.isEmpty||_username.isEmpty) {
-      showToast(context, "请填写账号密码");
+      showToast( "请填写账号密码");
       return;
     }
     //登录请求并决定是否跳转

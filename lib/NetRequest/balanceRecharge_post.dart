@@ -19,14 +19,14 @@ Future<bool> balanceRechargePost(BuildContext context, {@required String num}) a
     Map<String, dynamic> map = jsonDecode(res.toString());
     debugPrint(res.toString());
     if (res.statusCode == 200) {
-      showToast(context, "充值成功！",duration: 3);
+      showToast( "充值成功！",duration: 3);
       return true;
     } else {
       return false;
     }
   }on DioError catch (e) {
     if(e.response!=null){
-      showToast(context, e.response.toString());
+      showToast(e.response.toString());
     }
     debugPrint(e.toString());
     return false;

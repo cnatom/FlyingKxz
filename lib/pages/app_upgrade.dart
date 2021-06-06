@@ -39,13 +39,13 @@ Future<Null> upgradeApp(BuildContext context,{bool auto = false})async{
           'url': map['apkUrl'],// 安装包的链接
         });
       }else{
-        if(auto==false) showToast(context, "当前为最新版本！");
+        if(auto==false) showToast("当前为最新版本！");
       }
     }else{
-      if(auto==false) showToast(context, '获取最新版本失败(X_X)');
+      if(auto==false) showToast( '获取最新版本失败(X_X)');
     }
   }catch(e){
-    if(auto==false)showToast(context, '获取最新版本失败(X_X)');
+    if(auto==false)showToast('获取最新版本失败(X_X)');
     debugPrint(e.toString());
   }
 }

@@ -131,7 +131,7 @@ class _LessonWeekNumPickerState extends State<LessonWeekNumPicker> {
     if (lesson == null) lesson = lessonNum;
     if (dur == null) dur = duration;
     if (lesson + dur - 1 > 10) {
-      showToast(context, "节次超限啦(X_X)", gravity: 1);
+      showToast("节次超限啦(X_X)", gravity: 1);
       return false;
     }
     return true;

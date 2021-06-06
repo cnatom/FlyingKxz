@@ -7,16 +7,19 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_picker/Picker.dart';
+import 'package:flying_kxz/CumtSpider/cumt_format.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';
+import '../../tip_page.dart';
 import 'components/add_components/course_add_view.dart';
 import 'components/course_table_child.dart';
 import 'components/point_components/point_main.dart';
@@ -92,21 +95,17 @@ class CoursePageState extends State<CoursePage>
       actions: [
         _buildAddButton(),
         _buildShowRightButton(),
-        IconButton(
-          icon: Icon(Icons.build),
-          onPressed: ()async{
-            // await cumt.getNamePhone();
-            // await cumt.getBalance();
-            // await cumt.getBalanceHistory();
-            await cumt.getPower('梅2楼','B1052');
-          },
-          color: themeProvider.colorNavText,),
-        IconButton(
-          icon: Icon(Icons.logout),
-          onPressed: ()async{
-            await cumt.logout();
-          },
-          color: themeProvider.colorNavText,)
+        // IconButton(
+        //   icon: Icon(Icons.build),
+        //   onPressed: ()async{
+        //   },
+        //   color: themeProvider.colorNavText,),
+        // IconButton(
+        //   icon: Icon(Icons.logout),
+        //   onPressed: ()async{
+        //     await cumt.logout();
+        //   },
+        //   color: themeProvider.colorNavText,)
       ],
     );
   }
@@ -119,13 +118,19 @@ class CoursePageState extends State<CoursePage>
   }
   _importCourse()async{
     showPicker(context, _scaffoldKey,
-        title: "导入课表",
+        title: "导入课表（内网）",
         pickerDatas: PickerData.xqxnPickerData,
         colorRight: themeProvider.colorMain,
-        onConfirm: (Picker picker, List value) {
-      String yearStr = picker.getSelectedValues()[0].toString().substring(0, 4);
-      String termStr = '${value[1] + 1}';
-      courseProvider.get(yearStr , termStr);
+        onConfirm: (Picker picker, List value) async{
+          String yearStr = picker.getSelectedValues()[0].toString().substring(0, 4);
+          String termStr = '${value[1] + 1}';
+          setState(() {CourseProvider.loading = true;});
+          if(await Cumt.checkConnect()){
+            courseProvider.get(yearStr , termStr);
+          }else{
+            toTipPage(context);
+            setState(() {CourseProvider.loading = false;});
+          }
         });
 
   }

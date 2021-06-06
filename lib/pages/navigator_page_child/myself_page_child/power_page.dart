@@ -200,9 +200,9 @@ class _PowerPageState extends State<PowerPage> {
       if(_powerNumController.text.isNotEmpty||Prefs.powerHome!=null){
         powerNum = _powerNumController.text.toString();
         bool ok = await cumt.getPower(powerHome, powerNum);
-        if(!ok) showToast(context, "获取失败，请再检查一下参数");
+        if(!ok) showToast( "获取失败，请再检查一下参数");
       }else{
-        showToast(context, "请输入完整");
+        showToast( "请输入完整");
       }
       setState(() {
         powerLoading = false;

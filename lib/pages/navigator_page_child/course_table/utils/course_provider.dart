@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
@@ -233,19 +234,22 @@ class CourseProvider extends ChangeNotifier{
       ];
     }
   }
-  Future<CourseBean> _getJsonInfo(String year,String term)async{
+  Future<CourseBean> _getJsonInfo(String year,String term,)async{
     debugPrint('@getJsonInfo');
     CourseBean courseBean = new CourseBean();
     try{
-      var res = await cumt.inquiry(InquiryType.Course, year, term);
+      var res = await cumt.inquiryJw(InquiryType.Course, year, term);
       if(res!=''){
         var map = jsonDecode(res);
         courseBean = CourseBean.fromJson(map);
+        showToast('导入成功');
         return courseBean;
       }
+      showToast('导入失败');
       return null;
     }catch(e){
       debugPrint('获取课表失败: '+e.toString());
+      showToast('导入失败 Error');
       return null;
     }
   }

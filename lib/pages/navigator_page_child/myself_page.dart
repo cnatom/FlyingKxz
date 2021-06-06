@@ -12,6 +12,8 @@ import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
+import 'package:flying_kxz/FlyingUiKit/loading.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
@@ -23,7 +25,9 @@ import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/about_pa
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power_page.dart';
+import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -38,8 +42,39 @@ class MyselfPage extends StatefulWidget {
 class _MyselfPageState extends State<MyselfPage>
     with AutomaticKeepAliveClientMixin {
   ThemeProvider themeProvider;
-
-
+  bool loadingRepair = false;
+  Future<bool> getPreviewInfo() async {
+    bool ok = false;
+    if(await Cumt.checkConnect()){
+      ok = await cumt.getBalance();
+      if(Prefs.powerHome!=null&&Prefs.powerNum!=null){
+        ok = await cumt.getPower(Prefs.powerHome, Prefs.powerNum);
+      }
+      setState(() {});
+      return ok;
+    }
+    return false;
+  }
+  Future<void> repair()async{
+    setState(() {
+      loadingRepair = true;
+    });
+    if(await Cumt.checkConnect()){
+      if(await cumt.login(Prefs.username, Prefs.password)){
+        showToast('🎉 修复成功！');
+      }else{
+        showToast('已连接内网，但修复失败QAQ\n🎉 恭喜您发现了新的bug（卑微\n（即将跳转至反馈群）',duration: 7);
+        Future.delayed(Duration(seconds: 7),(){
+          launch('https://jq.qq.com/?_wv=1027&k=272EhIWK');
+        });
+      }
+    }else{
+      toTipPage(context);
+    }
+    setState(() {
+      loadingRepair = false;
+    });
+  }
   @override
   void initState() {
     super.initState();
@@ -60,169 +95,187 @@ class _MyselfPageState extends State<MyselfPage>
           brightness: themeProvider.simpleMode?Brightness.light:Brightness.dark,
         ),
       ),
-      body: Container(
-        height: double.infinity,
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              // 触摸收起键盘
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(spaceCardMarginRL,0,spaceCardMarginRL,0),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: kToolbarHeight,),
-                  //个人资料区域
-                  Wrap(
-                    runSpacing: spaceCardMarginBigTB * 2,
-                    children: <Widget>[
-                      _buildInfoCard(context,
-                          imageResource: 'images/avatar.png',
-                          name: Prefs.name??'',
-                          id: Prefs.username??'',
-                          classs: Prefs.className??'',
-                          college: Prefs.college??''),
-                      Container(),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: <Widget>[
-                      //     Expanded(
-                      //         flex: 1,
-                      //         child: previewItem(
-                      //           title:
-                      //               "${Prefs.balance ?? '0.0'}",
-                      //           subTitle: "校园卡余额 (元)",
-                      //         )),
-                      //     Container(
-                      //       color: themeProvider.colorNavText.withOpacity(0.2),
-                      //       height: fontSizeMini38 * 2,
-                      //       width: 1,
-                      //     ),
-                      //     Expanded(
-                      //       flex: 1,
-                      //       child: previewItem(
-                      //           title:
-                      //               "${Prefs.power ?? '0.0'}",
-                      //           subTitle: "宿舍电量 (度)"),
-                      //     ),
-                      //   ],
-                      // ),
-                      Container()
-                    ],
-                  ),
-                  //可滚动功能区
-                  Wrap(
-                    runSpacing: spaceCardMarginTB,
-                    children: [
-                      // NoticeCard(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: _buildHalfButton(
-                                "校园卡", "余额  "+(Prefs.balance??"0.0")+"元", Icons.monetization_on_outlined,
-                                onTap: ()=>toBalancePage(context)),
-                          ),
-                          SizedBox(width: spaceCardMarginRL,),
-                          Expanded(
-                            child: _buildHalfButton(
-                                "宿舍电量", Prefs.power==null?"点击绑定宿舍":"剩余  ${Prefs.power}度", Icons.power_outlined,
-                                onTap: ()async{
-                                  await Navigator.push(context, CupertinoPageRoute(builder: (context)=>PowerPage()));
-                                  setState(() {
-
-                                  });
-                                }),
-                          ),
-                        ],
-                      ),
-                      _buttonList(children: <Widget>[
-                        FlyFlexibleButton(
-                          icon: Icons.language_outlined,
-                          title: '校园网登录',
-                          secondChild: CumtLoginView(),),
-                        FlyFlexibleButton(
-                          title: "个性化",
-                          icon: LineariconsFree.shirt,
-                          secondChild: _buildPersonalise(),
-                        ),
-                      ]),
-                      // _buttonList(children: <Widget>[
-                      //
-                      //   FlyFlexibleButton(
-                      //     title: "校园卡余额",
-                      //     icon: Icons.monetization_on_outlined,
-                      //     previewStr: (Prefs.balance??"0.0")+"元",
-                      //   ),
-                      //   FlyFlexibleButton(
-                      //     title: "宿舍电量",
-                      //     icon: Icons.flash_on,
-                      //     previewStr: Prefs.power==null?"未绑定":"${Prefs.power}",
-                      //     secondChild: _buildPower(),
-                      //   )
-                      // ]),
-
-                      _buttonList(children: <Widget>[
-                        _buildIconTitleButton(
-                            icon: Icons.people_outline,
-                            title: '关于我们',
-                            onTap: () => toAboutPage(context)),
-                        _buildIconTitleButton(
-                            icon: Icons.feedback_outlined,
-                            title: '反馈与建议',
-                            onTap: () async {
-                              String text = await FlyDialogInputShow(context,
-                                  hintText:
-                                  "感谢您提出宝贵的建议，这对我们非常重要！\n*｡٩(ˊᗜˋ*)و*｡\n\n(也可以留下您的联系方式，方便我们及时联络您)",
-                                  confirmText: "发送",
-                                  maxLines: 10);
-                              if (text != null) {
-                                await feedbackPost(context, text: text);
-                              }
-                            }),
-                        _buildIconTitleButton(
-                            icon: Icons.share_outlined,
-                            title: '分享App',
-                            onTap: () {
-                              FlyDialogDIYShow(context, content: InvitePage());
-                            }),
-                        UniversalPlatform.isIOS
-                            ? Container()
-                            : _buildIconTitleButton(
-                            icon: CommunityMaterialIcons.download_outline,
-                            title: '检查更新',
-                            onTap: () {
-                              if(UniversalPlatform.isWindows){
-                                launch("https://kxz.atcumt.com");
-                              }else{
-                                upgradeApp(context, auto: false);
-                              }
-                            }),
-
-                      ]),
-                      _buttonList(children: [
-                        _buildIconTitleButton(icon: Icons.logout, title: "退出登录",onTap: ()=>willSignOut(context))
-                      ])
-                    ],
-                  ),
-                  Center(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: fontSizeMini38,
-                        ),
-                        FlyText.mini30("矿小助-正式版 ${Global.curVersion} ",color: themeProvider.colorNavText.withOpacity(0.5),),
+      body: RefreshIndicator(
+        color: themeProvider.colorMain,
+        onRefresh: ()async{
+          if(await getPreviewInfo()){
+            showToast('刷新成功');
+          }else{
+            showToast('刷新失败');
+          }
+        },
+        child: Container(
+          height: double.infinity,
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                // 触摸收起键盘
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(spaceCardMarginRL,0,spaceCardMarginRL,0),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: kToolbarHeight,),
+                    //个人资料区域
+                    Wrap(
+                      runSpacing: spaceCardMarginBigTB * 2,
+                      children: <Widget>[
+                        _buildInfoCard(context,
+                            imageResource: 'images/avatar.png',
+                            name: Prefs.name??'',
+                            id: Prefs.username??'',
+                            classs: Prefs.className??'',
+                            college: Prefs.college??''),
+                        Container(),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: <Widget>[
+                        //     Expanded(
+                        //         flex: 1,
+                        //         child: previewItem(
+                        //           title:
+                        //               "${Prefs.balance ?? '0.0'}",
+                        //           subTitle: "校园卡余额 (元)",
+                        //         )),
+                        //     Container(
+                        //       color: themeProvider.colorNavText.withOpacity(0.2),
+                        //       height: fontSizeMini38 * 2,
+                        //       width: 1,
+                        //     ),
+                        //     Expanded(
+                        //       flex: 1,
+                        //       child: previewItem(
+                        //           title:
+                        //               "${Prefs.power ?? '0.0'}",
+                        //           subTitle: "宿舍电量 (度)"),
+                        //     ),
+                        //   ],
+                        // ),
+                        Container()
                       ],
                     ),
-                  )
-                ],
+                    //可滚动功能区
+                    Wrap(
+                      runSpacing: spaceCardMarginTB,
+                      children: [
+                        // NoticeCard(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: _buildHalfButton(
+                                  "校园卡", "余额  "+(Prefs.balance??"0.0")+"元", Icons.monetization_on_outlined,
+                                  onTap: ()=>toBalancePage(context)),
+                            ),
+                            SizedBox(width: spaceCardMarginRL,),
+                            Expanded(
+                              child: _buildHalfButton(
+                                  "宿舍电量", Prefs.power==null?"点击绑定宿舍":"剩余  ${Prefs.power}度", Icons.power_outlined,
+                                  onTap: ()async{
+                                    await Navigator.push(context, CupertinoPageRoute(builder: (context)=>PowerPage()));
+                                    setState(() {
+
+                                    });
+                                  }),
+                            ),
+                          ],
+                        ),
+                        _buttonList(children: <Widget>[
+                          FlyFlexibleButton(
+                            icon: Icons.language_outlined,
+                            title: '校园网登录',
+                            secondChild: CumtLoginView(),),
+                          FlyFlexibleButton(
+                            title: "个性化",
+                            icon: LineariconsFree.shirt,
+                            secondChild: _buildPersonalise(),
+                          ),
+                        ]),
+                        // _buttonList(children: <Widget>[
+                        //
+                        //   FlyFlexibleButton(
+                        //     title: "校园卡余额",
+                        //     icon: Icons.monetization_on_outlined,
+                        //     previewStr: (Prefs.balance??"0.0")+"元",
+                        //   ),
+                        //   FlyFlexibleButton(
+                        //     title: "宿舍电量",
+                        //     icon: Icons.flash_on,
+                        //     previewStr: Prefs.power==null?"未绑定":"${Prefs.power}",
+                        //     secondChild: _buildPower(),
+                        //   )
+                        // ]),
+
+                        _buttonList(children: <Widget>[
+                          _buildIconTitleButton(
+                              icon: Icons.people_outline,
+                              title: '关于我们',
+                              onTap: () => toAboutPage(context)),
+                          _buildIconTitleButton(
+                              icon: Icons.feedback_outlined,
+                              title: '反馈与建议',
+                              onTap: () async {
+                                String text = await FlyDialogInputShow(context,
+                                    hintText:
+                                    "感谢您提出宝贵的建议，这对我们非常重要！\n*｡٩(ˊᗜˋ*)و*｡\n\n(也可以留下您的联系方式，方便我们及时联络您)",
+                                    confirmText: "发送",
+                                    maxLines: 10);
+                                if (text != null) {
+                                  await feedbackPost(context, text: text);
+                                }
+                              }),
+                          _buildIconTitleButton(
+                              icon: Icons.share_outlined,
+                              title: '分享App',
+                              onTap: () {
+                                FlyDialogDIYShow(context, content: InvitePage());
+                              }),
+
+                          UniversalPlatform.isIOS
+                              ? Container()
+                              : _buildIconTitleButton(
+                              icon: CommunityMaterialIcons.download_outline,
+                              title: '检查更新',
+                              onTap: () {
+                                if(UniversalPlatform.isWindows){
+                                  launch("https://kxz.atcumt.com");
+                                }else{
+                                  upgradeApp(context, auto: false);
+                                }
+                              }),
+                        ]),
+                        _buttonList(children: [
+                          _buildIconTitleButton(
+                              icon: LineAwesomeIcons.tools,
+                              title: '网络修复',
+                              loading: loadingRepair,
+                              onTap: ()async{
+                                await repair();
+                              }),
+                          _buildIconTitleButton(icon: Icons.logout, title: "退出登录",onTap: ()=>willSignOut(context))
+                        ])
+                      ],
+                    ),
+                    Center(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: fontSizeMini38,
+                          ),
+                          FlyText.mini30("矿小助-正式版 ${Global.curVersion} ",color: themeProvider.colorNavText.withOpacity(0.5),),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
         ),
+
       ),
     );
   }
@@ -403,13 +456,7 @@ class _MyselfPageState extends State<MyselfPage>
     );
   }
 
-  void getPreviewInfo() async {
-    await cumt.getBalance();
-    if(Prefs.powerHome!=null&&Prefs.powerNum!=null){
-      await cumt.getPower(Prefs.powerHome, Prefs.powerNum);
-    }
-    setState(() {});
-  }
+
 
   void signOut() {
     Global.clearPrefsData();
@@ -472,7 +519,7 @@ class _MyselfPageState extends State<MyselfPage>
   Widget _buildIconTitleButton(
           {@required IconData icon,
           @required String title,
-          GestureTapCallback onTap}) =>
+          GestureTapCallback onTap,bool loading = false}) =>
       InkWell(
         onTap: onTap,
         child: Padding(
@@ -484,7 +531,7 @@ class _MyselfPageState extends State<MyselfPage>
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Icon(
+                  loading?loadingAnimationIOS():Icon(
                     icon,
                     size: sizeIconMain50,
                     color: themeProvider.colorNavText,

@@ -77,7 +77,7 @@ class _BalanceRechargePageState extends State<BalanceRechargePage> {
     _form.save();
     //判空
     if (num.isEmpty||!isNumeric(num)) {
-      showToast(context, "请正确填写");
+      showToast("请正确填写");
     }else{
       await balanceRechargePost(context,num: num);
     }

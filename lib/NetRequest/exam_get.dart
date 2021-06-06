@@ -35,7 +35,7 @@ Future<bool> examPost(BuildContext context,
         return false;
       }
     }else{
-      var res = await cumt.inquiry(InquiryType.Exam, year, term);
+      var res = await cumt.inquiryJw(InquiryType.Exam, year, term);
       if(res!=''){
         Map<String, dynamic> map = jsonDecode(res.toString());
         map = CumtFormat.parseExam(map);
@@ -52,9 +52,9 @@ Future<bool> examPost(BuildContext context,
         }
         Global.examList.addAll(diyList);
         Prefs.examData = ExamUnit.examJsonEncode(Global.examList);
-        print(map.toString());
         return true;
       }
+      return false;
     }
   } catch (e) {
     debugPrint(e.toString());

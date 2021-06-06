@@ -31,9 +31,9 @@ class CumtInterceptors extends Interceptor {
   @override
   Future onError(DioError err, ErrorInterceptorHandler handler) {
     // print("返回错误 " + (err.response.statusCode??901).toString());
-    print(t+'请求参数');
-    printMap(err.requestOptions.queryParameters);
-    super.onError(err, handler);
+    // print(t+'请求参数');
+    // printMap(err.requestOptions.queryParameters);
+    // super.onError(err, handler);
   }
   void printMap(Map<String,dynamic> map){
     for(var key in map.keys){

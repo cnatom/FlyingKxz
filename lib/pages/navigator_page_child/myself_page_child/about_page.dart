@@ -44,7 +44,7 @@ class _AboutPageState extends State<AboutPage> {
       child: InkWell(
         onTap: onTap==null?() {
           Clipboard.setData(ClipboardData(text: qqNumber));
-          showToast(context, "已复制QQ号至剪切板", duration: 1);
+          showToast("已复制QQ号至剪切板", duration: 1);
         }:onTap,
         child: Container(
           padding: EdgeInsets.all(spaceCardMarginRL),

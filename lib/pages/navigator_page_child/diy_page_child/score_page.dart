@@ -20,6 +20,8 @@ import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/NetRequest/score_get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
+
+import '../../tip_page.dart';
 //跳转到当前页面
 void toScorePage(BuildContext context) {
   Navigator.push(
@@ -45,7 +47,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   bool showFilter = false;//是否启动筛选
   bool scoreDetailAllExpand = false;//是否全部展开闭合
   List<CrossFadeState> scoreDetailCrossFadeState = new List(); //控制详细列表的展开闭合
-  bool loading;//是否显示加载动画
+  bool loading = true;//是否显示加载动画
   bool selectAll =  true;
   double opacityFloatButton = 0.0;//是否显示回到顶部按钮
   ThemeProvider themeProvider;
@@ -69,6 +71,12 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       jiaquanTotal = null;
       jidianTotal = null;
     });
+    //检查内网环境
+    if(!await Cumt.checkConnect()){
+      toTipPage(context);
+      setState(() {loading = false;});
+      return;
+    }
     //发送请求
     InquiryType type = makeupFilter?InquiryType.ScoreAll:InquiryType.Score;
     await scoreGet(context,type,year: yearTerm[0],term: yearTerm[1]);
@@ -89,7 +97,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     super.build(context);
     return Scaffold(
       key: scaffoldKey,
-      appBar: FlyAppBar(context, '成绩',actions: [
+      appBar: FlyAppBar(context, '成绩（内网）',actions: [
         IconButton(icon: Icon(Icons.help_outline,color: Theme.of(context).primaryColor,), onPressed: (){
           FlyDialogDIYShow(context, content: Wrap(
             children: [
@@ -381,7 +389,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
             child: CircularPercentIndicator(
               radius: fontSizeMain40*3,
               lineWidth: 3.0,
-              animation: true,
+              animation: false,
               animationDuration: 800,
               percent: zongpingInt / 100.0,
               center: FlyText.main40(zongping,
@@ -612,7 +620,9 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     switch(loading) {
       case true:child = loadingView();break;
       case false:{
-        child = Global.scoreInfo.data.isEmpty?infoEmptyView():infoView();
+        if(Global.scoreInfo.data!=null){
+          child = Global.scoreInfo.data.isEmpty?infoEmptyView():infoView();
+        }
         break;
       }
     }

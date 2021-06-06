@@ -16,6 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 //跳转到当前页面
 void toTipPage(BuildContext context) {
+  showToast('连接失败，可能未连接校内网',duration: 3);
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => TipPage()));
 }
@@ -31,7 +32,7 @@ class _TipPageState extends State<TipPage> {
     setState(() {
       loading = true;
     });
-    showToast(context, await Cumt.checkConnect());
+    showToast((await Cumt.checkConnect())?'🎉已连接内网':'未连接内网QAQ');
     setState(() {
       loading = false;
     });
@@ -70,7 +71,9 @@ class _TipPageState extends State<TipPage> {
                         child: Image.asset('images/wifi.png'),
                       ),
                     ),
-                    // FlyText.main40('为保证数据安全，矿小助部分功能需要使用"学校内网"进行访问。请选择以下任意方式连接内网:',maxLine: 100,)
+                    Center(
+                      child: FlyText.miniTip30('连接后记得去网站："http://10.2.5.251"登录',maxLine: 100,),
+                    )
                   ],
                 ),
               ),
@@ -128,13 +131,13 @@ class _TipPageState extends State<TipPage> {
         padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
         child: Column(
           children: [
-            Icon(iconData,size: fontSizeMain40*1.5,),
+            Icon(iconData,size: fontSizeMain40*1.5),
             SizedBox(height: 5,),
             FlyText.main40(title)
           ],
         ),
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(100),
             boxShadow: [
               BoxShadow(

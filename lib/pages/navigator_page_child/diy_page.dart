@@ -7,6 +7,7 @@ import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/video_page.dart';
 import 'package:provider/provider.dart';
 
 import 'diy_page_child/exam_page.dart';
@@ -21,10 +22,6 @@ class DiyPage extends StatefulWidget {
 
 class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,SingleTickerProviderStateMixin {
   ThemeProvider themeProvider;
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +57,9 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
 
                                   funcButton(imageResource: 'images/tushuguan.png',title: '图书馆',color:colorFuncButton[0],subTitle: '馆藏查询、图书推荐',onTap: ()=>toBookPage(context)),
                                   funcButton(imageResource: 'images/chengji.png',title: '成绩',color:colorFuncButton[5],subTitle: '查看学分绩点',onTap: ()=>toScorePage(context)),
+                                  funcButton(imageResource: 'images/xunke.png',title: '课堂回放',color:colorFuncButton[3],subTitle: '在线播放、极速下载',onTap: ()=>toVideoPage(context)),
                                   funcButton(imageResource: 'images/xiaoche.png',title: '校车',color:colorFuncButton[1],subTitle: '通勤班车时间表',onTap: ()=>toSchoolBusPage(context)),
                                   funcButton(imageResource: 'images/xiaoli.png',title: '校历',color:colorFuncButton[2],subTitle: '本学年校历',onTap: ()=>toSchoolCalendarPage(context)),
-                                  funcButton(imageResource: 'images/xunke.png',title: '课堂回放',subTitle: '在线播放、极速下载',onTap: ()=>showToast(context, '😁 即将推出，敬请期待')),
                                   // funcButton(imageResource: 'images/ditu.png',title: '校园地图',subTitle: '拯救路痴的你'),
                                 ],
                               )

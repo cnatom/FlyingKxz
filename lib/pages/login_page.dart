@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
     _form.save();
     //判空
     if (_password.isEmpty || _username.isEmpty) {
-      showToast(context, "请填写学号密码");
+      showToast( "请填写学号密码");
       setState(() {
         _loading = false;
       });
@@ -270,7 +270,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   _buildFlatButton("无法登录", onPressed: () async {
                     Clipboard.setData(ClipboardData(text: "839372371"));
-                    showToast(context, "已复制反馈QQ群号至剪切板");
+                    showToast( "已复制反馈QQ群号至剪切板");
                     FlyDialogDIYShow(context,
                         content: Wrap(
                           children: [

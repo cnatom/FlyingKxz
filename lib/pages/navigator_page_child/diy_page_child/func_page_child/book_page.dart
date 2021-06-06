@@ -242,7 +242,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                 onLongPress: (){
                   if(!miniLoading){
                     if(curPage==1) {
-                      showToast(context, '已经到首页了(~_~)');
+                      showToast('已经到首页了(~_~)');
                       return;
                     }
                     curPage = 1;
@@ -255,7 +255,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                     if(curPage>1){
                       switchPage(page: --curPage);
                     }else{
-                      showToast(context, '已经到首页了(~_~)');
+                      showToast('已经到首页了(~_~)');
                     }
                   }
                 },
@@ -273,7 +273,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                     if(curPage<allPage){
                       switchPage(page: ++curPage);
                     }else{
-                      showToast(context, '已经到尾页了(O_O)');
+                      showToast('已经到尾页了(O_O)');
                     }
                   }
                 },
@@ -422,7 +422,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                             curBookName = bookName;
                             getShowBookView(curBookName);
                           }else{
-                            showToast(context, '请输入书籍名称');
+                            showToast('请输入书籍名称');
                           }
 
                         },
