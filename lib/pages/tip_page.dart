@@ -14,11 +14,11 @@ import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'navigator_page.dart';
+
 //跳转到当前页面
-void toTipPage(BuildContext context) {
-  showToast('连接失败，可能未连接校内网',duration: 3);
-  Navigator.push(
-      context, CupertinoPageRoute(builder: (context) => TipPage()));
+void toTipPage() {
+  FlyNavigatorPageState.navigatorKey.currentState.push(CupertinoPageRoute(builder: (BuildContext context)=>TipPage()));
 }
 class TipPage extends StatefulWidget {
   @override
@@ -40,7 +40,7 @@ class _TipPageState extends State<TipPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FlyAppBar(context, '',),
+      appBar: FlyAppBar(context, '连接失败，可能未连接校内网',),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Padding(

@@ -25,6 +25,11 @@ import 'components/course_table_child.dart';
 import 'components/point_components/point_main.dart';
 import 'components/back_curWeek.dart';
 import 'package:flying_kxz/FlyingUiKit/my_bottom_sheet.dart';
+
+import 'utils/course_provider.dart';
+import 'utils/course_provider.dart';
+import 'utils/course_provider.dart';
+import 'utils/course_provider.dart';
 class CoursePage extends StatefulWidget {
   @override
   CoursePageState createState() => CoursePageState();
@@ -98,6 +103,9 @@ class CoursePageState extends State<CoursePage>
         // IconButton(
         //   icon: Icon(Icons.build),
         //   onPressed: ()async{
+        //     // cumt.checkCookie();
+        //     cumt.checkJwCookie();
+        //     // cumt.loginJw();
         //   },
         //   color: themeProvider.colorNavText,),
         // IconButton(
@@ -113,7 +121,10 @@ class CoursePageState extends State<CoursePage>
   Widget _buildCourseImportView(){
     return IconButton(
       icon: Icon(Icons.cloud_download_outlined),
-      onPressed: ()=>CourseProvider.loading?{}:_importCourse(),
+      onPressed: (){
+        if(CourseProvider.loading==true)return;
+        _importCourse();
+      },
       color: themeProvider.colorNavText,);
   }
   _importCourse()async{
@@ -128,7 +139,7 @@ class CoursePageState extends State<CoursePage>
           if(await Cumt.checkConnect()){
             courseProvider.get(yearStr , termStr);
           }else{
-            toTipPage(context);
+            toTipPage();
             setState(() {CourseProvider.loading = false;});
           }
         });
@@ -369,16 +380,23 @@ class CoursePageState extends State<CoursePage>
 
   Widget _buildBody() {
     return FlyWidgetBuilder(
-      whenFirst: CourseProvider.loading,
+      whenFirst: CourseProvider.loading==true,
       firstChild: Center(child: loadingAnimationTwoCircles(color: themeProvider.colorMain),),
       secondChild: LayoutBuilder(
         builder: (context, parSize) {
           List<Widget> children = [];
           double height = parSize.maxHeight;
           double width = parSize.maxWidth;
-          for(int i = 1;i<=22;i++){
-            children.add(new CourseTableChild(CourseProvider.info[i], width, height));
+          if(CourseProvider.loading==null){
+            for(int i = 1;i<=22;i++){
+              children.add(Container());
+            }
+          }else{
+            for(int i = 1;i<=22;i++){
+              children.add(new CourseTableChild(CourseProvider.info[i], width, height));
+            }
           }
+
           return PageView(
             physics: BouncingScrollPhysics(),
             controller: coursePageController,

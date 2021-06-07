@@ -35,7 +35,7 @@ Future<bool> examPost(BuildContext context,
         return false;
       }
     }else{
-      var res = await cumt.inquiryJw(InquiryType.Exam, year, term);
+      var res = await cumt.inquiryJw(InquiryType.Exam, year, term,);
       if(res!=''){
         Map<String, dynamic> map = jsonDecode(res.toString());
         map = CumtFormat.parseExam(map);

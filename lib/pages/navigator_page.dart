@@ -31,6 +31,8 @@ class FlyNavigatorPage extends StatefulWidget {
 var navigatorPageController = PageController();
 class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAliveClientMixin{
   int _currentIndex = 0; //数组索引，通过改变索引值改变视图
+
+  static GlobalKey<NavigatorState> navigatorKey=GlobalKey();
   static List<bool> badgeShowList = [false,false,false];
   ThemeProvider themeProvider;
   //统计用户信息

@@ -16,6 +16,8 @@ import 'package:provider/provider.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../FlyingUiKit/toast.dart';
+import '../../../FlyingUiKit/toast.dart';
 import '../../tip_page.dart';
 
 //跳转到当前页面
@@ -35,14 +37,13 @@ class _VideoPageState extends State<VideoPage> {
 
 
   Future<void> init()async{
-    if(!await Cumt.checkConnect()){
-      toTipPage(context);
-      return;
-    }
     if(await cumt.searchVideo()){
+      showToast('获取成功');
       setState(() {
         loading = false;
       });
+    }else{
+      showToast('获取失败');
     }
   }
   Future<void> searchVideo(String courseName)async{

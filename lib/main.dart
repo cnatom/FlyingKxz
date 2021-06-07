@@ -17,6 +17,8 @@ import 'FlyingUiKit/config.dart';
 import 'Model/global.dart';
 import 'dart:io';
 import 'CumtSpider/cumt.dart';
+import 'chinese.dart';
+import 'pages/navigator_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +55,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, _) {
         themeProvider = Provider.of<ThemeProvider>(context);
         return MaterialApp(
+          navigatorKey: FlyNavigatorPageState.navigatorKey,
           themeMode: themeProvider.themeMode,
           theme: FlyThemes.lightTheme,
           darkTheme: FlyThemes.darkTheme,
@@ -60,6 +63,7 @@ class _MyAppState extends State<MyApp> {
           navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
           //添加国际化
           localizationsDelegates: [
+            ChineseCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             DefaultCupertinoLocalizations.delegate,

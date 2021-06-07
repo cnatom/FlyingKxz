@@ -32,6 +32,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../FlyingUiKit/toast.dart';
 import 'myself_page_child/cumtLogin_view.dart';
 
 class MyselfPage extends StatefulWidget {
@@ -45,35 +46,35 @@ class _MyselfPageState extends State<MyselfPage>
   bool loadingRepair = false;
   Future<bool> getPreviewInfo() async {
     bool ok = false;
-    if(await Cumt.checkConnect()){
-      ok = await cumt.getBalance();
-      if(Prefs.powerHome!=null&&Prefs.powerNum!=null){
-        ok = await cumt.getPower(Prefs.powerHome, Prefs.powerNum);
-      }
-      setState(() {});
-      return ok;
+    ok = await cumt.getBalance();
+    if(Prefs.powerHome!=null&&Prefs.powerNum!=null){
+      ok = await cumt.getPower(Prefs.powerHome, Prefs.powerNum);
     }
-    return false;
+    setState(() {});
+    return ok;
   }
   Future<void> repair()async{
     setState(() {
       loadingRepair = true;
     });
-    if(await Cumt.checkConnect()){
-      if(await cumt.login(Prefs.username, Prefs.password)){
-        showToast('🎉 修复成功！');
-      }else{
-        showToast('已连接内网，但修复失败QAQ\n🎉 恭喜您发现了新的bug（卑微\n（即将跳转至反馈群）',duration: 7);
-        Future.delayed(Duration(seconds: 7),(){
-          launch('https://jq.qq.com/?_wv=1027&k=272EhIWK');
-        });
-      }
+    if(await cumt.check()){
+      showToast('🎉 修复成功！');
     }else{
-      toTipPage(context);
+      showToast('已连接内网，但修复失败QAQ\n🎉 恭喜您发现了新的bug（卑微\n（即将跳转至反馈群）',duration: 7);
+      Future.delayed(Duration(seconds: 7),(){
+        launch('https://jq.qq.com/?_wv=1027&k=272EhIWK');
+      });
     }
     setState(() {
       loadingRepair = false;
     });
+  }
+  void signOut() async{
+    Global.clearPrefsData();
+    Directory tempDir = await getApplicationDocumentsDirectory();
+    if(!(await tempDir.list().isEmpty)) cumt.cookieJar.deleteAll();
+    backImgFile = null;
+    toLoginPage(context);
   }
   @override
   void initState() {
@@ -248,13 +249,13 @@ class _MyselfPageState extends State<MyselfPage>
                               }),
                         ]),
                         _buttonList(children: [
-                          _buildIconTitleButton(
-                              icon: LineAwesomeIcons.tools,
-                              title: '网络修复',
-                              loading: loadingRepair,
-                              onTap: ()async{
-                                await repair();
-                              }),
+                          // _buildIconTitleButton(
+                          //     icon: LineAwesomeIcons.tools,
+                          //     title: '网络修复',
+                          //     loading: loadingRepair,
+                          //     onTap: ()async{
+                          //       await repair();
+                          //     }),
                           _buildIconTitleButton(icon: Icons.logout, title: "退出登录",onTap: ()=>willSignOut(context))
                         ])
                       ],
@@ -458,12 +459,7 @@ class _MyselfPageState extends State<MyselfPage>
 
 
 
-  void signOut() {
-    Global.clearPrefsData();
-    cumt.cookieJar.deleteAll();
-    backImgFile = null;
-    toLoginPage(context);
-  }
+
   void _changeBackgroundImage() async {
     // PickedFile pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
     final pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);

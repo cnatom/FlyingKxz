@@ -39,8 +39,8 @@ class CourseProvider extends ChangeNotifier{
   }
   ///初始化课表数据
   ///CourseProvider().init();
-  init(){
-    if(loading)return;
+  init()async{
+    if(loading==true)return;
     if(Prefs.courseData!=null){
       if(!_haveInit){
         _initDateTime();
@@ -50,7 +50,7 @@ class CourseProvider extends ChangeNotifier{
       }
 
     }else{
-      get(Prefs.schoolYear,Prefs.schoolTerm);
+      await get(Prefs.schoolYear,Prefs.schoolTerm);
     }
     _haveInit = true;
   }
@@ -67,12 +67,17 @@ class CourseProvider extends ChangeNotifier{
     }
     setAdmissionDateTime(newDateTimeStr);
     Future.wait([_getJsonInfo(year, term)]).then((courseBeans){
-      var courseBean = courseBeans[0];
-      _handleCourseBean(courseBean);
-      _savePrefs();
+
+      if(courseBeans[0]!=null){
+        var courseBean = courseBeans[0];
+        _handleCourseBean(courseBean);
+        _savePrefs();
+        loading = false;
+      }else{
+        loading = null;
+      }
     }).whenComplete((){
       notifyListeners();
-      loading = false;
     });
   }
   /// 修改当前周
@@ -182,39 +187,36 @@ class CourseProvider extends ChangeNotifier{
     curMondayDate = admissionDate.add(Duration(days: 7*(curWeek-1)));
   }
   _handleCourseBean(CourseBean courseBean){
-    if(courseBean!=null){
-      _initData();
-      // var nameMap = new Map();
-      for(var course in courseBean.kbList){
-        // //防止添加重复课程
-        // if(nameMap.containsKey(course.kcmc)){
-        //   continue;
-        // }else{
-        //   nameMap[course.kcmc] = true;
-        // }
-        //"4-6周,8-13周"->["4-6周","8-13周"]
-        var courseWeek = course.zcd.split(',');
-        // ["4-6周","8-13周"] -> [4,5,6,8,9,10,11,12,13]
-        List<int> weekList = [];
-        for(var week in courseWeek){
-          weekList.addAll(_strWeekToList(week));
-        }
-        int duration = int.parse(course.jcs.split('-')[1]) - int.parse(course.jcs.split('-')[0]) + 1;
-        CourseData newCourseData = new CourseData(
-            weekList: weekList,
-            weekNum: int.parse(course.xqj),
-            lessonNum: int.parse(course.jcs.split('-')[0]),
-            title: course.kcmc,
-            location: course.cdmc,
-            teacher: course.xm,
-            credit: course.xf,
-            durationNum: duration,);
-        _infoByCourse.add(newCourseData);
-        for(int week in weekList){
-          info[week].add(newCourseData);
-          pointArray[week][newCourseData.lessonNum~/2+1][newCourseData.weekNum]++;
-        }
-
+    _initData();
+    // var nameMap = new Map();
+    for(var course in courseBean.kbList){
+      // //防止添加重复课程
+      // if(nameMap.containsKey(course.kcmc)){
+      //   continue;
+      // }else{
+      //   nameMap[course.kcmc] = true;
+      // }
+      //"4-6周,8-13周"->["4-6周","8-13周"]
+      var courseWeek = course.zcd.split(',');
+      // ["4-6周","8-13周"] -> [4,5,6,8,9,10,11,12,13]
+      List<int> weekList = [];
+      for(var week in courseWeek){
+        weekList.addAll(_strWeekToList(week));
+      }
+      int duration = int.parse(course.jcs.split('-')[1]) - int.parse(course.jcs.split('-')[0]) + 1;
+      CourseData newCourseData = new CourseData(
+        weekList: weekList,
+        weekNum: int.parse(course.xqj),
+        lessonNum: int.parse(course.jcs.split('-')[0]),
+        title: course.kcmc,
+        location: course.cdmc,
+        teacher: course.xm,
+        credit: course.xf,
+        durationNum: duration,);
+      _infoByCourse.add(newCourseData);
+      for(int week in weekList){
+        info[week].add(newCourseData);
+        pointArray[week][newCourseData.lessonNum~/2+1][newCourseData.weekNum]++;
       }
 
     }
