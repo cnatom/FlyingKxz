@@ -72,7 +72,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       jidianTotal = null;
     });
     //检查内网环境
-    if(!await Cumt.checkConnect()){
+    if(!await cumt.checkCookieConnectIn()){
       toTipPage(context);
       setState(() {loading = false;});
       return;

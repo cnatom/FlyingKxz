@@ -57,7 +57,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
   }
   _refresh()async{
     setState(() {loading = true;});
-    if(await Cumt.checkConnect()){
+    if(await cumt.checkCookieConnectIn()){
       if(await examPost(context,year: Prefs.schoolYear, term: Prefs.schoolTerm)){
         showToast('刷新成功');
       }else{

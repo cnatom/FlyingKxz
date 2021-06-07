@@ -47,9 +47,9 @@ class Cumt {
       'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
     "X-Requested-With": "XMLHttpRequest"},
     validateStatus: (status) { return status < 500; },
-    sendTimeout: 5000,
-    receiveTimeout: 5000,
-    connectTimeout: 5000,));
+    sendTimeout: 4000,
+    receiveTimeout: 4000,
+    connectTimeout: 4000,));
 
   Future<void> init()async{
     Directory tempDir = await getApplicationDocumentsDirectory();
@@ -87,46 +87,54 @@ class Cumt {
         return false;
       }
       var loginLoopRes = await dio.get(loginResponse.headers.value('Location'),options: Options(followRedirects: false));
-      // 登录教务系统
-      var jwRes = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fjwxt.cumt.edu.cn%2Fsso%2Fjziotlogin',options: Options(followRedirects:false,));
-      var jwLoopRes = await dio.get(jwRes.headers.value('location'),);
-      var jwCookieRes = await dio.get(jwLoopRes.redirects[1].location.toString());
       Prefs.username = username;
       Prefs.password = password;
       return true;
     }on DioError catch(e){
-      _handleError(e,context:context);
+      _handleError(e);
       debugPrint(e.toString());
       return false;
     }
   }
-  _handleError(DioError e,{BuildContext context})async{
-    if(context!=null){
-      switch(e.type){
-        case DioErrorType.connectTimeout:
-          toTipPage(context);
-          break;
-        case DioErrorType.sendTimeout:
-          showToast( '发送超时QAQ');
-          break;
-        case DioErrorType.receiveTimeout:
-          showToast( '接收超时QAQ');
-          break;
-        case DioErrorType.response:
-          showToast( '响应码错误QAQ');
-          break;
-        case DioErrorType.cancel:
-          showToast( '请求被取消QAQ');
-          break;
-        case DioErrorType.other:
-          showToast( '未知错误QAQ');
-          break;
-      }
+  Future<bool> loginJw()async{
+    try{
+      // 登录教务系统
+      var jwRes = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fjwxt.cumt.edu.cn%2Fsso%2Fjziotlogin',options: Options(followRedirects:false,));
+      var jwLoopRes = await dio.get(jwRes.headers.value('location'),);
+      var jwCookieRes = await dio.get(jwLoopRes.redirects[1].location.toString());
+      return true;
+    }on DioError catch(e){
+      _handleError(e);
+      return false;
     }
   }
-  static Future<bool> checkConnect()async{
+  _handleError(DioError e,)async{
+    switch(e.type){
+      case DioErrorType.connectTimeout:
+        showToast('连接超时QAQ');
+        break;
+      case DioErrorType.sendTimeout:
+        showToast( '发送超时QAQ');
+        break;
+      case DioErrorType.receiveTimeout:
+        showToast( '接收超时QAQ');
+        break;
+      case DioErrorType.response:
+        showToast( '响应码错误QAQ');
+        break;
+      case DioErrorType.cancel:
+        showToast( '请求被取消QAQ');
+        break;
+      case DioErrorType.other:
+        showToast( '未知错误QAQ');
+        break;
+    }
+  }
+  //检测是否连接内网,并检查cookie
+  Future<bool> checkCookieConnectIn()async{
     try{
-      var res = await Dio(BaseOptions(connectTimeout: 3000)).get('http://jwxt.cumt.edu.cn/jwglxt');
+      var res = await dio.get('http://jwxt.cumt.edu.cn/jwglxt/xtgl/index_cxYhxxIndex.html?xt=jw&localeKey=zh_CN&_=1623069930196&gnmkdm=index&su=${Prefs.username}',options: Options(receiveTimeout: 1000,sendTimeout: 1000));
+      print(res.toString());
       print('已连接内网');
       return true;
     }on DioError catch(e){
@@ -136,9 +144,23 @@ class Cumt {
       // }
     }
   }
+  //检测融合门户Cookie是否过期
+  Future<bool> checkCookie()async{
+    try{
+      var res = await dio.get('http://portal.cumt.edu.cn/portal/api/v1/api/http/8',options: Options(receiveTimeout: 4000,sendTimeout: 4000));
+      print(res.toString().length);
+      if(res.toString().length>10000){
+        return false;
+      }
+      return true;
+    }on DioError catch(e){
+      return false;
+    }
+  }
+  //
   Future<void> logout()async{
     var res = await dio.get('http://portal.cumt.edu.cn/portal/sso/logout');
-    print(res.toString());
+    var resJw = await dio.get('http://jwxt.cumt.edu.cn/jwglxt/logout?t=1623069320417&login_type=');
   }
   //获取姓名手机号
   Future<Map<String,dynamic>> getNamePhone()async{
@@ -158,7 +180,7 @@ class Cumt {
   }
   //如果连接内网则重新登录
   Future<bool> checkRefreshCookies()async{
-    if(await checkConnect()){
+    if(await checkCookieConnectIn()){
       if(await login(username, password)) return true;
     }
     return false;
@@ -245,6 +267,7 @@ class Cumt {
   }
   //查询
   Future<String> inquiryJw(InquiryType inquiryType,String xnm,String xqm,)async{
+
     var url = Prefs.visitor?_urlVisitorMap[inquiryType]:_urlMap[inquiryType];
     var transMap = {
       '0':'',

@@ -45,7 +45,7 @@ class _MyselfPageState extends State<MyselfPage>
   bool loadingRepair = false;
   Future<bool> getPreviewInfo() async {
     bool ok = false;
-    if(await Cumt.checkConnect()){
+    if(await cumt.checkCookieConnectIn()){
       ok = await cumt.getBalance();
       if(Prefs.powerHome!=null&&Prefs.powerNum!=null){
         ok = await cumt.getPower(Prefs.powerHome, Prefs.powerNum);
@@ -59,7 +59,7 @@ class _MyselfPageState extends State<MyselfPage>
     setState(() {
       loadingRepair = true;
     });
-    if(await Cumt.checkConnect()){
+    if(await cumt.checkCookieConnectIn()){
       if(await cumt.login(Prefs.username, Prefs.password)){
         showToast('🎉 修复成功！');
       }else{

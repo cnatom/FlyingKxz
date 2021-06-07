@@ -95,17 +95,19 @@ class CoursePageState extends State<CoursePage>
       actions: [
         _buildAddButton(),
         _buildShowRightButton(),
-        // IconButton(
-        //   icon: Icon(Icons.build),
-        //   onPressed: ()async{
-        //   },
-        //   color: themeProvider.colorNavText,),
-        // IconButton(
-        //   icon: Icon(Icons.logout),
-        //   onPressed: ()async{
-        //     await cumt.logout();
-        //   },
-        //   color: themeProvider.colorNavText,)
+        IconButton(
+          icon: Icon(Icons.build),
+          onPressed: ()async{
+            // cumt.checkCookie();
+            cumt.checkCookieConnectIn();
+          },
+          color: themeProvider.colorNavText,),
+        IconButton(
+          icon: Icon(Icons.logout),
+          onPressed: ()async{
+            await cumt.logout();
+          },
+          color: themeProvider.colorNavText,)
       ],
     );
   }
@@ -125,7 +127,7 @@ class CoursePageState extends State<CoursePage>
           String yearStr = picker.getSelectedValues()[0].toString().substring(0, 4);
           String termStr = '${value[1] + 1}';
           setState(() {CourseProvider.loading = true;});
-          if(await Cumt.checkConnect()){
+          if(await cumt.checkCookieConnectIn()){
             courseProvider.get(yearStr , termStr);
           }else{
             toTipPage(context);

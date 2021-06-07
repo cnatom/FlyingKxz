@@ -35,7 +35,7 @@ class _VideoPageState extends State<VideoPage> {
 
 
   Future<void> init()async{
-    if(!await Cumt.checkConnect()){
+    if(!await cumt.checkCookieConnectIn()){
       toTipPage(context);
       return;
     }
@@ -248,6 +248,7 @@ class _VideoPreViewCardState extends State<VideoPreViewCard> {
     ViewType.PPT:2
   };
   var urlList = [];
+  var curUrl = '';//当前视频的下载链接
   var curTimeRangeList = [];//[08:00-08:30,08:00-08:30,08:00-08:30]
   var curDate = '';//08-01
   var curTime = '';//08:00-08:30
@@ -299,11 +300,10 @@ class _VideoPreViewCardState extends State<VideoPreViewCard> {
   Future<void> setView(String time,ViewType viewType)async{
     curView = viewType;
     curTime = time;
-    var url = map[time][view[viewType]];
+    curUrl = map[time][view[viewType]];
     await player.reset();
-    await player.setDataSource(url,showCover: true);
+    await player.setDataSource(curUrl,showCover: true);
     setState(() {
-
     });
   }
   Future<void> init()async{
@@ -386,9 +386,7 @@ class _VideoPreViewCardState extends State<VideoPreViewCard> {
           ),
           IconButton(
             icon: Icon(Icons.file_download,color: themeProvider.colorMain,),
-            onPressed: (){
-              launch(player.dataSource);
-            },
+            onPressed: ()=>launch(curUrl),
           )
         ],
       )
