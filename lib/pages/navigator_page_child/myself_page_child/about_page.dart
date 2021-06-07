@@ -126,7 +126,7 @@ class _AboutPageState extends State<AboutPage> {
                   height: fontSizeMini38*0.8,
                 ),
                 Text(
-                  '—用心做好产品，期待你的加入—',
+                  '— 科技改变生活，技术成就梦想 —',
                   style: TextStyle(
                       color: colorLoginPageMain,
                       fontSize: fontSizeTip33,
