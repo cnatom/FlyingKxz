@@ -8,6 +8,7 @@ import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ import 'package:provider/provider.dart';
 void toSchoolBusPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => SchoolBusPage()));
+  sendInfo('校车', '初始化校车页面');
 }
 //跳转到当前页面
 //void toLoginPage(BuildContext context) async {

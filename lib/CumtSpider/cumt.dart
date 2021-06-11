@@ -284,6 +284,7 @@ class Cumt {
       var map = jsonDecode(res.toString());
       Prefs.cardNum = map['data']['ZH'];
       Prefs.balance = (double.parse(map['data']['YE'])/100).toStringAsFixed(2);
+      sendInfo('校园卡', '获取校园卡余额:${Prefs.balance}');
       return true;
     }on DioError catch(e){
       print('获取校园卡余额失败');

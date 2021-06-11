@@ -17,6 +17,8 @@ import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';
 import '../../tip_page.dart';
@@ -138,6 +140,7 @@ class CoursePageState extends State<CoursePage>
           setState(() {CourseProvider.loading = true;});
           if(await Cumt.checkConnect()){
             courseProvider.get(yearStr , termStr);
+            sendInfo('主页', '导入了课表:$yearStr学年,$termStr学期');
           }else{
             toTipPage();
             setState(() {CourseProvider.loading = false;});
@@ -158,7 +161,7 @@ class CoursePageState extends State<CoursePage>
     );
   }
   _addCourse()async{
-    List newCourseDataList;
+    List<CourseData> newCourseDataList;
     newCourseDataList = await showFlyModalBottomSheet(
         context: context,
         isScrollControlled: false,
@@ -177,6 +180,7 @@ class CoursePageState extends State<CoursePage>
     setState(() {
 
     });
+    sendInfo('主页', '添加了课程：${newCourseDataList[0].title}');
   }
   Widget _buildShowRightButton(){
     return  IconButton(

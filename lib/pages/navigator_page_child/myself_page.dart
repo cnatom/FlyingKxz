@@ -70,6 +70,7 @@ class _MyselfPageState extends State<MyselfPage>
   //   });
   // }
   void signOut() async{
+    sendInfo('退出登录', '退出了登录');
     await Global.clearPrefsData();
     backImgFile = null;
     await cumt.clearCookie();
@@ -80,6 +81,7 @@ class _MyselfPageState extends State<MyselfPage>
   void initState() {
     super.initState();
     getPreviewInfo();
+    sendInfo('我的', '初始化我的页面');
   }
 
   @override
@@ -211,10 +213,10 @@ class _MyselfPageState extends State<MyselfPage>
                         // ]),
 
                         _buttonList(children: <Widget>[
-                          _buildIconTitleButton(
-                              icon: Icons.people_outline,
-                              title: '关于我们',
-                              onTap: () => toAboutPage(context)),
+                          // _buildIconTitleButton(
+                          //     icon: Icons.people_outline,
+                          //     title: '关于我们',
+                          //     onTap: () => toAboutPage(context)),
                           _buildIconTitleButton(
                               icon: Icons.feedback_outlined,
                               title: '反馈与建议',
@@ -226,6 +228,7 @@ class _MyselfPageState extends State<MyselfPage>
                                     maxLines: 10);
                                 if (text != null) {
                                   await feedbackPost(context, text: text);
+                                  sendInfo('反馈与建议', '发送了反馈:$text');
                                 }
                               }),
                           _buildIconTitleButton(

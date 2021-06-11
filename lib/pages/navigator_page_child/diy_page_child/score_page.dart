@@ -13,6 +13,7 @@ import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/Model/score_info.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
@@ -28,6 +29,7 @@ import '../../tip_page.dart';
 void toScorePage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => ScorePage()));
+  sendInfo('成绩', '初始化成绩页面');
 }
 
 class ScorePage extends StatefulWidget {
@@ -90,6 +92,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     }
     calcuTotalScore();
     setState(() {loading = false;});
+    sendInfo('成绩', '查询了成绩:$year,$term');
   }
   @override
   Widget build(BuildContext context) {

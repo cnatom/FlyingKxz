@@ -14,11 +14,13 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/power_post.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 void toPowerPage(BuildContext context){
   Navigator.push(context, CupertinoPageRoute(builder: (context)=>PowerPage()));
+  sendInfo('宿舍电量', '初始化宿舍电量页面');
 }
 class PowerPage extends StatefulWidget {
   @override
@@ -37,7 +39,22 @@ class _PowerPageState extends State<PowerPage> {
   void initState() {
     super.initState();
   }
-
+  void _handlePower()async{
+    FocusScope.of(context).requestFocus(FocusNode());
+    setState(() {
+      powerLoading = true;
+    });
+    if(_powerNumController.text.isNotEmpty||Prefs.powerHome!=null){
+      powerNum = _powerNumController.text.toString();
+      bool ok = await cumt.getPower(powerHome, powerNum);
+      if(!ok) showToast( "获取失败，请再检查一下参数");
+    }else{
+      showToast( "请输入完整");
+    }
+    setState(() {
+      powerLoading = false;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     percent = (Prefs.power??0.0)/(Prefs.powerMax??1.0);
@@ -102,27 +119,6 @@ class _PowerPageState extends State<PowerPage> {
 
           });
         });
-  }
-  Widget _buildTitleCenterButton(BuildContext context, String title,
-      {GestureTapCallback onTap,}) {
-    return InkWell(
-      onTap: onTap,
-      child: FlyContainer(
-        margin: EdgeInsets.fromLTRB(
-            0, spaceCardPaddingTB , 0, spaceCardPaddingTB ),
-        padding: EdgeInsets.fromLTRB(
-            0, spaceCardPaddingTB , 0, spaceCardPaddingTB ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FlyText.main35(
-              title,
-              color: Theme.of(context).primaryColor,
-            )
-          ],
-        ),
-      ),
-    );
   }
   Widget _buildDiyButton(String title,{@required Widget child,GestureTapCallback onTap}){
     return InkWell(
@@ -192,22 +188,7 @@ class _PowerPageState extends State<PowerPage> {
     );
   }
   Widget _buildPower(){
-    void _handlePower()async{
-      FocusScope.of(context).requestFocus(FocusNode());
-      setState(() {
-        powerLoading = true;
-      });
-      if(_powerNumController.text.isNotEmpty||Prefs.powerHome!=null){
-        powerNum = _powerNumController.text.toString();
-        bool ok = await cumt.getPower(powerHome, powerNum);
-        if(!ok) showToast( "获取失败，请再检查一下参数");
-      }else{
-        showToast( "请输入完整");
-      }
-      setState(() {
-        powerLoading = false;
-      });
-    }
+
     return Padding(
       padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
       child: Column(

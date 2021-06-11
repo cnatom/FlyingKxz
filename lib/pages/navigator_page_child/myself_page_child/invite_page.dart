@@ -11,6 +11,7 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:share/share.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -65,8 +66,8 @@ class _InvitePageState extends State<InvitePage> {
                   showToast("已复制到粘贴板，快分享给好友吧~");
                 }else{
                   Share.share("http://kxz.atcumt.com/");
-
                 }
+                sendInfo('分享App', '分享了矿小助官网');
               },
               child: Container(
                 height: fontSizeMain40*3,
@@ -94,6 +95,7 @@ class _InvitePageState extends State<InvitePage> {
                 }else{
                   Share.share("https://jq.qq.com/?_wv=1027&k=272EhIWK");
                 }
+                sendInfo('分享App', '分享了QQ群号');
               },
               child: Container(
                 height: fontSizeMain40*3,

@@ -11,6 +11,7 @@ import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/video__data.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/video_panel.dart';
 import 'package:provider/provider.dart';
 import 'package:html/parser.dart' as parser;
@@ -24,6 +25,7 @@ import '../../tip_page.dart';
 void toVideoPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => VideoPage()));
+  sendInfo('课堂回放', '初始化课堂回放页面');
 }
 class VideoPage extends StatefulWidget {
   @override
@@ -54,6 +56,7 @@ class _VideoPageState extends State<VideoPage> {
       setState(() {
         loading = false;
       });
+      sendInfo('课堂回放', '搜索课程:$courseName');
     }
   }
   @override
@@ -79,12 +82,19 @@ class _VideoPageState extends State<VideoPage> {
           padding: EdgeInsets.all(50),
           alignment: Alignment.center,
           child: loadingAnimationIOS(),
-        ):Column(
+        ):Global.videoInfo.lstDataSource!=null?Column(
           children: [
             Column(
               children: Global.videoInfo.lstDataSource.map((item){
                 return _buildViewCard(item,item.course.imageUrl, item.course.courseName, item.course.schoolYear, item.course.userName, item.course.showTerm);
               }).toList(),
+            )
+          ],
+        ):Column(
+          children: [
+            SizedBox(height: 40,),
+            Center(
+              child: FlyText.mainTip35('搜不到这门课哦'),
             )
           ],
         ),
@@ -316,6 +326,7 @@ class _VideoPreViewCardState extends State<VideoPreViewCard> {
     //播放
     await setView(curTimeRangeList[0],curView);
     player.start();
+    sendInfo('课堂回放', '查看视频:${widget.videoData.course.courseName}');
   }
   @override
   void initState() {
@@ -326,6 +337,7 @@ class _VideoPreViewCardState extends State<VideoPreViewCard> {
   void dispose() {
     super.dispose();
     player.release();
+    sendInfo('课堂回放', '结束观看:${widget.videoData.course.courseName}');
   }
 
   @override

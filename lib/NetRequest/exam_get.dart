@@ -7,6 +7,7 @@ import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/CumtSpider/cumt_format.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_page.dart';
 
 //获取考试

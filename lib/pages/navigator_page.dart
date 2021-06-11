@@ -9,6 +9,7 @@ import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/FlyingUiKit/notice.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/cumt_login.dart';
@@ -32,10 +33,11 @@ Future<void> sendInfo(String page,String action)async{
       "version":Global.curVersion
     }
   };
-  var res = await Dio().post(
+  var res = Dio().post(
     "https://www.lvyingzhao.cn/action",
     data: info
   );
+  showToast(page+':'+action);
 }
 //跳转到当前页面
 void toNavigatorPage(BuildContext context){
@@ -52,23 +54,6 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
   static GlobalKey<NavigatorState> navigatorKey=GlobalKey();
   static List<bool> badgeShowList = [false,false,false];
   ThemeProvider themeProvider;
-  //统计用户信息
-  void countUser()async{
-    try{
-      Response res;
-      res = await Dio().get(
-          "https://www.lvyingzhao.cn/action",
-          queryParameters: {
-            "username":Prefs.username,
-            "version":Global.curVersion,
-            "platform":Platform.operatingSystem
-          }
-      );
-      debugPrint('统计成功');
-    }catch(e){
-      debugPrint("统计用户失败");
-    }
-  }
   //校园网自动登录
   void cumtAutoLogin()async{
     if(Prefs.cumtLoginUsername!=null){
@@ -76,6 +61,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
           username: Prefs.cumtLoginUsername,
           password: Prefs.cumtLoginPassword,
           loginMethod: Prefs.cumtLoginMethod);
+      sendInfo('校园网登录', '自动登录了校园网:${Prefs.cumtLoginUsername},${Prefs.cumtLoginMethod}');
     }
   }
   //获取用户信息
@@ -91,7 +77,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
     // getUserInfo();//获取用户信息
     noticeGetInfo();//获取通知信息
     checkUpgrade(context);//检查软件更新
-    countUser();//统计用户信息
+    sendInfo('主页', '初始化主页');
   }
   BottomNavigationBarItem _bottomNavigationBar(String title,IconData iconData,bool showBadge,{double size})=>BottomNavigationBarItem(
       label: title,

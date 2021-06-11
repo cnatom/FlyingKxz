@@ -15,6 +15,7 @@ import 'package:flying_kxz/Model/book_detail_info.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/NetRequest/book_get.dart';
 import 'package:flying_kxz/NetRequest/exam_get.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 
 import 'book_detail_page.dart';
 
@@ -42,6 +43,7 @@ void toBookPage(BuildContext context) {
 
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BookPage()));
+  sendInfo('图书馆', '初始化图书馆页面');
 }
 
 
@@ -66,6 +68,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
       curPage = page;
     }
     setState(() {loading = false;});
+    sendInfo('图书馆', '搜索书籍：$book');
   }
   switchPage({@required int page})async{
     setState(() {
@@ -73,19 +76,6 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
     });
     await bookGet(book: curBookName,row: row.toString(),page: page.toString());
     setState(() {loading = false;});
-  }
-  Future<bool> getBookDetail({@required String url})async{
-    Response res;
-    Dio dio = Dio();
-    //配置dio信息
-    res = await dio.get(url,);
-    //Json解码为Map
-    Map<String,dynamic> map = jsonDecode(res.toString());
-    if (map['status']==200) {
-      Global.bookDetailInfo = BookDetailInfo.fromJson(map);
-      return true;
-    }
-    return false;
   }
   Widget bookCard(int curIndex,
       {@required String name,

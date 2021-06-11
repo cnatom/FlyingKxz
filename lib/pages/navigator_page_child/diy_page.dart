@@ -7,6 +7,7 @@ import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/video_page.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,12 @@ class DiyPage extends StatefulWidget {
 
 class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,SingleTickerProviderStateMixin {
   ThemeProvider themeProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    sendInfo('发现', '初始化发现页');
+  }
 
   @override
   Widget build(BuildContext context) {
