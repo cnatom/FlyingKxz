@@ -53,22 +53,22 @@ class _MyselfPageState extends State<MyselfPage>
     setState(() {});
     return ok;
   }
-  Future<void> repair()async{
-    setState(() {
-      loadingRepair = true;
-    });
-    if(await cumt.check()){
-      showToast('🎉 修复成功！');
-    }else{
-      showToast('已连接内网，但修复失败QAQ\n🎉 恭喜您发现了新的bug（卑微\n（即将跳转至反馈群）',duration: 7);
-      Future.delayed(Duration(seconds: 7),(){
-        launch('https://jq.qq.com/?_wv=1027&k=272EhIWK');
-      });
-    }
-    setState(() {
-      loadingRepair = false;
-    });
-  }
+  // Future<void> repair()async{
+  //   setState(() {
+  //     loadingRepair = true;
+  //   });
+  //   if(await cumt.check()){
+  //     showToast('🎉 修复成功！');
+  //   }else{
+  //     showToast('已连接内网，但修复失败QAQ\n🎉 恭喜您发现了新的bug（卑微\n（即将跳转至反馈群）',duration: 7);
+  //     Future.delayed(Duration(seconds: 7),(){
+  //       launch('https://jq.qq.com/?_wv=1027&k=272EhIWK');
+  //     });
+  //   }
+  //   setState(() {
+  //     loadingRepair = false;
+  //   });
+  // }
   void signOut() async{
     Global.clearPrefsData();
     Directory tempDir = await getApplicationDocumentsDirectory();

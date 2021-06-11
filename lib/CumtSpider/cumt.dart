@@ -10,6 +10,7 @@ import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/CumtSpider/cumt_format.dart';
 import 'package:flying_kxz/Model/video__data.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:path_provider/path_provider.dart';
 import '../FlyingUiKit/toast.dart';
@@ -21,6 +22,8 @@ import 'package:html/parser.dart' as parser;
 Cumt cumt = new Cumt();
 enum InquiryType {Course,Score,ScoreAll,Exam,Balance,BalanceHistory,Power}
 class Cumt {
+  bool haveLoginJw = false;
+  bool haveLogin = false;
   String username = Prefs.username??'';
   String password = Prefs.password??'';
   Map<InquiryType,String> _urlMap = {
@@ -42,30 +45,34 @@ class Cumt {
   };
 
   CookieJar cookieJar;
+  CookieJar cookieJarJw;
    Dio dio = new Dio(BaseOptions(
     headers: {
       'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
     "X-Requested-With": "XMLHttpRequest"},
     validateStatus: (status) { return status < 500; },
-    sendTimeout: 5000,
-    receiveTimeout: 5000,
-    connectTimeout: 5000,));
+    sendTimeout: 3000,
+    receiveTimeout: 3000,
+    connectTimeout: 3000,));
+   Dio dioJw = new Dio(BaseOptions(
+     headers: {
+       'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
+       "X-Requested-With": "XMLHttpRequest"},
+     validateStatus: (status) { return status < 500; },
+     sendTimeout: 3000,
+     receiveTimeout: 3000,
+     connectTimeout: 3000,));
 
   Future<void> init()async{
-    Directory tempDir = await getApplicationDocumentsDirectory();
-    cookieJar = PersistCookieJar(
-        ignoreExpires: false,
-        storage: FileStorage(tempDir.path)
-    );
+    cookieJar = new CookieJar();
+    cookieJarJw = new CookieJar();
     dio.interceptors.add(new CumtInterceptors());
     dio.interceptors.add(new CookieManager(cookieJar,));
-    // _dio.interceptors.add(new LogInterceptor());
-
+    dioJw.interceptors.add(new CumtInterceptors());
+    dioJw.interceptors.add(new CookieManager(cookieJarJw,));
   }
   Future<bool> login(String username,String password,{BuildContext context})async{
     try{
-      Directory tempDir = await getApplicationDocumentsDirectory();
-      if(!(await tempDir.list().isEmpty)) cookieJar.deleteAll();
       this.username = username;
       this.password = password;
       var officialHtml = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=http%3A//portal.cumt.edu.cn/casservice',);
@@ -86,7 +93,7 @@ class Cumt {
         showToast('账号或密码错误');
         return false;
       }
-      var loginLoopRes = await dio.get(loginResponse.headers.value('Location'),options: Options(followRedirects: false));
+      await redirect(loginResponse.headers.value('Location'));
       Prefs.username = username;
       Prefs.password = password;
       return true;
@@ -96,12 +103,53 @@ class Cumt {
       return false;
     }
   }
+  Future<String> redirectJw(String url)async{
+    var res = await dioJw.get(url,options: Options(followRedirects: false));
+    var location = res.headers.value('location');
+    if(location.toString().length>4&&location.toString().substring(0,4)!='http'){
+      print("重定向循环："+url+'\n    to:'+location);
+      return await redirectJw(location);
+    }else{
+      return 'OK';
+    }
+  }
+  Future<String> redirect(String url)async{
+    var res = await dio.get(url,options: Options(followRedirects: false));
+    var location = res.headers.value('location');
+    if(location.toString().length>4&&location.toString().substring(0,4)!='http'){
+      print("重定向循环："+url+'\n    to:'+location);
+      return await redirect(location);
+    }else{
+      return 'OK';
+    }
+  }
   Future<bool> loginJw()async{
     try{
+      if(haveLoginJw) return true;
       // 登录教务系统
-      var jwRes = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fjwxt.cumt.edu.cn%2Fsso%2Fjziotlogin',options: Options(followRedirects:false,));
-      var jwLoopRes = await dio.get(jwRes.headers.value('location'),);
-      var jwCookieRes = await dio.get(jwLoopRes.redirects[1].location.toString());
+      var jwRes = await dioJw.get('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fjwxt.cumt.edu.cn%2Fsso%2Fjziotlogin',options: Options(followRedirects:true,));
+      print("字段长度："+jwRes.toString().length.toString());
+      if(jwRes.toString().length>35000){
+        //解析并登录
+        var document = parser.parse(jwRes.data);
+        var pwdSalt = document.body.querySelector("#pwdEncryptSalt").attributes['value']??'';
+        var execution = document.body.querySelectorAll('#execution')[2].attributes['value']??'';
+        var newPassword = await _pwdAes(password, pwdSalt);
+        var loginResponse = await dioJw.post('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fjwxt.cumt.edu.cn%2Fsso%2Fjziotlogin',data: FormData.fromMap({
+          'username': username,
+          'password': newPassword,
+          '_eventId': 'submit',
+          'cllt': 'userNameLogin',
+          'execution': execution,
+          'rememberMe':'true'
+        }),options: Options(followRedirects: false),);
+        showToast('登录！'+loginResponse.headers.value('location'));
+        var res1 = await dioJw.get(loginResponse.headers.value('location'),options: Options(followRedirects: false));
+        var res2 = await dioJw.get(res1.headers.value('location'),options: Options(followRedirects: false));
+        var res3 = await dioJw.get(res2.headers.value('location'),options: Options(followRedirects: false));
+        haveLoginJw = true;
+        return true;
+      }
       return true;
     }on DioError catch(e){
       _handleError(e);
@@ -135,52 +183,6 @@ class Cumt {
     }
   }
   //在每次请求前都要检查
-  Future<bool> check({BuildContext context, bool jw = true})async{
-    try{
-      if(await checkCookie()){
-        if(jw){
-          if(await checkConnect()){
-            print('已连接内网');
-            await logoutJw();
-            if(await loginJw()){
-              print("检查无误");
-              return true;
-            }
-          }else{
-            toTipPage();
-            return false;
-          }
-        }
-        print('检查无误');
-        return true;
-      }else{
-        showToast('融合门户Cookie过期，正在刷新……');
-        if(await login(username, password)){
-          if(jw){
-            showToast('融合门户刷新成功,正在获取教务Cookie……');
-            await logoutJw();
-            if(await loginJw()){
-              showToast('教务Cookie获取成功！正在获取……');
-              return await check(context: context);
-            }else{
-              showToast('教务Cookie获取失败，请检查网络连接');
-              return false;
-            }
-          }else{
-            showToast('融合门户Cookie刷新成功，正在获取……');
-            return true;
-          }
-        }else{
-          showToast('刷新失败，请检查您的网络连接');
-          return false;
-        }
-      }
-
-    }on DioError catch(e){
-      showToast('发生错误：'+e.message);
-      return false;
-    }
-  }
   _handleError(DioError e,)async{
     switch(e.type){
       case DioErrorType.connectTimeout:
@@ -224,25 +226,16 @@ class Cumt {
   }
   //获取姓名手机号
   Future<Map<String,dynamic>> getNamePhone()async{
-    if(await check(jw: false)){
-      var res = await dio.get('http://portal.cumt.edu.cn/portal/api/v1/api/http/8',);
-      var map = jsonDecode(res.toString());
-      map = map['entities'][0];
-      var result = {
-        'name':map['name']??'',
-        'phone':map['phone']??''
-      };
-      return result;
-    }
-    print('姓名手机号获取失败');
+    var res = await dio.get('http://portal.cumt.edu.cn/portal/api/v1/api/http/8',);
+    var map = jsonDecode(res.toString());
+    map = map['entities'][0];
+    var result = {
+      'name':map['name']??'',
+      'phone':map['phone']??''
+    };
+    return result;
   }
-  //如果连接内网则重新登录
-  // Future<bool> checkRefreshCookies()async{
-  //   if(await checkConnect()){
-  //     if(await login(username, password)) return true;
-  //   }
-  //   return false;
-  // }
+
   //获取校园卡余额
   Future<bool> getBalance()async{
     if(Prefs.visitor){
@@ -282,35 +275,80 @@ class Cumt {
     }
     return false;
   }
+  bool checkTimes(InquiryType inquiryType){
+    var map = {};
+    var key = _urlMap[inquiryType].substring(0,33);
+    Map<String,dynamic> curMap;
+    var now = DateTime.now();
+    //提取Prefs
+    if(Prefs.timesMap!=null){
+      map = jsonDecode(Prefs.timesMap);
+      curMap = map[key];
+    }
+    print(map.toString());
+    if(curMap==null){
+      map[key] = {
+        'date': now.toString(),
+        'times': 2
+      };
+      Prefs.timesMap = jsonEncode(map);
+      return true;
+    }else{
+      var preDate = DateTime.parse(curMap['date']);
+      if(now.isBefore(preDate.add(Duration(hours: 1)))){
+        //一小时之内
+        if(curMap['times']>0){
+          curMap['times']--;
+          map[key] = curMap;
+          Prefs.timesMap = jsonEncode(map);
+          return true;
+        }else{
+          showToast('此功能每小时最多查询3次，过会再来吧～',duration: 3);
+          return false;
+        }
+      }else{
+        //过了一小时，刷新time
+        curMap['date'] = now.toString();
+        curMap['times'] = 2;
+        map[key] = curMap;
+        Prefs.timesMap = jsonEncode(map);
+        return true;
+      }
+    }
+  }
   //宿舍电量查询
   Future<bool> getPower(String home,String num)async{
     var host = "http://www.houqinbao.com/hydropower/index.php?rebind=1&m=PayWeChat&c=Index&a=bingding&token=&openid"
-    "=oUiRowd11jcJJHzVjZHgbb7OyWqE&schoolcode=13579&payopenid= ";
+        "=oUiRowd11jcJJHzVjZHgbb7OyWqE&schoolcode=13579&payopenid= ";
     await dio.get(host);
     try{
       var data = {'flatname': home, 'roomname': num};
-      var res = await dio.post(_urlMap[InquiryType.Power],data: FormData.fromMap(data));
-      var match = new RegExp('dushu\":(.*?),').firstMatch(res.toString());
-      var power = match.group(0).substring(7,13);
-      print(res.toString());
-      var powerDouble = double.parse(power);
-      //没记录过最大电量，则初始化
-      if(Prefs.powerMax==null) Prefs.powerMax = powerDouble;
-      if(Prefs.power==null) Prefs.power = 0.0;
-      //当电量比上次多时，保存最大电量
-      if(powerDouble>Prefs.power){
-        Prefs.powerMax = powerDouble;
+      var res = await dio.post('http://www.houqinbao.com/hydropower/index.php?m=PayWeChat&c=IndexKd&a=find&schoolcode=13579',data: FormData.fromMap(data));
+      var map = jsonDecode(res.toString());
+      if(map['code']!=40001){
+        print(map['data']['dushu'].toString());
+        var power = map['data']['dushu'].toString();
+        var powerDouble = double.parse(power);
+        //没记录过最大电量，则初始化
+        if(Prefs.powerMax==null) Prefs.powerMax = powerDouble;
+        if(Prefs.power==null) Prefs.power = 0.0;
+        //当电量比上次多时，保存最大电量
+        if(powerDouble>Prefs.power){
+          Prefs.powerMax = powerDouble;
+        }
+        //如果更换了绑定信息，则重新统计
+        if(num!=Prefs.powerNum||home!=Prefs.powerHome){
+          Prefs.powerMax = powerDouble;
+        }
+        //保存电量
+        Prefs.power = powerDouble;
+        //保存绑定信息
+        Prefs.powerNum = num;
+        Prefs.powerHome = home;
+        sendInfo('宿舍电量', '查询电量:$home,$num,$powerDouble');
+        return true;
       }
-      //如果更换了绑定信息，则重新统计
-      if(num!=Prefs.powerNum||home!=Prefs.powerHome){
-        Prefs.powerMax = powerDouble;
-      }
-      //保存电量
-      Prefs.power = powerDouble;
-      //保存绑定信息
-      Prefs.powerNum = num;
-      Prefs.powerHome = home;
-      return true;
+      return false;
     }on DioError catch(e){
       print("获取宿舍电量失败");
       return false;
@@ -318,33 +356,35 @@ class Cumt {
   }
   //查询
   Future<String> inquiryJw(InquiryType inquiryType,String xnm,String xqm,)async{
-    if(await check(jw: true)){
-      var url = Prefs.visitor?_urlVisitorMap[inquiryType]:_urlMap[inquiryType];
-      var transMap = {
-        '0':'',
-        '1':'3',
-        '2':'12',
-        '3':'16'
-      };
-      xqm = transMap[xqm]??'';
-      if(xnm=='0') xnm = '';
-      try{
-        var formMap = {
-          'doType':'query',
-          'xnm': xnm,
-          'xqm': xqm
+    if(checkTimes(inquiryType)){
+      if(await loginJw()){
+        var url = Prefs.visitor?_urlVisitorMap[inquiryType]:_urlMap[inquiryType];
+        var transMap = {
+          '0':'',
+          '1':'3',
+          '2':'12',
+          '3':'16'
         };
-        if(inquiryType == InquiryType.Score || inquiryType == InquiryType.ScoreAll) formMap['queryModel.showCount'] = '300';
-        var res = await dio.post(url,
-          data:FormData.fromMap(formMap),queryParameters: {
-            'su':username,
-            'gnmkdm':'N253508'
-          },);
-        debugPrint(res.toString());
-        return res.toString();
-      }on DioError catch(e){
-        //cookie过期重新获取
-        return '';
+        xqm = transMap[xqm]??'';
+        if(xnm=='0') xnm = '';
+        try{
+          var formMap = {
+            'doType':'query',
+            'xnm': xnm,
+            'xqm': xqm
+          };
+          if(inquiryType == InquiryType.Score || inquiryType == InquiryType.ScoreAll) formMap['queryModel.showCount'] = '300';
+          var res = await dioJw.post(url,
+            data:FormData.fromMap(formMap),queryParameters: {
+              'su':username,
+              'gnmkdm':'N253508'
+            },);
+          debugPrint(res.toString());
+          return res.toString();
+        }on DioError catch(e){
+          //cookie过期重新获取
+          return '';
+        }
       }
     }
     return '';

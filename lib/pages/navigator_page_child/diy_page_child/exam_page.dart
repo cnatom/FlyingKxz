@@ -81,8 +81,9 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
     if(Prefs.examData!=null){
       Global.examList = ExamUnit.examJsonDecode(Prefs.examData);
       examCurList = _parseToCurList(Global.examList);
+      setState(() {});
+      return;
     }
-    setState(() {});
     if(await examPost(context, year: Prefs.schoolYear, term: Prefs.schoolTerm)){
       examOutList.clear();
       examCurList = _parseToCurList(Global.examList);

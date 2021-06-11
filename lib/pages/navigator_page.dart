@@ -20,6 +20,23 @@ import 'package:provider/provider.dart';
 import 'app_upgrade.dart';
 import 'navigator_page_child/course_table/course_page.dart';
 
+Future<void> sendInfo(String page,String action)async{
+  var info = {
+    "username":Prefs.username,
+    "action":action,
+    "page":page,
+    "info":{
+      "name":Prefs.name,
+      "time":DateTime.now().toString(),
+      "system":Platform.operatingSystem,
+      "version":Global.curVersion
+    }
+  };
+  var res = await Dio().post(
+    "https://www.lvyingzhao.cn/action",
+    data: info
+  );
+}
 //跳转到当前页面
 void toNavigatorPage(BuildContext context){
   Navigator.of(context).pushAndRemoveUntil(CustomRoute(FlyNavigatorPage(),milliseconds: 500),(route)=>route==null);

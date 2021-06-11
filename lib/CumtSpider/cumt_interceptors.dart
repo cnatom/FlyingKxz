@@ -16,16 +16,16 @@ class CumtInterceptors extends Interceptor {
   Future onResponse(Response response, ResponseInterceptorHandler handler) {
     print("接收 " + response.statusCode.toString());
     //输出set-cookie
-    var setCookie = response.headers.map['set-cookie'];
-    if(setCookie!=null){
-      for(var s in setCookie){
-        print(t+'set-cookie : '+s);
-      }
-    }
-    // //打印全部
-    // for(var key in response.headers.map.keys){
-    //   print(t+key+' : '+response.headers[key].toString());
+    // var setCookie = response.headers.map['set-cookie'];
+    // if(setCookie!=null){
+    //   for(var s in setCookie){
+    //     print(t+'set-cookie : '+s);
+    //   }
     // }
+    //打印全部
+    for(var key in response.headers.map.keys){
+      print(t+key+' : '+response.headers[key].toString());
+    }
     super.onResponse(response, handler);
   }
   @override

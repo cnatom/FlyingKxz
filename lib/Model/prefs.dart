@@ -38,6 +38,7 @@ class Prefs{
   static String _admissionDate = "admissionDate";//开学日期
   static String _themeData = "themeData";
   static String _visitor = "visitor";//游客模式
+  static String _timesMap = "timesMap";
 
   static String get examDataDiy => prefs.getString(_examDataDiy);
   static String get backImg => prefs.getString(_backImg);
@@ -65,6 +66,7 @@ class Prefs{
   static String get admissionDate=> prefs.getString(_admissionDate);
   static String get themeData => prefs.getString(_themeData);
   static bool get visitor => prefs.getBool(_visitor);
+  static String get timesMap => prefs.getString(_timesMap);
 
   static set examDataDiy(String value) =>prefs.setString(_examDataDiy, value);
   static set backImg(String value) =>prefs.setString(_backImg, value);
@@ -92,6 +94,7 @@ class Prefs{
   static set admissionDate(String value) =>prefs.setString(_admissionDate, value);
   static set themeData(String value) =>prefs.setString(_themeData, value);
   static set visitor(bool value) =>prefs.setBool(_visitor, value);
+  static set timesMap(String value) =>prefs.setString(_timesMap, value);
 
   static Future<void> init()async{
     prefs = await SharedPreferences.getInstance();

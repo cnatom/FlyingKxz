@@ -157,7 +157,7 @@ class PointMatrixState extends State<PointMatrix> {
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[for(int j = 1;j<=5;j++)singlePoint(CourseProvider.loading==null?0:pointArray[i][j])],
+                  children: <Widget>[for(int j = 1;j<=5;j++)singlePoint(CourseProvider.loading==false?pointArray[i][j]:0)],
                 ),
                 SizedBox(
                   height: gridWidth / 100,
