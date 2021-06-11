@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
     //检测是否激活&验证码
     if (await loginCheckGet(context, username: _username)) {
       //新登录
-      if(await cumt.login(_username, _password,context: context)){
+      if(await cumt.login(_username, _password,)){
         Prefs.visitor = false;
         var namePhoneMap = await cumt.getNamePhone();
         Prefs.name = namePhoneMap['name'];
