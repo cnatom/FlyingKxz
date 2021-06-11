@@ -57,13 +57,13 @@ class Global{
   static BalanceDetailInfo balanceDetailInfo = new BalanceDetailInfo();//校园卡流水
   static bool igUpgrade;//是否忽略更新
   static String curVersion;
-  static clearPrefsData(){
+  static Future<void> clearPrefsData()async{
     loginInfo = new LoginInfo();
     courseInfo = new CourseInfo();
     scoreInfo = new ScoreInfo();
     examInfo = new ExamInfo();
     examList = [];
-    Prefs.prefs.clear();
+    await Prefs.prefs.clear();
     getSchoolYearTerm();
   }
 

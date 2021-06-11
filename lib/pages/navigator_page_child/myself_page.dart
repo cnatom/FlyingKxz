@@ -70,10 +70,10 @@ class _MyselfPageState extends State<MyselfPage>
   //   });
   // }
   void signOut() async{
-    Global.clearPrefsData();
-    Directory tempDir = await getApplicationDocumentsDirectory();
-    if(!(await tempDir.list().isEmpty)) cumt.cookieJar.deleteAll();
+    await Global.clearPrefsData();
     backImgFile = null;
+    await cumt.clearCookie();
+    cumt.init();
     toLoginPage(context);
   }
   @override

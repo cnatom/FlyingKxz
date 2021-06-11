@@ -380,9 +380,12 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
         return InkWell(
         onTap: ()async{
           if(await willSignOut(context)){
-            var delIndex = Global.examList.indexOf(item);
-            // Global.examDiyInfo.data.removeAt(delIndex);
-            // Prefs.examDataDiy = jsonEncode(Global.examDiyInfo.toJson());
+            int delIndex = -1;
+            for(int i = 0;i<list.length;i++){
+              if(list[i].courseName==item.courseName&&list[i].location==item.location){
+                // delIndex
+              }
+            }
             setState(() {
             });
           }

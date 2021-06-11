@@ -22,8 +22,8 @@ import 'package:html/parser.dart' as parser;
 Cumt cumt = new Cumt();
 enum InquiryType {Course,Score,ScoreAll,Exam,Balance,BalanceHistory,Power}
 class Cumt {
-  bool haveLoginJw = false;
-  bool haveLogin = false;
+  bool haveLoginJw;
+  bool haveLogin;
   String username = Prefs.username??'';
   String password = Prefs.password??'';
   Map<InquiryType,String> _urlMap = {
@@ -43,7 +43,6 @@ class Cumt {
     InquiryType.Balance:'https://api.kxz.atcumt.com/card/balance',
     InquiryType.BalanceHistory:'https://api.kxz.atcumt.com/card/history'
   };
-
   CookieJar cookieJar;
   CookieJar cookieJarJw;
    Dio dio = new Dio(BaseOptions(
@@ -64,6 +63,8 @@ class Cumt {
      connectTimeout: 3000,));
 
   Future<void> init()async{
+    haveLoginJw = false;
+    haveLogin = false;
     cookieJar = new CookieJar();
     cookieJarJw = new CookieJar();
     dio.interceptors.add(new CumtInterceptors());
@@ -71,11 +72,22 @@ class Cumt {
     dioJw.interceptors.add(new CumtInterceptors());
     dioJw.interceptors.add(new CookieManager(cookieJarJw,));
   }
+  Future<void> clearCookie()async{
+    try{
+      await cookieJar.deleteAll();
+    }catch(e){
+      print(e.toString());
+    }
+    try{
+      await cookieJarJw.deleteAll();
+    }catch(e){
+      print(e.toString());
+    }
+  }
   Future<bool> login(String username,String password)async{
+    print(username+' '+password);
     try{
       if(haveLogin) return true;
-      Prefs.username = username;
-      Prefs.password = password;
       var res = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice',options: Options(followRedirects:true,));
       print("字段长度："+res.toString().length.toString());
       if(res.toString().length>35000){
@@ -83,9 +95,9 @@ class Cumt {
         var document = parser.parse(res.data);
         var pwdSalt = document.body.querySelector("#pwdEncryptSalt").attributes['value']??'';
         var execution = document.body.querySelectorAll('#execution')[2].attributes['value']??'';
-        var newPassword = await _pwdAes(Prefs.password, pwdSalt);
+        var newPassword = await _pwdAes(password??Prefs.password, pwdSalt);
         var loginResponse = await dio.post('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice',data: FormData.fromMap({
-          'username': Prefs.username,
+          'username': username??Prefs.username,
           'password': newPassword,
           '_eventId': 'submit',
           'cllt': 'userNameLogin',
@@ -98,7 +110,8 @@ class Cumt {
           }
         var res1 = await dio.get(loginResponse.headers.value('location'),options: Options(followRedirects: false));
         haveLogin = true;
-
+        Prefs.username = username;
+        Prefs.password = password;
         return true;
       }
       return true;
@@ -138,6 +151,7 @@ class Cumt {
     // }
   }
   Future<bool> loginJw()async{
+    print(username+' '+password);
     try{
       if(await checkConnect()){
         if(haveLoginJw) return true;
