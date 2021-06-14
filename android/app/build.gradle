@@ -27,13 +27,9 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 30
-    ndkVersion '21.3.6528147'
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
-    }
-
-    lintOptions {
-        disable 'InvalidPackage'
     }
 
     defaultConfig {
@@ -60,29 +56,4 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.annotation:annotation:1.1.0'
-}
-configurations.all {
-    resolutionStrategy {
-        resolutionStrategy.eachDependency { details ->
-            if (details.requested.group == 'androidx.core') {
-                details.useVersion "1.0.2"
-            }
-            if (details.requested.group == 'androidx.lifecycle') {
-                details.useVersion "2.0.0"
-            }
-            if (details.requested.group == 'androidx.versionedparcelable') {
-                details.useVersion "1.0.0"
-            }
-            if (details.requested.group == 'androidx.fragment') {
-                details.useVersion "1.0.0"
-            }
-            if (details.requested.group == 'androidx.appcompat') {
-                details.useVersion "1.0.1"
-            }
-        }
-    }
 }
