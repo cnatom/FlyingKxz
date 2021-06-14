@@ -21,13 +21,10 @@ import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/about_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power_page.dart';
-import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -464,8 +461,7 @@ class _MyselfPageState extends State<MyselfPage>
 
 
   void _changeBackgroundImage() async {
-    // PickedFile pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
-    final pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    PickedFile pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
     final File tempImgFile = File(pickedFile.path);
 
     String imageFileName = tempImgFile.path.substring(

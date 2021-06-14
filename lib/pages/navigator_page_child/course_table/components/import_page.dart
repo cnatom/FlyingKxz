@@ -3,16 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flying_kxz/CumtSpider/cumt.dart';
-import 'package:flying_kxz/CumtSpider/cumt_format.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
-import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/loading.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
-import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -50,10 +44,10 @@ class _ImportPageState extends State<ImportPage> {
     return Scaffold(
       appBar: FlyAppBar(context,loadingWeb?"loading……":"矿大教务",
           actions: [
-            IconButton(icon: Icon(Icons.add,color: themeProvider.colorNavText,), onPressed: ()async{
-              var html = await _controller.getHtml();
-              CumtFormat.courseHtmlToDate(html);
-            }),
+            // IconButton(icon: Icon(Icons.add,color: themeProvider.colorNavText,), onPressed: ()async{
+            //   var html = await _controller.getHtml();
+            //   CumtFormat.courseHtmlToDate(html);
+            // }),
             IconButton(icon: Icon(Boxicons.bx_help_circle,color: themeProvider.colorNavText,), onPressed: (){
               Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ImportHelpPage()));
             })

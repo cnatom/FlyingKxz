@@ -1,4 +1,4 @@
-package com.atcumt.flying_kxz
+package com.atcumt.kxz
 
 import io.flutter.embedding.android.FlutterActivity
 
