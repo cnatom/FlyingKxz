@@ -251,22 +251,22 @@ class _LoginPageState extends State<LoginPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            // Expanded(
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     children: [
+            //       _buildFlatButton("检查更新", onPressed: () => appup)
+            //     ],
+            //   ),
+            // ),
+            // Container(
+            //   height: ScreenUtil().setWidth(35),
+            //   width: 1,
+            //   color: Colors.white.withOpacity(0.5),
+            // ),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _buildFlatButton("游客访问", onPressed: () => _visitorHandler())
-                ],
-              ),
-            ),
-            Container(
-              height: ScreenUtil().setWidth(35),
-              width: 1,
-              color: Colors.white.withOpacity(0.5),
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildFlatButton("无法登录", onPressed: () async {
                     Clipboard.setData(ClipboardData(text: "839372371"));

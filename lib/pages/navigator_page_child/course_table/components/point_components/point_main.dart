@@ -13,20 +13,23 @@ class PointMain extends StatefulWidget {
 
 class PointMainState extends State<PointMain> {
   ThemeProvider themeProvider;
+  CourseProvider courseProvider;
   bool showRight = false;
   GlobalKey<PointMatrixState> pointAreaKey = new GlobalKey<PointMatrixState>();
   show(){
     showRight = !showRight;
     setState(() {
     });
-    pointAreaKey.currentState.changeWeekOffset(CourseProvider.curWeek);
+    pointAreaKey.currentState.changeWeekOffset(courseProvider.curWeek);
   }
   initScroll(){
-    pointAreaKey.currentState.changeWeekOffset(CourseProvider.initialWeek);
+    pointAreaKey.currentState.changeWeekOffset(courseProvider.initialWeek);
   }
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
+    courseProvider = Provider.of<CourseProvider>(context);
+
     return Container(
       height: double.infinity,
       child: Row(

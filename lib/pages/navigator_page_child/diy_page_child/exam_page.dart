@@ -55,10 +55,8 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
     if(await examPost(context,year: Prefs.schoolYear, term: Prefs.schoolTerm)){
       examOutList.clear();
       examCurList = _parseToCurList(Global.examList);
-      showToast('刷新成功');
       sendInfo('考试倒计时', '刷新考试成功');
     }else{
-      showToast('刷新失败');
       sendInfo('考试倒计时', '刷新考试失败');
     }
     setState(() {loading = false;});
@@ -83,7 +81,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
       setState(() {});
       return;
     }
-    if(await examPost(context, year: Prefs.schoolYear, term: Prefs.schoolTerm)){
+    if(await examPost(context, year: Prefs.schoolYear, term: Prefs.schoolTerm,auto: true)){
       examOutList.clear();
       examCurList = _parseToCurList(Global.examList);
       setState(() {});

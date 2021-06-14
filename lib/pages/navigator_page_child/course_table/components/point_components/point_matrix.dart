@@ -84,7 +84,7 @@ class PointMatrixState extends State<PointMatrix> {
         width: gridWidth,
         height: gridHeight,
         child: FlyWidgetBuilder(
-          whenFirst: week == CourseProvider.curWeek,
+          whenFirst: week == courseProvider.curWeek,
           firstChild: _buildCurWeekCard(week),
           secondChild: _buildWeekCard(week),
         ),
@@ -157,7 +157,7 @@ class PointMatrixState extends State<PointMatrix> {
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[for(int j = 1;j<=5;j++)singlePoint(CourseProvider.loading==false?pointArray[i][j]:0)],
+                  children: <Widget>[for(int j = 1;j<=5;j++)singlePoint(courseProvider.info!=null?pointArray[i][j]:0)],
                 ),
                 SizedBox(
                   height: gridWidth / 100,

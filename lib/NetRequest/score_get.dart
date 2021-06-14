@@ -12,6 +12,8 @@ import 'package:html/parser.dart';
 
 
 Future<bool> scoreGet(BuildContext context,InquiryType type,{@required String term, @required String year,}) async {
+  showToast('与教务有关的功能正在维护中，请保持最新版本');
+  return false;
   try{
     if(Prefs.visitor){
       //游客模式

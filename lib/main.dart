@@ -113,7 +113,7 @@ class _StartPageState extends State<StartPage> {
     //初始化配置（需要context）
     initSize();
     //内测结束跳转
-    if(DateTime.now().isAfter(DateTime(2021,6,15))){
+    if(DateTime.now().isAfter(DateTime(2021,6,18))){
       toNullPage(context);
       return;
     }
@@ -122,8 +122,6 @@ class _StartPageState extends State<StartPage> {
       if (await File(Prefs.backImg).exists())
         backImgFile = File(Prefs.backImg);
     }
-    //获取本学期学年
-    getSchoolYearTerm();
     //选择进入界面
     if (Prefs.password != null) {
       toNavigatorPage(context);

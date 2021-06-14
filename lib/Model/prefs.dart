@@ -127,6 +127,7 @@ static void _initAdmissionDate(){
         admissionDate = schoolYear+'-09-07';
       }
     }
+    Prefs.admissionDate = admissionDate;
 }
 
 

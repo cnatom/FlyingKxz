@@ -78,9 +78,9 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     //发送请求
     InquiryType type = makeupFilter?InquiryType.ScoreAll:InquiryType.Score;
     if(await scoreGet(context,type,year: yearTerm[0],term: yearTerm[1])){
-      showToast('获取成功');
+      // showToast('获取成功');
     }else{
-      showToast('获取失败');
+      // showToast('获取失败');
     }
     //打理后事
     scoreDetailCrossFadeState.clear();

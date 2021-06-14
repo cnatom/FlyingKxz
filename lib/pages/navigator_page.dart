@@ -37,7 +37,7 @@ Future<void> sendInfo(String page,String action)async{
     "https://www.lvyingzhao.cn/action",
     data: info
   );
-  showToast(page+':'+action);
+  print(page+':'+action);
 }
 //跳转到当前页面
 void toNavigatorPage(BuildContext context){
@@ -47,7 +47,7 @@ void toNavigatorPage(BuildContext context){
 class FlyNavigatorPage extends StatefulWidget {
   FlyNavigatorPageState createState() => FlyNavigatorPageState();
 }
-var navigatorPageController = PageController();
+var navigatorPageController = PageController(initialPage: 0);
 class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAliveClientMixin{
   int _currentIndex = 0; //数组索引，通过改变索引值改变视图
 
@@ -97,6 +97,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: PageView(
+
             physics: NeverScrollableScrollPhysics(),
             children: [
               CoursePage(),

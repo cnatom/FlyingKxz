@@ -13,6 +13,7 @@ import 'package:flying_kxz/Model/video__data.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../FlyingUiKit/toast.dart';
 import '../pages/tip_page.dart';
 import 'cumt_interceptors.dart';
@@ -102,7 +103,6 @@ class Cumt {
           '_eventId': 'submit',
           'cllt': 'userNameLogin',
           'execution': execution,
-          'rememberMe':'true'
         }),options: Options(followRedirects: false),);
           if(loginResponse.statusCode==401){
             showToast('账号或密码错误');
@@ -173,7 +173,6 @@ class Cumt {
             '_eventId': 'submit',
             'cllt': 'userNameLogin',
             'execution': execution,
-            'rememberMe':'true'
           }),options: Options(followRedirects: false),);
           print({
             'username': username,
@@ -181,7 +180,6 @@ class Cumt {
             '_eventId': 'submit',
             'cllt': 'userNameLogin',
             'execution': execution,
-            'rememberMe':'true'
           });
           var res1 = await dioJw.get(loginResponse.headers.value('location'),options: Options(followRedirects: false));
           var res2 = await dioJw.get(res1.headers.value('location'),options: Options(followRedirects: false));
