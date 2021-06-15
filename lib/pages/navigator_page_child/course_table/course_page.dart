@@ -43,7 +43,7 @@ class CoursePageState extends State<CoursePage> {
   ThemeProvider themeProvider;
   GlobalKey<PointMainState> _rightGlobalKey = new GlobalKey<PointMainState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  static PageController coursePageController = new PageController(initialPage: 1,);
+  static PageController coursePageController;
 
 
   @override
@@ -60,6 +60,7 @@ class CoursePageState extends State<CoursePage> {
       builder: (context,_){
         courseProvider = Provider.of<CourseProvider>(context);
         themeProvider = Provider.of<ThemeProvider>(context);
+        coursePageController = PageController(initialPage: courseProvider.curWeek-1,);
         return Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.transparent,

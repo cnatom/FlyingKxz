@@ -7,6 +7,7 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/point_components/point_matrix.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/course_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/bean.dart';
@@ -71,6 +72,7 @@ class CourseProvider extends ChangeNotifier{
     }
     _savePrefs();
     notifyListeners();
+    sendInfo('主页', '导入了课表：$dateTime');
   }
   ///获取2019年第1学期课表
   ///CourseProvider().get("token","2019","1");

@@ -31,8 +31,6 @@ class _ImportPageState extends State<ImportPage> {
       loading = true;
     });
     var html = await _controller.getHtml();
-    // var map = CumtFormat.htmlToList(html);
-    // print(map);
     setState(() {
       loading = false;
     });
@@ -48,7 +46,7 @@ class _ImportPageState extends State<ImportPage> {
             //   var html = await _controller.getHtml();
             //   CumtFormat.courseHtmlToDate(html);
             // }),
-            IconButton(icon: Icon(Boxicons.bx_help_circle,color: themeProvider.colorNavText,), onPressed: (){
+            IconButton(icon: Icon(Boxicons.bx_help_circle,color: Theme.of(context).primaryColor,), onPressed: (){
               Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ImportHelpPage()));
             })
           ],

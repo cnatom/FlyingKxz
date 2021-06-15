@@ -63,7 +63,9 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
                               Wrap(
                                 children: [
                                   funcButton(imageResource: 'images/tushuguan.png',title: '图书馆',color:colorFuncButton[0],subTitle: '馆藏查询、图书推荐',onTap: ()=>toBookPage(context)),
-                                  funcButton(imageResource: 'images/chengji.png',title: '成绩',color:colorFuncButton[5],subTitle: '查看学分绩点',onTap: ()=>toScorePage(context)),
+                                  // funcButton(imageResource: 'images/chengji.png',title: '成绩',color:colorFuncButton[5],subTitle: '查看学分绩点',onTap: ()=>toScorePage(context)),
+                                  funcButton(imageResource: 'images/chengji.png',title: '成绩（维护中）',subTitle: '查看学分绩点',onTap: ()=>toScorePage(context)),
+
                                   funcButton(imageResource: 'images/xunke.png',title: '课堂回放',color:colorFuncButton[3],subTitle: '在线播放、极速下载',onTap: ()=>toVideoPage(context)),
                                   funcButton(imageResource: 'images/xiaoche.png',title: '校车',color:colorFuncButton[1],subTitle: '通勤班车时间表',onTap: ()=>toSchoolBusPage(context)),
                                   funcButton(imageResource: 'images/xiaoli.png',title: '校历',color:colorFuncButton[2],subTitle: '本学年校历',onTap: ()=>toSchoolCalendarPage(context)),

@@ -112,10 +112,10 @@ class _StartPageState extends State<StartPage> {
     //初始化配置（需要context）
     initSize();
     //内测结束跳转
-    if(DateTime.now().isAfter(DateTime(2021,6,18))){
-      toNullPage(context);
-      return;
-    }
+    // if(DateTime.now().isAfter(DateTime(2021,6,18))){
+    //   toNullPage(context);
+    //   return;
+    // }
     //初始化背景图路径
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists())
