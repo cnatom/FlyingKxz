@@ -62,6 +62,11 @@ class _ImportPageState extends State<ImportPage> {
         alignment: Alignment.center,
         children: [
           InAppWebView(
+            initialOptions: InAppWebViewGroupOptions(
+              android: AndroidInAppWebViewOptions(
+                useHybridComposition: true
+              )
+            ),
             initialUrlRequest: URLRequest(url: Uri.parse("http://jwxt.cumt.edu.cn/jwglxt/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N253508&layout=default")),
             onWebViewCreated: (controller){
               _controller = controller;
