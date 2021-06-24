@@ -14,7 +14,7 @@ class Prefs{
   static SharedPreferences prefs;
   static String _backImg = 'backImg';//背景图
   static String _username = 'username';//用户名
-  static String _password = 'passwordd';//密码
+  static String _password = 'password2';//密码
   static String _phone = 'phone';//电话号码
   static String _name = 'name';//姓名
   static String _token = 'NewToken1.2.0';//token信息
@@ -38,6 +38,7 @@ class Prefs{
   static String _admissionDate = "admissionDate";//开学日期
   static String _themeData = "themeData";
   static String _visitor = "visitor";//游客模式
+  static String _timesMap = "timesMap";
 
   static String get examDataDiy => prefs.getString(_examDataDiy);
   static String get backImg => prefs.getString(_backImg);
@@ -65,6 +66,7 @@ class Prefs{
   static String get admissionDate=> prefs.getString(_admissionDate);
   static String get themeData => prefs.getString(_themeData);
   static bool get visitor => prefs.getBool(_visitor);
+  static String get timesMap => prefs.getString(_timesMap);
 
   static set examDataDiy(String value) =>prefs.setString(_examDataDiy, value);
   static set backImg(String value) =>prefs.setString(_backImg, value);
@@ -92,6 +94,7 @@ class Prefs{
   static set admissionDate(String value) =>prefs.setString(_admissionDate, value);
   static set themeData(String value) =>prefs.setString(_themeData, value);
   static set visitor(bool value) =>prefs.setBool(_visitor, value);
+  static set timesMap(String value) =>prefs.setString(_timesMap, value);
 
   static Future<void> init()async{
     prefs = await SharedPreferences.getInstance();
@@ -124,6 +127,7 @@ static void _initAdmissionDate(){
         admissionDate = schoolYear+'-09-07';
       }
     }
+    Prefs.admissionDate = admissionDate;
 }
 
 

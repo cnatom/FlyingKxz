@@ -11,6 +11,7 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/exam_info.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_page.dart';
 
 class ExamAddView extends StatefulWidget {
@@ -124,6 +125,7 @@ class _ExamAddViewState extends State<ExamAddView> {
     );
     Global.examList.add(newCountDownInfo);
     Prefs.examData = ExamUnit.examJsonEncode(Global.examList);
+    sendInfo('考试倒计时', '添加了考试:${newCountDownInfo.courseName}');
     Navigator.pop(context);
   }
 

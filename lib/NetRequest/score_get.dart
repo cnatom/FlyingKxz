@@ -11,7 +11,9 @@ import 'package:flying_kxz/CumtSpider/cumt_format.dart';
 import 'package:html/parser.dart';
 
 
-Future<Null> scoreGet(BuildContext context,InquiryType type,{@required String term, @required String year,}) async {
+Future<bool> scoreGet(BuildContext context,InquiryType type,{@required String term, @required String year,}) async {
+  showToast('与教务有关的功能正在维护中，请保持最新版本');
+  return false;
   try{
     if(Prefs.visitor){
       //游客模式
@@ -21,6 +23,7 @@ Future<Null> scoreGet(BuildContext context,InquiryType type,{@required String te
       debugPrint(res);
       Map<String, dynamic> map = jsonDecode(res.toString());
       Global.scoreInfo = ScoreInfo.fromJson(map);
+      return true;
     }else{
       //非游客模式
       var res = await cumt.inquiryJw(type, year, term);
@@ -29,11 +32,14 @@ Future<Null> scoreGet(BuildContext context,InquiryType type,{@required String te
         if(type == InquiryType.ScoreAll) map = CumtFormat.parseScoreAll(map);
         if(type == InquiryType.Score) map = CumtFormat.parseScore(map);
         Global.scoreInfo = ScoreInfo.fromJson(map);
+        return true;
       }
+      return false;
     }
   }catch(e){
     debugPrint(e.toString());
     showToast('获取失败QAQ');
+    return false;
   }
 }
 

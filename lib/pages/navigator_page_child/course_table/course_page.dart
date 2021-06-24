@@ -17,6 +17,9 @@ import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';
 import '../../tip_page.dart';
@@ -25,21 +28,31 @@ import 'components/course_table_child.dart';
 import 'components/point_components/point_main.dart';
 import 'components/back_curWeek.dart';
 import 'package:flying_kxz/FlyingUiKit/my_bottom_sheet.dart';
+
+import 'utils/course_provider.dart';
+import 'utils/course_provider.dart';
+import 'utils/course_provider.dart';
+import 'utils/course_provider.dart';
 class CoursePage extends StatefulWidget {
   @override
   CoursePageState createState() => CoursePageState();
 }
-class CoursePageState extends State<CoursePage>
-    with AutomaticKeepAliveClientMixin {
-  static PageController coursePageController = new PageController(initialPage: CourseProvider.curWeek-1,);
+class CoursePageState extends State<CoursePage> {
 
   CourseProvider courseProvider;
   ThemeProvider themeProvider;
   GlobalKey<PointMainState> _rightGlobalKey = new GlobalKey<PointMainState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  static PageController coursePageController;
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: CourseProvider()),
@@ -47,6 +60,7 @@ class CoursePageState extends State<CoursePage>
       builder: (context,_){
         courseProvider = Provider.of<CourseProvider>(context);
         themeProvider = Provider.of<ThemeProvider>(context);
+        coursePageController = PageController(initialPage: courseProvider.curWeek-1,);
         return Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.transparent,
@@ -77,7 +91,7 @@ class CoursePageState extends State<CoursePage>
               BackCurWeekButton(
                 themeProvider: themeProvider,
                 onTap: ()=>_backToCurWeek(),
-                show: CourseProvider.curWeek!=CourseProvider.initialWeek,
+                show: courseProvider.curWeek!=courseProvider.initialWeek,
               )
             ],
           ),
@@ -89,25 +103,26 @@ class CoursePageState extends State<CoursePage>
     return AppBar(
       backgroundColor: Colors.transparent,
       brightness: themeProvider.simpleMode?Brightness.light:Brightness.dark,
-      title: FlyText.title45('第${CourseProvider.curWeek}周',
+      title: FlyText.title45('第${courseProvider.curWeek}周',
           fontWeight: FontWeight.w600, color: themeProvider.colorNavText),
       leading: _buildCourseImportView(),
       actions: [
         _buildAddButton(),
         _buildShowRightButton(),
-        IconButton(
-          icon: Icon(Icons.build),
-          onPressed: ()async{
-            // cumt.checkCookie();
-            cumt.checkCookieConnectIn();
-          },
-          color: themeProvider.colorNavText,),
-        IconButton(
-          icon: Icon(Icons.logout),
-          onPressed: ()async{
-            await cumt.logout();
-          },
-          color: themeProvider.colorNavText,)
+        // IconButton(
+        //   icon: Icon(Icons.build),
+        //   onPressed: ()async{
+        //     // cumt.checkCookie();
+        //     cumt.checkJwCookie();
+        //     // cumt.loginJw();
+        //   },
+        //   color: themeProvider.colorNavText,),
+        // IconButton(
+        //   icon: Icon(Icons.logout),
+        //   onPressed: ()async{
+        //     await cumt.logout();
+        //   },
+        //   color: themeProvider.colorNavText,)
       ],
     );
   }
@@ -115,29 +130,34 @@ class CoursePageState extends State<CoursePage>
   Widget _buildCourseImportView(){
     return IconButton(
       icon: Icon(Icons.cloud_download_outlined),
-      onPressed: ()=>CourseProvider.loading?{}:_importCourse(),
+      onPressed: (){
+        _importCourse();
+      },
       color: themeProvider.colorNavText,);
   }
   _importCourse()async{
-    showPicker(context, _scaffoldKey,
-        title: "导入课表（内网）",
-        pickerDatas: PickerData.xqxnPickerData,
-        colorRight: themeProvider.colorMain,
-        onConfirm: (Picker picker, List value) async{
-          String yearStr = picker.getSelectedValues()[0].toString().substring(0, 4);
-          String termStr = '${value[1] + 1}';
-          setState(() {CourseProvider.loading = true;});
-          if(await cumt.checkCookieConnectIn()){
-            courseProvider.get(yearStr , termStr);
-          }else{
-            toTipPage(context);
-            setState(() {CourseProvider.loading = false;});
-          }
-        });
+    var html = await Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ImportPage()));
+    courseProvider.handleHtml(html);
+    // showPicker(context, _scaffoldKey,
+    //     title: "导入课表（内网）",
+    //     pickerDatas: PickerData.xqxnPickerData,
+    //     colorRight: themeProvider.colorMain,
+    //     onConfirm: (Picker picker, List value) async{
+    //       String yearStr = picker.getSelectedValues()[0].toString().substring(0, 4);
+    //       String termStr = '${value[1] + 1}';
+    //       setState(() {CourseProvider.loading = true;});
+    //       if(await Cumt.checkConnect()){
+    //         courseProvider.get(yearStr , termStr);
+    //         sendInfo('主页', '导入了课表:$yearStr学年,$termStr学期');
+    //       }else{
+    //         toTipPage();
+    //         setState(() {CourseProvider.loading = false;});
+    //       }
+    //     });
 
   }
   _backToCurWeek(){
-    coursePageController.animateToPage(CourseProvider.initialWeek-1, curve: Curves.easeOutQuint, duration: Duration(seconds: 1),);
+    coursePageController.animateToPage(courseProvider.initialWeek-1, curve: Curves.easeOutQuint, duration: Duration(seconds: 1),);
   }
   Widget _buildAddButton(){
     return IconButton(
@@ -149,7 +169,7 @@ class CoursePageState extends State<CoursePage>
     );
   }
   _addCourse()async{
-    List newCourseDataList;
+    List<CourseData> newCourseDataList;
     newCourseDataList = await showFlyModalBottomSheet(
         context: context,
         isScrollControlled: false,
@@ -168,6 +188,7 @@ class CoursePageState extends State<CoursePage>
     setState(() {
 
     });
+    sendInfo('主页', '添加了课程：${newCourseDataList[0].title}');
   }
   Widget _buildShowRightButton(){
     return  IconButton(
@@ -325,14 +346,10 @@ class CoursePageState extends State<CoursePage>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              num,
-              style: TextStyle(fontSize: height * 0.22,color: themeProvider.colorNavText),
-            ),
-            for(int i = 0;i<subTimeList.length;i++)Text(
-              subTimeList[i]+(i!=0?'\n':''),
-              style: TextStyle(fontSize: height * 0.14,color: themeProvider.colorNavText),
-            )
+            FlyText.mini30(num,color: themeProvider.colorNavText),
+            SizedBox(height: 3,),
+            for(int i = 0;i<subTimeList.length;i++)
+              FlyText.mini25(subTimeList[i]+(i!=0?'\n':''),color: themeProvider.colorNavText)
           ],
         ),
       );
@@ -355,14 +372,10 @@ class CoursePageState extends State<CoursePage>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              num,
-              style: TextStyle(fontSize: height * 0.22,color: themeProvider.colorNavText),
-            ),
-            for(int i = 0;i<subTimeList.length;i++)Text(
-              subTimeList[i]+(i!=0?'\n':''),
-              style: TextStyle(fontSize: height * 0.14,color: themeProvider.colorNavText),
-            )
+            FlyText.mini30(num,color: themeProvider.colorNavText),
+            SizedBox(height: 3,),
+            for(int i = 0;i<subTimeList.length;i++)
+              FlyText.mini25(subTimeList[i]+(i!=0?'\n':''),color: themeProvider.colorNavText)
           ],
         ),
       );
@@ -370,29 +383,25 @@ class CoursePageState extends State<CoursePage>
   }
 
   Widget _buildBody() {
-    return FlyWidgetBuilder(
-      whenFirst: CourseProvider.loading,
-      firstChild: Center(child: loadingAnimationTwoCircles(color: themeProvider.colorMain),),
-      secondChild: LayoutBuilder(
-        builder: (context, parSize) {
-          List<Widget> children = [];
-          double height = parSize.maxHeight;
-          double width = parSize.maxWidth;
-          for(int i = 1;i<=22;i++){
-            children.add(new CourseTableChild(CourseProvider.info[i], width, height));
-          }
-          return PageView(
-            physics: BouncingScrollPhysics(),
-            controller: coursePageController,
-            onPageChanged: (value){
-              print(CourseProvider.curWeek.toString()+'->'+(value+1).toString());
-              courseProvider.changeWeek(value+1);
-            },
-            scrollDirection: Axis.vertical,
-            children: children,
-          );
-        },
-      ),
+    return courseProvider.info==null?Container():LayoutBuilder(
+      builder: (context, parSize) {
+        List<Widget> children = [];
+        double height = parSize.maxHeight;
+        double width = parSize.maxWidth;
+        for(int i = 1;i<=22;i++){
+          children.add(new CourseTableChild(courseProvider.info[i], width, height));
+        }
+
+        return PageView(
+          physics: BouncingScrollPhysics(),
+          controller: coursePageController,
+          onPageChanged: (value){
+            courseProvider.changeWeek(value+1);
+          },
+          scrollDirection: Axis.vertical,
+          children: children,
+        );
+      },
     );
   }
   @override

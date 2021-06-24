@@ -21,17 +21,15 @@ import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/about_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power_page.dart';
-import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../FlyingUiKit/toast.dart';
 import 'myself_page_child/cumtLogin_view.dart';
 
 class MyselfPage extends StatefulWidget {
@@ -45,40 +43,42 @@ class _MyselfPageState extends State<MyselfPage>
   bool loadingRepair = false;
   Future<bool> getPreviewInfo() async {
     bool ok = false;
-    if(await cumt.checkCookieConnectIn()){
-      ok = await cumt.getBalance();
-      if(Prefs.powerHome!=null&&Prefs.powerNum!=null){
-        ok = await cumt.getPower(Prefs.powerHome, Prefs.powerNum);
-      }
-      setState(() {});
-      return ok;
+    ok = await cumt.getBalance();
+    if(Prefs.powerHome!=null&&Prefs.powerNum!=null){
+      ok = await cumt.getPower(Prefs.powerHome, Prefs.powerNum);
     }
-    return false;
+    setState(() {});
+    return ok;
   }
-  Future<void> repair()async{
-    setState(() {
-      loadingRepair = true;
-    });
-    if(await cumt.checkCookieConnectIn()){
-      if(await cumt.login(Prefs.username, Prefs.password)){
-        showToast('🎉 修复成功！');
-      }else{
-        showToast('已连接内网，但修复失败QAQ\n🎉 恭喜您发现了新的bug（卑微\n（即将跳转至反馈群）',duration: 7);
-        Future.delayed(Duration(seconds: 7),(){
-          launch('https://jq.qq.com/?_wv=1027&k=272EhIWK');
-        });
-      }
-    }else{
-      toTipPage(context);
-    }
-    setState(() {
-      loadingRepair = false;
-    });
+  // Future<void> repair()async{
+  //   setState(() {
+  //     loadingRepair = true;
+  //   });
+  //   if(await cumt.check()){
+  //     showToast('🎉 修复成功！');
+  //   }else{
+  //     showToast('已连接内网，但修复失败QAQ\n🎉 恭喜您发现了新的bug（卑微\n（即将跳转至反馈群）',duration: 7);
+  //     Future.delayed(Duration(seconds: 7),(){
+  //       launch('https://jq.qq.com/?_wv=1027&k=272EhIWK');
+  //     });
+  //   }
+  //   setState(() {
+  //     loadingRepair = false;
+  //   });
+  // }
+  void signOut() async{
+    sendInfo('退出登录', '退出了登录');
+    await Global.clearPrefsData();
+    backImgFile = null;
+    await cumt.clearCookie();
+    cumt.init();
+    toLoginPage(context);
   }
   @override
   void initState() {
     super.initState();
     getPreviewInfo();
+    sendInfo('我的', '初始化我的页面');
   }
 
   @override
@@ -210,10 +210,10 @@ class _MyselfPageState extends State<MyselfPage>
                         // ]),
 
                         _buttonList(children: <Widget>[
-                          _buildIconTitleButton(
-                              icon: Icons.people_outline,
-                              title: '关于我们',
-                              onTap: () => toAboutPage(context)),
+                          // _buildIconTitleButton(
+                          //     icon: Icons.people_outline,
+                          //     title: '关于我们',
+                          //     onTap: () => toAboutPage(context)),
                           _buildIconTitleButton(
                               icon: Icons.feedback_outlined,
                               title: '反馈与建议',
@@ -225,6 +225,7 @@ class _MyselfPageState extends State<MyselfPage>
                                     maxLines: 10);
                                 if (text != null) {
                                   await feedbackPost(context, text: text);
+                                  sendInfo('反馈与建议', '发送了反馈:$text');
                                 }
                               }),
                           _buildIconTitleButton(
@@ -248,13 +249,13 @@ class _MyselfPageState extends State<MyselfPage>
                               }),
                         ]),
                         _buttonList(children: [
-                          _buildIconTitleButton(
-                              icon: LineAwesomeIcons.tools,
-                              title: '网络修复',
-                              loading: loadingRepair,
-                              onTap: ()async{
-                                await repair();
-                              }),
+                          // _buildIconTitleButton(
+                          //     icon: LineAwesomeIcons.tools,
+                          //     title: '网络修复',
+                          //     loading: loadingRepair,
+                          //     onTap: ()async{
+                          //       await repair();
+                          //     }),
                           _buildIconTitleButton(icon: Icons.logout, title: "退出登录",onTap: ()=>willSignOut(context))
                         ])
                       ],
@@ -458,15 +459,9 @@ class _MyselfPageState extends State<MyselfPage>
 
 
 
-  void signOut() {
-    Global.clearPrefsData();
-    cumt.cookieJar.deleteAll();
-    backImgFile = null;
-    toLoginPage(context);
-  }
+
   void _changeBackgroundImage() async {
-    // PickedFile pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
-    final pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    PickedFile pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
     final File tempImgFile = File(pickedFile.path);
 
     String imageFileName = tempImgFile.path.substring(

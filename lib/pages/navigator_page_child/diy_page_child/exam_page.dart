@@ -29,6 +29,7 @@ import 'package:left_scroll_actions/leftScroll.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
+import '../../navigator_page.dart';
 import '../../tip_page.dart';
 
 class ExamView extends StatefulWidget {
@@ -49,22 +50,14 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
     super.initState();
     _init();
   }
-  getShowExamView({@required String year,@required String term})async{
-
-    setState(() {loading = true;});
-    if(await examPost(context,year: year, term: term))
-      setState(() {loading = false;});
-  }
   _refresh()async{
     setState(() {loading = true;});
-    if(await cumt.checkCookieConnectIn()){
-      if(await examPost(context,year: Prefs.schoolYear, term: Prefs.schoolTerm)){
-        showToast('刷新成功');
-      }else{
-        showToast('刷新失败');
-      }
+    if(await examPost(context,year: Prefs.schoolYear, term: Prefs.schoolTerm)){
+      examOutList.clear();
+      examCurList = _parseToCurList(Global.examList);
+      sendInfo('考试倒计时', '刷新考试成功');
     }else{
-      toTipPage(context);
+      sendInfo('考试倒计时', '刷新考试失败');
     }
     setState(() {loading = false;});
 
@@ -85,13 +78,16 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
     if(Prefs.examData!=null){
       Global.examList = ExamUnit.examJsonDecode(Prefs.examData);
       examCurList = _parseToCurList(Global.examList);
+      setState(() {});
+      return;
     }
-    setState(() {});
-    if(await examPost(context, year: Prefs.schoolYear, term: Prefs.schoolTerm)){
+    if(await examPost(context, year: Prefs.schoolYear, term: Prefs.schoolTerm,auto: true)){
       examOutList.clear();
       examCurList = _parseToCurList(Global.examList);
+      setState(() {});
+      sendInfo('考试倒计时', '初始化考试成功');
     }
-    setState(() {});
+
   }
   //添加自定义倒计时
   void addDiyExamFunc()async{
@@ -202,7 +198,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
                 children: [
                   Row(
                     children: [
-                      FlyText.main35('考试倒计时',color: headerColor,),
+                      FlyText.main35('考试倒计时(维护中）',color: headerColor,),
                       SizedBox(width: 10,),
                       loading?loadingAnimationIOS():Container()
                     ],
@@ -383,22 +379,31 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
         return InkWell(
         onTap: ()async{
           if(await willSignOut(context)){
-            var delIndex = Global.examList.indexOf(item);
-            // Global.examDiyInfo.data.removeAt(delIndex);
-            // Prefs.examDataDiy = jsonEncode(Global.examDiyInfo.toJson());
+            //获取索引
+            int delIndex = -1;
+            for(int i = 0;i<list.length;i++){
+              if(list[i].courseName==item.courseName&&list[i].location==item.location){
+                delIndex = i;
+                break;
+              }
+            }
+            //按需删除
+            if(outView){
+              examOutList.removeAt(delIndex);
+            }else{
+              examCurList.removeAt(delIndex);
+            }
+            //刷新
             setState(() {
             });
+            //存储
+            Global.examList = examCurList+examOutList;
+            Prefs.examData = ExamUnit.examJsonEncode(Global.examList);
+            sendInfo('考试倒计时', '删除了考试:${item.courseName}');
           }
     },
         child: examCard(item.courseName, item.location, item.dateTime, item.year, item.month, item.day,outView: outView),
         );
-      }).toList(),
-    );
-  }
-  Widget outView(){
-    return Column(
-      children: examOutList.map((item){
-        return examCard(item.courseName, item.location, item.dateTime, item.year, item.month, item.day,outView: true);
       }).toList(),
     );
   }

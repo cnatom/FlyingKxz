@@ -131,9 +131,9 @@ class _CourseCardState extends State<CourseCard> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildCardText(isRepeat?"重叠课":widget.courseData.title, 33),
+        _buildCardText(isRepeat?"重叠课":widget.courseData.title, fontSizeTip33),
         SizedBox(height: ScreenUtil().setSp(10),),
-        _buildCardText(isRepeat?"点击查看":widget.courseData.location, 25),
+        _buildCardText(isRepeat?"点击查看":widget.courseData.location, fontSizeTipMini25),
       ],
     );
   }
@@ -252,15 +252,15 @@ class _CourseCardState extends State<CourseCard> {
     if(result == null) return false;
     return result;
   }
-  Widget _buildCardText(String text,int sp){
+  Widget _buildCardText(String text,double sp){
     return Text(
       text,
       style: TextStyle(
           fontSize:
-          ScreenUtil().setSp(sp),
+          sp,
           color: Colors.white,),
       textAlign: TextAlign.center,
-      maxLines: 2,
+      maxLines: 3,
 
       overflow: TextOverflow.ellipsis,
     );

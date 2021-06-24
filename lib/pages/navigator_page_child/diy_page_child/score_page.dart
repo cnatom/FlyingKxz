@@ -13,6 +13,7 @@ import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/Model/score_info.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
@@ -21,11 +22,14 @@ import 'package:flying_kxz/NetRequest/score_get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
+import '../../../FlyingUiKit/toast.dart';
+import '../../../FlyingUiKit/toast.dart';
 import '../../tip_page.dart';
 //跳转到当前页面
 void toScorePage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => ScorePage()));
+  sendInfo('成绩', '初始化成绩页面');
 }
 
 class ScorePage extends StatefulWidget {
@@ -71,15 +75,13 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       jiaquanTotal = null;
       jidianTotal = null;
     });
-    //检查内网环境
-    if(!await cumt.checkCookieConnectIn()){
-      toTipPage(context);
-      setState(() {loading = false;});
-      return;
-    }
     //发送请求
     InquiryType type = makeupFilter?InquiryType.ScoreAll:InquiryType.Score;
-    await scoreGet(context,type,year: yearTerm[0],term: yearTerm[1]);
+    if(await scoreGet(context,type,year: yearTerm[0],term: yearTerm[1])){
+      // showToast('获取成功');
+    }else{
+      // showToast('获取失败');
+    }
     //打理后事
     scoreDetailCrossFadeState.clear();
     scoreFilter.clear();
@@ -90,6 +92,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     }
     calcuTotalScore();
     setState(() {loading = false;});
+    sendInfo('成绩', '查询了成绩:$year,$term');
   }
   @override
   Widget build(BuildContext context) {
@@ -168,6 +171,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     xfcjSum = 0;
     try{
       for(int i = 0;i < Global.scoreInfo.data.length;i++){
+        if(!isNumeric(Global.scoreInfo.data[i].zongping.toString())) continue;
         if(scoreFilter[i]==false) continue;
         xfjdSum += double.parse(Global.scoreInfo.data[i].xuefen)*double.parse(Global.scoreInfo.data[i].jidian.toString());
         xfcjSum += double.parse(Global.scoreInfo.data[i].xuefen)*int.parse(Global.scoreInfo.data[i].zongping);

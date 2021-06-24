@@ -20,7 +20,7 @@ void initSize(){
   fontSizeTitle50 = ScreenUtil().setSp(50); //headline1
   fontSizeTitle45 = ScreenUtil().setSp(45); //headline2
   fontSizeMain40 = ScreenUtil().setSp(40); //body1
-  fontSizeMini38 = ScreenUtil().setSp(38); //body2
+  fontSizeMini38 = ScreenUtil().setSp(37); //body2
   fontSizeTip33 = ScreenUtil().setSp(33); //subtitle1
   fontSizeTipMini25 = ScreenUtil().setSp(25); //subtitle2
   sizeIconMain50 = ScreenUtil().setSp(50);

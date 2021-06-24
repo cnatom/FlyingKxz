@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
     //检测是否激活&验证码
     if (await loginCheckGet(context, username: _username)) {
       //新登录
-      if(await cumt.login(_username, _password,context: context)){
+      if(await cumt.login(_username, _password,)){
         Prefs.visitor = false;
         var namePhoneMap = await cumt.getNamePhone();
         Prefs.name = namePhoneMap['name'];
@@ -251,22 +251,22 @@ class _LoginPageState extends State<LoginPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            // Expanded(
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     children: [
+            //       _buildFlatButton("检查更新", onPressed: () => appup)
+            //     ],
+            //   ),
+            // ),
+            // Container(
+            //   height: ScreenUtil().setWidth(35),
+            //   width: 1,
+            //   color: Colors.white.withOpacity(0.5),
+            // ),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _buildFlatButton("游客访问", onPressed: () => _visitorHandler())
-                ],
-              ),
-            ),
-            Container(
-              height: ScreenUtil().setWidth(35),
-              width: 1,
-              color: Colors.white.withOpacity(0.5),
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildFlatButton("无法登录", onPressed: () async {
                     Clipboard.setData(ClipboardData(text: "839372371"));

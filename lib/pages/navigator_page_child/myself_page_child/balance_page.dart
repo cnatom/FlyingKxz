@@ -11,12 +11,14 @@ import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/balanceDetail_post.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance_recharge_page.dart';
 import 'package:provider/provider.dart';
 //跳转到当前页面
 void toBalancePage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BalancePage()));
+  sendInfo('校园卡', '初始化校园卡页面');
 }
 class BalancePage extends StatefulWidget {
   @override
@@ -55,6 +57,7 @@ class _BalancePageState extends State<BalancePage> {
           onRefresh: ()async{
             await _getBalanceDetail();
             showToast( "刷新成功");
+            sendInfo('校园卡', '刷新了校园卡流水信息');
           },
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),

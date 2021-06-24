@@ -17,6 +17,8 @@ import 'FlyingUiKit/config.dart';
 import 'Model/global.dart';
 import 'dart:io';
 import 'CumtSpider/cumt.dart';
+import 'chinese.dart';
+import 'pages/navigator_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +55,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, _) {
         themeProvider = Provider.of<ThemeProvider>(context);
         return MaterialApp(
+          navigatorKey: FlyNavigatorPageState.navigatorKey,
           themeMode: themeProvider.themeMode,
           theme: FlyThemes.lightTheme,
           darkTheme: FlyThemes.darkTheme,
@@ -60,6 +63,7 @@ class _MyAppState extends State<MyApp> {
           navigatorObservers: [BotToastNavigatorObserver()],
           //添加国际化
           localizationsDelegates: [
+            ChineseCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             DefaultCupertinoLocalizations.delegate,
@@ -108,17 +112,15 @@ class _StartPageState extends State<StartPage> {
     //初始化配置
     initSize();
     //内测结束跳转
-    if(DateTime.now().isAfter(DateTime(2021,6,15))){
-      toNullPage(context);
-      return;
-    }
+    // if(DateTime.now().isAfter(DateTime(2021,6,18))){
+    //   toNullPage(context);
+    //   return;
+    // }
     //初始化背景图路径
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists())
         backImgFile = File(Prefs.backImg);
     }
-    //获取本学期学年
-    getSchoolYearTerm();
     //选择进入界面
     if (Prefs.password != null) {
       toNavigatorPage(context);

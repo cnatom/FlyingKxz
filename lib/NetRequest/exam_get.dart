@@ -7,6 +7,7 @@ import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/CumtSpider/cumt_format.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_page.dart';
 
 //获取考试
@@ -15,7 +16,7 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_page.d
 
 Future<bool> examPost(BuildContext context,
     {@required String year,
-    @required String term}) async {
+    @required String term,bool auto = false}) async {
   Map<String, dynamic> _jsonMap = {"xnm": year, "xqm": term};
   try {
     if(Prefs.visitor){
@@ -35,7 +36,9 @@ Future<bool> examPost(BuildContext context,
         return false;
       }
     }else{
-      var res = await cumt.inquiryJw(InquiryType.Exam, year, term);
+      if(!auto)showToast('教务有关的功能正在维护中……\n请保持最新版本');
+      return false;
+      var res = await cumt.inquiryJw(InquiryType.Exam, year, term,);
       if(res!=''){
         Map<String, dynamic> map = jsonDecode(res.toString());
         map = CumtFormat.parseExam(map);

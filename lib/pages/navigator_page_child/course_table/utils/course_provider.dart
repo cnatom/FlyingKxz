@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flying_kxz/CumtSpider/cumt_format.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/point_components/point_matrix.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/course_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/bean.dart';
@@ -20,44 +22,62 @@ import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_
  */
 class CourseProvider extends ChangeNotifier{
   // ignore: deprecated_member_use
-  static var info = new List<List<CourseData>>(26);
+  var info = new List<List<CourseData>>(26);
   // ignore: deprecated_member_use
-  static var _infoByCourse = new List<CourseData>();
-  static var pointArray = new List(26);
-
-  static int curWeek;
-  static int initialWeek;
-  static DateTime curMondayDate;
-  static DateTime admissionDate;
-  static bool _haveInit = false;
-  static bool loading = false;
-  int get getCurWeek=>curWeek;
-  DateTime get getCurMondayDate=>curMondayDate;
+  var _infoByCourse = new List<CourseData>();
+  var pointArray = new List(26);
+  int curWeek;
+  int initialWeek;
+  DateTime curMondayDate;
+  DateTime admissionDate;
+  DateTime get getCurMondayDate=>curMondayDate??DateTime(2020,9,7);
   List get getPointArray => pointArray;
   CourseProvider(){
     init();
   }
-  ///初始化课表数据
-  ///CourseProvider().init();
   init(){
-    if(loading)return;
     if(Prefs.courseData!=null){
-      if(!_haveInit){
-        _initDateTime();
-        _initData();
-        _handlePrefs();
-        notifyListeners();
-      }
-
+      _initDateTime();
+      _initData();
+      _handlePrefs();
+      notifyListeners();
     }else{
-      get(Prefs.schoolYear,Prefs.schoolTerm);
+      _initDateTime();
+      _initData();
+      notifyListeners();
     }
-    _haveInit = true;
+  }
+  handleHtml(String html) {
+    if(html==null)return;
+    var dateTime = CumtFormat.courseHtmlToDate(html);
+    setAdmissionDateTime(dateTime);
+    var list = CumtFormat.courseHtmlToList(html);
+    _initData();
+    for(var item in list){
+      print(item.toString());
+      CourseData courseData = new CourseData(
+        weekList: item['weekList'],
+        weekNum: item['weekNum'],
+        lessonNum: item['lessonNum'],
+        title: item['title'],
+        location: item['location'],
+        teacher: item['teacher'],
+        credit: item['credit'],
+        durationNum: item['durationNum'],);
+      _infoByCourse.add(courseData);
+      for(int week in item['weekList']){
+        info[week].add(courseData);
+        pointArray[week][courseData.lessonNum~/2+1][courseData.weekNum]++;
+      }
+    }
+    _savePrefs();
+    notifyListeners();
+    sendInfo('主页', '导入了课表：$dateTime');
   }
   ///获取2019年第1学期课表
   ///CourseProvider().get("token","2019","1");
   get(String year,String term) {
-    loading = true;
+    // loading = true;
     notifyListeners();
     String newDateTimeStr;
     if(term=='1'){
@@ -67,12 +87,14 @@ class CourseProvider extends ChangeNotifier{
     }
     setAdmissionDateTime(newDateTimeStr);
     Future.wait([_getJsonInfo(year, term)]).then((courseBeans){
-      var courseBean = courseBeans[0];
-      _handleCourseBean(courseBean);
-      _savePrefs();
+
+      if(courseBeans[0]!=null){
+        var courseBean = courseBeans[0];
+        _handleCourseBean(courseBean);
+        _savePrefs();
+      }
     }).whenComplete((){
       notifyListeners();
-      loading = false;
     });
   }
   /// 修改当前周
@@ -174,6 +196,27 @@ class CourseProvider extends ChangeNotifier{
     }
   }
   _initDateTime(){
+    String admissionDateStr;
+    if(Prefs.admissionDate==null){
+      DateTime nowDate = DateTime.now();
+      int year,term;
+      if(nowDate.isBefore(DateTime(nowDate.year,2,1))){
+        year = nowDate.year-1;
+        term = 1;
+      }else if(nowDate.isAfter(DateTime(nowDate.year,8,1))){
+        year = nowDate.year;
+        term = 1;
+      }else{
+        year = nowDate.year-1;
+        term = 2;
+      }
+      if(term == 2){
+        admissionDateStr = (year+1).toString()+'-03-01';
+      }else{
+        admissionDateStr = year.toString()+'-09-07';
+      }
+      Prefs.admissionDate = admissionDateStr;
+    }
     admissionDate = DateTime.parse(Prefs.admissionDate);
     var difference = DateTime.now().difference(admissionDate);
     curWeek = difference.inDays~/7 + 1;
@@ -182,39 +225,37 @@ class CourseProvider extends ChangeNotifier{
     curMondayDate = admissionDate.add(Duration(days: 7*(curWeek-1)));
   }
   _handleCourseBean(CourseBean courseBean){
-    if(courseBean!=null){
-      _initData();
-      // var nameMap = new Map();
-      for(var course in courseBean.kbList){
-        // //防止添加重复课程
-        // if(nameMap.containsKey(course.kcmc)){
-        //   continue;
-        // }else{
-        //   nameMap[course.kcmc] = true;
-        // }
-        //"4-6周,8-13周"->["4-6周","8-13周"]
-        var courseWeek = course.zcd.split(',');
-        // ["4-6周","8-13周"] -> [4,5,6,8,9,10,11,12,13]
-        List<int> weekList = [];
-        for(var week in courseWeek){
-          weekList.addAll(_strWeekToList(week));
-        }
-        int duration = int.parse(course.jcs.split('-')[1]) - int.parse(course.jcs.split('-')[0]) + 1;
-        CourseData newCourseData = new CourseData(
-            weekList: weekList,
-            weekNum: int.parse(course.xqj),
-            lessonNum: int.parse(course.jcs.split('-')[0]),
-            title: course.kcmc,
-            location: course.cdmc,
-            teacher: course.xm,
-            credit: course.xf,
-            durationNum: duration,);
-        _infoByCourse.add(newCourseData);
-        for(int week in weekList){
-          info[week].add(newCourseData);
-          pointArray[week][newCourseData.lessonNum~/2+1][newCourseData.weekNum]++;
-        }
+    _initData();
+    // var nameMap = new Map();
+    for(var course in courseBean.kbList){
+      // //防止添加重复课程
+      // if(nameMap.containsKey(course.kcmc)){
+      //   continue;
+      // }else{
+      //   nameMap[course.kcmc] = true;
+      // }
+      //"4-6周,8-13周"->["4-6周","8-13周"]
+      var courseWeek = course.zcd.split(',');
+      // ["4-6周","8-13周"] -> [4,5,6,8,9,10,11,12,13]
+      List<int> weekList = [];
+      for(var week in courseWeek){
+        weekList.addAll(_strWeekToList(week));
+      }
+      int duration = int.parse(course.jcs.split('-')[1]) - int.parse(course.jcs.split('-')[0]) + 1;
 
+      CourseData newCourseData = new CourseData(
+        weekList: weekList,
+        weekNum: int.parse(course.xqj),
+        lessonNum: int.parse(course.jcs.split('-')[0]),
+        title: course.kcmc,
+        location: course.cdmc,
+        teacher: course.xm,
+        credit: course.xf,
+        durationNum: duration,);
+      _infoByCourse.add(newCourseData);
+      for(int week in weekList){
+        info[week].add(newCourseData);
+        pointArray[week][newCourseData.lessonNum~/2+1][newCourseData.weekNum]++;
       }
 
     }
@@ -235,6 +276,7 @@ class CourseProvider extends ChangeNotifier{
     }
   }
   Future<CourseBean> _getJsonInfo(String year,String term,)async{
+    return null;
     debugPrint('@getJsonInfo');
     CourseBean courseBean = new CourseBean();
     try{
@@ -242,14 +284,11 @@ class CourseProvider extends ChangeNotifier{
       if(res!=''){
         var map = jsonDecode(res);
         courseBean = CourseBean.fromJson(map);
-        showToast('导入成功');
         return courseBean;
       }
-      showToast('导入失败');
       return null;
     }catch(e){
       debugPrint('获取课表失败: '+e.toString());
-      showToast('导入失败 Error');
       return null;
     }
   }

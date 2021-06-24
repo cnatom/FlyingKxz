@@ -10,6 +10,7 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/cumt_login.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -169,6 +170,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
 void toCumtLoginHelpPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => CumtLoginHelpPage()));
+  sendInfo('校园网登录', '初始化帮助页面');
 }
 class CumtLoginHelpPage extends StatefulWidget {
   @override

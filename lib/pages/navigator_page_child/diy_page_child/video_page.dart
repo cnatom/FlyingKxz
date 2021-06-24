@@ -11,17 +11,21 @@ import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/video__data.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/video_panel.dart';
 import 'package:provider/provider.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../FlyingUiKit/toast.dart';
+import '../../../FlyingUiKit/toast.dart';
 import '../../tip_page.dart';
 
 //跳转到当前页面
 void toVideoPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => VideoPage()));
+  sendInfo('课堂回放', '初始化课堂回放页面');
 }
 class VideoPage extends StatefulWidget {
   @override
@@ -35,14 +39,13 @@ class _VideoPageState extends State<VideoPage> {
 
 
   Future<void> init()async{
-    if(!await cumt.checkCookieConnectIn()){
-      toTipPage(context);
-      return;
-    }
     if(await cumt.searchVideo()){
+      showToast('获取成功');
       setState(() {
         loading = false;
       });
+    }else{
+      showToast('获取失败');
     }
   }
   Future<void> searchVideo(String courseName)async{
@@ -53,6 +56,7 @@ class _VideoPageState extends State<VideoPage> {
       setState(() {
         loading = false;
       });
+      sendInfo('课堂回放', '搜索课程:$courseName');
     }
   }
   @override
@@ -78,12 +82,19 @@ class _VideoPageState extends State<VideoPage> {
           padding: EdgeInsets.all(50),
           alignment: Alignment.center,
           child: loadingAnimationIOS(),
-        ):Column(
+        ):Global.videoInfo.lstDataSource!=null?Column(
           children: [
             Column(
               children: Global.videoInfo.lstDataSource.map((item){
                 return _buildViewCard(item,item.course.imageUrl, item.course.courseName, item.course.schoolYear, item.course.userName, item.course.showTerm);
               }).toList(),
+            )
+          ],
+        ):Column(
+          children: [
+            SizedBox(height: 40,),
+            Center(
+              child: FlyText.mainTip35('搜不到这门课哦'),
             )
           ],
         ),
@@ -248,7 +259,6 @@ class _VideoPreViewCardState extends State<VideoPreViewCard> {
     ViewType.PPT:2
   };
   var urlList = [];
-  var curUrl = '';//当前视频的下载链接
   var curTimeRangeList = [];//[08:00-08:30,08:00-08:30,08:00-08:30]
   var curDate = '';//08-01
   var curTime = '';//08:00-08:30
@@ -300,10 +310,11 @@ class _VideoPreViewCardState extends State<VideoPreViewCard> {
   Future<void> setView(String time,ViewType viewType)async{
     curView = viewType;
     curTime = time;
-    curUrl = map[time][view[viewType]];
+    var url = map[time][view[viewType]];
     await player.reset();
-    await player.setDataSource(curUrl,showCover: true);
+    await player.setDataSource(url,showCover: true);
     setState(() {
+
     });
   }
   Future<void> init()async{
@@ -315,6 +326,7 @@ class _VideoPreViewCardState extends State<VideoPreViewCard> {
     //播放
     await setView(curTimeRangeList[0],curView);
     player.start();
+    sendInfo('课堂回放', '查看视频:${widget.videoData.course.courseName}');
   }
   @override
   void initState() {
@@ -325,6 +337,7 @@ class _VideoPreViewCardState extends State<VideoPreViewCard> {
   void dispose() {
     super.dispose();
     player.release();
+    sendInfo('课堂回放', '结束观看:${widget.videoData.course.courseName}');
   }
 
   @override
@@ -386,7 +399,9 @@ class _VideoPreViewCardState extends State<VideoPreViewCard> {
           ),
           IconButton(
             icon: Icon(Icons.file_download,color: themeProvider.colorMain,),
-            onPressed: ()=>launch(curUrl),
+            onPressed: (){
+              launch(player.dataSource);
+            },
           )
         ],
       )

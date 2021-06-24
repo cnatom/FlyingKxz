@@ -11,10 +11,12 @@ import 'package:flying_kxz/FlyingUiKit/loading.dart';
 
 import 'package:flying_kxz/Model/book_detail_info.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 //跳转到当前页面
 void toBookDetailPage(BuildContext context,String url,String bookName) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BookDetailPage(url: url,bookName: bookName,)));
+  sendInfo('图书馆', '查看图书明细:$bookName');
 }
 class BookDetailPage extends StatefulWidget {
   final String url;

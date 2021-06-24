@@ -42,11 +42,11 @@ class _PointArrayState extends State<PointArray> {
   Widget _point(int index){
     double size = widgetWidth/4;
     return Container(
-      width: index==courseProvider.getCurWeek?size*1.5:size,
-      height: index==courseProvider.getCurWeek?size*1.5:size,
+      width: index==courseProvider.curWeek?size*1.5:size,
+      height: index==courseProvider.curWeek?size*1.5:size,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          color: index==courseProvider.getCurWeek?widget.colorMain:Theme.of(context).unselectedWidgetColor
+          color: index==courseProvider.curWeek?widget.colorMain:Theme.of(context).unselectedWidgetColor
       ),
     );
   }

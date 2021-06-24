@@ -1,4 +1,6 @@
 //关于我们
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/platform_interface.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 //跳转到当前页面
@@ -126,7 +129,7 @@ class _AboutPageState extends State<AboutPage> {
                   height: fontSizeMini38*0.8,
                 ),
                 Text(
-                  '—用心做好产品，期待你的加入—',
+                  '— 科技改变生活，技术成就梦想 —',
                   style: TextStyle(
                       color: colorLoginPageMain,
                       fontSize: fontSizeTip33,
@@ -318,6 +321,12 @@ class AboutFlyingWebView extends StatefulWidget {
 
 class _AboutFlyingWebViewState extends State<AboutFlyingWebView> {
   double progress = 0;
+  WebViewController webViewController;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -332,18 +341,22 @@ class _AboutFlyingWebViewState extends State<AboutFlyingWebView> {
         ),
       ),),
       body: WebView(
-          initialUrl: "https://mp.weixin.qq.com/s?__biz=MzIyNjAxNDkwMA==&mid=502587667&idx=1&sn=940336553beac7fb1e5d53fb3a0d0584",
+
+        initialUrl: "http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fjwxt.cumt.edu.cn%2Fsso%2Fjziotlogin",
+          // initialUrl: "https://mp.weixin.qq.com/s?__biz=MzIyNjAxNDkwMA==&mid=502587667&idx=1&sn=940336553beac7fb1e5d53fb3a0d0584",
           javascriptMode: JavascriptMode.unrestricted,
         onProgress: (value){
             setState(() {
               progress = value/100.0;
             });
         },
+        onWebViewCreated: (controller)async{
+            webViewController = controller;
+        },
         onPageStarted: (start){
             start.toString();
         },
-        onPageFinished: (finish){
-            debugPrint(finish.toString());
+        onPageFinished: (finish)async{
         },
       ),
     );

@@ -11,6 +11,7 @@ import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_
 import 'package:provider/provider.dart';
 
 import '../../course_page.dart';
+import '../../utils/course_provider.dart';
 
 class PointMatrix extends StatefulWidget {
   final BuildContext context;
@@ -83,7 +84,7 @@ class PointMatrixState extends State<PointMatrix> {
         width: gridWidth,
         height: gridHeight,
         child: FlyWidgetBuilder(
-          whenFirst: week == CourseProvider.curWeek,
+          whenFirst: week == courseProvider.curWeek,
           firstChild: _buildCurWeekCard(week),
           secondChild: _buildWeekCard(week),
         ),
@@ -139,7 +140,7 @@ class PointMatrixState extends State<PointMatrix> {
         height: gridWidth / 9,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            color: light > 0
+            color: (light > 0)
                 ? themeProvider.colorMain.withOpacity(0.8)
                 : themeData.unselectedWidgetColor.withOpacity(0.2)),
       );
@@ -156,7 +157,7 @@ class PointMatrixState extends State<PointMatrix> {
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[for(int j = 1;j<=5;j++)singlePoint(pointArray[i][j])],
+                  children: <Widget>[for(int j = 1;j<=5;j++)singlePoint(courseProvider.info!=null?pointArray[i][j]:0)],
                 ),
                 SizedBox(
                   height: gridWidth / 100,
