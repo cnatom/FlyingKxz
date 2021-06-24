@@ -56,8 +56,8 @@ class _MyAppState extends State<MyApp> {
           themeMode: themeProvider.themeMode,
           theme: FlyThemes.lightTheme,
           darkTheme: FlyThemes.darkTheme,
-          builder: BotToastInit(), //1.调用BotToastInit
-          navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
+          builder: BotToastInit(),
+          navigatorObservers: [BotToastNavigatorObserver()],
           //添加国际化
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
@@ -105,7 +105,7 @@ class _StartPageState extends State<StartPage> {
     //初始化参考屏幕信息
     ScreenUtil.init(context,
         height: deviceHeight, width: deviceWidth);
-    //初始化配置（需要context）
+    //初始化配置
     initSize();
     //内测结束跳转
     if(DateTime.now().isAfter(DateTime(2021,6,15))){
