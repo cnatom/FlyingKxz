@@ -118,10 +118,19 @@ class _StartPageState extends State<StartPage> {
     // }
     //初始化背景图路径
     if (Prefs.backImg != null) {
-      if (await File(Prefs.backImg).exists())
+      if (await File(Prefs.backImg).exists()){
         backImgFile = File(Prefs.backImg);
+        backImg = new Image.file(backImgFile,fit: BoxFit.cover,gaplessPlayback: true,);
+        await precacheImage(new FileImage(backImgFile), context);
+      }
+    }else{
+      backImg = new Image.asset("images/background.png",fit: BoxFit.cover,gaplessPlayback: true,);
+      await precacheImage(new AssetImage("images/background.png"), context);
     }
     //选择进入界面
+    // Prefs.password = '123';
+    // toNavigatorPage(context);
+    // return;
     if (Prefs.password != null) {
       toNavigatorPage(context);
     } else {

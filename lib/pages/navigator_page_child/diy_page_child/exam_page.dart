@@ -198,7 +198,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
                 children: [
                   Row(
                     children: [
-                      FlyText.main35('考试倒计时(维护中）',color: headerColor,),
+                      FlyText.main35('考试倒计时',color: headerColor,),
                       SizedBox(width: 10,),
                       loading?loadingAnimationIOS():Container()
                     ],

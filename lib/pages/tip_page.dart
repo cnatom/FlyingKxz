@@ -32,7 +32,7 @@ class _TipPageState extends State<TipPage> {
     setState(() {
       loading = true;
     });
-    showToast((await cumt.checkCookieConnectIn())?'🎉已连接内网':'未连接内网QAQ');
+    showToast((await Cumt.checkConnect())?'🎉已连接内网':'未连接内网QAQ');
     setState(() {
       loading = false;
     });

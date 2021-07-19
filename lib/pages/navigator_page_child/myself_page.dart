@@ -14,6 +14,7 @@ import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/FlyingUiKit/webview.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
@@ -260,16 +261,21 @@ class _MyselfPageState extends State<MyselfPage>
                         ])
                       ],
                     ),
-                    Center(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: fontSizeMini38,
-                          ),
-                          FlyText.mini30("矿小助-正式版 ${Global.curVersion} ",color: themeProvider.colorNavText.withOpacity(0.5),),
-                        ],
+                    FlatButton(
+                      onPressed: (){
+                        Navigator.push(
+                            context, CupertinoPageRoute(builder: (context) => FlyWebView(
+                          title: "隐私政策",
+                          initialUrl: "https://kxz.atcumt.com/privacy.html",
+                        )));
+                      },
+                      highlightColor: Colors.transparent, //点击后的颜色为透明
+                      splashColor: Colors.transparent, //点击波纹的颜色为透明
+                      child: FlyText.main35(
+                        "隐私政策",
+                        color: Colors.white.withOpacity(0.6),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -472,6 +478,8 @@ class _MyselfPageState extends State<MyselfPage>
       directory.createSync();
     }
     backImgFile = await tempImgFile.copy('${directory.path}/$imageFileName');
+    backImg = new Image.file(backImgFile,fit: BoxFit.cover,gaplessPlayback: true,);
+    await precacheImage(new FileImage(backImgFile), context);
     Prefs.backImg = backImgFile.path;
     navigatorPageController.jumpToPage(0);
   }

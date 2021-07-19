@@ -16,6 +16,7 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/FlyingUiKit/webview.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/login_check_get.dart';
 import 'package:flying_kxz/NetRequest/login_post.dart';
@@ -251,22 +252,28 @@ class _LoginPageState extends State<LoginPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Expanded(
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.end,
-            //     children: [
-            //       _buildFlatButton("检查更新", onPressed: () => appup)
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   height: ScreenUtil().setWidth(35),
-            //   width: 1,
-            //   color: Colors.white.withOpacity(0.5),
-            // ),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _buildFlatButton("隐私政策", onPressed: () {
+                    Navigator.push(
+                        context, CupertinoPageRoute(builder: (context) => FlyWebView(
+                      title: "隐私政策",
+                      initialUrl: "https://kxz.atcumt.com/privacy.html",
+                    )));
+                  })
+                ],
+              ),
+            ),
+            Container(
+              height: ScreenUtil().setWidth(35),
+              width: 1,
+              color: Colors.white.withOpacity(0.5),
+            ),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   _buildFlatButton("无法登录", onPressed: () async {
                     Clipboard.setData(ClipboardData(text: "839372371"));
