@@ -295,7 +295,7 @@ class _LoginPageState extends State<LoginPage> {
                                       maxLine: 10, color: Colors.blue),
                                 ),
                                 FlyText.mainTip35(
-                                    "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）",
+                                    "\n挂VPN可能会无法登录\n\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）",
                                     maxLine: 10),
                               ],
                             ),

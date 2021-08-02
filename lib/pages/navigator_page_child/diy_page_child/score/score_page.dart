@@ -11,9 +11,10 @@ import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/Model/score_info.dart';
+import 'file:///C:/Flying/flying_kxz/lib/pages/navigator_page_child/diy_page_child/score/score_info.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/import_score_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
@@ -22,9 +23,9 @@ import 'package:flying_kxz/NetRequest/score_get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
-import '../../../FlyingUiKit/toast.dart';
-import '../../../FlyingUiKit/toast.dart';
-import '../../tip_page.dart';
+import '../../../../FlyingUiKit/toast.dart';
+import '../../../../FlyingUiKit/toast.dart';
+import '../../../tip_page.dart';
 //跳转到当前页面
 void toScorePage(BuildContext context) {
   Navigator.push(
@@ -43,9 +44,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   String curScoreYearStr = "全部学年",curScoreTermStr = "全部学期";//当前所选的学期学年信息
   String jiaquanTotal;//总加权
   String jidianTotal;//总绩点
-  double xfjdSum;//学分*绩点的和
-  double xfcjSum;//学分*成绩的和
-  double xfSum;//学分的和
+
   List<bool> scoreFilter = new List();//true为计入总分 false不计入总分
   bool makeupFilter = false;
   bool showFilter = false;//是否启动筛选
@@ -94,13 +93,35 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     setState(() {loading = false;});
     sendInfo('成绩', '查询了成绩:$year,$term');
   }
+  //计算总加权和总绩点
+  //学分 总评 绩点
+  void calcuTotalScore(){
+
+    double xfjdSum = 0;//学分*绩点的和
+    double xfcjSum = 0;//学分*成绩的和
+    double xfSum = 0;//学分的和
+    try{
+      for(int i = 0;i < Global.scoreInfo.data.length;i++){
+        if(!isNumeric(Global.scoreInfo.data[i].zongping.toString())) continue;
+        if(scoreFilter[i]==false) continue;
+        xfjdSum += double.parse(Global.scoreInfo.data[i].xuefen)*double.parse(Global.scoreInfo.data[i].jidian.toString());
+        xfcjSum += double.parse(Global.scoreInfo.data[i].xuefen)*int.parse(Global.scoreInfo.data[i].zongping);
+        xfSum += double.parse(Global.scoreInfo.data[i].xuefen);
+      }
+      jiaquanTotal = (xfcjSum/xfSum).toStringAsFixed(2);
+      jidianTotal = (xfjdSum/xfSum).toStringAsFixed(2);
+    }catch(e){
+      jiaquanTotal = "计算失败";
+      jidianTotal = "计算失败";
+    }
+  }
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     super.build(context);
     return Scaffold(
       key: scaffoldKey,
-      appBar: FlyAppBar(context, '成绩（内网）',actions: [
+      appBar: FlyAppBar(context, '成绩（需内网）',actions: [
         IconButton(icon: Icon(Icons.help_outline,color: Theme.of(context).primaryColor,), onPressed: (){
           FlyDialogDIYShow(context, content: Wrap(
             children: [
@@ -126,14 +147,9 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
             child: Column(
               children: [
                 topArea(),
-                _searchBarButton('点击查询'+(makeupFilter?'（带补考无明细）':''),
+                _searchBarButton('点击导入'+(makeupFilter?'（带补考无明细）':''),
                     "$curScoreYearStr $curScoreTermStr",
-                    onTap: ()=>showPicker(context, scaffoldKey,
-                        pickerDatas: PickerData.xqxnWithAllTermPickerData,
-                        colorRight: themeProvider.colorMain,
-                        onConfirm: (Picker picker, List value) {
-                          getShowScoreView(year: picker.getSelectedValues()[0].toString(),term: picker.getSelectedValues()[1].toString());
-                        })),
+                    onTap: ()=>Navigator.push(context, CupertinoPageRoute(builder: (context)=>ImportScorePage()))),
               ],
             ),
           ),
@@ -164,26 +180,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       ),
     );
   }
-  //计算总加权和总绩点
-  void calcuTotalScore(){
-    xfjdSum = 0;
-    xfSum = 0;
-    xfcjSum = 0;
-    try{
-      for(int i = 0;i < Global.scoreInfo.data.length;i++){
-        if(!isNumeric(Global.scoreInfo.data[i].zongping.toString())) continue;
-        if(scoreFilter[i]==false) continue;
-        xfjdSum += double.parse(Global.scoreInfo.data[i].xuefen)*double.parse(Global.scoreInfo.data[i].jidian.toString());
-        xfcjSum += double.parse(Global.scoreInfo.data[i].xuefen)*int.parse(Global.scoreInfo.data[i].zongping);
-        xfSum += double.parse(Global.scoreInfo.data[i].xuefen);
-      }
-      jiaquanTotal = (xfcjSum/xfSum).toStringAsFixed(2);
-      jidianTotal = (xfjdSum/xfSum).toStringAsFixed(2);
-    }catch(e){
-      jiaquanTotal = "计算失败";
-      jidianTotal = "计算失败";
-    }
-  }
+
   Widget _makeUpFilter(){
     return Container(
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB/2, spaceCardPaddingRL, spaceCardPaddingTB/2),

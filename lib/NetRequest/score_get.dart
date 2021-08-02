@@ -5,15 +5,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/Model/score_info.dart';
+import 'file:///C:/Flying/flying_kxz/lib/pages/navigator_page_child/diy_page_child/score/score_info.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/CumtSpider/cumt_format.dart';
 import 'package:html/parser.dart';
 
 
 Future<bool> scoreGet(BuildContext context,InquiryType type,{@required String term, @required String year,}) async {
-  showToast('与教务有关的功能正在维护中，请保持最新版本');
-  return false;
+  // showToast('与教务有关的功能正在维护中，请保持最新版本');
+  // return false;
   try{
     if(Prefs.visitor){
       //游客模式

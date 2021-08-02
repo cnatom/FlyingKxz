@@ -13,11 +13,11 @@
 // ];
 
 class ScoreInfo {
-  List<Data> _data;
+  List<ScoreData> _data;
 
-  List<Data> get data => _data;
+  List<ScoreData> get data => _data;
 
-  ScoreInfo({List<Data> data}) {
+  ScoreInfo({List<ScoreData> data}) {
     _data = data;
   }
 
@@ -25,7 +25,7 @@ class ScoreInfo {
     if (json["data"] != null) {
       _data = [];
       json["data"].forEach((v) {
-        _data.add(Data.fromJson(v));
+        _data.add(ScoreData.fromJson(v));
       });
     }
   }
@@ -46,7 +46,7 @@ class ScoreInfo {
 /// type : "正常考试"
 /// scoreDetail : [{"name":"期末(100%)","score":"中等"},{"name":"总评","score":"中等"}]
 
-class Data {
+class ScoreData {
   String _courseName;
   String _xuefen;
   String _jidian;
@@ -61,7 +61,7 @@ class Data {
   String get type => _type;
   List<ScoreDetail> get scoreDetail => _scoreDetail;
 
-  Data(
+  ScoreData(
       {String courseName,
       String xuefen,
       String jidian,
@@ -76,7 +76,8 @@ class Data {
     _scoreDetail = scoreDetail;
   }
 
-  Data.fromJson(dynamic json) {
+
+  ScoreData.fromJson(dynamic json) {
     _courseName = json["courseName"];
     _xuefen = json["xuefen"];
     _jidian = json["jidian"];
