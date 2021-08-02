@@ -1,12 +1,18 @@
+import 'package:badges/badges.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flying_kxz/CumtSpider/cumt_format.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/FlyingUiKit/container.dart';
+import 'package:flying_kxz/FlyingUiKit/my_bottom_sheet.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_temp_list_view.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,20 +28,46 @@ class _ImportScorePageState extends State<ImportScorePage> {
   double progress = 0.0;
   bool loadingWeb = true;
   bool loading = false;
-  @override
-  void initState() {
-    super.initState();
+
+  List<Map<String,dynamic>> result = [];
+
+
+  _showDetail()async{
+    if(result==null||result.isEmpty){
+      showToast('列表为空');
+      return;
+    }
+    var temp = await showFlyModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      backgroundColor: Theme.of(context).cardColor.withOpacity(1),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10)),
+      builder: (BuildContext context) {
+        return ScoreTempListView(list:result);
+      },
+    );
+    if(temp==null) return;
+    result = temp;
+    setState(() {
+
+    });
   }
-  _import()async{
-    setState(() {
-      loading = true;
-    });
+  _add()async{
     var html = await _controller.getHtml();
-    // _controller.postUrl(url: url, postData: postData)
+    var res = CumtFormat.parseScoreAll(html);
+    if(res==null) return;
+    result.addAll(res);
     setState(() {
-      loading = false;
+
     });
-    Navigator.of(context).pop(html);
+  }
+  _ok(){
+    if(result==null||result.isEmpty){
+      showToast('列表为空');
+      return;
+    }
+    Navigator.of(context).pop(result);
   }
   @override
   Widget build(BuildContext context) {
@@ -43,10 +75,6 @@ class _ImportScorePageState extends State<ImportScorePage> {
     return Scaffold(
       appBar: FlyAppBar(context,loadingWeb?"loading……":"矿大教务",
           actions: [
-            // IconButton(icon: Icon(Icons.add,color: themeProvider.colorNavText,), onPressed: ()async{
-            //   var html = await _controller.getHtml();
-            //   CumtFormat.courseHtmlToDate(html);
-            // }),
             IconButton(icon: Icon(Boxicons.bx_help_circle,color: Theme.of(context).primaryColor,), onPressed: (){
               Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ImportHelpPage()));
             })
@@ -68,7 +96,7 @@ class _ImportScorePageState extends State<ImportScorePage> {
                     useHybridComposition: true
                 )
             ),
-            initialUrlRequest: URLRequest(url: Uri.parse("http://jwxt.cumt.edu.cn/jwglxt/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N253508&layout=default")),
+            initialUrlRequest: URLRequest(url: Uri.parse("http://jwxt.cumt.edu.cn/jwglxt/cjcx/cjcx_cxDgXscj.html?gnmkdm=N305005&layout=default")),
             onWebViewCreated: (controller){
               _controller = controller;
             },
@@ -89,27 +117,7 @@ class _ImportScorePageState extends State<ImportScorePage> {
               });
             },
           ),
-          Positioned(
-            bottom: 40,
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: ()=>_import(),
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(borderRadiusValue),
-                        color: themeProvider.colorMain.withOpacity(0.9),
-                        boxShadow: [
-                          boxShadowMain
-                        ]
-                    ),
-                    child: FlyText.title50(loading?'提取中……':'提取课表到矿小助',color: Colors.white,fontWeight: FontWeight.bold,),
-                  ),
-                )
-              ],
-            ),
-          ),
+          _bottomBar(),
           Positioned(
             top: 0,
             child: Row(
@@ -121,7 +129,7 @@ class _ImportScorePageState extends State<ImportScorePage> {
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.5),
                   ),
-                  child: FlyText.main40('矿小姬Tip：登录教务后，查询想要提取的课表，然后点击下方按钮就可以啦～',color: Colors.white,maxLine: 10,),
+                  child: FlyText.main40('矿小姬Tip：登录后，逐一提取每页成绩，最后点对勾即可',color: Colors.white,maxLine: 10,),
                 )
               ],
             ),
@@ -130,7 +138,61 @@ class _ImportScorePageState extends State<ImportScorePage> {
       ),
     );
   }
+  Widget _bottomBar(){
+    Color textColor = Theme.of(context).brightness==Brightness.light?themeProvider.colorMain:Colors.white;
+    return Positioned(
+      width: MediaQuery.of(context).size.width,
+      bottom: 0,
+      child: FlyContainer(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadiusValue),
+            color: Theme.of(context)
+                .cardColor
+                .withOpacity(0.9),
+            boxShadow: [
+              boxShadowMain
+            ]),
+        margin: EdgeInsets.fromLTRB(10, 10, 10, MediaQuery.of(context).padding.bottom),
+        padding: EdgeInsets.fromLTRB(10,10, 10, 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            InkWell(
+              onTap: ()=>_showDetail(),
+              child: Badge(
+                padding: EdgeInsets.all(3),
+                elevation: 1,
+                badgeContent: Text(result.length.toString(),style: TextStyle(color: Colors.white),),
+                child: Icon(Icons.list,size: 35,color: textColor,),
+              ),
+            ),
+            Center(
+              child: InkWell(
+                onTap: ()=>_add(),
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: textColor.withOpacity(0.1),
+                      boxShadow: [
+                        boxShadowMain
+                      ]
+                  ),
+                  child: FlyText.title45('提取本页成绩',fontWeight: FontWeight.bold,color: textColor,),
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: ()=>_ok(),
+              child: Icon(Icons.check,size: 30,color: textColor,),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
+
 class ImportHelpPage extends StatefulWidget {
   @override
   _ImportHelpPageState createState() => _ImportHelpPageState();

@@ -2,30 +2,24 @@ import 'dart:ui';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
-import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/FlyingUiKit/webview.dart';
 import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/Model/prefs.dart';
-import 'file:///C:/Flying/flying_kxz/lib/pages/navigator_page_child/diy_page_child/score/score_info.dart';
-import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/import_score_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_info.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_map.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_set_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
-import 'package:flying_kxz/FlyingUiKit/picker.dart';
-import 'package:flying_kxz/NetRequest/score_get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../FlyingUiKit/toast.dart';
-import '../../../../FlyingUiKit/toast.dart';
-import '../../../tip_page.dart';
 //跳转到当前页面
 void toScorePage(BuildContext context) {
   Navigator.push(
@@ -45,12 +39,11 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   String jiaquanTotal;//总加权
   String jidianTotal;//总绩点
 
-  List<bool> scoreFilter = new List();//true为计入总分 false不计入总分
+  List<bool> scoreFilter;//true为计入总分 false不计入总分
   bool makeupFilter = false;
   bool showFilter = false;//是否启动筛选
   bool scoreDetailAllExpand = false;//是否全部展开闭合
   List<CrossFadeState> scoreDetailCrossFadeState = new List(); //控制详细列表的展开闭合
-  bool loading = true;//是否显示加载动画
   bool selectAll =  true;
   double opacityFloatButton = 0.0;//是否显示回到顶部按钮
   ThemeProvider themeProvider;
@@ -59,28 +52,24 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   @override
   void initState() {
     super.initState();
-    curScoreYearStr = Prefs.schoolYear+'-'+(int.parse(Prefs.schoolYear)+1).toString();
-    curScoreTermStr = "第${Prefs.schoolTerm}学期";
-    getShowScoreView(year: curScoreYearStr,term: curScoreTermStr);
+    scoreFilter = [];
+    ScoreMap.init();
   }
-  //getShowScoreView('2021-2022','全部学期')
-  getShowScoreView({@required String year,@required String term})async{
-    //学年转换
-    List<String> yearTerm = Cumt.transYearTerm(year, term);
-    curScoreYearStr = year;
-    curScoreTermStr = term;
+  import()async{
+    var result = await Navigator.push(context, CupertinoPageRoute(builder: (context)=>ImportScorePage()));
+    if(result==null||result.isEmpty) return;
+    show(result);
+  }
+  show(dynamic json)async{
     setState(() {
-      loading = true;
       jiaquanTotal = null;
       jidianTotal = null;
     });
     //发送请求
-    InquiryType type = makeupFilter?InquiryType.ScoreAll:InquiryType.Score;
-    if(await scoreGet(context,type,year: yearTerm[0],term: yearTerm[1])){
-      // showToast('获取成功');
-    }else{
-      // showToast('获取失败');
-    }
+    // InquiryType type = makeupFilter?InquiryType.ScoreAll:InquiryType.Score;
+    Global.scoreInfo = ScoreInfo.fromJson({
+      'data':json
+    });
     //打理后事
     scoreDetailCrossFadeState.clear();
     scoreFilter.clear();
@@ -90,30 +79,66 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       scoreDetailCrossFadeState.add(CrossFadeState.showFirst);
     }
     calcuTotalScore();
-    setState(() {loading = false;});
-    sendInfo('成绩', '查询了成绩:$year,$term');
+    setState(() {
+    });
+    sendInfo('成绩', '查询了成绩');
+
   }
   //计算总加权和总绩点
   //学分 总评 绩点
   void calcuTotalScore(){
-
+    if(Global.scoreInfo.data==null) return;
     double xfjdSum = 0;//学分*绩点的和
     double xfcjSum = 0;//学分*成绩的和
     double xfSum = 0;//学分的和
     try{
       for(int i = 0;i < Global.scoreInfo.data.length;i++){
-        if(!isNumeric(Global.scoreInfo.data[i].zongping.toString())) continue;
+        var cur = Global.scoreInfo.data[i];
+        String zongping = cur.zongping;
+        String jidian = cur.jidian;
+        String xuefen = cur.xuefen;
+        if(!isNumeric(zongping)){
+          if(ScoreMap.data[zongping]!=null){
+            jidian = ScoreMap.data[zongping]['jidian']??'null';
+            zongping = ScoreMap.data[zongping]['zongping']??'null';
+          }else{
+            scoreFilter[i] = false;
+          }
+
+        }
         if(scoreFilter[i]==false) continue;
-        xfjdSum += double.parse(Global.scoreInfo.data[i].xuefen)*double.parse(Global.scoreInfo.data[i].jidian.toString());
-        xfcjSum += double.parse(Global.scoreInfo.data[i].xuefen)*int.parse(Global.scoreInfo.data[i].zongping);
-        xfSum += double.parse(Global.scoreInfo.data[i].xuefen);
+        xfjdSum += double.parse(xuefen)*double.parse(jidian.toString());
+        xfcjSum += double.parse(xuefen)*int.parse(zongping);
+        xfSum += double.parse(xuefen);
       }
       jiaquanTotal = (xfcjSum/xfSum).toStringAsFixed(2);
       jidianTotal = (xfjdSum/xfSum).toStringAsFixed(2);
     }catch(e){
+      print(e.toString());
       jiaquanTotal = "计算失败";
       jidianTotal = "计算失败";
     }
+    setState(() {
+
+    });
+  }
+  toSetPage()async{
+    await Navigator.of(context).push(CupertinoPageRoute(builder: (context)=> ScoreSetPage()));
+    calcuTotalScore();
+    setState(() {
+
+    });
+  }
+  showHelp(){
+    FlyDialogDIYShow(context, content: Wrap(
+      children: [
+        FlyText.main40('【内网环境】为确保数据安全，请连接学校内的wifi或vpn进行成绩导入\n\n'
+          '【加权筛选】"筛选"功能可忽略某些不计入加权的学科成绩\n\n'
+            '【特殊成绩】不同学院年级对于"优秀""良好"等特殊成绩的规定不同，请参照学生手册自行修改对应的学分绩点（点击右上角齿轮）\n\n'
+            '【全选操作】点击筛选后还可进行"全选""取消全选"操作，你注意到了吗？\n',maxLine: 100,),
+        FlyText.miniTip30("仅供参考，出现意外情况开发者概不负责",maxLine: 100,)
+      ],
+    ));
   }
   @override
   Widget build(BuildContext context) {
@@ -121,17 +146,9 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     super.build(context);
     return Scaffold(
       key: scaffoldKey,
-      appBar: FlyAppBar(context, '成绩（需内网）',actions: [
-        IconButton(icon: Icon(Icons.help_outline,color: Theme.of(context).primaryColor,), onPressed: (){
-          FlyDialogDIYShow(context, content: Wrap(
-            children: [
-              FlyText.main40('【加权筛选】"筛选"功能可忽略某些不计入加权的学科成绩\n\n'
-                  '【成绩明细】点击成绩卡片可查看其明细\n\n'
-                  '【全选操作】点击筛选后还可进行"全选""取消全选"操作，你注意到了吗？\n',maxLine: 100,),
-              FlyText.miniTip30("平均成绩仅供参考\n实际数据请参照学生手册自行计算。\n若出现总评(或平均分)不一致的情况，请以“包含补考成绩”的数据为准",maxLine: 100,)
-            ],
-          ));
-        })
+      appBar: FlyAppBar(context, '成绩（需内网或VPN）',actions: [
+        IconButton(icon: Icon(Icons.settings,color: Theme.of(context).primaryColor,), onPressed: ()=>toSetPage()),
+        IconButton(icon: Icon(Icons.help_outline,color: Theme.of(context).primaryColor,), onPressed: ()=>showHelp())
       ]),
       body: Column(
         children: [
@@ -147,9 +164,9 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
             child: Column(
               children: [
                 topArea(),
-                _searchBarButton('点击导入'+(makeupFilter?'（带补考无明细）':''),
-                    "$curScoreYearStr $curScoreTermStr",
-                    onTap: ()=>Navigator.push(context, CupertinoPageRoute(builder: (context)=>ImportScorePage()))),
+                _searchBarButton('点击导入成绩',
+                    "自动计算，自由筛选",
+                    onTap: ()=>import()),
               ],
             ),
           ),
@@ -166,7 +183,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                     child: Wrap(
                       runSpacing: spaceCardMarginTB,
                       children: [
-                        _makeUpFilter(),
+                        // _makeUpFilter(),
                         curView()
                       ],
                     ),
@@ -191,15 +208,14 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          FlyText.main35("包含补考成绩（带补考无明细）"),
+          FlyText.main35("全部成绩（带补考无明细）"),
           CupertinoSwitch(
               activeColor: themeProvider.colorMain.withAlpha(200),
               value: makeupFilter,
               onChanged: (v){
-                if(!loading){
+                setState(() {
                   makeupFilter = !makeupFilter;
-                  getShowScoreView(year: curScoreYearStr,term: curScoreTermStr);
-                }
+                });
               }
           )
         ],
@@ -232,7 +248,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                   ],
                 ),
                 Icon(
-                  Icons.search,
+                  Icons.cloud_download_outlined,
                 )
               ],
             ),
@@ -247,22 +263,29 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     Widget expandChip(){
       return InkWell(
         onTap: (){
-          setState(() {
-            if(scoreDetailAllExpand==true){
-              scoreDetailCrossFadeState.fillRange(0, scoreDetailCrossFadeState.length,CrossFadeState.showFirst);
-              scoreDetailAllExpand = false;
-            }else{
-              scoreDetailCrossFadeState.fillRange(0, scoreDetailCrossFadeState.length,CrossFadeState.showSecond);
-              scoreDetailAllExpand = true;
-            }
-          });
+          Navigator.of(context).push(
+              CupertinoPageRoute(builder: (context)=>
+                  FlyWebView(
+                    title: "成绩明细查询（暂不支持导出）",
+                    initialUrl: "http://jwxt.cumt.edu.cn/jwglxt/cjcx/cjcx_cxDgXsxmcj.html?gnmkdm=N305007&layout=default",)));
+          // setState(() {
+          //   if(scoreDetailAllExpand==true){
+          //     scoreDetailCrossFadeState.fillRange(0, scoreDetailCrossFadeState.length,CrossFadeState.showFirst);
+          //     scoreDetailAllExpand = false;
+          //   }else{
+          //     scoreDetailCrossFadeState.fillRange(0, scoreDetailCrossFadeState.length,CrossFadeState.showSecond);
+          //     scoreDetailAllExpand = true;
+          //   }
+          // });
         },
         child: Container(
           height: fontSizeMini38*3,
           child:Row(
             children: [
-              scoreDetailAllExpand?FlyText.main35('详细信息',):FlyText.main35('简略信息',),
-              scoreDetailAllExpand?Icon(Icons.expand_more,size: fontSizeMini38,):Icon(Icons.expand_less,size: fontSizeMini38),
+              // scoreDetailAllExpand?FlyText.main35('详细信息',):FlyText.main35('简略信息',),
+              FlyText.main35('成绩明细',),
+              Icon(Icons.chevron_right,size: fontSizeMini38,)
+              // scoreDetailAllExpand?Icon(Icons.expand_more,size: fontSizeMini38,):Icon(Icons.expand_less,size: fontSizeMini38),
 
             ],
           ),
@@ -441,13 +464,13 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
       ),
       child: InkWell(
         onTap: (){
-          //点击展开
-          scoreDetailCrossFadeState[curIndex] =
-          scoreDetailCrossFadeState[curIndex] ==
-              CrossFadeState.showFirst
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst;
-          setState(() {});
+          // //点击展开
+          // scoreDetailCrossFadeState[curIndex] =
+          // scoreDetailCrossFadeState[curIndex] ==
+          //     CrossFadeState.showFirst
+          //     ? CrossFadeState.showSecond
+          //     : CrossFadeState.showFirst;
+          // setState(() {});
         },
         child: Column(
           children: <Widget>[
@@ -503,8 +526,17 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                         value: scoreFilter[curIndex],
                         onChanged: (v){
                           setState(() {
-                            scoreFilter[curIndex] = !scoreFilter[curIndex];
-                            calcuTotalScore();
+                            if(isNumeric(zongping)){
+                              scoreFilter[curIndex] = !scoreFilter[curIndex];
+                              calcuTotalScore();
+                            }else{
+                              if(ScoreMap.data[zongping]==null){
+                                showToast('特殊成绩"$zongping"的绩点和总评未定义\n请点击右上角小齿轮添加定义',duration: 5);
+                              }else{
+                                scoreFilter[curIndex] = !scoreFilter[curIndex];
+                                calcuTotalScore();
+                              }
+                            }
                           });
                         }
                     ),
@@ -556,13 +588,12 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   @override
   void dispose() {
     super.dispose();
+    Global.scoreInfo = new ScoreInfo();
   }
 
 
   Widget nullView(){
-    return Center(
-      child: FlyText.main40("（￣︶￣）↗点上面查成绩",color: colorMainText),
-    );
+    return Container();
   }
   Widget loadingView(){
     return Container(
@@ -618,14 +649,8 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   }
   Widget curView(){
     Widget child = nullView();
-    switch(loading) {
-      case true:child = loadingView();break;
-      case false:{
-        if(Global.scoreInfo.data!=null){
-          child = Global.scoreInfo.data.isEmpty?infoEmptyView():infoView();
-        }
-        break;
-      }
+    if(Global.scoreInfo.data!=null){
+      child = Global.scoreInfo.data.isEmpty?infoEmptyView():infoView();
     }
     return child;
   }

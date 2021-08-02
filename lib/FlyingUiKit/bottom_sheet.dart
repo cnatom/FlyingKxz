@@ -16,6 +16,7 @@ class FlyBottomSheetScaffold extends StatefulWidget {
   final VoidCallback onDetermine;
   final Widget child;
   final VoidCallback onCancel;
+  final Color backgroundColor;
   const FlyBottomSheetScaffold(this.context,
       {this.key,
       this.leftText = "取消",
@@ -23,6 +24,7 @@ class FlyBottomSheetScaffold extends StatefulWidget {
       this.onDetermine,
       this.onCancel,
       this.rightText = "确定",
+        this.backgroundColor,
       @required this.child})
       : super(key: key);
 
@@ -39,7 +41,7 @@ class _FlyBottomSheetScaffoldState extends State<FlyBottomSheetScaffold> {
         height: ScreenUtil().setHeight(deviceHeight * 0.8),
         padding: EdgeInsets.all(spaceCardPaddingRL),
         decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
+            color: widget.backgroundColor??Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(borderRadiusValue)),
         child: Column(
           children: <Widget>[

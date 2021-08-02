@@ -70,16 +70,6 @@ class CumtFormat{
               "weekNum":weekNum,
               "lessonNum":lessonNum,
             });
-            // print({
-            //   "title":title,
-            //   "location":location,
-            //   "teacher":teacher,
-            //   "credit":credit,
-            //   "durationNum":durationNum,
-            //   "weekList":weekList,
-            //   "weekNum":weekNum,
-            //   "lessonNum":lessonNum,
-            // });
           }
         }
       }
@@ -190,22 +180,35 @@ class CumtFormat{
     return result;
   }
   //成绩（包括补考无明细）
-  static Map<String,dynamic> parseScoreAll(Map<String,dynamic> data){
-    var grades_list = data['items'];
-    var l1 = [];
-    for(var a in grades_list){
-      var d1 = {
-        "courseName": a['kcmc'],
-        "xuefen": a['xf'],
-        "jidian": a['jd'],
-        "zongping": a['bfzcj'],
-        "type": a['ksxz'],
-      };
-      l1.add(d1);
+  static List<Map<String,dynamic>> parseScoreAll(String html){
+    List<Map<String,dynamic>> result = [];
+
+    String courseName;//语文
+    String xuefen;//学分
+    String jidian;//绩点
+    String zongping;//总评
+    String type;//正常考试
+
+    var document = parser.parse(html);
+    var table = document.body.querySelector("tbody");
+    if(table.children==null) return null;
+    for(int i = 1;i<table.children.length;i++){
+      var cur = table.children[i];
+      courseName = cur.querySelector(r'td[aria-describedby="tabGrid_kcmc"]').innerHtml;
+      xuefen = cur.querySelector(r'td[aria-describedby="tabGrid_xf"]').innerHtml;
+      jidian = cur.querySelector(r'td[aria-describedby="tabGrid_jd"]').innerHtml;
+      zongping = cur.querySelector(r'td[aria-describedby="tabGrid_cj"]').innerHtml;
+      type = cur.querySelector(r'td[aria-describedby="tabGrid_ksxz"]').innerHtml;
+
+      result.add({
+        "courseName": courseName,
+        "xuefen": xuefen,
+        "jidian": jidian,
+        "zongping": zongping,
+        "type": type,
+      });
     }
-    return {
-      'data':l1
-    };
+    return result;
   }
   //成绩（有明细无补考）
   static Map<String,dynamic> parseScore(Map<String,dynamic> data){
@@ -262,7 +265,7 @@ class CumtFormat{
           kd.addAll(single_data);
         }
         foda['zongping'] = single_data['xmcj'];
-        if(_isNumeric(foda['zongping'])){
+        if(isNumeric(foda['zongping'])){
           var zongping = double.parse(foda['zongping']);
           if(zongping>=95&&zongping<=100) foda['jidian'] = '5.0';
           if(zongping>=90&&zongping<=94) foda['jidian'] = '4.5';
@@ -331,7 +334,7 @@ class CumtFormat{
       'data':bklt
     };
   }
-  static bool _isNumeric(String s) {
+  static bool isNumeric(String s) {
     if (s == null) {
       return false;
     }

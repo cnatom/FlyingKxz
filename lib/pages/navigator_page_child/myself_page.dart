@@ -235,7 +235,6 @@ class _MyselfPageState extends State<MyselfPage>
                               onTap: () {
                                 FlyDialogDIYShow(context, content: InvitePage());
                               }),
-
                           UniversalPlatform.isIOS
                               ? Container()
                               : _buildIconTitleButton(

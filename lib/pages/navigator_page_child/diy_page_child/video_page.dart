@@ -139,7 +139,7 @@ class _VideoPageState extends State<VideoPage> {
                     child: TextField(
                       focusNode: searchBarFocus,
                       decoration: InputDecoration(
-                        hintText: "输入课程名（内网）",
+                        hintText: "输入课程名（需内网或VPN）",
                         border: InputBorder.none,
                         isDense: true,
                         hintStyle: TextStyle(
