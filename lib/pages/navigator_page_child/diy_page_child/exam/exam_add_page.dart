@@ -8,11 +8,11 @@ import 'package:flying_kxz/FlyingUiKit/bottom_sheet.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
-import 'package:flying_kxz/Model/exam_info.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_page.dart';
 
 class ExamAddView extends StatefulWidget {
   @override
@@ -114,7 +114,7 @@ class _ExamAddViewState extends State<ExamAddView> {
       showToast('请填写完整~');
       return;
     }
-    var newCountDownInfo = ExamUnit(
+    var newCountDownInfo = ExamData(
         courseName: courseController.text,
         location: localController.text,
         dateTime: "${date.year}-${date.month}-${date.day}",
@@ -124,7 +124,7 @@ class _ExamAddViewState extends State<ExamAddView> {
         diy: true
     );
     Global.examList.add(newCountDownInfo);
-    Prefs.examData = ExamUnit.examJsonEncode(Global.examList);
+    Prefs.examData = ExamData.examJsonEncode(Global.examList);
     sendInfo('考试倒计时', '添加了考试:${newCountDownInfo.courseName}');
     Navigator.pop(context);
   }

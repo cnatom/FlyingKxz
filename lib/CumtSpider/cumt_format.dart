@@ -160,23 +160,24 @@ class CumtFormat{
     };
   }
   //考试
-  static Map<String,dynamic> parseExam(Map<String,dynamic> data){
-    var exam_list = [];
-    for(var single_data in data['items']){
-      var item = {
-        "local": single_data['cdbh'],
-        "time": single_data['kssj'],
-        "course": single_data['kcmc'],
-        "type": single_data['ksmc'],
-        "year": int.parse(single_data['kssj'].substring(0,4)),
-        "month": int.parse(single_data['kssj'].substring(5,7)),
-        "day": int.parse(single_data['kssj'].substring(8,10))
-      };
-      exam_list.add(item);
+  static List<Map<String,dynamic>> parseExam(String html){
+    List<Map<String,dynamic>> result = [];
+    String courseName;
+    String location;
+    String dateTime;
+    var document = parser.parse(html);
+    var table = document.body.querySelector(r'tbody');
+    for(int i = 1;i<table.children.length;i++){
+      var cur = table.children[i];
+      courseName = cur.querySelector('td[aria-describedby="tabGrid_kcmc"]').innerHtml;
+      location = cur.querySelector('td[aria-describedby="tabGrid_cdmc"]').innerHtml;
+      dateTime = cur.querySelector('td[aria-describedby="tabGrid_kssj"]').innerHtml;
+      result.add({
+        'courseName':courseName,
+        'location':location,
+        'dateTime':dateTime
+      });
     }
-    var result = {
-      'data':exam_list
-    };
     return result;
   }
   //成绩（包括补考无明细）

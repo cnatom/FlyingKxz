@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -9,14 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
-
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
-import 'package:flying_kxz/Model/book_detail_info.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/NetRequest/book_get.dart';
-import 'package:flying_kxz/NetRequest/exam_get.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-
 import 'book_detail_page.dart';
 
 class BookData {

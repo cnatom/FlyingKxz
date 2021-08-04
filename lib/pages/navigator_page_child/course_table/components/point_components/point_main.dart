@@ -39,7 +39,7 @@ class PointMainState extends State<PointMain> {
             secondCurve: Curves.easeOutCubic,
             sizeCurve: Curves.easeOutCubic,
             firstChild: Container(),
-            secondChild: PointArray(colorMain: themeProvider.colorMain,),
+            secondChild: PointArray(colorFirst: themeProvider.colorMain,colorSecond: themeProvider.colorNavText.withOpacity(0.3),),
             duration: Duration(milliseconds: 200),
             crossFadeState: showRight?CrossFadeState.showFirst:CrossFadeState.showSecond,
           ),

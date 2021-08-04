@@ -16,7 +16,7 @@ import 'balance_detail_info.dart';
 import 'book_detail_info.dart';
 import 'book_info.dart';
 import 'course_info.dart';
-import 'exam_info.dart';
+import '../pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
 import 'login_info.dart';
 
 //获取当前学年学期
@@ -46,8 +46,7 @@ class Global{
   static LoginInfo loginInfo = new LoginInfo();//登录信息
   static UserInfo userInfo = new UserInfo();//用户信息
   static ScoreInfo scoreInfo = new ScoreInfo();//成绩信息
-  static ExamInfo examInfo = new ExamInfo();//考试信息
-  static List<ExamUnit> examList = [];//考试列表
+  static List<ExamData> examList = [];//考试列表
   static VideoInfo videoInfo = new VideoInfo();
   static BookInfo bookInfo = new BookInfo();//图书馆书籍信息
   static BookDetailInfo bookDetailInfo = new BookDetailInfo();
@@ -61,7 +60,6 @@ class Global{
     loginInfo = new LoginInfo();
     courseInfo = new CourseInfo();
     scoreInfo = new ScoreInfo();
-    examInfo = new ExamInfo();
     examList = [];
     await Prefs.prefs.clear();
     getSchoolYearTerm();

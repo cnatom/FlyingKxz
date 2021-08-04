@@ -7,12 +7,11 @@ import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
-import 'package:flying_kxz/Model/exam_info.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/NetRequest/exam_get.dart';
 import 'dart:async';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_add_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_add_page.dart';
 import 'package:flying_kxz/test_page/component/unit_card.dart';
 import 'package:provider/provider.dart';
 class NewExamView extends StatefulWidget {
@@ -71,16 +70,16 @@ class _NewExamViewState extends State<NewExamView> with AutomaticKeepAliveClient
 
   getShowExamView({@required String year,@required String term})async{
     setState(() {loading = true;});
-    if(await examPost(context,year: year, term: term))
-      setState(() {loading = false;});
+    // if(await examPost(context,year: year, term: term))
+    //   setState(() {loading = false;});
   }
   initExamData()async{
     var localExamInfo = Prefs.examData;
     if(localExamInfo!=null){
-      Global.examInfo = ExamInfo.fromJson(jsonDecode(localExamInfo));
+      // Global.examInfo = ExamInfo.fromJson(jsonDecode(localExamInfo));
       loading = true;
-      await examPost(context,
-          year: Prefs.schoolYear, term: Prefs.schoolTerm);
+      // await examPost(context,
+      //     year: Prefs.schoolYear, term: Prefs.schoolTerm);
       loading = false;
     }else{
       getShowExamView(year: Prefs.schoolYear, term: Prefs.schoolTerm);//首次使用
@@ -228,11 +227,11 @@ class _NewExamViewState extends State<NewExamView> with AutomaticKeepAliveClient
       physics: BouncingScrollPhysics(),
       child: Column(
         children: [
-          Column(
-            children: Global.examInfo.data.map((item){
-              return examCard(item.course, item.local, item.time, item.year, item.month, item.day);
-            }).toList(),
-          ),
+          // Column(
+          //   children: Global.examInfo.data.map((item){
+          //     return examCard(item.course, item.local, item.time, item.year, item.month, item.day);
+          //   }).toList(),
+          // ),
 
         ],
       ),
@@ -267,7 +266,7 @@ class _NewExamViewState extends State<NewExamView> with AutomaticKeepAliveClient
     switch(loading) {
       case true:child = loadingView();break;
       case false:{
-        child = Global.examInfo.data.isEmpty?infoEmptyView():infoView();
+        // child = Global.examInfo.data.isEmpty?infoEmptyView():infoView();
         break;
       }
     }

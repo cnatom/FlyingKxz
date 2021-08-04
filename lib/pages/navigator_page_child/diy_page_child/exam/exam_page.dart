@@ -1,36 +1,22 @@
-
-
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
-import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
-import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/my_bottom_sheet.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
-
-import 'package:flying_kxz/Model/exam_info.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/NetRequest/exam_get.dart';
 import 'dart:async';
-
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam_add_page.dart';
-import 'package:left_scroll_actions/cupertinoLeftScroll.dart';
-import 'package:left_scroll_actions/global/actionListener.dart';
-import 'package:left_scroll_actions/leftScroll.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_add_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/import_exam_page.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
-
-import '../../navigator_page.dart';
-import '../../tip_page.dart';
+import '../../../navigator_page.dart';
 
 class ExamView extends StatefulWidget {
   @override
@@ -38,59 +24,61 @@ class ExamView extends StatefulWidget {
 }
 
 class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
-  bool loading = false;
   Timer timer;
   bool show = false;
   int countdownTime = 0;
-  List<ExamUnit> examCurList = [];
-  List<ExamUnit> examOutList = [];
+  List<ExamData> examCurList = [];
+  List<ExamData> examOutList = [];
   ThemeProvider themeProvider;
   @override
   void initState() {
     super.initState();
     _init();
   }
-  _refresh()async{
-    setState(() {loading = true;});
-    if(await examPost(context,year: Prefs.schoolYear, term: Prefs.schoolTerm)){
-      examOutList.clear();
-      examCurList = _parseToCurList(Global.examList);
-      sendInfo('考试倒计时', '刷新考试成功');
-    }else{
-      sendInfo('考试倒计时', '刷新考试失败');
+  import()async{
+    var importList = await Navigator.push(context, CupertinoPageRoute(builder: (context)=>ImportExamPage()));
+    if(importList==null||importList.isEmpty) return;
+    // List<Map<String,dynamic>> importList = CumtFormat.parseExam(html);
+    //写入教务考试
+    for(var item in importList){
+      Global.examList.add(
+          ExamData(
+            courseName: item['courseName'],
+            location: item['location'],
+            dateTime: item['dateTime'],
+          )
+      );
     }
-    setState(() {loading = false;});
-
+    Prefs.examData = ExamData.examJsonEncode(Global.examList);
+    examOutList.clear();
+    examCurList = _parseToCurList(Global.examList);
+    setState(() {});
+    showToast('导入成功');
+    sendInfo('考试倒计时', '导入考试');
   }
-  List<ExamUnit> _parseToCurList(List<ExamUnit> examList,){
-    List<ExamUnit> result = [];
+  List<ExamData> _parseToCurList(List<ExamData> examList,){
+    List<ExamData> result = [];
     for(var item in examList){
-      ExamUnit newData = new ExamUnit(courseName: item.courseName,location: item.location,dateTime: item.dateTime,year: item.year,month: item.month,day: item.day);
-      if(newData.out){
-        examOutList.add(newData);
+      if(item.out){
+        examOutList.add(item);
       }else{
-        result.add(newData);
+        result.add(item);
       }
     }
+    result.sort((a,b){
+      return DateTime(a.year,a.month,a.day).compareTo(DateTime(b.year,b.month,b.day));
+    });
     return result;
   }
   _init()async{
     if(Prefs.examData!=null){
-      Global.examList = ExamUnit.examJsonDecode(Prefs.examData);
+      Global.examList = ExamData.examJsonDecode(Prefs.examData);
       examCurList = _parseToCurList(Global.examList);
       setState(() {});
-      return;
     }
-    if(await examPost(context, year: Prefs.schoolYear, term: Prefs.schoolTerm,auto: true)){
-      examOutList.clear();
-      examCurList = _parseToCurList(Global.examList);
-      setState(() {});
-      sendInfo('考试倒计时', '初始化考试成功');
-    }
-
   }
   //添加自定义倒计时
-  void addDiyExamFunc()async{
+  void add()async{
     await showFlyModalBottomSheet(
       context: context,
       isScrollControlled: false,
@@ -130,34 +118,28 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    examCurList.sort((a,b){
-      return DateTime(a.year,a.month,a.day).compareTo(DateTime(b.year,b.month,b.day));
-    });
+    // examCurList.sort((a,b){
+    //   return DateTime(a.year,a.month,a.day).compareTo(DateTime(b.year,b.month,b.day));
+    // });
     themeProvider = Provider.of<ThemeProvider>(context);
     return Padding(
       padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
       child: Column(
         children: [
-          FlyTContainer(
+          flyTContainer(
+            action: [
+              InkWell(
+                onTap: ()=>add(),
+                child: Icon(Icons.add,size: fontSizeMain40*1.5,color: themeProvider.colorNavText.withOpacity(0.5),),),
+              InkWell(onTap: ()=>import(),
+                child: Icon(Icons.cloud_download_outlined,size: fontSizeMain40*1.5,color: themeProvider.colorNavText.withOpacity(0.5),),)
+            ],
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 curView(examCurList),
                 filterButton(),
-                AnimatedCrossFade(
-                  firstCurve: Curves.easeOutCubic,
-                  secondCurve: Curves.easeOutCubic,
-                  sizeCurve: Curves.easeOutCubic,
-                  firstChild: Container(),
-                  secondChild:Column(
-                    children: [
-                      SizedBox(height: spaceCardPaddingTB,),
-                      curView(examOutList,outView: true)
-                    ],
-                  ),
-                  duration: Duration(milliseconds: 300),
-                  crossFadeState: show?CrossFadeState.showSecond:CrossFadeState.showFirst,
-                ),
+                outView(examOutList),
                 SizedBox(height: spaceCardPaddingTB,)
               ],
             )
@@ -185,8 +167,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
       ),
     );
   }
-  Widget FlyTContainer({Widget child}){
-    Color headerColor = themeProvider.colorNavText.withOpacity(0.5);
+  Widget flyTContainer({Widget child,List<Widget> action}){
     return FlyContainer(
       transValue: themeProvider.transCard*0.6,
         child: Column(
@@ -195,26 +176,12 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
               padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB, spaceCardPaddingRL, spaceCardPaddingTB),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      FlyText.main35('考试倒计时',color: headerColor,),
-                      SizedBox(width: 10,),
-                      loading?loadingAnimationIOS():Container()
-                    ],
-                  ),
+                  FlyText.main35('考试倒计时',color: themeProvider.colorNavText.withOpacity(0.5),),
                   Wrap(
-                    spacing: 10,
-                    children: [
-                      InkWell(
-                        onTap: ()=>addDiyExamFunc(),
-                        child: Icon(Icons.add,size: fontSizeMain40*1.5,color: headerColor,),
-                      ),
-                      InkWell(
-                        onTap: ()=>_refresh(),
-                        child: Icon(Icons.refresh,size: fontSizeMain40*1.5,color: headerColor,),
-                      )
-                    ],
+                    spacing: 15,
+                    children: action,
                   )
                 ],
               ),
@@ -371,8 +338,23 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
   //     ),
   //   );
   // }
-
-  Widget curView(List<ExamUnit> list, {bool outView = false}){
+  Widget outView(List<ExamData> list){
+    return AnimatedCrossFade(
+      firstCurve: Curves.easeOutCubic,
+      secondCurve: Curves.easeOutCubic,
+      sizeCurve: Curves.easeOutCubic,
+      firstChild: Container(),
+      secondChild:Column(
+        children: [
+          SizedBox(height: spaceCardPaddingTB,),
+          curView(list,outView: true)
+        ],
+      ),
+      duration: Duration(milliseconds: 300),
+      crossFadeState: show?CrossFadeState.showSecond:CrossFadeState.showFirst,
+    );
+  }
+  Widget curView(List<ExamData> list, {bool outView = false}){
 
     return Column(
       children: list.map((item){
@@ -398,7 +380,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
             });
             //存储
             Global.examList = examCurList+examOutList;
-            Prefs.examData = ExamUnit.examJsonEncode(Global.examList);
+            Prefs.examData = ExamData.examJsonEncode(Global.examList);
             sendInfo('考试倒计时', '删除了考试:${item.courseName}');
           }
     },
@@ -409,7 +391,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
   }
   Widget addDiyExamButton(){
     return InkWell(
-      onTap: ()=>addDiyExamFunc(),
+      onTap: ()=>add(),
       child: FlyContainer(
         decoration: BoxDecoration(
             color: Theme.of(context).cardColor.withOpacity(themeProvider.transCard),
