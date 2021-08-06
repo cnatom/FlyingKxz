@@ -252,28 +252,28 @@ class _LoginPageState extends State<LoginPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            // Expanded(
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     children: [
+            //       _buildFlatButton("隐私政策", onPressed: () {
+            //         Navigator.push(
+            //             context, CupertinoPageRoute(builder: (context) => FlyWebView(
+            //           title: "隐私政策",
+            //           initialUrl: "https://kxz.atcumt.com/privacy.html",
+            //         )));
+            //       })
+            //     ],
+            //   ),
+            // ),
+            // Container(
+            //   height: ScreenUtil().setWidth(35),
+            //   width: 1,
+            //   color: Colors.white.withOpacity(0.5),
+            // ),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _buildFlatButton("隐私政策", onPressed: () {
-                    Navigator.push(
-                        context, CupertinoPageRoute(builder: (context) => FlyWebView(
-                      title: "隐私政策",
-                      initialUrl: "https://kxz.atcumt.com/privacy.html",
-                    )));
-                  })
-                ],
-              ),
-            ),
-            Container(
-              height: ScreenUtil().setWidth(35),
-              width: 1,
-              color: Colors.white.withOpacity(0.5),
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildFlatButton("无法登录", onPressed: () async {
                     Clipboard.setData(ClipboardData(text: "839372371"));
@@ -294,8 +294,12 @@ class _LoginPageState extends State<LoginPage> {
                                   child: FlyText.main35("➡️点我跳转至融合门户验证或找回密码",
                                       maxLine: 10, color: Colors.blue),
                                 ),
+                                FlyText.main40(
+                                  "\n挂VPN可能会无法登录，直接用流量或wifi登录即可",
+                                  maxLine: 10,
+                                ),
                                 FlyText.mainTip35(
-                                    "\n挂VPN可能会无法登录\n\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）",
+                                    "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）",
                                     maxLine: 10),
                               ],
                             ),

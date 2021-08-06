@@ -235,18 +235,18 @@ class _MyselfPageState extends State<MyselfPage>
                               onTap: () {
                                 FlyDialogDIYShow(context, content: InvitePage());
                               }),
-                          UniversalPlatform.isIOS
-                              ? Container()
-                              : _buildIconTitleButton(
-                              icon: CommunityMaterialIcons.download_outline,
-                              title: '检查更新',
-                              onTap: () {
-                                if(UniversalPlatform.isWindows){
-                                  launch("https://kxz.atcumt.com");
-                                }else{
-                                  upgradeApp(context, auto: false);
-                                }
-                              }),
+                          // UniversalPlatform.isIOS
+                          //     ? Container()
+                          //     : _buildIconTitleButton(
+                          //     icon: CommunityMaterialIcons.download_outline,
+                          //     title: '检查更新',
+                          //     onTap: () {
+                          //       if(UniversalPlatform.isWindows){
+                          //         launch("https://kxz.atcumt.com");
+                          //       }else{
+                          //         upgradeApp(context, auto: false);
+                          //       }
+                          //     }),
                         ]),
                         _buttonList(children: [
                           // _buildIconTitleButton(
@@ -260,21 +260,26 @@ class _MyselfPageState extends State<MyselfPage>
                         ])
                       ],
                     ),
-                    FlatButton(
-                      onPressed: (){
-                        Navigator.push(
-                            context, CupertinoPageRoute(builder: (context) => FlyWebView(
-                          title: "隐私政策",
-                          initialUrl: "https://kxz.atcumt.com/privacy.html",
-                        )));
-                      },
-                      highlightColor: Colors.transparent, //点击后的颜色为透明
-                      splashColor: Colors.transparent, //点击波纹的颜色为透明
-                      child: FlyText.main35(
-                        "隐私政策",
-                        color: Colors.white.withOpacity(0.6),
-                      ),
-                    ),
+                    SizedBox(height: 10,),
+                    FlyText.main35(
+                      "内测版 2021.8.15 过期",
+                      color: themeProvider.colorNavText.withOpacity(0.5),
+                    )
+                    // FlatButton(
+                    //   onPressed: (){
+                    //     Navigator.push(
+                    //         context, CupertinoPageRoute(builder: (context) => FlyWebView(
+                    //       title: "隐私政策",
+                    //       initialUrl: "https://kxz.atcumt.com/privacy.html",
+                    //     )));
+                    //   },
+                    //   highlightColor: Colors.transparent, //点击后的颜色为透明
+                    //   splashColor: Colors.transparent, //点击波纹的颜色为透明
+                    //   child: FlyText.main35(
+                    //     "内测版 2021.8.15 过期",
+                    //     color: themeProvider.colorNavText.withOpacity(0.5),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

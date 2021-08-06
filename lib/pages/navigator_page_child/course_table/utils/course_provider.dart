@@ -47,12 +47,10 @@ class CourseProvider extends ChangeNotifier{
       notifyListeners();
     }
   }
-  handleHtml(String html) {
-    if(html==null)return;
-    var dateTime = CumtFormat.courseHtmlToDate(html);
-    setAdmissionDateTime(dateTime);
-    var list = CumtFormat.courseHtmlToList(html);
+  handleCourseList(List<dynamic> list) {
+    if(list==null)return;
     _initData();
+    _initDateTime();
     for(var item in list){
       print(item.toString());
       CourseData courseData = new CourseData(
@@ -72,7 +70,7 @@ class CourseProvider extends ChangeNotifier{
     }
     _savePrefs();
     notifyListeners();
-    sendInfo('主页', '导入了课表：$dateTime');
+    sendInfo('主页', '导入了课表');
   }
   ///获取2019年第1学期课表
   ///CourseProvider().get("token","2019","1");
@@ -213,7 +211,7 @@ class CourseProvider extends ChangeNotifier{
       if(term == 2){
         admissionDateStr = (year+1).toString()+'-03-01';
       }else{
-        admissionDateStr = year.toString()+'-09-07';
+        admissionDateStr = year.toString()+'-09-01';
       }
       Prefs.admissionDate = admissionDateStr;
     }

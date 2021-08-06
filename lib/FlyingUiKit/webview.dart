@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flying_kxz/CumtSpider/cumt.dart';
+import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'appbar.dart';
@@ -8,14 +10,26 @@ import 'config.dart';
 class FlyWebView extends StatefulWidget {
   final String title;
   final String initialUrl;
-
-  const FlyWebView({Key key, this.title, this.initialUrl}) : super(key: key);
+  final bool check;//是否检测内网连接
+  const FlyWebView({Key key, this.title, this.initialUrl, this.check = false}) : super(key: key);
   @override
   _FlyWebViewState createState() => _FlyWebViewState();
 }
 
 class _FlyWebViewState extends State<FlyWebView> {
   double progress = 0;
+  @override
+  void initState() {
+    super.initState();
+    if(widget.check){
+      check();
+    }
+  }
+  check()async{
+    if(!await Cumt.checkConnect()){
+      toTipPage();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

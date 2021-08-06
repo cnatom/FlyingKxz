@@ -16,9 +16,9 @@ import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void checkUpgrade(BuildContext context)async{
-  if(UniversalPlatform.isAndroid){
-    await upgradeApp(context,auto: true);//用户没有忽略过则检查更新
-  }
+  // if(UniversalPlatform.isAndroid){
+  //   await upgradeApp(context,auto: true);//用户没有忽略过则检查更新
+  // }
 }
 Future<Null> upgradeApp(BuildContext context,{bool auto = false})async{
   Global.curVersion = (await PackageInfo.fromPlatform()).version;

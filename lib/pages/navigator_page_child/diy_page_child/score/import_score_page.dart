@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/CumtSpider/cumt_format.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
@@ -15,6 +16,7 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_temp_list_view.dart';
 import 'package:provider/provider.dart';
 
+import '../../../tip_page.dart';
 import 'import_help_page.dart';
 
 class ImportScorePage extends StatefulWidget {
@@ -31,6 +33,17 @@ class _ImportScorePageState extends State<ImportScorePage> {
 
   List<Map<String,dynamic>> result = [];
 
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+  init()async{
+    if(!await Cumt.checkConnect()){
+      toTipPage();
+    }
+  }
 
   _showDetail()async{
     if(result==null||result.isEmpty){
@@ -73,7 +86,7 @@ class _ImportScorePageState extends State<ImportScorePage> {
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      appBar: FlyAppBar(context,loadingWeb?"loading……":"矿大教务",
+      appBar: FlyAppBar(context,loadingWeb?"从教务获取成绩(加载中……)":"矿大教务",
           actions: [
             IconButton(icon: Icon(Boxicons.bx_help_circle,color: Theme.of(context).primaryColor,), onPressed: (){
               Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ImportHelpPage()));

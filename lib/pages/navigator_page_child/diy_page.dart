@@ -69,8 +69,8 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
                                   // funcButton(imageResource: 'images/xunke.png',title: '课堂回放',color:colorFuncButton[3],subTitle: '在线播放、极速下载',onTap: ()=>toVideoPage(context)),
                                   funcButton(imageResource: 'images/xiaoche.png',title: '校车',color:colorFuncButton[1],subTitle: '通勤班车时间表',onTap: ()=>toSchoolBusPage(context)),
                                   funcButton(imageResource: 'images/xiaoli.png',title: '校历',color:colorFuncButton[2],subTitle: '本学年校历',onTap: ()=>toSchoolCalendarPage(context)),
-                                  funcButton(imageResource: 'images/xiaocheng.png',title: '轻应用',color:colorFuncButton[3],subTitle: '发现无限可能',onTap: ()=>showToast('☘️ 轻应用开放平台，敬请期待。')),
-                                  funcButton(imageResource: 'images/xiaocheng.png', title: '校园便签', subTitle: '')
+                                  // funcButton(imageResource: 'images/xiaocheng.png',title: '轻应用',color:colorFuncButton[3],subTitle: '发现无限可能',onTap: ()=>showToast('☘️ 轻应用开放平台，敬请期待。')),
+                                  // funcButton(imageResource: 'images/xiaocheng.png', title: '校园便签', subTitle: '')
                                 ],
                               )
                             ],

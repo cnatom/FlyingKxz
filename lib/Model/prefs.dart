@@ -35,7 +35,7 @@ class Prefs{
   static String _cumtLoginUsername = "cumtLoginUsername";//校园网账号
   static String _cumtLoginPassword = "cumtLoginPassword";//校园网账号
   static String _cumtLoginMethod = "cumtLoginMethod";//登录方式
-  static String _admissionDate = "admissionDate";//开学日期
+  static String _admissionDate = "admissionDate1";//开学日期
   static String _themeData = "themeData";
   static String _visitor = "visitor";//游客模式
   static String _timesMap = "timesMap";
@@ -127,7 +127,7 @@ static void _initAdmissionDate(){
       if(schoolTerm == '2'){
         Prefs.admissionDate = (int.parse(schoolYear)+1).toString()+'-03-01';
       }else{
-        Prefs.admissionDate = schoolYear+'-09-07';
+        Prefs.admissionDate = schoolYear+'-09-01';
       }
     }
 }

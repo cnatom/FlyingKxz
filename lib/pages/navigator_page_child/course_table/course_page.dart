@@ -43,9 +43,8 @@ class CoursePageState extends State<CoursePage> {
     Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>OutputIcsPage(courseProvider.infoByCourse)));
   }
   _importCourse()async{
-    var html = await Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ImportPage()));
-    courseProvider.handleHtml(html);
-
+    List<dynamic> list = await Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ImportPage()));
+    courseProvider.handleCourseList(list);
   }
   _backToCurWeek(){
     coursePageController.animateToPage(courseProvider.initialWeek-1, curve: Curves.easeOutQuint, duration: Duration(seconds: 1),);
@@ -126,7 +125,7 @@ class CoursePageState extends State<CoursePage> {
     return AppBar(
       backgroundColor: Colors.transparent,
       brightness: themeProvider.simpleMode?Brightness.light:Brightness.dark,
-      title: FlyText.title45('第${courseProvider.curWeek}周',
+      title: FlyText.title45('第${courseProvider.curWeek}周 内测版',
           fontWeight: FontWeight.w600, color: themeProvider.colorNavText),
       leading: _buildAction(Icons.cloud_download_outlined,onPressed: ()=>_importCourse()),
       actions: [

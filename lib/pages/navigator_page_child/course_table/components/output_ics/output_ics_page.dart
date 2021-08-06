@@ -1,3 +1,7 @@
+
+
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,12 +12,15 @@ import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/output_ics/ics_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_color.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
+import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OutputIcsPage extends StatefulWidget {
@@ -37,6 +44,10 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
     setState(() {});
   }
   outCalendar()async{
+    if(list.isEmpty){
+      showToast('导出失败，列表为空');
+      return;
+    }
     String data = await courseToIcs(list);
     if(data==''){
       FlyDialogDIYShow(context, content: Wrap(
@@ -49,24 +60,43 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
       ));
       return;
     }
-    FlyDialogDIYShow(context, content: Wrap(
-      runSpacing: spaceCardPaddingTB,
-      children: [
-        FlyTitle('成功生成ICS'),
-        FlyText.main40("已自动复制ICS链接至剪贴板\n请参照以下步骤导入（以ios为例）",maxLine: 3,),
-        FlyText.main40('1.请粘贴到系统浏览器中打开',maxLine: 3,),
-        Image.asset('images/ics_help0.png'),
-        Divider(),
-        FlyText.main40('2.然后直接导入系统日历即可',maxLine: 3,),
-        Image.asset('images/ics_help1.png')
 
-      ],
-    ));
-    Clipboard.setData(ClipboardData(text: "file://$data"));
+    if(UniversalPlatform.isIOS){
+      Clipboard.setData(ClipboardData(text: "file://$data"));
+      FlyDialogDIYShow(context, content: Wrap(
+        runSpacing: spaceCardPaddingTB,
+        children: [
+          FlyTitle('成功生成ICS'),
+          FlyText.main40("已自动复制ICS链接至剪贴板\n请参照以下步骤导入",maxLine: 3,),
+          FlyText.main40('1.粘贴到Safari浏览器中打开',maxLine: 3,),
+          Image.asset('images/ics_help0.png'),
+          Divider(),
+          FlyText.main40('2.然后直接导入系统日历即可',maxLine: 3,),
+          Image.asset('images/ics_help1.png')
+
+        ],
+      ));
+    }else{
+      FlyDialogDIYShow(context, content: Wrap(
+        runSpacing: spaceCardPaddingTB,
+        children: [
+          FlyTitle('成功生成ICS'),
+          FlyText.main40('请使用手机自带的"日历"App打开生成的文件',maxLine: 3,),
+          FlyText.main40('（日历事项时间冲突可能会导致无法导入，清理一下日历里面的事项就好了）',maxLine: 3,),
+        ],
+      ));
+      OpenFile.open("$data",type: 'text/calendar');
+    }
   }
   outFile()async{
+    if(list.isEmpty){
+      showToast('导出失败，列表为空');
+      return;
+    }
     String data = await courseToIcs(list);
-    Share.shareFiles(['$data'],);
+    if(data!=''){
+      Share.shareFiles(['$data'],);
+    }
   }
   @override
   Widget build(BuildContext context) {

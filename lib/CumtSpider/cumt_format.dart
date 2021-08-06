@@ -6,76 +6,83 @@ import 'package:flying_kxz/Model/video__data.dart';
 /// 数据清洗模块
 class CumtFormat{
   static String courseHtmlToDate(String html){
-    String result;
-    String year,term;
-    var document = parser.parse(html);
-    var table = document.body.querySelector('h6[class="pull-left"]');
-    //提取学期
-    RegExp expTerm = new RegExp(r".*学年第(.*)学期");
-    if(expTerm.hasMatch(table.text)){
-      term = expTerm.firstMatch(table.text).group(1);
+    try{
+      String result;
+      String year,term;
+      var document = parser.parse(html);
+      var table = document.body.querySelector('h6[class="pull-left"]');
+      //提取学期
+      RegExp expTerm = new RegExp(r".*学年第(.*)学期");
+      if(expTerm.hasMatch(table.text)){
+        term = expTerm.firstMatch(table.text).group(1);
+      }
+      //提取学年
+      RegExp expYear = new RegExp(r"(.*)-");
+      if(expYear.hasMatch(table.text)){
+        year = expYear.firstMatch(table.text).group(1);
+      }
+      //判断开学时间
+      if(term=='1'){
+        result = '$year-09-07';
+      }else{
+        result = '${int.parse(year)+1}-03-01';
+      }
+      return result;
+    }catch(e){
+      return '';
     }
-    //提取学年
-    RegExp expYear = new RegExp(r"(.*)-");
-    if(expYear.hasMatch(table.text)){
-      year = expYear.firstMatch(table.text).group(1);
-    }
-    //判断开学时间
-    if(term=='1'){
-      result = '$year-09-07';
-    }else{
-     result = '${int.parse(year)+1}-03-01';
-    }
-    return result;
   }
   //课表HTML->List<CourseData>
   static List<dynamic> courseHtmlToList(String html){
-    var result = [];
+    try{
+      var result = [];
 
-    String title;//语文
-    String location;//博五
-    String teacher;//张三
-    String credit;//学分
-    List<int> weekList;//几周有这些课
-    int weekNum;//星期几
-    int lessonNum;//第几节课
-    int durationNum;//持续节次，默认为2小节
+      String title;//语文
+      String location;//博五
+      String teacher;//张三
+      String credit;//学分
+      List<int> weekList;//几周有这些课
+      int weekNum;//星期几
+      int lessonNum;//第几节课
+      int durationNum;//持续节次，默认为2小节
 
-    var document = parser.parse(html);
-    var table = document.body.querySelector("#kbgrid_table_0");
-    Element temp1;
-    List<Element> temp2;
-    for(int r = 1;r<=12;r++){
-      for(int c = 1;c<=7;c++){
-        temp1 = table.querySelector('td[id="$c-$r"]');
-        if(temp1!=null&&temp1.text!=''){
-          temp2 = temp1.children;
-          for(var temp3 in temp2){
-            title = temp3.querySelector(".title").text;
-            location = temp3.querySelector('span[title="上课地点"]').nextElementSibling.text;
-            teacher = temp3.querySelector('span[title="教师"]').nextElementSibling.text;
-            credit = temp3.querySelector('span[title="学分"]').nextElementSibling.text;
-            String lessonWeek = temp3.querySelector('span[title="节/周"]').nextElementSibling.text;
-            durationNum = _getDuration(lessonWeek);
-            weekList = _getWeekList(lessonWeek);
-            weekNum = c;
-            lessonNum = _getLessonNum(lessonWeek);
-            result.add({
-              "title":title,
-              "location":location,
-              "teacher":teacher,
-              "credit":credit,
-              "durationNum":durationNum,
-              "weekList":weekList,
-              "weekNum":weekNum,
-              "lessonNum":lessonNum,
-            });
+      var document = parser.parse(html);
+      var table = document.body.querySelector("#kbgrid_table_0");
+      Element temp1;
+      List<Element> temp2;
+      for(int r = 1;r<=12;r++){
+        for(int c = 1;c<=7;c++){
+          temp1 = table.querySelector('td[id="$c-$r"]');
+          if(temp1!=null&&temp1.text!=''){
+            temp2 = temp1.children;
+            for(var temp3 in temp2){
+              title = temp3.querySelector(".title").text;
+              location = temp3.querySelector('span[title="上课地点"]').nextElementSibling.text;
+              teacher = temp3.querySelector('span[title="教师"]').nextElementSibling.text;
+              credit = temp3.querySelector('span[title="学分"]').nextElementSibling.text;
+              String lessonWeek = temp3.querySelector('span[title="节/周"]').nextElementSibling.text;
+              durationNum = _getDuration(lessonWeek);
+              weekList = _getWeekList(lessonWeek);
+              weekNum = c;
+              lessonNum = _getLessonNum(lessonWeek);
+              result.add({
+                "title":title,
+                "location":location,
+                "teacher":teacher,
+                "credit":credit,
+                "durationNum":durationNum,
+                "weekList":weekList,
+                "weekNum":weekNum,
+                "lessonNum":lessonNum,
+              });
+            }
           }
         }
       }
+      return result;
+    }catch(e){
+      return null;
     }
-    return result;
-
   }
   //(1-3节)1-5周,7-9周 -> lessonNum:1
   static int _getLessonNum(String s){

@@ -3,10 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flying_kxz/CumtSpider/cumt.dart';
+import 'package:flying_kxz/CumtSpider/cumt_format.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/FlyingUiKit/dialog.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,22 +31,74 @@ class _ImportPageState extends State<ImportPage> {
   @override
   void initState() {
     super.initState();
+    init();
+  }
+  init()async{
+    if(!await Cumt.checkConnect()){
+      toTipPage();
+    }
   }
   _import()async{
+    showToast("请选择开学时间",duration: 5);
+    String dateTime = await _showDataPicker();
+    if(dateTime==''){
+      showToast('日期选择失败');
+      return;
+    }
+    Prefs.admissionDate = dateTime;
     setState(() {
       loading = true;
     });
     var html = await _controller.getHtml();
+    List<dynamic> list = CumtFormat.courseHtmlToList(html);
     setState(() {
       loading = false;
     });
-    Navigator.of(context).pop(html);
+    if(list==null){
+      showToast('解析网页HTML失败，请确保当前为课表页');
+      return;
+    }
+    Navigator.of(context).pop(list);
+  }
+  Future<String> _showDataPicker() async {
+    try{
+      Locale myLocale = Localizations.localeOf(context);
+      DateTime date = await showDatePicker(
+        helpText: "选择开学时间",
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day),
+        lastDate: DateTime(2100),
+        locale: myLocale,
+      );
+      if(date==null){
+        return '';
+      }
+      String y = _fourDigits(date.year);
+      String m = _twoDigits(date.month);
+      String d = _twoDigits(date.day);
+      return '$y-$m-$d';
+    }catch(e){
+      return '';
+    }
+  }
+  String _twoDigits(int n) {
+    if (n >= 10) return "${n}";
+    return "0${n}";
+  }
+  String _fourDigits(int n) {
+    int absN = n.abs();
+    String sign = n < 0 ? "-" : "";
+    if (absN >= 1000) return "$n";
+    if (absN >= 100) return "${sign}0$absN";
+    if (absN >= 10) return "${sign}00$absN";
+    return "${sign}000$absN";
   }
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      appBar: FlyAppBar(context,loadingWeb?"loading……":"矿大教务",
+      appBar: FlyAppBar(context,loadingWeb?"从教务获取课表(加载中……)":"矿大教务",
           actions: [
             // IconButton(icon: Icon(Icons.add,color: themeProvider.colorNavText,), onPressed: ()async{
             //   var html = await _controller.getHtml();

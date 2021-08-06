@@ -105,7 +105,7 @@ class Cumt {
           'execution': execution,
         }),options: Options(followRedirects: false),);
           if(loginResponse.statusCode==401){
-            showToast('账号或密码错误');
+            showToast('账号或密码错误\n（挂VPN也可能会无法登录）');
             return false;
           }
         var res1 = await dio.get(loginResponse.headers.value('location'),options: Options(followRedirects: false));
@@ -236,12 +236,14 @@ class Cumt {
   }
   static Future<bool> checkConnect()async{
     try{
-      print("正在检查内网");
-      var res = await Dio(BaseOptions(connectTimeout: 4000)).get('http://jwxt.cumt.edu.cn/jwglxt');
-      print('已连接内网');
+      showToast('正在检测内网环境……',duration: 4);
+      var res = await Dio(BaseOptions(connectTimeout: 4000,receiveTimeout: 4000,sendTimeout: 4000)).get('http://jwxt.cumt.edu.cn/jwglxt');
+      if(res!=null){
+        showToast('已连接内网！');
+      }
       return true;
     }on DioError catch(e){
-      print('未连接内网');
+      showToast('未连接内网');
       return false;
     }
   }

@@ -263,10 +263,12 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     Widget expandChip(){
       return InkWell(
         onTap: (){
+
           Navigator.of(context).push(
               CupertinoPageRoute(builder: (context)=>
                   FlyWebView(
                     title: "成绩明细查询（暂不支持导出）",
+                    check: true,
                     initialUrl: "http://jwxt.cumt.edu.cn/jwglxt/cjcx/cjcx_cxDgXsxmcj.html?gnmkdm=N305007&layout=default",)));
           // setState(() {
           //   if(scoreDetailAllExpand==true){

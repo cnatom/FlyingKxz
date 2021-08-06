@@ -14,20 +14,17 @@ Future<String> courseToIcs(List<CourseData> list)async{
   var data = new CalendarData.create(list);
   if(data.ics==null) return '';
   Directory documentsDir = await getApplicationDocumentsDirectory();
-  String documentsPath = documentsDir.path+'/notes.ics';
+  String documentsPath = documentsDir.path+'/课表文件.ics';
   File file = new File(documentsPath);
-  if(!file.existsSync()) {
-    file.createSync();
-    await file.writeAsString(data.ics);
+  if(file.existsSync()){
+    file.deleteSync();
   }
+  file.createSync();
+  await file.writeAsString(data.ics);
   if(file.existsSync()) {
     return documentsPath;
-    // Share.shareFiles(['$documentsPath'],);
-    // print("file://$documentsPath");
-    // await launch("file://$documentsPath");
   }
   return '';
-  // writeToFile(file, data.ics);
 }
 
 class CalendarData{
