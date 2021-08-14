@@ -13,8 +13,8 @@ class FlyTextButton extends StatefulWidget {
   final String title;
   final GestureTapCallback onTap;
   final Color color;
-
-  const FlyTextButton(this.title,{Key key, this.onTap, this.color}) : super(key: key);
+  final int maxLine;
+  const FlyTextButton(this.title,{Key key, this.onTap, this.color,this.maxLine}) : super(key: key);
   @override
   _FlyTextButtonState createState() => _FlyTextButtonState();
 }
@@ -25,7 +25,7 @@ class _FlyTextButtonState extends State<FlyTextButton> {
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     return InkWell(
-      child: FlyText.main40(widget.title,color: widget.color??themeProvider.colorMain,fontWeight: FontWeight.bold,),
+      child: FlyText.main40(widget.title,color: widget.color??themeProvider.colorMain,fontWeight: FontWeight.bold,maxLine: widget.maxLine,),
       onTap: widget.onTap,
     );
   }

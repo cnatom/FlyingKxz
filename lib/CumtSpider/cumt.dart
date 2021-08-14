@@ -108,6 +108,10 @@ class Cumt {
             showToast('账号或密码错误\n（挂VPN也可能会无法登录）');
             return false;
           }
+          if(loginResponse.headers.value('location').contains('improveInfo')){
+            showToast('登录失败\n密码包含了用户的敏感信息(如：帐户、手机号或邮箱等)，请前往融合门户修改密码',duration: 5);
+            return false;
+          }
         var res1 = await dio.get(loginResponse.headers.value('location'),options: Options(followRedirects: false));
         haveLogin = true;
         Prefs.username = username;
@@ -259,6 +263,7 @@ class Cumt {
   Future<Map<String,dynamic>> getNamePhone()async{
     if(await login(username, password)){
       var res = await dio.get('http://portal.cumt.edu.cn/portal/api/v1/api/http/8',);
+      debugPrint(res.toString());
       var map = jsonDecode(res.toString());
       map = map['entities'][0];
       var result = {

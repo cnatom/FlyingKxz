@@ -26,6 +26,7 @@ import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance_
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power_page.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -235,18 +236,15 @@ class _MyselfPageState extends State<MyselfPage>
                               onTap: () {
                                 FlyDialogDIYShow(context, content: InvitePage());
                               }),
-                          // UniversalPlatform.isIOS
-                          //     ? Container()
-                          //     : _buildIconTitleButton(
-                          //     icon: CommunityMaterialIcons.download_outline,
-                          //     title: '检查更新',
-                          //     onTap: () {
-                          //       if(UniversalPlatform.isWindows){
-                          //         launch("https://kxz.atcumt.com");
-                          //       }else{
-                          //         upgradeApp(context, auto: false);
-                          //       }
-                          //     }),
+                          UniversalPlatform.isIOS
+                              ? _buildIconTitleButton(
+                              icon: LineAwesomeIcons.app_store,
+                              title: 'App Store 上的矿小助',
+                              onTap: ()=>launch('https://apps.apple.com/cn/app/%E7%9F%BF%E5%B0%8F%E5%8A%A9/id1539364154'))
+                              : _buildIconTitleButton(
+                              icon: CommunityMaterialIcons.download_outline,
+                              title: '检查更新',
+                              onTap: ()=>checkUpgrade(context,auto: false)),
                         ]),
                         _buttonList(children: [
                           // _buildIconTitleButton(
@@ -262,7 +260,7 @@ class _MyselfPageState extends State<MyselfPage>
                     ),
                     SizedBox(height: 10,),
                     FlyText.main35(
-                      "内测版 2021.8.15 过期",
+                      "内测版 2021.8.20 过期",
                       color: themeProvider.colorNavText.withOpacity(0.5),
                     )
                     // FlatButton(

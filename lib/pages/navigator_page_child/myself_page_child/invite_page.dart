@@ -61,12 +61,8 @@ class _InvitePageState extends State<InvitePage> {
             //分享矿小助官网
             InkWell(
               onTap: (){
-                if(UniversalPlatform.isWindows){
-                  Clipboard.setData(ClipboardData(text: "http://kxz.atcumt.com/"));
-                  showToast("已复制到粘贴板，快分享给好友吧~");
-                }else{
-                  Share.share("http://kxz.atcumt.com/");
-                }
+                Clipboard.setData(ClipboardData(text: "http://kxz.atcumt.com/"));
+                showToast("已复制到粘贴板，快分享给好友吧~");
                 sendInfo('分享App', '分享了矿小助官网');
               },
               child: Container(
@@ -89,12 +85,8 @@ class _InvitePageState extends State<InvitePage> {
             //分享群号
             InkWell(
               onTap: (){
-                if(UniversalPlatform.isWindows){
-                  Clipboard.setData(ClipboardData(text: "https://jq.qq.com/?_wv=1027&k=272EhIWK"));
-                  showToast( "已复制到粘贴板，快分享给好友吧~");
-                }else{
-                  Share.share("https://jq.qq.com/?_wv=1027&k=272EhIWK");
-                }
+                Clipboard.setData(ClipboardData(text: "957634136"));
+                showToast( "已复制到粘贴板，快分享给好友吧~");
                 sendInfo('分享App', '分享了QQ群号');
               },
               child: Container(

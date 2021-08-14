@@ -14,7 +14,7 @@ Future<String> courseToIcs(List<CourseData> list)async{
   var data = new CalendarData.create(list);
   if(data.ics==null) return '';
   Directory documentsDir = await getApplicationDocumentsDirectory();
-  String documentsPath = documentsDir.path+'/课表文件.ics';
+  String documentsPath = documentsDir.path+'/course.ics';
   File file = new File(documentsPath);
   if(file.existsSync()){
     file.deleteSync();

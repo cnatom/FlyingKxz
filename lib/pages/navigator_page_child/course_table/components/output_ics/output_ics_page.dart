@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,19 +10,24 @@ import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
+import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/output_ics/ics_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_color.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'ics_help_page.dart';
 
 class OutputIcsPage extends StatefulWidget {
   List<CourseData> courseList;
@@ -33,23 +39,56 @@ class OutputIcsPage extends StatefulWidget {
 class _OutputIcsPageState extends State<OutputIcsPage> {
   ThemeProvider themeProvider;
   List<CourseData> list = [];
-
+  bool outLoading = false;
   @override
   void initState() {
     super.initState();
     list.addAll(widget.courseList);
   }
+  //删除临时课程
   del(int index){
     list.removeAt(index);
     setState(() {});
   }
-  outCalendar()async{
+  //同步日历
+  sync()async{
+    showToast('正在同步……');
     if(list.isEmpty){
-      showToast('导出失败，列表为空');
+      showToast('同步失败，列表为空');
       return;
     }
-    String data = await courseToIcs(list);
-    if(data==''){
+    try{
+      String dataPath = await courseToIcs(list);
+      Map<String ,dynamic> map = Map();
+      map["myfile"] = await MultipartFile.fromFile(dataPath,filename: "${Prefs.username}.ics");
+      var res = await Dio().post('https://user.kxz.atcumt.com/ics/upload',data: FormData.fromMap(map),options: Options(sendTimeout: 3000,receiveTimeout: 3000,));
+      if(res.statusCode==200){
+        showToast('同步成功！');
+        Prefs.courseIcsDate = DateTime.now().toString();
+        setState(() {});
+        return;
+      }else{
+        showToast('同步失败${res.statusCode}');
+        return;
+      }
+    }on DioError catch(e){
+      showToast('同步失败，请检查网络连接！');
+      return;
+    }
+  }
+  //导出日历
+  outCalendar()async{
+    setState(() {
+      outLoading = true;
+    });
+    if(list.isEmpty){
+      showToast('导出失败，列表为空');
+      setState(() {outLoading = false;});
+      return;
+    }
+    showToast('正在导出……');
+    String dataPath = await courseToIcs(list);
+    if(dataPath==''){
       FlyDialogDIYShow(context, content: Wrap(
         runSpacing: spaceCardPaddingTB,
         children: [
@@ -58,58 +97,88 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
 
         ],
       ));
+      setState(() {outLoading = false;});
       return;
     }
+    if(Prefs.username==null){
+      showToast('未检测到登录态，请重新登录');
+      setState(() {outLoading = false;});
+      return;
+    }
+    Map<String ,dynamic> map = Map();
+    map["myfile"] = await MultipartFile.fromFile(dataPath,filename: "${Prefs.username}.ics");
+    try{
+      var res = await Dio().post('https://user.kxz.atcumt.com/ics/upload',data: FormData.fromMap(map),options: Options(sendTimeout: 3000,receiveTimeout: 3000,));
+      if(res.statusCode==200){
+        Prefs.courseIcsUrl = 'https://user.kxz.atcumt.com/ics/download/${Prefs.username}.ics';
+        Prefs.courseIcsDate = DateTime.now().toString();
+        setState(() {});
+        FlyDialogDIYShow(context, content: Wrap(
+          runSpacing: spaceCardPaddingTB,
+          children: [
+            FlyTitle('成功生成订阅!'),
+            Container(),
+            FlyText.main40('5秒后自动跳转至浏览器……',maxLine: 3,),
+            UniversalPlatform.isAndroid?FlyText.main40('请用"系统日历"打开下载的文件',maxLine: 3,):
+            Container(),
+            FlyText.miniTip30('您课表文件的订阅网址：',maxLine: 3,),
+            FlyTextButton(Prefs.courseIcsUrl,onTap: (){
+              Clipboard.setData(ClipboardData(text: Prefs.courseIcsUrl));
+              showToast('已复制链接');
+            },maxLine: 10,),
 
-    if(UniversalPlatform.isIOS){
-      Clipboard.setData(ClipboardData(text: "file://$data"));
-      FlyDialogDIYShow(context, content: Wrap(
-        runSpacing: spaceCardPaddingTB,
-        children: [
-          FlyTitle('成功生成ICS'),
-          FlyText.main40("已自动复制ICS链接至剪贴板\n请参照以下步骤导入",maxLine: 3,),
-          FlyText.main40('1.粘贴到Safari浏览器中打开',maxLine: 3,),
-          Image.asset('images/ics_help0.png'),
-          Divider(),
-          FlyText.main40('2.然后直接导入系统日历即可',maxLine: 3,),
-          Image.asset('images/ics_help1.png')
-
-        ],
-      ));
-    }else{
-      FlyDialogDIYShow(context, content: Wrap(
-        runSpacing: spaceCardPaddingTB,
-        children: [
-          FlyTitle('成功生成ICS'),
-          FlyText.main40('请使用手机自带的"日历"App打开生成的文件',maxLine: 3,),
-          FlyText.main40('（日历事项时间冲突可能会导致无法导入，清理一下日历里面的事项就好了）',maxLine: 3,),
-        ],
-      ));
-      OpenFile.open("$data",type: 'text/calendar');
+            UniversalPlatform.isAndroid?
+            FlyText.main40('（日历事项时间冲突可能会导致无法导入，清理一下日历里面的事项就好了）',maxLine: 3,):
+            FlyText.miniTip30('小技巧：使用日历软件(如滴答清单)的url订阅功能，可以实现日历与服务器同步更新哦～(具体步骤请点击"课表还能这么玩？"）',maxLine: 3,),
+          ],
+        ));
+        Future.delayed(Duration(seconds: 5),(){
+          launch(Prefs.courseIcsUrl);
+        });
+      }else{
+        showToast('导出失败${res.toString()}');
+        return;
+      }
+    }on DioError catch(e){
+      showToast('导出失败,请检查网络连接！');
+      setState(() {
+        outLoading = false;
+      });
+      return;
     }
   }
   outFile()async{
     if(list.isEmpty){
-      showToast('导出失败，列表为空');
+      showToast('分享失败，列表为空');
       return;
     }
+    showToast('正在生成课表文件……');
     String data = await courseToIcs(list);
     if(data!=''){
+      showToast('成功生成课表文件，分享出去吧～');
       Share.shareFiles(['$data'],);
+    }else{
+      showToast('文件生成失败');
     }
   }
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      appBar: FlyAppBar(context, '课表导出(${list.length})'),
+      appBar: FlyAppBar(context, '课表导出(${list.length})',
+      actions: [
+        Prefs.courseIcsUrl!=null
+            ? IconButton(icon: Icon(MdiIcons.cloudSyncOutline,color: Theme.of(context).primaryColor,), onPressed: ()=>sync())
+            : Container(),
+      ]),
       body: Stack(
         children: [
           SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                buildTop(),
+                buildHelp(),
+                Prefs.courseIcsUrl!=null?_buildTop():Container(),
                 buildBody(),
                 SizedBox(height: MediaQuery.of(context).size.height/4,)
               ],
@@ -119,6 +188,21 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
 
         ],
       ),
+    );
+  }
+  Widget _buildTop(){
+    return _container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FlyText.miniTip30('当前课表订阅网址(点击复制链接)',maxLine: 3,),
+          FlyTextButton(Prefs.courseIcsUrl,onTap: (){
+            Clipboard.setData(ClipboardData(text: Prefs.courseIcsUrl));
+            showToast('已复制链接');
+          },maxLine: 10,),
+          FlyText.miniTip30('更新时间:${Prefs.courseIcsDate}\n点击右上角按钮，刷新服务器课表数据',maxLine: 3,),
+        ],
+      )
     );
   }
   Widget _bottomBar(){
@@ -173,44 +257,45 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
       ),
     );
   }
-  Widget buildTop(){
+  Widget buildHelp(){
     return InkWell(
-      child: FlyContainer(
-        padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB, spaceCardPaddingRL, spaceCardPaddingTB),
-        margin: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB, spaceCardMarginRL, 0),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(borderRadiusValue),
-            color: Theme.of(context).cardColor,
-            boxShadow: [
-              boxShadowMain
-            ]),
+      onTap: (){
+        Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>IcsHelpPage()));
+      },
+      child: _container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FlyText.title45("课表还可以这么玩?"),
+            FlyText.title45("课表还能这么玩?"),
             Icon(Icons.chevron_right,color: Theme.of(context).primaryColor.withOpacity(0.5),)
           ],
-        ),
+        )
       ),
+    );
+  }
+  Widget _container({Widget child}){
+    return FlyContainer(
+      padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB, spaceCardPaddingRL, spaceCardPaddingTB),
+      margin: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB, spaceCardMarginRL, 0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadiusValue),
+          color: Theme.of(context).cardColor,
+          boxShadow: [
+            boxShadowMain
+          ]),
+      child: child,
     );
   }
   Widget buildBody(){
     return Column(
-      children: [for(int i = 0;i<list.length;i++)FlyContainer(
-        padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB*1.5, spaceCardPaddingRL, spaceCardPaddingTB),
-        margin: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB, spaceCardMarginRL, 0),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(borderRadiusValue),
-            color: Theme.of(context).cardColor,
-            boxShadow: [
-              boxShadowMain
-            ]),
+      children: [for(int i = 0;i<list.length;i++)_container(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: Column(
                 children: [
+                  SizedBox(height: spaceCardPaddingTB*0.5,),
                   Row(
                     children: [
                       Container(
@@ -251,7 +336,7 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
             ),
             IconButton(icon: Icon(Icons.delete_outline_rounded), onPressed: ()=>del(i))
           ],
-        ),
+        )
       )],
     );
   }

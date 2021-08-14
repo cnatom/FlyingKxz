@@ -112,7 +112,7 @@ class _StartPageState extends State<StartPage> {
     //初始化配置
     initSize();
     //内测结束跳转
-    if(DateTime.now().isAfter(DateTime(2021,8,15))){
+    if(DateTime.now().isAfter(DateTime(2021,8,20))){
       toNullPage(context);
       return;
     }

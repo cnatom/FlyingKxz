@@ -15,10 +15,38 @@ import 'package:path_provider/path_provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void checkUpgrade(BuildContext context)async{
-  // if(UniversalPlatform.isAndroid){
-  //   await upgradeApp(context,auto: true);//用户没有忽略过则检查更新
-  // }
+void checkUpgrade(BuildContext context,{bool auto = true})async{
+  return;
+  if(UniversalPlatform.isIOS){
+    // return;
+  }
+  Global.curVersion = (await PackageInfo.fromPlatform()).version;
+  Response res;
+  Dio dio = Dio();
+  try{
+    res = await dio.get(
+        ApiUrl.appUpgradeUrl,
+        queryParameters: {'version':Global.curVersion.toString()}
+    );
+    debugPrint(res.toString());
+    Map<String,dynamic> map = jsonDecode(res.toString());
+    if(map['status']==200){
+      if(map['check']==true){
+        updateAlert(context,{
+          'isForceUpdate': false,//是否强制更新
+          'content': map['description'],//版本描述
+          'url': map['apkUrl'],// 安装包的链接
+        });
+      }else{
+        if(auto==false) showToast("当前为最新版本！");
+      }
+    }else{
+      if(auto==false) showToast( '获取最新版本失败(X_X)');
+    }
+  }catch(e){
+    if(auto==false)showToast('获取最新版本失败(X_X)');
+    debugPrint(e.toString());
+  }
 }
 Future<Null> upgradeApp(BuildContext context,{bool auto = false})async{
   Global.curVersion = (await PackageInfo.fromPlatform()).version;
@@ -54,7 +82,6 @@ Future<void> updateAlert(BuildContext context, Map data) async {
   bool isForceUpdate = data['isForceUpdate']; // 从数据拿到是否强制更新字段
   showDialog( // 显示对话框
     context: context,
-    barrierDismissible: false, // 点击空白区域不结束对话框
     builder: (_) => new UpgradeDialog(data, isForceUpdate, updateUrl: data['url']),
   );
 }
@@ -129,7 +156,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
                   Expanded(
                     child: InkWell(
                       child: Center(child: FlyText.main40("立即更新",color: colorMain,fontWeight: FontWeight.w600),),
-                      onTap: () => upgradeHandle(),
+                      onTap: () => launchURL(widget.updateUrl),
                     ),
                   ),
                 ],
@@ -271,7 +298,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
     if (mounted) setState(() {});
     // 进行平台判断
     if (UniversalPlatform.isAndroid) {
-      _androidUpdate();
+      launchURL(widget.updateUrl);
     } else if (UniversalPlatform.isIOS) {
       _iosUpdate();
     }
