@@ -1,3 +1,4 @@
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
@@ -41,11 +42,13 @@ class CumtFormat{
       String location;//博五
       String teacher;//张三
       String credit;//学分
-      List<int> weekList;//几周有这些课
+      List<int> weekList = [];//几周有这些课
       int weekNum;//星期几
       int lessonNum;//第几节课
       int durationNum;//持续节次，默认为2小节
-
+      List<int> duration = [];
+      List<int> lesson = [];
+      Map<String,String> map = new Map<String,String>();
       var document = parser.parse(html);
       var table = document.body.querySelector("#kbgrid_table_0");
       Element temp1;
@@ -55,48 +58,184 @@ class CumtFormat{
           temp1 = table.querySelector('td[id="$c-$r"]');
           if(temp1!=null&&temp1.text!=''){
             temp2 = temp1.children;
-            for(var temp3 in temp2){
-              title = temp3.querySelector(".title").text;
-              location = temp3.querySelector('span[title="上课地点"]').nextElementSibling.text;
-              teacher = temp3.querySelector('span[title="教师"]').nextElementSibling.text;
-              credit = temp3.querySelector('span[title="学分"]').nextElementSibling.text;
-              String lessonWeek = temp3.querySelector('span[title="节/周"]').nextElementSibling.text;
-              durationNum = _getDuration(lessonWeek);
-              weekList = _getWeekList(lessonWeek);
-              weekNum = c;
-              lessonNum = _getLessonNum(lessonWeek);
-              result.add({
-                "title":title,
-                "location":location,
-                "teacher":teacher,
-                "credit":credit,
-                "durationNum":durationNum,
-                "weekList":weekList,
-                "weekNum":weekNum,
-                "lessonNum":lessonNum,
-              });
+            try{
+              for(var temp3 in temp2){
+                title = temp3.querySelector(".title").text;
+                location = temp3.querySelector('span[title="上课地点"]').nextElementSibling.text;
+                teacher = temp3.querySelector('span[title="教师"]').nextElementSibling.text;
+                credit = temp3.querySelector('span[title="学分"]').nextElementSibling.text;
+                String lessonWeek = temp3.querySelector('span[title="节/周"]').nextElementSibling.text;
+                duration = _getDuration(lessonWeek);
+                lesson = _getLesson(lessonWeek);
+                weekList = _getWeekList(lessonWeek);
+                weekNum = c;
+                print(lesson.toString());
+                print(duration.toString());
+                for(int i = 0;i<duration.length;i++){
+
+                  durationNum = duration[i];
+                  lessonNum = lesson[i];
+                  if(duration.length>1){
+                    var key = '$lessonNum-$durationNum';
+                    if(map[key]==null){
+                      map[key] = title;
+                    }else if(map[key].contains(title)){
+                      break;
+                    }else{
+                      map[key]+=' '+title;
+                    }
+                  }
+                  // print({
+                  //   "title":title,
+                  //   "location":location,
+                  //   "teacher":teacher,
+                  //   "credit":credit,
+                  //   "durationNum":durationNum,
+                  //   "weekList":weekList,
+                  //   "weekNum":weekNum,
+                  //   "lessonNum":lessonNum,
+                  // });
+                  result.add({
+                    "title":title,
+                    "location":location,
+                    "teacher":teacher,
+                    "credit":credit,
+                    "durationNum":durationNum,
+                    "weekList":weekList,
+                    "weekNum":weekNum,
+                    "lessonNum":lessonNum,
+                  });
+                }
+
+              }
+            }catch(e){
+              print(e);
             }
           }
         }
       }
       return result;
-    }catch(e){
+    }catch (e){
+      print(e.toString());
       return null;
     }
+    // try{
+    //   var result = [];
+    //
+    //   String title;//语文
+    //   String location;//博五
+    //   String teacher;//张三
+    //   String credit;//学分
+    //   List<int> weekList;//几周有这些课
+    //   int weekNum;//星期几
+    //   int lessonNum;//第几节课
+    //   int durationNum;//持续节次，默认为2小节
+    //
+    //   var document = parser.parse(html);
+    //   var table = document.body.querySelector("#kbgrid_table_0");
+    //   Element temp1;
+    //   List<Element> temp2;
+    //   for(int r = 1;r<=12;r++){
+    //     for(int c = 1;c<=7;c++){
+    //       temp1 = table.querySelector('td[id="$c-$r"]');
+    //       if(temp1!=null&&temp1.text!=''){
+    //         temp2 = temp1.children;
+    //         for(var temp3 in temp2){
+    //
+    //           title = temp3.querySelector(".title").text;
+    //           location = temp3.querySelector('span[title="上课地点"]').nextElementSibling.text;
+    //           teacher = temp3.querySelector('span[title="教师"]').nextElementSibling.text;
+    //           credit = temp3.querySelector('span[title="学分"]').nextElementSibling.text;
+    //           String lessonWeek = temp3.querySelector('span[title="节/周"]').nextElementSibling.text;
+    //           //durationNum = _getDuration(lessonWeek);
+    //           weekList = _getWeekList(lessonWeek);
+    //           weekNum = c;
+    //           // lessonNum = _getLessonNum(lessonWeek);
+    //           print({
+    //             "title":title,
+    //             "location":location,
+    //             "teacher":teacher,
+    //             "credit":credit,
+    //             "durationNum":durationNum,
+    //             "weekList":weekList,
+    //             "weekNum":weekNum,
+    //             "lessonNum":lessonNum,
+    //           }.toString());
+    //           result.add({
+    //             "title":title,
+    //             "location":location,
+    //             "teacher":teacher,
+    //             "credit":credit,
+    //             "durationNum":durationNum,
+    //             "weekList":weekList,
+    //             "weekNum":weekNum,
+    //             "lessonNum":lessonNum,
+    //           });
+    //         }
+    //       }
+    //     }
+    //   }
+    //   return result;
+    // }catch(e){
+    //   print(e.toString());
+    //
+    //   return null;
+    // }
   }
-  //(1-3节)1-5周,7-9周 -> lessonNum:1
-  static int _getLessonNum(String s){
-    RegExp expLesson = new RegExp(r"[(](.*?)-.*节[)]");
-    int lessonNum;
+  //(1-3节,5-6节)1-5周,7-9周 -> lessonNum:[1,5]
+  static List<int> _getLesson(String s){
+    // RegExp expWeek = new RegExp(r"[(](.*?)[)]");
+    // RegExp expLesson = new RegExp(r"[(](.*?)-.*节[)]");
+    // int lessonNum;
+    // if(expLesson.hasMatch(s)){
+    //   String durationStr = expLesson.firstMatch(s).group(1);
+    //   lessonNum = int.parse(durationStr);
+    // }
+    // return lessonNum;
+
+    RegExp expLesson = new RegExp(r"[(](.*)[)]");
+    List<int> lessonNum = [];
     if(expLesson.hasMatch(s)){
       String durationStr = expLesson.firstMatch(s).group(1);
-      lessonNum = int.parse(durationStr);
+      //1-2节,7-8节
+      var b = durationStr.split(',');
+      for(var item in b){
+        expLesson = new RegExp(r"(.*)[节]");
+        if(expLesson.hasMatch(item)){
+          item = expLesson.firstMatch(item).group(1);
+          var d = item.split('-');
+          lessonNum.add(int.parse(d[0]));
+        }
+      }
     }
     return lessonNum;
   }
 
-  //(1-3节)1-5周,7-9周 -> durationNum:3
-  static int _getDuration(String s){
+  //(1-3节)1-5周,7-9周 -> durationNum:[3]   (1-2节,7-8节)9周 ->  durationNum:[2,2]
+  static List<int> _getDuration(String s){
+    RegExp expLesson = new RegExp(r"[(](.*)[)]");
+    List<int> durationNum = [];
+    if(expLesson.hasMatch(s)){
+      String durationStr = expLesson.firstMatch(s).group(1);
+      //1-2节,7-8节
+      var b = durationStr.split(',');
+      for(var item in b){
+        expLesson = new RegExp(r"(.*)[节]");
+        if(expLesson.hasMatch(item)){
+          item = expLesson.firstMatch(item).group(1);
+          var d = item.split('-');
+          if(d.length==1){
+            durationNum.add(1);
+          }else{
+            durationNum.add(int.parse(d[1])-int.parse(d[0])+1);
+          }
+        }
+      }
+    }
+    return durationNum;
+  }
+  // 1-3节 -> durationNum:3
+  static int _getDurationNum(String s){
     RegExp expLesson = new RegExp(r"[(](.*?)节[)]");
     int durationNum;
     if(expLesson.hasMatch(s)){

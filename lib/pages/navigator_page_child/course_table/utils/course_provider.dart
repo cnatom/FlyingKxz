@@ -52,7 +52,6 @@ class CourseProvider extends ChangeNotifier{
     _initData();
     _initDateTime();
     for(var item in list){
-      print(item.toString());
       CourseData courseData = new CourseData(
         weekList: item['weekList'],
         weekNum: item['weekNum'],

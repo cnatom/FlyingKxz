@@ -67,7 +67,7 @@ class _ImportPageState extends State<ImportPage> {
         helpText: "选择开学时间",
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day),
+        firstDate: DateTime(2010,1,1),
         lastDate: DateTime(2100),
         locale: myLocale,
       );

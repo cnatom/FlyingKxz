@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
@@ -11,6 +12,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
+import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
@@ -21,6 +24,7 @@ import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/login_check_get.dart';
 import 'package:flying_kxz/NetRequest/login_post.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/pages/privacy.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'app_upgrade.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
@@ -52,6 +56,10 @@ class _LoginPageState extends State<LoginPage> {
   }
   //用户登录
   _loginHandler() async {
+    if(Prefs.prefs.getBool('privacy')!=true){
+      var ok = await FlyDialogDIYShow(context, content: Privacy());
+      if(ok!=true) return;
+    }
     FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
     setState(() {_loading = true;});
     var _form = _formKey.currentState;
@@ -68,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
     if (await loginCheckGet(context, username: _username)) {
       //新登录
       if(await cumt.login(_username, _password,)){
+
         Prefs.visitor = false;
         var namePhoneMap = await cumt.getNamePhone();
         Prefs.name = namePhoneMap['name'];
@@ -252,28 +261,28 @@ class _LoginPageState extends State<LoginPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Expanded(
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.end,
-            //     children: [
-            //       _buildFlatButton("隐私政策", onPressed: () {
-            //         Navigator.push(
-            //             context, CupertinoPageRoute(builder: (context) => FlyWebView(
-            //           title: "隐私政策",
-            //           initialUrl: "https://kxz.atcumt.com/privacy.html",
-            //         )));
-            //       })
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   height: ScreenUtil().setWidth(35),
-            //   width: 1,
-            //   color: Colors.white.withOpacity(0.5),
-            // ),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _buildFlatButton("隐私政策", onPressed: () {
+                    Navigator.push(
+                        context, CupertinoPageRoute(builder: (context) => FlyWebView(
+                      title: "隐私政策",
+                      initialUrl: "https://kxz.atcumt.com/privacy.html",
+                    )));
+                  })
+                ],
+              ),
+            ),
+            Container(
+              height: ScreenUtil().setWidth(35),
+              width: 1,
+              color: Colors.white.withOpacity(0.5),
+            ),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   _buildFlatButton("无法登录", onPressed: () async {
                     Clipboard.setData(ClipboardData(text: "839372371"));
@@ -298,8 +307,12 @@ class _LoginPageState extends State<LoginPage> {
                                   "\n挂VPN可能会无法登录，直接用流量或wifi登录即可",
                                   maxLine: 10,
                                 ),
+
                                 FlyText.mainTip35(
                                     "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）",
+                                    maxLine: 10),
+                                FlyText.mainTip35(
+                                    "\n（21级的小豆芽们，你们的融合门户账号还不能用，是无法登录矿小助的。可以先加群，如果恢复了就会通知大家的。欢迎来到矿大～）",
                                     maxLine: 10),
                               ],
                             ),

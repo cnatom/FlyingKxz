@@ -16,40 +16,11 @@ import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void checkUpgrade(BuildContext context,{bool auto = true})async{
-  return;
   if(UniversalPlatform.isIOS){
-    // return;
+    return;
   }
   Global.curVersion = (await PackageInfo.fromPlatform()).version;
-  Response res;
-  Dio dio = Dio();
-  try{
-    res = await dio.get(
-        ApiUrl.appUpgradeUrl,
-        queryParameters: {'version':Global.curVersion.toString()}
-    );
-    debugPrint(res.toString());
-    Map<String,dynamic> map = jsonDecode(res.toString());
-    if(map['status']==200){
-      if(map['check']==true){
-        updateAlert(context,{
-          'isForceUpdate': false,//是否强制更新
-          'content': map['description'],//版本描述
-          'url': map['apkUrl'],// 安装包的链接
-        });
-      }else{
-        if(auto==false) showToast("当前为最新版本！");
-      }
-    }else{
-      if(auto==false) showToast( '获取最新版本失败(X_X)');
-    }
-  }catch(e){
-    if(auto==false)showToast('获取最新版本失败(X_X)');
-    debugPrint(e.toString());
-  }
-}
-Future<Null> upgradeApp(BuildContext context,{bool auto = false})async{
-  Global.curVersion = (await PackageInfo.fromPlatform()).version;
+
   Response res;
   Dio dio = Dio();
   try{
@@ -142,8 +113,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
                           style: new TextStyle(color: Color(0xff7A7A7A)))),
                 ),
               ),
-              getLoadingWidget(),
-              uploadingFlag == UploadingFlag.uploading?Container():Row(
+              Row(
                 children: <Widget>[
                   Expanded(
                     child: InkWell(
@@ -156,7 +126,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
                   Expanded(
                     child: InkWell(
                       child: Center(child: FlyText.main40("立即更新",color: colorMain,fontWeight: FontWeight.w600),),
-                      onTap: () => launchURL(widget.updateUrl),
+                      onTap: () => launch(widget.updateUrl),
                     ),
                   ),
                 ],
@@ -168,151 +138,6 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
       ),
     );
   }
-
-  /*
-  * Android更新处理
-  * */
-  void _androidUpdate() async {
-    final apkPath = await FileUtil.getInstance().getSavePath("/Download/");
-    try {
-      await Dio().download(
-        widget.updateUrl,
-        apkPath + "test.apk",
-        cancelToken: token,
-        onReceiveProgress: (int count, int total) {
-          if (mounted) {
-            setState(() {
-              _downloadProgress = ((count / total) * 100).toInt();
-              if (_downloadProgress == 100) {
-                if (mounted) {
-                  setState(() {
-                    uploadingFlag = UploadingFlag.uploaded;
-                  });
-                }
-                debugPrint("读取的目录:$apkPath");
-                try {
-                  OpenFile.open(apkPath + "test.apk");
-                } catch (e) {}
-                Navigator.of(context).pop();
-              }
-            });
-          }
-        },
-        options: Options(sendTimeout: 15 * 1000, receiveTimeout: 360 * 1000),
-      );
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          uploadingFlag = UploadingFlag.uploadingFailed;
-        });
-      }
-    }
-  }
-
-  /*
-  * 进度显示的组件
-  * */
-  Widget getLoadingWidget() {
-    if (_downloadProgress != 0 && uploadingFlag == UploadingFlag.uploading) {
-      return Container(
-        padding: EdgeInsets.symmetric(vertical: 5.0),
-        width: double.infinity,
-        height: 40,
-        alignment: Alignment.center,
-        child: LinearProgressIndicator(
-          valueColor:
-          AlwaysStoppedAnimation<Color>(colorMain),
-          backgroundColor: Colors.grey[300],
-          value: _downloadProgress / 100,
-        ),
-      );
-    }
-
-    /*
-    * 如果是在进行中并且进度为0则显示
-    * */
-    if (uploadingFlag == UploadingFlag.uploading && _downloadProgress == 0) {
-      return Container(
-        alignment: Alignment.center,
-        height: 40,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(colorMain)),
-            SizedBox(width: 5),
-            Material(
-              child: Text(
-                '等待',
-                style: TextStyle(color: colorMain),
-              ),
-              color: Colors.transparent,
-            )
-          ],
-        ),
-      );
-    }
-
-    /*
-    * 如果下载失败则显示
-    * */
-    if (uploadingFlag == UploadingFlag.uploadingFailed) {
-      return Container(
-        alignment: Alignment.center,
-        height: 40,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Icon(Icons.clear, color: Colors.redAccent),
-            SizedBox(width: 5),
-            Material(
-              child: Text(
-                '下载超时',
-                style: TextStyle(color: colorMainText),
-              ),
-              color: Colors.transparent,
-            )
-          ],
-        ),
-      );
-    }
-    return Container();
-  }
-
-  /*
-  * IOS更新处理，直接打开AppStore链接
-  * */
-  void _iosUpdate() {
-    launch(widget.updateUrl);
-  }
-
-  /*
-  * 更新处理事件
-  * */
-  upgradeHandle() {
-    if (uploadingFlag == UploadingFlag.uploading) return;
-    uploadingFlag = UploadingFlag.uploading;
-    // 必须保证当前状态安全，才能进行状态刷新
-    if (mounted) setState(() {});
-    // 进行平台判断
-    if (UniversalPlatform.isAndroid) {
-      launchURL(widget.updateUrl);
-    } else if (UniversalPlatform.isIOS) {
-      _iosUpdate();
-    }
-  }
-
-  ///跳转本地浏览器
-  launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   @override
   void dispose() {
     if (!token.isCancelled) token?.cancel();

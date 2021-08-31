@@ -44,6 +44,7 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
   void initState() {
     super.initState();
     list.addAll(widget.courseList);
+    list.sort((a, b) => a.title.compareTo(b.title));
   }
   //删除临时课程
   del(int index){
@@ -309,12 +310,7 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
                       SizedBox(
                         width: fontSizeTitle45 * 0.6,
                       ),
-                      Column(
-                        children: [
-                          FlyText.title45(list[i].title),
-
-                        ],
-                      )
+                      Expanded(child: FlyText.title45(list[i].title,),)
                     ],
                   ),
                   Padding(

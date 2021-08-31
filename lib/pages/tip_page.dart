@@ -125,7 +125,7 @@ class _TipPageState extends State<TipPage> {
   Widget _buildButton(String title,IconData iconData,String urlTitle,String url){
     return InkWell(
       onTap: (){
-        Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>FlyWebView(title: urlTitle,initialUrl: url,)));
+        launch(url);
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(20, 5, 20, 5),

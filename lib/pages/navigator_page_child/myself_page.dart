@@ -32,6 +32,7 @@ import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../FlyingUiKit/toast.dart';
+import 'myself_page_child/about_page.dart';
 import 'myself_page_child/cumtLogin_view.dart';
 
 class MyselfPage extends StatefulWidget {
@@ -212,10 +213,10 @@ class _MyselfPageState extends State<MyselfPage>
                         // ]),
 
                         _buttonList(children: <Widget>[
-                          // _buildIconTitleButton(
-                          //     icon: Icons.people_outline,
-                          //     title: '关于我们',
-                          //     onTap: () => toAboutPage(context)),
+                          _buildIconTitleButton(
+                              icon: Icons.people_outline,
+                              title: '关于我们',
+                              onTap: () => toAboutPage(context)),
                           _buildIconTitleButton(
                               icon: Icons.feedback_outlined,
                               title: '反馈与建议',
@@ -237,10 +238,7 @@ class _MyselfPageState extends State<MyselfPage>
                                 FlyDialogDIYShow(context, content: InvitePage());
                               }),
                           UniversalPlatform.isIOS
-                              ? _buildIconTitleButton(
-                              icon: LineAwesomeIcons.app_store,
-                              title: 'App Store 上的矿小助',
-                              onTap: ()=>launch('https://apps.apple.com/cn/app/%E7%9F%BF%E5%B0%8F%E5%8A%A9/id1539364154'))
+                              ?Container()
                               : _buildIconTitleButton(
                               icon: CommunityMaterialIcons.download_outline,
                               title: '检查更新',
@@ -259,25 +257,21 @@ class _MyselfPageState extends State<MyselfPage>
                       ],
                     ),
                     SizedBox(height: 10,),
-                    FlyText.main35(
-                      "内测版 2021.8.20 过期",
-                      color: themeProvider.colorNavText.withOpacity(0.5),
-                    )
-                    // FlatButton(
-                    //   onPressed: (){
-                    //     Navigator.push(
-                    //         context, CupertinoPageRoute(builder: (context) => FlyWebView(
-                    //       title: "隐私政策",
-                    //       initialUrl: "https://kxz.atcumt.com/privacy.html",
-                    //     )));
-                    //   },
-                    //   highlightColor: Colors.transparent, //点击后的颜色为透明
-                    //   splashColor: Colors.transparent, //点击波纹的颜色为透明
-                    //   child: FlyText.main35(
-                    //     "内测版 2021.8.15 过期",
-                    //     color: themeProvider.colorNavText.withOpacity(0.5),
-                    //   ),
-                    // ),
+                    FlatButton(
+                      onPressed: (){
+                        Navigator.push(
+                            context, CupertinoPageRoute(builder: (context) => FlyWebView(
+                          title: "隐私政策",
+                          initialUrl: "https://kxz.atcumt.com/privacy.html",
+                        )));
+                      },
+                      highlightColor: Colors.transparent, //点击后的颜色为透明
+                      splashColor: Colors.transparent, //点击波纹的颜色为透明
+                      child: FlyText.main35(
+                        "隐私政策",
+                        color: themeProvider.colorNavText.withOpacity(0.5),
+                      ),
+                    ),
                   ],
                 ),
               ),

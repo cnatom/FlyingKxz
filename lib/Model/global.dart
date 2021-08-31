@@ -90,7 +90,7 @@ class ApiUrl{
   static String rankUrl = "$_pubUrl/admin/user_id";//用户内测排名
   static String feedbackUrl = "$_userUrl/admin/feedback";//反馈
   static String cumtLoginUrl = "http://10.2.5.251:801/eportal/";//校园网登陆
-  static String appUpgradeUrl = "$_userUrl/admin/version";//检查App更新
+  static String appUpgradeUrl = "$_userUrl/admin/version_new";//检查App更新
   static String balanceUrl = "https://api.kxz.atcumt.com/card/balance";//校园卡余额
   static String balanceDetailUrl = "https://api.kxz.atcumt.com/card/history";//校园卡流水
   static String rechargeUrl = "$_pubUrl/card/recharge";//校园卡充值

@@ -112,21 +112,29 @@ class _StartPageState extends State<StartPage> {
     //初始化配置
     initSize();
     //内测结束跳转
-    if(DateTime.now().isAfter(DateTime(2021,8,20))){
-      toNullPage(context);
-      return;
-    }
-    //初始化背景图路径
+    // if(DateTime.now().isAfter(DateTime(2021,8,20))){
+    //   toNullPage(context);
+    //   return;
+    // }
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists()){
         backImgFile = File(Prefs.backImg);
-        backImg = new Image.file(backImgFile,fit: BoxFit.cover,gaplessPlayback: true,);
         await precacheImage(new FileImage(backImgFile), context);
       }
     }else{
-      backImg = new Image.asset("images/background.png",fit: BoxFit.cover,gaplessPlayback: true,);
       await precacheImage(new AssetImage("images/background.png"), context);
     }
+    //初始化背景图路径
+    // if (Prefs.backImg != null) {
+    //   if (await File(Prefs.backImg).exists()){
+    //     backImgFile = File(Prefs.backImg);
+    //     backImg = new Image.file(backImgFile,fit: BoxFit.cover,gaplessPlayback: true,);
+    //
+    //   }
+    // }else{
+    //   backImg = new Image.asset("images/background.png",fit: BoxFit.cover,gaplessPlayback: true,);
+    //   await precacheImage(new AssetImage("images/background.png"), context);
+    // }
     //选择进入界面
     // Prefs.password = '123';
     // toNavigatorPage(context);
