@@ -57,8 +57,8 @@ class _ScoreSetPageState extends State<ScoreSetPage> {
     themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: FlyAppBar(context, "特殊成绩设置",actions: [
-        IconButton(icon: Icon(Icons.add,color: themeProvider.colorNavText,), onPressed: ()=>add()),
-        IconButton(icon: Icon(Icons.refresh,color: themeProvider.colorNavText,), onPressed: ()=>refresh())
+        IconButton(icon: Icon(Icons.add,color: Theme.of(context).primaryColor,), onPressed: ()=>add()),
+        IconButton(icon: Icon(Icons.refresh,color: Theme.of(context).primaryColor,), onPressed: ()=>refresh())
       ]),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),

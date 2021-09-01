@@ -6,7 +6,6 @@ import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
-import 'package:flying_kxz/FlyingUiKit/buttons.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
@@ -18,8 +17,6 @@ import 'package:html/parser.dart' as parser;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../FlyingUiKit/toast.dart';
-import '../../../FlyingUiKit/toast.dart';
-import '../../tip_page.dart';
 
 //跳转到当前页面
 void toVideoPage(BuildContext context) {

@@ -23,15 +23,14 @@ class _CourseTableChildState extends State<CourseTableChild> {
   double unitHeight;
   double unitWidth;
   List<Widget> cards = [];
-
   @override
   Widget build(BuildContext context) {
-    _init(context);
+    _init();
     return Stack(
       children: cards,
     );
   }
-  void _init(BuildContext context){
+  void _init(){
     cards.clear();
     this.unitHeight = widget.height/10.0;
     this.unitWidth = widget.width/7.0;
@@ -182,8 +181,11 @@ class _CourseCardState extends State<CourseCard> {
                 children: [
                   Container(
                     height: fontSizeTitle45,
-                    width: fontSizeTitle45 / 5,
-                    color: CourseColor.fromStr(courseData.title),
+                    width: fontSizeTitle45 / 4.5,
+                    decoration: BoxDecoration(
+                        color: CourseColor.fromStr(courseData.title),
+                        borderRadius: BorderRadius.circular(100)
+                    ),
                   ),
                   SizedBox(
                     width: fontSizeTitle45 * 0.6,

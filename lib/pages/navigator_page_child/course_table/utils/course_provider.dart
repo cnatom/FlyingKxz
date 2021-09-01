@@ -24,7 +24,7 @@ class CourseProvider extends ChangeNotifier{
   // ignore: deprecated_member_use
   var info = new List<List<CourseData>>(26);
   // ignore: deprecated_member_use
-  var _infoByCourse = new List<CourseData>();
+  var infoByCourse = new List<CourseData>();
   var pointArray = new List(26);
   int curWeek;
   int initialWeek;
@@ -64,7 +64,7 @@ class CourseProvider extends ChangeNotifier{
         teacher: item['teacher'],
         credit: item['credit'],
         durationNum: item['durationNum'],);
-      _infoByCourse.add(courseData);
+      infoByCourse.add(courseData);
       for(int week in item['weekList']){
         info[week].add(courseData);
         pointArray[week][courseData.lessonNum~/2+1][courseData.weekNum]++;
@@ -108,7 +108,7 @@ class CourseProvider extends ChangeNotifier{
   /// CourseProvider().add(
   /// )
   void add(CourseData newCourseData){
-    _infoByCourse.add(newCourseData);
+    infoByCourse.add(newCourseData);
     for(int week in newCourseData.weekList){
       info[week].add(newCourseData);
       pointArray[week][newCourseData.lessonNum~/2+1][newCourseData.weekNum]++;
@@ -119,9 +119,9 @@ class CourseProvider extends ChangeNotifier{
   /// 删除课程
   /// CourseProvider().del()
   void del(CourseData delCourseData){
-    for(int i = 0;i<_infoByCourse.length;i++){
-      if(_equal(delCourseData, _infoByCourse[i])){
-        _infoByCourse.removeAt(i--);
+    for(int i = 0;i<infoByCourse.length;i++){
+      if(_equal(delCourseData, infoByCourse[i])){
+        infoByCourse.removeAt(i--);
       }
     }
     for(var week in delCourseData.weekList){
@@ -161,8 +161,8 @@ class CourseProvider extends ChangeNotifier{
         debugPrint(i.toString());
       }
     }
-    for(int i = 0;i<_infoByCourse.length;i++){
-      debugPrint(_infoByCourse[i].title);
+    for(int i = 0;i<infoByCourse.length;i++){
+      debugPrint(infoByCourse[i].title);
     }
   }
   bool _equal(CourseData courseData1,CourseData courseData2){
@@ -178,7 +178,7 @@ class CourseProvider extends ChangeNotifier{
   _savePrefs(){
     debugPrint("@savePrefs");
     var result = [];
-    for(CourseData courseData in _infoByCourse){
+    for(CourseData courseData in infoByCourse){
       result.add(courseData.toJson());
     }
     Prefs.courseData = jsonEncode(result);
@@ -188,7 +188,7 @@ class CourseProvider extends ChangeNotifier{
     List courseList = jsonDecode(Prefs.courseData);
     for(Map courseMap in courseList){
       CourseData courseData = CourseData.fromJson(courseMap);
-      _infoByCourse.add(courseData);
+      infoByCourse.add(courseData);
       for(int week in courseData.weekList){
         info[week].add(courseData);
         pointArray[week][courseData.lessonNum~/2+1][courseData.weekNum]++;
@@ -252,7 +252,7 @@ class CourseProvider extends ChangeNotifier{
         teacher: course.xm,
         credit: course.xf,
         durationNum: duration,);
-      _infoByCourse.add(newCourseData);
+      infoByCourse.add(newCourseData);
       for(int week in weekList){
         info[week].add(newCourseData);
         pointArray[week][newCourseData.lessonNum~/2+1][newCourseData.weekNum]++;
@@ -261,7 +261,7 @@ class CourseProvider extends ChangeNotifier{
     }
   }
   _initData(){
-    _infoByCourse = [];
+    infoByCourse = [];
     for(int i =0;i<info.length;i++){
       info[i] = [];
       pointArray[i] = [

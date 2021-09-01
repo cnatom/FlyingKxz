@@ -13,7 +13,7 @@ import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 

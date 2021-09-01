@@ -6,7 +6,7 @@ import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import '../config.dart';
 
 Widget FlyTitle(String title,{Color textColor = Colors.black}) => Container(
-  margin: EdgeInsets.fromLTRB(fontSizeMini38, 0, 0, 0),
+  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
   child: Row(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[

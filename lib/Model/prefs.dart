@@ -123,14 +123,13 @@ class Prefs{
   }
   //获取开学日期
 static void _initAdmissionDate(){
-    if(admissionDate==null){
+    if(Prefs.admissionDate==null){
       if(schoolTerm == '2'){
-        admissionDate = (int.parse(schoolYear)+1).toString()+'-03-01';
+        Prefs.admissionDate = (int.parse(schoolYear)+1).toString()+'-03-01';
       }else{
-        admissionDate = schoolYear+'-09-07';
+        Prefs.admissionDate = schoolYear+'-09-07';
       }
     }
-    Prefs.admissionDate = admissionDate;
 }
 
 

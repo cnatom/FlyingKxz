@@ -94,7 +94,7 @@ class PointMatrixState extends State<PointMatrix> {
   Widget _buildCurWeekCard(int week){
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).unselectedWidgetColor.withOpacity(0.2),
+        color: themeProvider.colorNavText.withOpacity(0.1),
         borderRadius: BorderRadius.circular(5)
       ),
       child: Column(
@@ -142,7 +142,7 @@ class PointMatrixState extends State<PointMatrix> {
             borderRadius: BorderRadius.circular(100),
             color: (light > 0)
                 ? themeProvider.colorMain.withOpacity(0.8)
-                : themeData.unselectedWidgetColor.withOpacity(0.2)),
+                : themeProvider.colorNavText.withOpacity(0.15)),
       );
     }
     return Container(

@@ -1,37 +1,25 @@
 //主页
 import 'dart:ui';
-import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
-import 'package:flutter_picker/Picker.dart';
-import 'package:flying_kxz/CumtSpider/cumt_format.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
-import 'package:flying_kxz/FlyingUiKit/picker.dart';
-import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
-import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';
-import '../../tip_page.dart';
 import 'components/add_components/course_add_view.dart';
 import 'components/course_table_child.dart';
+import 'components/output_ics/output_ics_page.dart';
 import 'components/point_components/point_main.dart';
 import 'components/back_curWeek.dart';
 import 'package:flying_kxz/FlyingUiKit/my_bottom_sheet.dart';
-
-import 'utils/course_provider.dart';
-import 'utils/course_provider.dart';
-import 'utils/course_provider.dart';
 import 'utils/course_provider.dart';
 class CoursePage extends StatefulWidget {
   @override
@@ -50,6 +38,40 @@ class CoursePageState extends State<CoursePage> {
   void initState() {
     super.initState();
   }
+  outputIcs(){
+    // addCalendar(courseProvider.infoByCourse, DateTime(2021,9,1));
+    Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>OutputIcsPage(courseProvider.infoByCourse)));
+  }
+  _importCourse()async{
+    var html = await Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ImportPage()));
+    courseProvider.handleHtml(html);
+
+  }
+  _backToCurWeek(){
+    coursePageController.animateToPage(courseProvider.initialWeek-1, curve: Curves.easeOutQuint, duration: Duration(seconds: 1),);
+  }
+  _addCourse()async{
+    List<CourseData> newCourseDataList;
+    newCourseDataList = await showFlyModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      backgroundColor: Theme.of(context).cardColor.withOpacity(1),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadiusValue)
+      ),
+      builder: (BuildContext context) {
+        return CourseAddView();
+      },
+    );
+    if(newCourseDataList==null)return;
+    for(var newCourseData in newCourseDataList){
+      courseProvider.add(newCourseData);
+    }
+    setState(() {
+
+    });
+    sendInfo('主页', '添加了课程：${newCourseDataList[0].title}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +84,7 @@ class CoursePageState extends State<CoursePage> {
         themeProvider = Provider.of<ThemeProvider>(context);
         coursePageController = PageController(initialPage: courseProvider.curWeek-1,);
         return Scaffold(
+
           key: _scaffoldKey,
           backgroundColor: Colors.transparent,
           appBar: _buildAppBar(),
@@ -105,90 +128,23 @@ class CoursePageState extends State<CoursePage> {
       brightness: themeProvider.simpleMode?Brightness.light:Brightness.dark,
       title: FlyText.title45('第${courseProvider.curWeek}周',
           fontWeight: FontWeight.w600, color: themeProvider.colorNavText),
-      leading: _buildCourseImportView(),
+      leading: _buildAction(Icons.cloud_download_outlined,onPressed: ()=>_importCourse()),
       actions: [
-        _buildAddButton(),
-        _buildShowRightButton(),
-        // IconButton(
-        //   icon: Icon(Icons.build),
-        //   onPressed: ()async{
-        //     // cumt.checkCookie();
-        //     cumt.checkJwCookie();
-        //     // cumt.loginJw();
-        //   },
-        //   color: themeProvider.colorNavText,),
-        // IconButton(
-        //   icon: Icon(Icons.logout),
-        //   onPressed: ()async{
-        //     await cumt.logout();
-        //   },
-        //   color: themeProvider.colorNavText,)
+        _buildAction(Icons.add,onPressed: ()=>_addCourse()),
+        _buildAction(Boxicons.bx_share_alt,onPressed: ()=>outputIcs()),
+        _buildAction(Boxicons.bx_menu_alt_right,onPressed: ()=>_rightGlobalKey.currentState.show()),
       ],
     );
   }
-  //导入课表
-  Widget _buildCourseImportView(){
-    return IconButton(
-      icon: Icon(Icons.cloud_download_outlined),
-      onPressed: (){
-        _importCourse();
-      },
-      color: themeProvider.colorNavText,);
-  }
-  _importCourse()async{
-    var html = await Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ImportPage()));
-    courseProvider.handleHtml(html);
-    // showPicker(context, _scaffoldKey,
-    //     title: "导入课表（内网）",
-    //     pickerDatas: PickerData.xqxnPickerData,
-    //     colorRight: themeProvider.colorMain,
-    //     onConfirm: (Picker picker, List value) async{
-    //       String yearStr = picker.getSelectedValues()[0].toString().substring(0, 4);
-    //       String termStr = '${value[1] + 1}';
-    //       setState(() {CourseProvider.loading = true;});
-    //       if(await Cumt.checkConnect()){
-    //         courseProvider.get(yearStr , termStr);
-    //         sendInfo('主页', '导入了课表:$yearStr学年,$termStr学期');
-    //       }else{
-    //         toTipPage();
-    //         setState(() {CourseProvider.loading = false;});
-    //       }
-    //     });
 
-  }
-  _backToCurWeek(){
-    coursePageController.animateToPage(courseProvider.initialWeek-1, curve: Curves.easeOutQuint, duration: Duration(seconds: 1),);
-  }
-  Widget _buildAddButton(){
+  Widget _buildAction(IconData iconData, {VoidCallback onPressed}){
     return IconButton(
       icon: Icon(
-        Icons.add,
+        iconData,
         color: themeProvider.colorNavText,
       ),
-      onPressed: ()=>_addCourse(),
+      onPressed: onPressed,
     );
-  }
-  _addCourse()async{
-    List<CourseData> newCourseDataList;
-    newCourseDataList = await showFlyModalBottomSheet(
-        context: context,
-        isScrollControlled: false,
-        backgroundColor: Theme.of(context).cardColor.withOpacity(1),
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(borderRadiusValue)
-    ),
-    builder: (BuildContext context) {
-    return CourseAddView();
-     },
-    );
-    if(newCourseDataList==null)return;
-    for(var newCourseData in newCourseDataList){
-      courseProvider.add(newCourseData);
-    }
-    setState(() {
-
-    });
-    sendInfo('主页', '添加了课程：${newCourseDataList[0].title}');
   }
   Widget _buildShowRightButton(){
     return  IconButton(
