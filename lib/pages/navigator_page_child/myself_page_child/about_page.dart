@@ -196,77 +196,30 @@ class _AboutPageState extends State<AboutPage> {
                                 SizedBox(
                                   height: fontSizeMini38 * 2,
                                 ),
-                                FlyTitle('鸣谢'),
-                                Wrap(
-                                  children: [
-                                    funcButton(
-                                        imageResource: 'images/wangzhaojun.jpg',
-                                        title: "王昭君",
-                                        subTitle: "17级电信2班",
-                                        qqNumber: "821589498"),
-                                    funcButton(
-                                        imageResource: 'images/liuhao.jpg',
-                                        title: "刘浩",
-                                        subTitle: "18级大数据2班",
-                                        qqNumber: "1322740325"),
-                                    funcButton(
-                                        imageResource: 'images/guanyongfu.jpg',
-                                        title: "管永富",
-                                        subTitle: "18级能动2班",
-                                        qqNumber: "1337612820"),
-                                    funcButton(
-                                        imageResource: 'images/zhouwenhong.jpg',
-                                        title: "周文洪",
-                                        subTitle: "17级计科5班",
-                                        qqNumber: "1600577405"),
-                                    funcButton(
-                                        imageResource: 'images/xingyuan.jpg',
-                                        title: "邢远",
-                                        subTitle: "前翔工作室成员",
-                                        qqNumber: "1285085637"),
-                                    funcButton(
-                                        imageResource: 'images/weirongqing.jpg',
-                                        title: "韦荣庆",
-                                        subTitle: "17级物理5班",
-                                        qqNumber: "972054808"),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height: fontSizeMini38 * 2,
-                                ),
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(
                                       0, 0, spaceCardMarginRL, 0),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
-                                      FlyTitle('QQ群'),
-                                      FlyText.miniTip30("点击卡片可复制QQ群号码"),
+                                      FlyTitle('反馈群'),
+                                      FlyText.miniTip30("点击卡片可复制群号"),
                                     ],
                                   ),
                                 ),
                                 Wrap(
                                   children: [
-                                    SizedBox(
-                                      width: spaceCardMarginRL / 2,
-                                    ),
                                     funcButton(
                                       type: 1,
-                                        imageResource: 'images/jiaoliuqun.jpg',
-                                        title: "App交流1群",
+                                        title: "交流1群",
                                         subTitle: "发布、反馈中心",
                                         qqNumber: "839372371"),
                                     funcButton(
                                       type: 1,
-                                        imageResource: 'images/duiwai.jpg',
-                                        title: "App交流2群",
+                                        title: "交流2群",
                                         subTitle: "发布、反馈中心",
-                                        qqNumber: "957634136"),
+                                        qqNumber: "957634136")
                                   ],
                                 ),
                               ],
@@ -286,22 +239,29 @@ class _AboutPageState extends State<AboutPage> {
                                         title: "长期招聘↗",
                                         subTitle: "点我了解更多",
                                         onTap: (){
-                                          if(UniversalPlatform.isWindows){
-                                            launch("https://mp.weixin.qq.com/s?__biz=MzIyNjAxNDkwMA==&mid=502587667&idx=1&sn=940336553beac7fb1e5d53fb3a0d0584");
-                                          }else{
-                                            Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>AboutFlyingWebView()));
-                                          }
+                                            launch("https://mp.weixin.qq.com/s/9Garo40q6qYo_pnN6ax1SA");
                                         }
                                     ),
                                   ],
                                 ),
 
-                                SizedBox(
-                                  height: fontSizeMini38 * 10,
-                                ),
-
                               ],
                             ),
+                            Column(
+                              children: [
+                                SizedBox(
+                                  height: fontSizeMini38 * 2,
+                                ),
+                                FlyTitle('你的支持是我们用爱发电最大的动力！'),
+                                Wrap(
+                                  children: [
+                                    _buildImage('images/help.png')
+                                  ],
+                                ),
+                                SizedBox(height: 300,)
+                              ],
+                            ),
+
                           ]),
                     ),
                   ),
@@ -312,52 +272,20 @@ class _AboutPageState extends State<AboutPage> {
         ),
       ),
     );
+
   }
-}
-class AboutFlyingWebView extends StatefulWidget {
-  @override
-  _AboutFlyingWebViewState createState() => _AboutFlyingWebViewState();
-}
+  Widget _buildImage(String resource){
+    return Container(
+      padding: EdgeInsets.fromLTRB(70, 30, 70, 0),
+      decoration: BoxDecoration(
+          boxShadow: [
+            boxShadowMain
+          ]
+      ),
 
-class _AboutFlyingWebViewState extends State<AboutFlyingWebView> {
-  double progress = 0;
-  WebViewController webViewController;
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: FlyAppBar(context, "Flying Studio",
-      bottom: PreferredSize(
-        preferredSize: Size.fromHeight(3.0),
-        child: LinearProgressIndicator(
-          backgroundColor: Colors.white70.withOpacity(0),
-          value: progress>0.99?0:progress,
-          valueColor: new AlwaysStoppedAnimation<Color>(colorMain),
-        ),
-      ),),
-      body: WebView(
-
-        initialUrl: "http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fjwxt.cumt.edu.cn%2Fsso%2Fjziotlogin",
-          // initialUrl: "https://mp.weixin.qq.com/s?__biz=MzIyNjAxNDkwMA==&mid=502587667&idx=1&sn=940336553beac7fb1e5d53fb3a0d0584",
-          javascriptMode: JavascriptMode.unrestricted,
-        onProgress: (value){
-            setState(() {
-              progress = value/100.0;
-            });
-        },
-        onWebViewCreated: (controller)async{
-            webViewController = controller;
-        },
-        onPageStarted: (start){
-            start.toString();
-        },
-        onPageFinished: (finish)async{
-        },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image.asset("images/help.png"),
       ),
     );
   }

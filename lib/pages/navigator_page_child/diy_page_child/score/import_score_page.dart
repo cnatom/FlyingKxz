@@ -80,6 +80,7 @@ class _ImportScorePageState extends State<ImportScorePage> {
       showToast('列表为空');
       return;
     }
+    result.sort((a, b) => a['courseName'].compareTo(b['courseName']));
     Navigator.of(context).pop(result);
   }
   @override
