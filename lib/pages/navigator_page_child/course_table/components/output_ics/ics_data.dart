@@ -37,7 +37,7 @@ class CalendarData{
       showToast('未定义开学时间');
       return;
     }
-    DateTime start = DateTime.parse(Prefs.admissionDate);
+    DateTime start = DateTime.parse(Prefs.admissionDate).toUtc();
     this.data = new ICalendar();
     for(int i = 0;i<list.length;i++){
       CourseData cur = list[i];
@@ -48,7 +48,7 @@ class CalendarData{
           hours: _startTime[cur.lessonNum][0],
           minutes: _startTime[cur.lessonNum][1]
         ),);
-        DateTime endDate = DateTime(startDate.year,startDate.month,startDate.day);
+        DateTime endDate = DateTime.utc(startDate.year,startDate.month,startDate.day).subtract(Duration(hours: 8));
         endDate = endDate.add(Duration(
           hours: _endTime[cur.lessonNum+cur.durationNum-1][0],
           minutes: _endTime[cur.lessonNum+cur.durationNum-1][1]

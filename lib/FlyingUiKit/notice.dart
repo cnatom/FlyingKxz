@@ -12,25 +12,25 @@ import 'Text/text.dart';
 import 'Theme/theme.dart';
 import 'container.dart';
 
-void noticeGetInfo()async{
-  if(!NoticeCardState.loading){
-    NoticeCardState.loading = true;
-    try{
-      Dio dio = new Dio();
-      Response res;
-      res = await dio.get("https://www.lvyingzhao.cn/info");
-      debugPrint(res.toString());
-      Map<String,dynamic> map = jsonDecode(res.toString());
-      if(map['status']==200){
-        NoticeCardState.info = map['data'];
-        FlyNavigatorPageState.badgeShowList[3] = true;
-      }
-    }catch(e){
-      debugPrint(e.toString());
-    }
-    NoticeCardState.loading = false;
-  }
-}
+// void noticeGetInfo()async{
+//   if(!NoticeCardState.loading){
+//     NoticeCardState.loading = true;
+//     try{
+//       Dio dio = new Dio();
+//       Response res;
+//       res = await dio.get("https://www.lvyingzhao.cn/info");
+//       debugPrint(res.toString());
+//       Map<String,dynamic> map = jsonDecode(res.toString());
+//       if(map['status']==200){
+//         NoticeCardState.info = map['data'];
+//         FlyNavigatorPageState.badgeShowList[3] = true;
+//       }
+//     }catch(e){
+//       debugPrint(e.toString());
+//     }
+//     NoticeCardState.loading = false;
+//   }
+// }
 class NoticeCard extends StatefulWidget {
   @override
   NoticeCardState createState() => NoticeCardState();

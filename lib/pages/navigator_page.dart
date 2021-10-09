@@ -52,7 +52,6 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
   int _currentIndex = 0; //数组索引，通过改变索引值改变视图
 
   static GlobalKey<NavigatorState> navigatorKey=GlobalKey();
-  static List<bool> badgeShowList = [false,false,false];
   ThemeProvider themeProvider;
   //校园网自动登录
   void cumtAutoLogin()async{
@@ -75,18 +74,15 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
     super.initState();
     cumtAutoLogin();//自动登录校园网
     // getUserInfo();//获取用户信息
-    noticeGetInfo();//获取通知信息
+    // noticeGetInfo();//获取通知信息
     checkUpgrade(context);//检查软件更新
     sendInfo('主页', '初始化主页');
   }
-  BottomNavigationBarItem _bottomNavigationBar(String title,IconData iconData,bool showBadge,{double size})=>BottomNavigationBarItem(
+  BottomNavigationBarItem _bottomNavigationBar(String title,IconData iconData,{double size})=>BottomNavigationBarItem(
       label: title,
-      icon: Badge(
-        showBadge: showBadge,
-        child: Icon(
-          iconData,
-          size: size,
-        ),
+      icon: Icon(
+        iconData,
+        size: size,
       )
   );
   @override
@@ -97,7 +93,6 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: PageView(
-
             physics: NeverScrollableScrollPhysics(),
             children: [
               CoursePage(),
@@ -121,17 +116,16 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
               selectedItemColor: themeProvider.simpleMode?themeProvider.colorMain:null,
               unselectedItemColor: themeProvider.simpleMode?Colors.black45:null,
               items: [
-                _bottomNavigationBar('主页',FeatherIcons.home,badgeShowList[0]),
+                _bottomNavigationBar('主页',FeatherIcons.home,),
                 // _bottomNavigationBar("资讯", Icons.article_outlined,badgeShowList[1]),
-                _bottomNavigationBar('发现',OMIcons.explore,badgeShowList[1]),
-                _bottomNavigationBar('我的',Icons.person_outline,badgeShowList[2]),
+                _bottomNavigationBar('发现',OMIcons.explore,),
+                _bottomNavigationBar('我的',Icons.person_outline,),
                 // _bottomNavigationBar('我的',Icons.person_outline,badgeShowList[3]),
 
               ],
               currentIndex: _currentIndex,
               onTap: (int index) {
                 navigatorPageController.jumpToPage(index);
-                badgeShowList[index] = false;
               },
               type: BottomNavigationBarType.fixed),
         )

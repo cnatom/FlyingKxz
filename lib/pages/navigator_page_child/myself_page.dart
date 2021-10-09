@@ -81,6 +81,7 @@ class _MyselfPageState extends State<MyselfPage>
   void initState() {
     super.initState();
     getPreviewInfo();
+    print("hello");
     sendInfo('我的', '初始化我的页面');
   }
 
