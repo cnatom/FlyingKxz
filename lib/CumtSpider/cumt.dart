@@ -104,11 +104,24 @@ class Cumt {
           'cllt': 'userNameLogin',
           'execution': execution,
         }),options: Options(followRedirects: false),);
-          if(loginResponse.statusCode==401){
+        debugPrint(loginResponse.data.toString());
+        //检查单点登录
+        if(loginResponse.statusCode==200&&loginResponse.headers.value('X-Frame-Options')=="DENY"){
+          print('检测到登录冲突，正在注销其他设备登录态');
+          var document = parser.parse(loginResponse.data);
+          var execution = document.body.querySelector("input[name='execution']").attributes['value']??'';
+          print(execution);
+          loginResponse = await dio.post('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice',data: FormData.fromMap({
+            '_eventId': 'continue',
+            'execution': execution,
+          }),options: Options(followRedirects: false),);
+        }
+
+        if(loginResponse.statusCode==401){
             showToast('账号或密码错误\n（挂VPN也可能会无法登录）');
             return false;
           }
-          if(loginResponse.headers.value('location').contains('improveInfo')){
+          if(loginResponse.headers.value('location')!=null&&loginResponse.headers.value('location').contains('improveInfo')){
             showToast('登录失败\n密码包含了用户的敏感信息(如：帐户、手机号或邮箱等)，请前往融合门户修改密码',duration: 5);
             return false;
           }
