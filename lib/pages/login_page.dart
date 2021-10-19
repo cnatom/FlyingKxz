@@ -311,9 +311,6 @@ class _LoginPageState extends State<LoginPage> {
                                 FlyText.mainTip35(
                                     "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）",
                                     maxLine: 10),
-                                FlyText.mainTip35(
-                                    "\n（21级的小豆芽们，你们的融合门户账号还不能用，是无法登录矿小助的。可以先加群，如果恢复了就会通知大家的。欢迎来到矿大～）",
-                                    maxLine: 10),
                               ],
                             ),
                           ],
