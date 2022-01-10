@@ -54,10 +54,10 @@ Future<String> FlyDialogInputShow(BuildContext context,
         FlatButton(
           onPressed: () {
             if (result == '') {
-              showToast(context, "小助听不懂哑语哦~");
+              showToast( "小助听不懂哑语哦~");
               return;
             }
-            showToast(context, "感谢您的反馈！");
+            showToast( "感谢您的反馈！");
             Navigator.of(context).pop(result);
           },
           child: FlyText.main40(confirmText, color: colorMain),

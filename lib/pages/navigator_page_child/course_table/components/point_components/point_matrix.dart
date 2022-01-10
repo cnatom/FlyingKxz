@@ -11,6 +11,7 @@ import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_
 import 'package:provider/provider.dart';
 
 import '../../course_page.dart';
+import '../../utils/course_provider.dart';
 
 class PointMatrix extends StatefulWidget {
   final BuildContext context;
@@ -36,8 +37,8 @@ class PointMatrixState extends State<PointMatrix> {
 
   @override
   Widget build(BuildContext context) {
-    courseProvider = Provider.of<CourseProvider>(widget.context);
-    themeProvider = Provider.of<ThemeProvider>(widget.context);
+    courseProvider = Provider.of<CourseProvider>(context);
+    themeProvider = Provider.of<ThemeProvider>(context);
     _init(context);
     return SingleChildScrollView(
       controller: scrollController,
@@ -59,14 +60,13 @@ class PointMatrixState extends State<PointMatrix> {
   }
 
   void _init(BuildContext context){
-    debugPrint("PointInit");
     this.gridHeight = MediaQuery.of(context).size.height/13.0;
     this.gridWidth = gridHeight*0.618;
     this.themeData = Theme.of(context);
   }
   void handleCurWeekChange(int week){
     courseProvider.changeWeek(week);
-    coursePageController.jumpToPage(week-1,);
+    CoursePageState.coursePageController.jumpToPage(week-1,);
   }
   Widget _buildColumn(){
     final List<Widget> col = [];
@@ -84,7 +84,7 @@ class PointMatrixState extends State<PointMatrix> {
         width: gridWidth,
         height: gridHeight,
         child: FlyWidgetBuilder(
-          whenFirst: week == CourseProvider.curWeek,
+          whenFirst: week == courseProvider.curWeek,
           firstChild: _buildCurWeekCard(week),
           secondChild: _buildWeekCard(week),
         ),
@@ -94,7 +94,7 @@ class PointMatrixState extends State<PointMatrix> {
   Widget _buildCurWeekCard(int week){
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).unselectedWidgetColor.withOpacity(0.2),
+        color: themeProvider.colorNavText.withOpacity(0.1),
         borderRadius: BorderRadius.circular(5)
       ),
       child: Column(
@@ -140,9 +140,9 @@ class PointMatrixState extends State<PointMatrix> {
         height: gridWidth / 9,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            color: light > 0
-                ? colorMain.withOpacity(0.8)
-                : themeData.unselectedWidgetColor.withOpacity(0.2)),
+            color: (light > 0)
+                ? themeProvider.colorMain.withOpacity(0.8)
+                : themeProvider.colorNavText.withOpacity(0.15)),
       );
     }
     return Container(
@@ -157,7 +157,7 @@ class PointMatrixState extends State<PointMatrix> {
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[for(int j = 1;j<=5;j++)singlePoint(pointArray[i][j])],
+                  children: <Widget>[for(int j = 1;j<=5;j++)singlePoint(courseProvider.info!=null?pointArray[i][j]:0)],
                 ),
                 SizedBox(
                   height: gridWidth / 100,

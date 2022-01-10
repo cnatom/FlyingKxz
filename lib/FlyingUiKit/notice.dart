@@ -12,25 +12,25 @@ import 'Text/text.dart';
 import 'Theme/theme.dart';
 import 'container.dart';
 
-void noticeGetInfo()async{
-  if(!NoticeCardState.loading){
-    NoticeCardState.loading = true;
-    try{
-      Dio dio = new Dio();
-      Response res;
-      res = await dio.get("https://www.lvyingzhao.cn/info");
-      debugPrint(res.toString());
-      Map<String,dynamic> map = jsonDecode(res.toString());
-      if(map['status']==200){
-        NoticeCardState.info = map['data'];
-        FlyNavigatorPageState.badgeShowList[3] = true;
-      }
-    }catch(e){
-      debugPrint(e.toString());
-    }
-    NoticeCardState.loading = false;
-  }
-}
+// void noticeGetInfo()async{
+//   if(!NoticeCardState.loading){
+//     NoticeCardState.loading = true;
+//     try{
+//       Dio dio = new Dio();
+//       Response res;
+//       res = await dio.get("https://www.lvyingzhao.cn/info");
+//       debugPrint(res.toString());
+//       Map<String,dynamic> map = jsonDecode(res.toString());
+//       if(map['status']==200){
+//         NoticeCardState.info = map['data'];
+//         FlyNavigatorPageState.badgeShowList[3] = true;
+//       }
+//     }catch(e){
+//       debugPrint(e.toString());
+//     }
+//     NoticeCardState.loading = false;
+//   }
+// }
 class NoticeCard extends StatefulWidget {
   @override
   NoticeCardState createState() => NoticeCardState();
@@ -69,34 +69,31 @@ class NoticeCardState extends State<NoticeCard> {
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
-    return info==''?Container():Padding(
-      padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-      child: FlyContainer(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, fontSizeMain40 * 1.3,
-                spaceCardPaddingRL, fontSizeMain40 * 1.3),
-            child:Row(
-              children: <Widget>[
-                Badge(
-                  showBadge: true,
-                  child: Icon(
-                    Icons.info_outline,
-                    size: sizeIconMain50,
-                    color: themeProvider.colorNavText,
-                  ),
+    return info==''?Container():FlyContainer(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, fontSizeMain40 * 1.3,
+              spaceCardPaddingRL, fontSizeMain40 * 1.3),
+          child:Row(
+            children: <Widget>[
+              Badge(
+                showBadge: true,
+                child: Icon(
+                  Icons.info_outline,
+                  size: sizeIconMain50,
+                  color: themeProvider.colorNavText,
                 ),
-                SizedBox(
-                  width: spaceCardPaddingTB * 3,
+              ),
+              SizedBox(
+                width: spaceCardPaddingTB * 3,
+              ),
+              Expanded(
+                child:   FlyText.main40(
+                  info,
+                  color: themeProvider.colorNavText,maxLine: 100,fontWeight: FontWeight.bold,
                 ),
-                Expanded(
-                  child:   FlyText.main40(
-                    info,
-                    color: themeProvider.colorNavText,maxLine: 100,fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
-            ),
-          )),
-    );
+              )
+            ],
+          ),
+        ));
   }
 }

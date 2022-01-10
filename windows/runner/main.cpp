@@ -29,8 +29,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
 
   FlutterWindow window(&run_loop, project);
   Win32Window::Point origin(10, 10);
-  Win32Window::Size size(1280, 720);
-  if (!window.CreateAndShow(L"KXZ-Windows", origin, size)) {
+  Win32Window::Size size(450, 900);
+  if (!window.CreateAndShow(L"FlyingKXZ v1.2.0", origin, size)) {
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);

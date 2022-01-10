@@ -5,12 +5,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
+import 'package:provider/provider.dart';
 
 import 'config.dart';
-Widget FlyTextButton(String title,{GestureTapCallback onTap,Color color})=>InkWell(
-  child: FlyText.main40(title,color: color??colorMain,fontWeight: FontWeight.bold,),
-  onTap: onTap,
-);
+class FlyTextButton extends StatefulWidget {
+  final String title;
+  final GestureTapCallback onTap;
+  final Color color;
+  final int maxLine;
+  const FlyTextButton(this.title,{Key key, this.onTap, this.color,this.maxLine}) : super(key: key);
+  @override
+  _FlyTextButtonState createState() => _FlyTextButtonState();
+}
+
+class _FlyTextButtonState extends State<FlyTextButton> {
+  ThemeProvider themeProvider;
+  @override
+  Widget build(BuildContext context) {
+    themeProvider = Provider.of<ThemeProvider>(context);
+    return InkWell(
+      child: FlyText.main40(widget.title,color: widget.color??themeProvider.colorMain,fontWeight: FontWeight.bold,maxLine: widget.maxLine,),
+      onTap: widget.onTap,
+    );
+  }
+}
+
 Widget FlyTitleIconButton(String title,String imageResource)=>Column(
   children: <Widget>[
     Material(

@@ -55,6 +55,7 @@ double deviceHeight;
 
 //背景图文件
 File backImgFile;
+Image backImg;
 //色彩管理
 Color colorMain = Color(0xff00c5a8);
 Color colorSecond = Color(0xFF33CC99).withAlpha(255);

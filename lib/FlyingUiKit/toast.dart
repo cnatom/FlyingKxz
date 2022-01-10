@@ -1,33 +1,39 @@
-
-
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:flying_kxz/FlyingUiKit/config.dart';
 
 import 'Text/text.dart';
-import 'config.dart';
 
-
-void showToast(BuildContext context,String text,{int duration=2,int gravity = 2}){
-  Toast.show(text, context,
-      backgroundRadius: 5, gravity: gravity, duration: duration);
-}
-void showFlyDialog(BuildContext context,{@required Widget child}){
-
-  showAnimatedDialog(
-    context: context,
-    barrierDismissible: true,
-    builder: (BuildContext context) {
-      return CustomDialog(
-        backgroundColor: Colors.transparent,
-        child: child,
-      );
-    },
-    animationType: DialogTransitionType.rotate3D,
-    duration: const Duration(milliseconds: 200)
+void showToast(String text,
+    {int duration = 2, int gravity = 2}) {
+  // Toast.show(text, context,
+  //     backgroundRadius: 5, gravity: gravity, duration: duration);
+  BotToast.showSimpleNotification(
+    title: text,
+    titleStyle: TextStyle(fontSize: fontSizeMain40),
+    hideCloseButton: true,
+    borderRadius: borderRadiusValue,
+    duration: Duration(seconds: duration),
+    enableSlideOff: false,
+    align: const Alignment(0, -0.85)
   );
 }
 
+void showFlyDialog(BuildContext context, {@required Widget child}) {
+  showAnimatedDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return CustomDialog(
+          backgroundColor: Colors.transparent,
+          child: child,
+        );
+      },
+      animationType: DialogTransitionType.rotate3D,
+      duration: const Duration(milliseconds: 200));
+}
 
 class Toast {
   static final int LENGTH_SHORT = 1;
@@ -38,14 +44,14 @@ class Toast {
 
   static void show(String msg, BuildContext context,
       {int duration = 1,
-        int gravity = 0,
-        Color backgroundColor = const Color(0xAA000000),
-        Color textColor = Colors.white,
-        double backgroundRadius = 20,
-        Border border}) {
+      int gravity = 0,
+      Color backgroundColor = const Color(0xAA000000),
+      Color textColor = Colors.white,
+      double backgroundRadius = 20,
+      Border border}) {
     ToastView.dismiss();
-    ToastView.createView(
-        msg, context, duration, gravity, backgroundColor, textColor, backgroundRadius, border);
+    ToastView.createView(msg, context, duration, gravity, backgroundColor,
+        textColor, backgroundRadius, border);
   }
 }
 
@@ -62,8 +68,15 @@ class ToastView {
   static OverlayEntry _overlayEntry;
   static bool _isVisible = false;
 
-  static void createView(String msg, BuildContext context, int duration, int gravity,
-      Color background, Color textColor, double backgroundRadius, Border border) async {
+  static void createView(
+      String msg,
+      BuildContext context,
+      int duration,
+      int gravity,
+      Color background,
+      Color textColor,
+      double backgroundRadius,
+      Border border) async {
     overlayState = Overlay.of(context);
 
     Paint paint = Paint();
@@ -85,15 +98,18 @@ class ToastView {
                   ),
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-                  child:
-                  Text(msg, softWrap: true, style: TextStyle(fontSize: fontSizeMain40, color: textColor)),
+                  child: Text(msg,
+                      softWrap: true,
+                      style: TextStyle(
+                          fontSize: fontSizeMain40, color: textColor)),
                 )),
           ),
           gravity: gravity),
     );
     _isVisible = true;
     overlayState.insert(_overlayEntry);
-    await new Future.delayed(Duration(seconds: duration == null ? Toast.LENGTH_SHORT : duration));
+    await new Future.delayed(
+        Duration(seconds: duration == null ? Toast.LENGTH_SHORT : duration));
     dismiss();
   }
 

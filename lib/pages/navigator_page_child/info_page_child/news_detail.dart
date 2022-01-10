@@ -142,11 +142,11 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
           loading = false;
         });
       }else{
-        showToast(context, map['msg']);
+        showToast(map['msg']);
       }
 
     }catch(e){
-      showToast(context, "网络连接异常");
+      showToast( "网络连接异常");
       debugPrint(e.toString());
     }
   }

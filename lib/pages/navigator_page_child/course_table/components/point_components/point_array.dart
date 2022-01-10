@@ -7,8 +7,9 @@ import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_
 import 'package:provider/provider.dart';
 
 class PointArray extends StatefulWidget {
-  final BuildContext context;
-  PointArray({Key key, this.context}):super(key: key);
+  final Color colorFirst;
+  final Color colorSecond;
+  PointArray({Key key, this.colorFirst, this.colorSecond}):super(key: key);
   @override
   _PointArrayState createState() => _PointArrayState();
 }
@@ -19,7 +20,7 @@ class _PointArrayState extends State<PointArray> {
   @override
   Widget build(BuildContext context) {
     this.widgetWidth = MediaQuery.of(context).size.height/50;
-    courseProvider = Provider.of<CourseProvider>(widget.context);
+    courseProvider = Provider.of<CourseProvider>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -42,11 +43,11 @@ class _PointArrayState extends State<PointArray> {
   Widget _point(int index){
     double size = widgetWidth/4;
     return Container(
-      width: index==courseProvider.getCurWeek?size*1.5:size,
-      height: index==courseProvider.getCurWeek?size*1.5:size,
+      width: index==courseProvider.curWeek?size*1.5:size,
+      height: index==courseProvider.curWeek?size*1.5:size,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          color: index==courseProvider.getCurWeek?colorMain:Theme.of(context).unselectedWidgetColor
+          color: index==courseProvider.curWeek?widget.colorFirst: widget.colorSecond
       ),
     );
   }

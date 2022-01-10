@@ -7,37 +7,33 @@ import 'package:flying_kxz/Model/login_info.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 
 //获取登录json数据
-Future<bool> loginPost(BuildContext context, int loginCount,
+Future<bool> loginVisitor(BuildContext context, int loginCount,
     {@required String username, @required String password}) async {
+  Response res;
+  Dio dio = Dio();
   try {
     Map _jsonMap = {'username': username, 'password': password};
-    Response res;
-    Dio dio = Dio();
-    //配置dio信息
-
     res = await dio.post(ApiUrl.loginUrl, data: _jsonMap);
     Map<String, dynamic> map = jsonDecode(res.toString());
     debugPrint(res.toString());
-    if (map['code'] == 0) {
+    if (res.statusCode == 200) {
       //登录成功
       Global.loginInfo = LoginInfo.fromJson(map);
-      Prefs.token = Global.loginInfo.data.token.toString();
+      Prefs.token = Global.loginInfo.token;
+      Prefs.name = Global.loginInfo.name;
       Prefs.username = username;
-      Prefs.name = Global.loginInfo.data.name;
-      Prefs.iClass = Global.loginInfo.data.classname;
-      Prefs.college = Global.loginInfo.data.college;
-      Prefs.isFirstLogin = true;
+      Prefs.password = password;
+      Prefs.phone = Global.loginInfo.phone;
       return true;
     } else {
-      showToast(
-          context,
-          map['msg'].toString() +
-              (loginCount > 2 ? '\n\n多次登陆失败请点击"无法登录"联系我们' : ""));
       return false;
     }
-  } catch (e) {
-    debugPrint(e.toString());
-    showToast(context, '连接失败（X_X)');
+  }on DioError catch (e) {
+    if(e.response != null){
+      showToast( e.response.toString());
+    }else{
+      showToast("请检查网络连接");
+    }
     return false;
   }
 }

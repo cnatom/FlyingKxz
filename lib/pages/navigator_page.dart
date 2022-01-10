@@ -9,18 +9,36 @@ import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/FlyingUiKit/notice.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/cumt_login.dart';
+import 'package:flying_kxz/NetRequest/userInfo_post.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/info_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
-import 'package:flying_kxz/test_page/test.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'app_upgrade.dart';
 import 'navigator_page_child/course_table/course_page.dart';
 
+Future<void> sendInfo(String page,String action)async{
+  var info = {
+    "username":Prefs.username,
+    "action":action,
+    "page":page,
+    "info":{
+      "name":Prefs.name,
+      "time":DateTime.now().toString(),
+      "system":Platform.operatingSystem,
+      "version":Global.curVersion
+    }
+  };
+  var res = Dio().post(
+    "https://www.lvyingzhao.cn/action",
+    data: info
+  );
+  print(page+':'+action);
+}
 //跳转到当前页面
 void toNavigatorPage(BuildContext context){
   Navigator.of(context).pushAndRemoveUntil(CustomRoute(FlyNavigatorPage(),milliseconds: 500),(route)=>route==null);
@@ -29,49 +47,42 @@ void toNavigatorPage(BuildContext context){
 class FlyNavigatorPage extends StatefulWidget {
   FlyNavigatorPageState createState() => FlyNavigatorPageState();
 }
-var navigatorPageController = PageController();
+var navigatorPageController = PageController(initialPage: 0);
 class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAliveClientMixin{
   int _currentIndex = 0; //数组索引，通过改变索引值改变视图
-  static List<bool> badgeShowList = [false,false,false,false];
+
+  static GlobalKey<NavigatorState> navigatorKey=GlobalKey();
   ThemeProvider themeProvider;
-  void initFunc() async{
-    try{
-      Response res;
-      res = await Dio().get(
-          "https://www.lvyingzhao.cn/action",
-          queryParameters: {
-            "username":Prefs.username,
-            "version":Global.curVersion,
-            "platform":Platform.operatingSystem
-          }
-      );
-      debugPrint(res.toString());
-    }catch(e){
-      debugPrint("统计用户失败");
-    }
+  //校园网自动登录
+  void cumtAutoLogin()async{
     if(Prefs.cumtLoginUsername!=null){
       await cumtAutoLoginGet(context,
           username: Prefs.cumtLoginUsername,
           password: Prefs.cumtLoginPassword,
           loginMethod: Prefs.cumtLoginMethod);
+      sendInfo('校园网登录', '自动登录了校园网:${Prefs.cumtLoginUsername},${Prefs.cumtLoginMethod}');
     }
   }
-
+  //获取用户信息
+  // getUserInfo()async{
+  //   if(Prefs.college==null||Prefs.className==null){
+  //     await userInfoPost(context, token: Prefs.token);
+  //   }
+  // }
   @override
   void initState() {
     super.initState();
-    initFunc();
-    checkUpgrade(context);
-    noticeGetInfo();
+    cumtAutoLogin();//自动登录校园网
+    // getUserInfo();//获取用户信息
+    // noticeGetInfo();//获取通知信息
+    checkUpgrade(context);//检查软件更新
+    sendInfo('主页', '初始化主页');
   }
-  BottomNavigationBarItem _bottomNavigationBar(String title,IconData iconData,bool showBadge,{double size})=>BottomNavigationBarItem(
+  BottomNavigationBarItem _bottomNavigationBar(String title,IconData iconData,{double size})=>BottomNavigationBarItem(
       label: title,
-      icon: Badge(
-        showBadge: showBadge,
-        child: Icon(
-          iconData,
-          size: size,
-        ),
+      icon: Icon(
+        iconData,
+        size: size,
       )
   );
   @override
@@ -85,10 +96,10 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
             physics: NeverScrollableScrollPhysics(),
             children: [
               CoursePage(),
-              InfoPage(),
+              // InfoPage(),
               DiyPage(),
               MyselfPage(),
-              TestPage()
+              // TestPage()
             ],
             controller: navigatorPageController,
             onPageChanged: (int index){
@@ -105,17 +116,16 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
               selectedItemColor: themeProvider.simpleMode?themeProvider.colorMain:null,
               unselectedItemColor: themeProvider.simpleMode?Colors.black45:null,
               items: [
-                _bottomNavigationBar('主页',FeatherIcons.home,badgeShowList[0]),
-                _bottomNavigationBar("资讯", Icons.article_outlined,badgeShowList[1]),
-                _bottomNavigationBar('发现',OMIcons.explore,badgeShowList[2]),
-                _bottomNavigationBar('我的',Icons.person_outline,badgeShowList[3]),
-                _bottomNavigationBar('我的',Icons.person_outline,badgeShowList[3]),
+                _bottomNavigationBar('主页',FeatherIcons.home,),
+                // _bottomNavigationBar("资讯", Icons.article_outlined,badgeShowList[1]),
+                _bottomNavigationBar('发现',OMIcons.explore,),
+                _bottomNavigationBar('我的',Icons.person_outline,),
+                // _bottomNavigationBar('我的',Icons.person_outline,badgeShowList[3]),
 
               ],
               currentIndex: _currentIndex,
               onTap: (int index) {
                 navigatorPageController.jumpToPage(index);
-                badgeShowList[index] = false;
               },
               type: BottomNavigationBarType.fixed),
         )

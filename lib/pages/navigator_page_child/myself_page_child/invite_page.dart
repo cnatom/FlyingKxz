@@ -11,7 +11,10 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InvitePage extends StatefulWidget {
@@ -42,7 +45,7 @@ class _InvitePageState extends State<InvitePage> {
                     ),
                     SizedBox(width: ScreenUtil().setSp(35),),
                     Text(
-                      "邀请好友",
+                      "分享App",
                       style: TextStyle(
                         fontSize: fontSizeTitle45,
                         fontWeight: FontWeight.bold,
@@ -50,16 +53,17 @@ class _InvitePageState extends State<InvitePage> {
                     ),
                   ],
                 ),
-                FlyText.miniTip30("点击复制链接"),
+                FlyText.miniTip30("点击分享"),
 
               ],
             ),
             Container(),Container(),
-
+            //分享矿小助官网
             InkWell(
               onTap: (){
                 Clipboard.setData(ClipboardData(text: "http://kxz.atcumt.com/"));
-                showToast(context,"已复制官网链接\n快分享给好友吧～！",);
+                showToast("已复制到粘贴板，快分享给好友吧~");
+                sendInfo('分享App', '分享了矿小助官网');
               },
               child: Container(
                 height: fontSizeMain40*3,
@@ -78,10 +82,12 @@ class _InvitePageState extends State<InvitePage> {
                 ),
               ),
             ),
+            //分享群号
             InkWell(
               onTap: (){
-                Clipboard.setData(ClipboardData(text: "839372371"));
-                showToast(context,"已复制QQ群号\n快分享给好友吧！～",);
+                Clipboard.setData(ClipboardData(text: "957634136"));
+                showToast( "已复制到粘贴板，快分享给好友吧~");
+                sendInfo('分享App', '分享了QQ群号');
               },
               child: Container(
                 height: fontSizeMain40*3,

@@ -15,30 +15,31 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.1
+version: 1.4.06
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
 dependencies:
   flutter_localizations: # 添加国际化
-    sdk: flutter         # 添加
+    sdk: flutter # 添加
   flutter:
     sdk: flutter
   photo_view: any
   cached_network_image: any
   flutter_swiper: any
-  dio: ^3.0.10
-  badges: any
+  dio: any
+  badges: ^2.0.1
   flui: any
   flutter_page_indicator:
   sliding_up_panel: any
   flutter_staggered_animations: any
-  toast: any
+  bot_toast: any
+#  toast: any
   universal_platform: any
   provider: any
   shared_preferences: any
   flutter_easyhub: any
-  connectivity: any
+#  connectivity: any
   flutter_picker: any
   flutter_feather_icons: any
   outline_material_icons: any
@@ -48,7 +49,6 @@ dependencies:
   package_info: any
   flutter_xupdate: any
   url_launcher: any
-  open_file: any
   path_provider: any
   flutter_screenutil: ^2.3.1
   date_format: any
@@ -63,10 +63,21 @@ dependencies:
   image_picker: any
   image_crop: any
   left_scroll_actions: any
+  dio_cookie_manager: ^2.0.0
   image_gallery_saver: any
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: any
+  webview_flutter: ^2.0.4
+  percent_indicator: ^3.0.1
+  share_plus: ^2.1.4
+  package_info_plus: ^1.0.0
+  html: ^0.14.0+4
+  fijkplayer: ^0.9.0
+  line_awesome_flutter: ^1.0.1
+  flutter_inappwebview: ^5.3.2
+  ical: ^0.1.4
+  open_file: ^3.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

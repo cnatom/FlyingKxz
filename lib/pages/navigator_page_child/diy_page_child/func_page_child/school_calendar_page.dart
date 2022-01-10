@@ -4,11 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:photo_view/photo_view.dart';
 
+import '../../../navigator_page.dart';
+
 
 //跳转到当前页面
 void toSchoolCalendarPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => SchoolCalendarPage()));
+  sendInfo('校历', '初始化校历页面');
 }
 
 class SchoolCalendarPage extends StatelessWidget {

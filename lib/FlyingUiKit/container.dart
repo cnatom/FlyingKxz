@@ -18,9 +18,11 @@ class FlyContainer extends StatefulWidget {
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
   final Decoration decoration;
+  final double width;
   final Key key;
+  final double transValue;
   FlyContainer(
-      {@required this.child, this.margin, this.padding, this.decoration, this.key});
+      {@required this.child, this.margin, this.padding, this.decoration, this.key, this.width, this.transValue});
   @override
   _FlyContainerState createState() => _FlyContainerState();
 }
@@ -33,12 +35,13 @@ class _FlyContainerState extends State<FlyContainer> {
     return Container(
       key: widget.key,
       margin: widget.margin,
+      width: widget.width,
       padding: widget.padding,
       decoration: widget.decoration??BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadiusValue),
           color: Theme.of(context)
               .cardColor
-              .withOpacity(themeProvider.transCard),
+              .withOpacity(widget.transValue??themeProvider.transCard),
           boxShadow: [
             boxShadowMain
           ]),

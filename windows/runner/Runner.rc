@@ -69,7 +69,7 @@ IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
 #ifdef FLUTTER_BUILD_NAME
 #define VERSION_AS_STRING #FLUTTER_BUILD_NAME
 #else
-#define VERSION_AS_STRING "1.0.0"
+#define VERSION_AS_STRING "1.2.0"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
@@ -89,12 +89,12 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.atcumt" "\0"
-            VALUE "FileDescription", "A new Flutter project." "\0"
+            VALUE "CompanyName", "com.atcumt.kxz" "\0"
+            VALUE "FileDescription", "矿小助" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "flying_kxz" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2021 com.atcumt. All rights reserved." "\0"
-            VALUE "OriginalFilename", "flying_kxz.exe" "\0"
+            VALUE "InternalName", "矿小助" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2021 FlyingStudio All rights reserved." "\0"
+            VALUE "OriginalFilename", "矿小助.exe" "\0"
             VALUE "ProductName", "flying_kxz" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END

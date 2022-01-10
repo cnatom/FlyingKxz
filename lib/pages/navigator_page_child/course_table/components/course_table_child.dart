@@ -7,7 +7,7 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_color.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
-import 'file:///C:/Flying/flying_kxz/lib/pages/navigator_page_child/course_table/utils/course_provider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';
 
 class CourseTableChild extends StatefulWidget {
@@ -23,15 +23,14 @@ class _CourseTableChildState extends State<CourseTableChild> {
   double unitHeight;
   double unitWidth;
   List<Widget> cards = [];
-
   @override
   Widget build(BuildContext context) {
-    _init(context);
+    _init();
     return Stack(
       children: cards,
     );
   }
-  void _init(BuildContext context){
+  void _init(){
     cards.clear();
     this.unitHeight = widget.height/10.0;
     this.unitWidth = widget.width/7.0;
@@ -131,9 +130,9 @@ class _CourseCardState extends State<CourseCard> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildCardText(isRepeat?"重叠课":widget.courseData.title, 33),
+        _buildCardText(isRepeat?"重叠课":widget.courseData.title, fontSizeTip33),
         SizedBox(height: ScreenUtil().setSp(10),),
-        _buildCardText(isRepeat?"点击查看":widget.courseData.location, 25),
+        _buildCardText(isRepeat?"点击查看":widget.courseData.location, fontSizeTipMini25),
       ],
     );
   }
@@ -164,8 +163,7 @@ class _CourseCardState extends State<CourseCard> {
 
     return Container(
       padding: EdgeInsets.fromLTRB(
-          fontSizeMini38 * 2,
-          0,
+          fontSizeMini38 * 2, 0,
           fontSizeMini38,
           fontSizeMini38),
       decoration: BoxDecoration(
@@ -183,8 +181,11 @@ class _CourseCardState extends State<CourseCard> {
                 children: [
                   Container(
                     height: fontSizeTitle45,
-                    width: fontSizeTitle45 / 5,
-                    color: CourseColor.fromStr(courseData.title),
+                    width: fontSizeTitle45 / 4.5,
+                    decoration: BoxDecoration(
+                        color: CourseColor.fromStr(courseData.title),
+                        borderRadius: BorderRadius.circular(100)
+                    ),
                   ),
                   SizedBox(
                     width: fontSizeTitle45 * 0.6,
@@ -253,15 +254,15 @@ class _CourseCardState extends State<CourseCard> {
     if(result == null) return false;
     return result;
   }
-  Widget _buildCardText(String text,int sp){
+  Widget _buildCardText(String text,double sp){
     return Text(
       text,
       style: TextStyle(
           fontSize:
-          ScreenUtil().setSp(sp),
+          sp,
           color: Colors.white,),
       textAlign: TextAlign.center,
-      maxLines: 2,
+      maxLines: 3,
 
       overflow: TextOverflow.ellipsis,
     );

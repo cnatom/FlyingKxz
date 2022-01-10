@@ -6,16 +6,17 @@ import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/container.dart';
-
-import 'package:flying_kxz/Model/global.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/video_page.dart';
 import 'package:provider/provider.dart';
 
-import 'diy_page_child/exam_page.dart';
+import '../../FlyingUiKit/toast.dart';
+import 'diy_page_child/exam/exam_page.dart';
 import 'diy_page_child/func_page_child/book_page.dart';
 import 'diy_page_child/func_page_child/school_bus_page.dart';
 import 'diy_page_child/func_page_child/school_calendar_page.dart';
-import 'diy_page_child/score_page.dart';
+import 'diy_page_child/score/score_page.dart';
 class DiyPage extends StatefulWidget {
   @override
   _DiyPageState createState() => _DiyPageState();
@@ -23,9 +24,11 @@ class DiyPage extends StatefulWidget {
 
 class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,SingleTickerProviderStateMixin {
   ThemeProvider themeProvider;
+
   @override
   void initState() {
     super.initState();
+    sendInfo('发现', '初始化发现页');
   }
 
   @override
@@ -60,17 +63,20 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
                               Wrap(
                                 children: [
                                   funcButton(imageResource: 'images/tushuguan.png',title: '图书馆',color:colorFuncButton[0],subTitle: '馆藏查询、图书推荐',onTap: ()=>toBookPage(context)),
-                                  funcButton(imageResource: 'images/chengji.png',title: '成绩',color:colorFuncButton[5],subTitle: '查看学分绩点',onTap: ()=>toScorePage(context)),
+                                  funcButton(imageResource: 'images/chengji.png',title: '成绩',color:colorFuncButton[5],subTitle: '自动计算、自由筛选',onTap: ()=>toScorePage(context)),
+                                  // funcButton(imageResource: 'images/chengji.png',title: '成绩',subTitle: '查看学分绩点',onTap: ()=>toScorePage(context)),
+
+                                  // funcButton(imageResource: 'images/xunke.png',title: '课堂回放',color:colorFuncButton[3],subTitle: '在线播放、极速下载',onTap: ()=>toVideoPage(context)),
                                   funcButton(imageResource: 'images/xiaoche.png',title: '校车',color:colorFuncButton[1],subTitle: '通勤班车时间表',onTap: ()=>toSchoolBusPage(context)),
                                   funcButton(imageResource: 'images/xiaoli.png',title: '校历',color:colorFuncButton[2],subTitle: '本学年校历',onTap: ()=>toSchoolCalendarPage(context)),
-                                  // funcButton(imageResource: 'images/tongxunlu.png',title: '通讯录',subTitle: '矿大黄页、联系你我'),
-                                  // funcButton(imageResource: 'images/ditu.png',title: '校园地图',subTitle: '拯救路痴的你'),
+                                  // funcButton(imageResource: 'images/xiaocheng.png',title: '轻应用',color:colorFuncButton[3],subTitle: '发现无限可能',onTap: ()=>showToast('☘️ 轻应用开放平台，敬请期待。')),
+                                  // funcButton(imageResource: 'images/xiaocheng.png', title: '校园便签', subTitle: '')
                                 ],
                               )
                             ],
                           ),
                         ),
-                        ExamPage(),
+                        ExamView(),
                       ],
                     ),
                   ),
