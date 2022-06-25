@@ -33,13 +33,8 @@ class CoursePageState extends State<CoursePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   static PageController coursePageController;
 
-
-  @override
-  void initState() {
-    super.initState();
-  }
-  outputIcs(){
-    // addCalendar(courseProvider.infoByCourse, DateTime(2021,9,1));
+  //导出ICS课表文件
+  _outputIcs(){
     Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>OutputIcsPage(courseProvider.infoByCourse)));
   }
   _importCourse()async{
@@ -130,7 +125,7 @@ class CoursePageState extends State<CoursePage> {
       leading: _buildAction(Icons.cloud_download_outlined,onPressed: ()=>_importCourse()),
       actions: [
         _buildAction(Icons.add,onPressed: ()=>_addCourse()),
-        _buildAction(Boxicons.bx_share_alt,onPressed: ()=>outputIcs()),
+        _buildAction(Boxicons.bx_share_alt,onPressed: ()=>_outputIcs()),
         _buildAction(Boxicons.bx_menu_alt_right,onPressed: ()=>_rightGlobalKey.currentState.show()),
       ],
     );

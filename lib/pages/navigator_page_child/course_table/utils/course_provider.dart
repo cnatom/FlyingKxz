@@ -83,16 +83,6 @@ class CourseProvider extends ChangeNotifier{
       newDateTimeStr = '${int.parse(year)+1}-03-01';
     }
     setAdmissionDateTime(newDateTimeStr);
-    Future.wait([_getJsonInfo(year, term)]).then((courseBeans){
-
-      if(courseBeans[0]!=null){
-        var courseBean = courseBeans[0];
-        _handleCourseBean(courseBean);
-        _savePrefs();
-      }
-    }).whenComplete((){
-      notifyListeners();
-    });
   }
   /// 修改当前周
   /// CourseProvider().changeWeek(5);
@@ -272,23 +262,7 @@ class CourseProvider extends ChangeNotifier{
       ];
     }
   }
-  Future<CourseBean> _getJsonInfo(String year,String term,)async{
-    return null;
-    debugPrint('@getJsonInfo');
-    CourseBean courseBean = new CourseBean();
-    try{
-      var res = await cumt.inquiryJw(InquiryType.Course, year, term);
-      if(res!=''){
-        var map = jsonDecode(res);
-        courseBean = CourseBean.fromJson(map);
-        return courseBean;
-      }
-      return null;
-    }catch(e){
-      debugPrint('获取课表失败: '+e.toString());
-      return null;
-    }
-  }
+
 
   //用于周次转换
   //"5周"->[5]    "5-12周(单)"->[5, 7, 9, 11]   "13-18周(双)"->[14, 16, 18]   "11-14周"->[11, 12, 13, 14]

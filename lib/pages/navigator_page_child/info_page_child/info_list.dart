@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/Model/news_info.dart';
 import 'package:flying_kxz/pages/navigator_page_child/info_page_child/news_detail.dart';
 import 'package:provider/provider.dart';

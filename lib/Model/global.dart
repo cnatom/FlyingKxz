@@ -53,7 +53,6 @@ class Global{
   static DateTime nowDate = DateTime.now(); //当前日期
   static SwiperInfo swiperInfo = new SwiperInfo();//轮播图
   static RankInfo rankInfo = new RankInfo();//内测用户排名
-  static BalanceDetailInfo balanceDetailInfo = new BalanceDetailInfo();//校园卡流水
   static bool igUpgrade;//是否忽略更新
   static String curVersion;
   static Future<void> clearPrefsData()async{

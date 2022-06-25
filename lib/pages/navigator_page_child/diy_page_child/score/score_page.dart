@@ -143,7 +143,6 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
-    super.build(context);
     return Scaffold(
       key: scaffoldKey,
       appBar: FlyAppBar(context, '成绩（需内网或VPN）',actions: [

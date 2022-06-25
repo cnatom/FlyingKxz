@@ -282,10 +282,8 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
   }
   Widget loadingView(){
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          for(int i = 0;i<5;i++)loadingAnimationArticle(context)
-        ],
+      child: Center(
+        child: loadingAnimationIOS(),
       ),
     );
   }

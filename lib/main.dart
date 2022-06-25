@@ -7,7 +7,8 @@ import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:flying_kxz/pages/null_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -28,15 +29,16 @@ void main() {
         SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
+
   /// Prefs.init() 提取存储在本地的信息
-  Future.wait([Prefs.init()]).whenComplete((){
-    if(Prefs.password==null){
+  Future.wait([Prefs.init()]).whenComplete(() {
+    if (Prefs.password == null) {
       Global.clearPrefsData();
       backImgFile = null;
     }
-    ThemeProvider.init();// 初始化主题
-    cumt.init();//初始化爬虫模块
-    runApp(MyApp());//启动App
+    ThemeProvider.init(); // 初始化主题
+    cumt.init(); //初始化爬虫模块
+    runApp(MyApp()); //启动App
   });
 }
 
@@ -51,7 +53,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider.value(value: ThemeProvider())],
+      providers: [
+        ChangeNotifierProvider.value(value: ThemeProvider()),
+        ChangeNotifierProvider.value(value: PowerProvider()),
+        ChangeNotifierProvider.value(value: BalanceProvider()),
+      ],
       builder: (context, _) {
         themeProvider = Provider.of<ThemeProvider>(context);
         return MaterialApp(
@@ -92,8 +98,6 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-
-
   Future<void> initFunc(BuildContext context) async {
     // 获取当前App版本
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -107,8 +111,7 @@ class _StartPageState extends State<StartPage> {
       deviceWidth = 1920;
     }
     //初始化参考屏幕信息
-    ScreenUtil.init(context,
-        height: deviceHeight, width: deviceWidth);
+    ScreenUtil.init(context, height: deviceHeight, width: deviceWidth);
     //初始化配置
     initSize();
     //内测结束跳转
@@ -117,11 +120,11 @@ class _StartPageState extends State<StartPage> {
     //   return;
     // }
     if (Prefs.backImg != null) {
-      if (await File(Prefs.backImg).exists()){
+      if (await File(Prefs.backImg).exists()) {
         backImgFile = File(Prefs.backImg);
         await precacheImage(new FileImage(backImgFile), context);
       }
-    }else{
+    } else {
       await precacheImage(new AssetImage("images/background.png"), context);
     }
     //初始化背景图路径
@@ -147,6 +150,9 @@ class _StartPageState extends State<StartPage> {
       toLoginPage(context); //第一次登录进入登录页
     }
   }
+
+  @override
+  void initState() {}
 
   @override
   Widget build(BuildContext context) {

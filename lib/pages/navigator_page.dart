@@ -33,10 +33,10 @@ Future<void> sendInfo(String page,String action)async{
       "version":Global.curVersion
     }
   };
-  var res = Dio().post(
-    "https://www.lvyingzhao.cn/action",
-    data: info
-  );
+  // var res = Dio().post(
+  //   "https://www.lvyingzhao.cn/action",
+  //   data: info
+  // );
   print(page+':'+action);
 }
 //跳转到当前页面

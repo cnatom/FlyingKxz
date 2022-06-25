@@ -6,15 +6,14 @@ import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
 import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/NetRequest/power_post.dart';
 import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -29,25 +28,20 @@ class PowerPage extends StatefulWidget {
 
 class _PowerPageState extends State<PowerPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController _powerNumController = new TextEditingController(text: Prefs.powerNum??'');
+  TextEditingController _powerRoomidController = new TextEditingController(text: Prefs.powerRoomid??'');
   bool powerLoading = false;
   ThemeProvider themeProvider;
-  String powerNum = Prefs.powerNum??null;
-  String powerHome = Prefs.powerHome??null;
-  double percent = 0.0;
-  @override
-  void initState() {
-    super.initState();
-  }
+  PowerProvider powerProvider;
+  String powerBuilding = Prefs.powerBuilding;
+  String powerRoomid = Prefs.powerRoomid;
   void _handlePower()async{
     FocusScope.of(context).requestFocus(FocusNode());
     setState(() {
       powerLoading = true;
     });
-    if(_powerNumController.text.isNotEmpty||Prefs.powerHome!=null){
-      powerNum = _powerNumController.text.toString();
-      bool ok = await cumt.getPower(powerHome, powerNum);
-      if(!ok) showToast( "获取失败，请再检查一下参数");
+    if(_powerRoomidController.text.isNotEmpty&&powerBuilding!=null){
+      powerRoomid = _powerRoomidController.text.toString();
+      await powerProvider.get(powerBuilding, powerRoomid);
     }else{
       showToast( "请输入完整");
     }
@@ -57,11 +51,21 @@ class _PowerPageState extends State<PowerPage> {
   }
   @override
   Widget build(BuildContext context) {
-    percent = (Prefs.power??0.0)/(Prefs.powerMax??1.0);
     themeProvider = Provider.of<ThemeProvider>(context);
+    powerProvider = Provider.of<PowerProvider>(context);
+    double percent = 0.0;
+    if(powerProvider.power!=null&&powerProvider.power>0.0&&powerProvider.power<=Prefs.power){
+      percent = powerProvider.power/Prefs.powerMax;
+    }
+    print(percent);
     return Scaffold(
       key: _scaffoldKey,
-      appBar: FlyAppBar(context, "宿舍电量"),
+      appBar: FlyAppBar(context, "宿舍电量",
+      actions: [
+        IconButton(onPressed: (){
+          powerProvider.test();
+        }, icon: Icon(Icons.ac_unit))
+      ]),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -80,7 +84,7 @@ class _PowerPageState extends State<PowerPage> {
             ),
             SizedBox(height: spaceCardPaddingTB*2,),
             FlyText.title50(
-              Prefs.powerMax==null?"未绑定":(Prefs.power.toString()+' / '+Prefs.powerMax.toString()),color: themeProvider.colorMain,fontWeight: FontWeight.bold,
+              powerProvider.power==null?"未绑定":powerProvider.power.toString(),color: themeProvider.colorMain,fontWeight: FontWeight.bold,
             ),
             SizedBox(height: spaceCardPaddingTB*3,),
             _container(
@@ -113,8 +117,8 @@ class _PowerPageState extends State<PowerPage> {
         colorRight: themeProvider.colorMain,
         isArray: false,
         onConfirm: (Picker picker, List value) {
-          String home = picker.getSelectedValues()[1].toString();
-          powerHome = home;
+          String home = picker.getSelectedValues()[0].toString();
+          powerBuilding = home;
           setState(() {
 
           });
@@ -158,9 +162,9 @@ class _PowerPageState extends State<PowerPage> {
         )
     );
   }
-  Widget _buildInputButton(String title,String previewStr,{GestureTapCallback onTap}){
+  Widget _buildInputButton(String title,{GestureTapCallback onTap}){
     return _buildDiyButton(title,
-        child: _buildInputBar("输入寝室号(如B1052)", _powerNumController)
+        child: _buildInputBar("输入寝室号(如B1052)", _powerRoomidController)
     );
   }
   Widget _container({@required Widget child}){
@@ -193,8 +197,8 @@ class _PowerPageState extends State<PowerPage> {
       padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
       child: Column(
           children: [
-            _buildPreviewButton("宿舍楼",powerHome??"未选择",onTap: ()=>_handlePowerPicker()),
-            _buildInputButton("宿舍号", powerNum??"未选择"),
+            _buildPreviewButton("宿舍楼",powerBuilding??"未选择",onTap: ()=>_handlePowerPicker()),
+            _buildInputButton("宿舍号"),
             SizedBox(height: spaceCardPaddingTB,),
             FlyWidgetBuilder(
                 whenFirst: powerLoading,

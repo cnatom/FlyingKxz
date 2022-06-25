@@ -89,46 +89,6 @@ class _FlyNavBackgroundState extends State<FlyNavBackground> {
   }
 }
 
-Widget FlyIdCardContainer(
-        {@required String title,
-        @required String subTitle,
-        @required String imageResource}) =>
-    Container(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(spaceCardMarginBigTB, 0, spaceCardMarginBigTB, 0),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.asset(
-                  imageResource,
-                  height: ScreenUtil().setWidth(160),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    title,
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(70),
-                        color: colorMainText,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: spaceCardPaddingTB,
-                  ),
-                  FlyText.main40(subTitle, color: Colors.black38)
-                ],
-              ),
-            )
-
-          ],
-        ),
-      ),
-    );
 
 
 
