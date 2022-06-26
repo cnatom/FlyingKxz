@@ -270,7 +270,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
                   lineHeight: 7,
                   animationDuration: 500,
                   percent: percent,
-                  linearStrokeCap: LinearStrokeCap.roundAll,
+                  barRadius: Radius.circular(10),
                   progressColor: colorLine,
                   backgroundColor: Theme.of(context).unselectedWidgetColor.withOpacity(0.2),
                 ),

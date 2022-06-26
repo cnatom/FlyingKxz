@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
@@ -38,7 +39,7 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        brightness: themeProvider.simpleMode?Brightness.light:Brightness.dark,
+        systemOverlayStyle: themeProvider.simpleMode ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
         leading: Container(),
         centerTitle: true,
         backgroundColor: Colors.transparent,

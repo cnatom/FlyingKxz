@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../Model/prefs.dart';
 import '../../components/preview_view.dart';
 import '../power_page.dart';
 

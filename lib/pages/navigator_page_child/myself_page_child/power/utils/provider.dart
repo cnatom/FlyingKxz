@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/pages/tip_page.dart';
 
 import '../../../../../Model/prefs.dart';
 
@@ -11,9 +13,33 @@ import '../../../../../Model/prefs.dart';
 
  */
 class PowerProvider extends ChangeNotifier{
-  String username = Prefs.username??"";
-  double power;
-  bool loading = false;
+  String username = Prefs.username;
+  double power = Prefs.power;
+  bool powerLoading = false;
+  static var apartment = ["研梅", "杏苑", "松竹", "桃苑"];
+  String get previewText => power==null?"未绑定":power.toString();
+  double get percent {
+    if(power!=null&&power>0.0&&power<=Prefs.power){
+      return double.tryParse((power/Prefs.powerMax).toStringAsFixed(2))??0.0;
+    }
+    return 0.0;
+  }
+  //宿舍楼、宿舍号码
+  String _powerRoomid;
+  String _powerBuilding;
+  String get powerRoomid => _powerRoomid??Prefs.powerRoomid;
+  String get powerBuilding => _powerBuilding??Prefs.powerBuilding;
+  set powerRoomid(String value) => _powerRoomid = value;
+  set powerBuilding(String powerBuilding){
+    this._powerBuilding = powerBuilding;
+    notifyListeners();
+  }
+  Map<String, dynamic> _buildingMap = {
+    "研梅": "14",
+    "杏苑": "13",
+    "松竹": "12",
+    "桃苑": "11"
+  };
   Dio _dio = Dio(BaseOptions(
     connectTimeout: 5000,
     receiveTimeout: 5000,
@@ -22,12 +48,6 @@ class PowerProvider extends ChangeNotifier{
       'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
     },
   ));
-  Map<String, dynamic> _buildingMap = {
-    "研梅": "14",
-    "杏苑": "13",
-    "松竹": "12",
-    "桃苑": "11"
-  };
 
   Map<String, String> _url = {
     'account': 'http://ykt.cumt.edu.cn:8988/web/Common/Tsm.html',
@@ -37,42 +57,55 @@ class PowerProvider extends ChangeNotifier{
   Future<bool> getPreview()async{
     try{
       if(Prefs.powerBuilding!=null&&Prefs.powerRoomid!=null){
-        bool ok = await get(Prefs.powerBuilding, Prefs.powerRoomid);
+        bool ok = await _get(Prefs.powerBuilding, Prefs.powerRoomid);
         if(ok) return true;
-        return false;
       }
+      return false;
     }catch(e){
       debugPrint("获取预览电量失败");
       return false;
     }
   }
-  Future<bool> get(String building,String roomid)async{
+  //绑定
+  void bindInfoAndGetPower(BuildContext context)async{
+    FocusScope.of(context).requestFocus(FocusNode());
+    powerLoading = true;
+    notifyListeners();
+    if(powerBuilding!=null&&powerRoomid!=null&&powerRoomid.isNotEmpty){
+      await _get(powerBuilding, powerRoomid,show: true);
+      sendInfo("宿舍电量", "绑定宿舍:$powerBuilding $powerRoomid");
+    }else{
+      showToast( "请输入完整");
+    }
+    powerLoading = false;
+    notifyListeners();
+  }
+  Future<bool> _get(String building,String roomid,{bool show = false})async{
     try{
       String account = await _getAccount(username);
       String aid = await _getAid();
       String power = await _getPower(account, aid, username, building, roomid);
       RegExp regExp = new RegExp(r'([0-9]\d*\.?\d*)$');
-      print(power);
       if(regExp.hasMatch(power)){
         this.power = double.tryParse(regExp.firstMatch(power).group(0));
         _savePrefs(this.power, building, roomid);
-        print(this.power);
         notifyListeners();
+        if(show) showToast("获取电量成功!");
         return true;
       }else{
-        showToast(power);
+        if(show) showToast(power);
         return false;
       }
     }catch (e){
-      debugPrint("获取电量失败");
+      if(show){
+        showToast("获取电量失败,您可能需要连接校园内网CUMT_STU");
+        toTipPage();
+      }
+      sendInfo("宿舍电量", "获取宿舍电量失败:$powerBuilding $powerRoomid");
       return false;
     }
+  }
 
-  }
-  test(){
-    power-=1;
-    notifyListeners();
-  }
   Future<String> _getAccount(String username) async{
     var url = _url['account'];
     var data = 'jsondata={"query_card":{"idtype":"sno","id":"' + username +
@@ -120,7 +153,6 @@ class PowerProvider extends ChangeNotifier{
     Prefs.powerRoomid = roomid;
     return true;
   }
-
 
 
 }

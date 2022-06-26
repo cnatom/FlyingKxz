@@ -25,7 +25,8 @@ class NullPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children:[
               Container(),
-              Text('本测试版本已过期\n请加入交流群839372371\n获取正式版本（或测试版本）',
+              Text('本测试版本已过期\n请加入交流群839372371\n获取正式版本（或测试版本）\n'
+                  '我们的官网：kxz.atcumt.com',
                 textAlign: TextAlign.center,style: TextStyle(color: colorMainText,fontSize: fontSizeMain40,fontWeight: FontWeight.bold,letterSpacing: 3),),
               Container()
             ]

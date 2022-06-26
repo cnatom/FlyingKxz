@@ -239,7 +239,7 @@ class _AboutPageState extends State<AboutPage> {
                                         title: "长期招聘↗",
                                         subTitle: "点我了解更多",
                                         onTap: (){
-                                            launch("https://mp.weixin.qq.com/s/9Garo40q6qYo_pnN6ax1SA");
+                                            launchUrl(Uri.parse("https://flyingstudio.feishu.cn/docs/doccnuWFYfcbHUZ65FmKB3iA6pf"));
                                         }
                                     ),
                                   ],

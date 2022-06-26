@@ -9,7 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:flying_kxz/pages/null_page.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'FlyingUiKit/Text/text.dart';
@@ -115,10 +116,10 @@ class _StartPageState extends State<StartPage> {
     //初始化配置
     initSize();
     //内测结束跳转
-    // if(DateTime.now().isAfter(DateTime(2021,8,20))){
-    //   toNullPage(context);
-    //   return;
-    // }
+    if(DateTime.now().isAfter(DateTime(2022,7,20))){
+      toNullPage(context);
+      return;
+    }
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists()) {
         backImgFile = File(Prefs.backImg);

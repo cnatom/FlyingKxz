@@ -33,11 +33,11 @@ Future<void> sendInfo(String page,String action)async{
       "version":Global.curVersion
     }
   };
-  // var res = Dio().post(
-  //   "https://www.lvyingzhao.cn/action",
-  //   data: info
-  // );
-  print(page+':'+action);
+  Dio().post(
+    "https://user.kxz.atcumt.com/admin/action",
+    data: info
+  );
+  print("sendInfo:"+page+':'+action);
 }
 //跳转到当前页面
 void toNavigatorPage(BuildContext context){
@@ -48,9 +48,8 @@ class FlyNavigatorPage extends StatefulWidget {
   FlyNavigatorPageState createState() => FlyNavigatorPageState();
 }
 var navigatorPageController = PageController(initialPage: 0);
-class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAliveClientMixin{
+class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAliveClientMixin,WidgetsBindingObserver {
   int _currentIndex = 0; //数组索引，通过改变索引值改变视图
-
   static GlobalKey<NavigatorState> navigatorKey=GlobalKey();
   ThemeProvider themeProvider;
   //校园网自动登录
@@ -60,7 +59,6 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
           username: Prefs.cumtLoginUsername,
           password: Prefs.cumtLoginPassword,
           loginMethod: Prefs.cumtLoginMethod);
-      sendInfo('校园网登录', '自动登录了校园网:${Prefs.cumtLoginUsername},${Prefs.cumtLoginMethod}');
     }
   }
   //获取用户信息
@@ -75,8 +73,20 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
     cumtAutoLogin();//自动登录校园网
     // getUserInfo();//获取用户信息
     // noticeGetInfo();//获取通知信息
+    WidgetsBinding.instance.addObserver(this);
     checkUpgrade(context);//检查软件更新
     sendInfo('主页', '初始化主页');
+  }
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if(state == AppLifecycleState.resumed){
+      cumtAutoLogin();
+    }
   }
   BottomNavigationBarItem _bottomNavigationBar(String title,IconData iconData,{double size})=>BottomNavigationBarItem(
       label: title,

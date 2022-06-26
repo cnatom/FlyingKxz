@@ -36,22 +36,17 @@ Future<bool> cumtLoginGet(BuildContext context,{@required String username,@requi
       switch(map["ret_code"]){
         case "2":{
           showToast("您已登录校园网");
-          sendInfo('校园网登录', '已经登录校园网:$username,$loginMethod');
           break;
         }
         case "1":{
           if(map['msg']=="dXNlcmlkIGVycm9yMg=="){
             showToast( "账号或密码错误",);
-            sendInfo('校园网登录', '登录失败，账号或密码错误:$username,$loginMethod');
           }else if(map['msg']=='dXNlcmlkIGVycm9yMQ=='){
             showToast( "账号不存在，请切换运营商再尝试",);
-            sendInfo('校园网登录', '登录失败，请切换运营商再尝试:$username,$loginMethod');
           }else if(map['msg']=='UmFkOkxpbWl0IFVzZXJzIEVycg=='){
             showToast('您的登陆超限\n请在"用户自助服务系统"下线终端。',);
-            sendInfo('校园网登录', '登陆超限:$username,$loginMethod');
           }else{
             showToast("未知错误，欢迎向我们反馈QAQ",);
-            sendInfo('校园网登录', '登录失败,未知错误:$username,$loginMethod,${map['msg']}');
           }
           break;
         }
@@ -61,7 +56,6 @@ Future<bool> cumtLoginGet(BuildContext context,{@required String username,@requi
   } catch (e) {
     debugPrint(e.toString());
     showToast("登录失败，确保您已经连接校园网(CUMT_Stu)",);
-    sendInfo('校园网登录', '登录失败,未连接校园网:$username,$loginMethod,');
     return false;
   }
 }
@@ -84,6 +78,7 @@ Future<bool> cumtAutoLoginGet(BuildContext context,{@required String username,@r
     Map<String, dynamic> map = jsonDecode(res.toString().substring(1,res.toString().length-1));
     if (map['result']=="1") {
       showToast("已自动登录校园网！");
+      sendInfo('校园网登录', '成功自动登录校园网:${Prefs.cumtLoginUsername},${Prefs.cumtLoginMethod}');
       return true;
     }
     return false;

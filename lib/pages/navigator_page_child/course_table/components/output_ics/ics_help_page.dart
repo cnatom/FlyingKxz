@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
 import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class IcsHelpPage extends StatefulWidget {
@@ -13,6 +12,7 @@ class IcsHelpPage extends StatefulWidget {
 }
 
 class _IcsHelpPageState extends State<IcsHelpPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,5 +121,11 @@ class _IcsHelpPageState extends State<IcsHelpPage> {
 
       child: Image.asset(resource),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    sendInfo("课表导出", "初始化帮助页");
   }
 }

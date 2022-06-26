@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
@@ -118,9 +119,9 @@ class CoursePageState extends State<CoursePage> {
   }
   PreferredSizeWidget _buildAppBar(){
     return AppBar(
+      systemOverlayStyle: themeProvider.simpleMode ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
       backgroundColor: Colors.transparent,
-      brightness: themeProvider.simpleMode?Brightness.light:Brightness.dark,
-      title: FlyText.title45('第${courseProvider.curWeek}周',
+      title: FlyText.title45('第${courseProvider.curWeek}周 (测试版本)',
           fontWeight: FontWeight.w600, color: themeProvider.colorNavText),
       leading: _buildAction(Icons.cloud_download_outlined,onPressed: ()=>_importCourse()),
       actions: [

@@ -16,6 +16,7 @@ import 'package:flying_kxz/FlyingUiKit/container.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/output_ics/ics_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_color.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
@@ -133,8 +134,9 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
             FlyText.miniTip30('小技巧：使用日历软件(如滴答清单)的url订阅功能，可以实现日历与服务器同步更新哦～(具体步骤请点击"课表还能这么玩？"）',maxLine: 3,),
           ],
         ));
+        sendInfo("课表导出", "成功导出至日历");
         Future.delayed(Duration(seconds: 5),(){
-          launch(Prefs.courseIcsUrl);
+          launchUrl(Uri.parse(Prefs.courseIcsUrl));
         });
       }else{
         showToast('导出失败${res.toString()}');
@@ -158,6 +160,7 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
     if(data!=''){
       showToast('成功生成课表文件，分享出去吧～');
       Share.shareFiles(['$data'],);
+      sendInfo("课表导出", "以文件分享成功");
     }else{
       showToast('文件生成失败');
     }

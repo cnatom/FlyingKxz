@@ -47,7 +47,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
                   children: [
                     InkWell(
                       onTap: ()=>toCumtLoginHelpPage(context),
-                      child: Text("用前必看,拜托！",style: TextStyle(fontSize: fontSizeMain40,color: themeProvider.colorNavText.withOpacity(0.8),decoration: TextDecoration.underline),textWidthBasis: TextWidthBasis.longestLine,),
+                      child: Text("校园网自动登录秘籍",style: TextStyle(fontSize: fontSizeMain40,color: themeProvider.colorNavText.withOpacity(0.8),decoration: TextDecoration.underline),textWidthBasis: TextWidthBasis.longestLine,),
                     ),
                   ],
                 ),
@@ -199,7 +199,7 @@ class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FlyAppBar(context, "《校园网登录秘籍-看完不后悔系列》"),
+      appBar: FlyAppBar(context, "校园网自动登录秘籍"),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Padding(
@@ -207,20 +207,21 @@ class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
           child: Wrap(
             children: [
               helpItem("images/cumtLoginHelp1.png",
-                  '1、在系统设置中连接校园网CUMT_Stu，并等待上方出现wifi标志'),
+                  '1、在系统设置中连接校园网CUMT_Stu，并等待上方出现wifi标志（很重要！）'),
+              helpItem("images/cumtLoginHelp5.png",
+                  '2、连接网络后可能会自动弹出登录页面，点击取消，选择"不连接互联网使用"（以iOS为例，其他系统也差不多）'),
+              helpItem("images/cumtLoginHelp6.png",
+                  '3、为避免再弹出登录页面，可以进入CUMT_Stu详情页面，关闭"自动登录"功能。'),
               helpItem("images/cumtLoginHelp2.png",
-                  '2、打开矿小助输入账号密码就可以登录了\n（第二次打开这个框框就不用填账号密码了哦）'),
-              helpItem("images/cumtLoginHelp0.png",
-                  '此外，可以在wifi设置中关闭自动登录功能，可以防止连接wifi后强制弹窗（还得手动输入，怪麻烦，叹气～'),
+                  '4、打开矿小助输入账号密码就可以登录了\n（第二次打开这个框框就不用填账号密码了哦）'),
               helpItem('images/cumtLoginHelp1.png',
-                  "你以为这就结束了？？？\n用脚趾头想想也知道那必不可能（滑稽\n\n矿小助还可以一键登录校园网\n(前提是你已经用上述1、2步骤手动登录过了)\n\n1、连接wifi，等待出现wifi标志"),
+                  "你以为这就结束了？？？\n用脚趾头想想也知道那必不可能（滑稽\n\n矿小助还可以一键登录校园网\n(前提是你已经用上述步骤手动登录过了)\n\n1、连接wifi，等待出现wifi标志"),
               helpItem('images/cumtLoginHelp3.png',
                   "2、打开矿小助"),
 
               helpItem('images/cumtLoginHelp4.png',
                   "然后就可以愉快的上网了～\n\n"
-                      "特别注意：如果无法自动登录，就重启矿小助。\n\n"
-                      "（自动登录函数只会在App初始化的时候执行，无法登录说明后台还开着矿小助）\n\n"
+                      "Q:什么情况下会触发自动登录函数？\n1.初始化矿小助时\n2.将矿小助从后台调出时（版本号需 > 1.4.06）\n\n"
                       "如果喜欢的话可以将矿小助推荐给其他人哦～\n\n"
                       "——用爱发电的程序员小哥")
             ],

@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
@@ -57,14 +58,11 @@ class _MyselfPageState extends State<MyselfPage>
     toLoginPage(context);
   }
 
-  Future<void> _initSyncFunc() async {
-    await sendInfo('我的', '初始化我的页面');
-  }
 
   @override
   void initState() {
     super.initState();
-    _initSyncFunc();
+    sendInfo('我的', '初始化我的页面');
   }
 
   Future<void> _feedback() async {
@@ -121,8 +119,7 @@ class _MyselfPageState extends State<MyselfPage>
         child: AppBar(
           leading: Container(),
           backgroundColor: Colors.transparent,
-          brightness:
-              themeProvider.simpleMode ? Brightness.light : Brightness.dark,
+          systemOverlayStyle: themeProvider.simpleMode ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
         ),
       ),
       body: RefreshIndicator(

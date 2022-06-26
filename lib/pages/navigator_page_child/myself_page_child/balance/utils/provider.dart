@@ -13,21 +13,18 @@ import '../../../../../Model/prefs.dart';
 import '../../../../navigator_page.dart';
 
 class BalanceProvider extends ChangeNotifier{
-  String username;
-  String password;
-  String cardNum;
-  String balance;
+  String username = Prefs.username;
+  String password = Prefs.password;
+  String cardNum = Prefs.cardNum;
+  String balance = Prefs.balance;
   BalanceDetailInfo detailInfo;
-  BalanceProvider(){
-    username = Prefs.username??"";
-    password = Prefs.password??"";
-  }
   Map<String,dynamic> _urls = {
     'balance':'http://portal.cumt.edu.cn/ykt/balance',
     'balanceHis':'http://portal.cumt.edu.cn/ykt/flow?flow_num=20'
   };
   //校园卡流水
   Future<bool> getBalanceHistory()async{
+    print(balance);
     try{
       await cumt.login(Prefs.username??'', Prefs.password??'');
       var res = await cumt.dio.get(_urls['balanceHis']);

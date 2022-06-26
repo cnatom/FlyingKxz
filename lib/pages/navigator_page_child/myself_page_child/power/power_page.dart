@@ -1,4 +1,3 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -8,14 +7,12 @@ import 'package:flying_kxz/FlyingUiKit/appbar.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/picker.dart';
-import 'package:flying_kxz/FlyingUiKit/picker_data.dart';
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
+
+import 'components/circular_view.dart';
 
 void toPowerPage(BuildContext context){
   Navigator.push(context, CupertinoPageRoute(builder: (context)=>PowerPage()));
@@ -29,71 +26,58 @@ class PowerPage extends StatefulWidget {
 class _PowerPageState extends State<PowerPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _powerRoomidController = new TextEditingController(text: Prefs.powerRoomid??'');
-  bool powerLoading = false;
   ThemeProvider themeProvider;
   PowerProvider powerProvider;
-  String powerBuilding = Prefs.powerBuilding;
-  String powerRoomid = Prefs.powerRoomid;
-  void _handlePower()async{
-    FocusScope.of(context).requestFocus(FocusNode());
-    setState(() {
-      powerLoading = true;
-    });
-    if(_powerRoomidController.text.isNotEmpty&&powerBuilding!=null){
-      powerRoomid = _powerRoomidController.text.toString();
-      await powerProvider.get(powerBuilding, powerRoomid);
-    }else{
-      showToast( "请输入完整");
-    }
-    setState(() {
-      powerLoading = false;
-    });
+  String powerPerviewText;
+  String powerBuilding;
+  double powerPercent;
+  bool powerLoading;
+  @override
+  void initState() {
+    super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
-    powerProvider = Provider.of<PowerProvider>(context);
-    double percent = 0.0;
-    if(powerProvider.power!=null&&powerProvider.power>0.0&&powerProvider.power<=Prefs.power){
-      percent = powerProvider.power/Prefs.powerMax;
-    }
-    print(percent);
+    powerProvider = Provider.of<PowerProvider>(context,listen: false);
+    powerPerviewText = context.select((PowerProvider p) => p.previewText);
+    powerBuilding= context.select((PowerProvider p) => p.powerBuilding);
+    powerPercent= context.select((PowerProvider p) => p.percent);
+    powerLoading = context.select((PowerProvider p) => p.powerLoading);
     return Scaffold(
       key: _scaffoldKey,
-      appBar: FlyAppBar(context, "宿舍电量",
-      actions: [
-        IconButton(onPressed: (){
-          powerProvider.test();
-        }, icon: Icon(Icons.ac_unit))
-      ]),
+      appBar: FlyAppBar(context, "宿舍电量",),
       body: Container(
         height: double.infinity,
         width: double.infinity,
         padding: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB, spaceCardMarginRL, spaceCardMarginTB),
         child: Column(
           children: [
-            CircularPercentIndicator(
-              radius: MediaQuery.of(context).size.width/3,
-              lineWidth: 13.0,
-              animation: true,
-              percent: percent,
-              backgroundColor: Theme.of(context).disabledColor,
-              center: Icon(EvaIcons.flash,size: MediaQuery.of(context).size.width/10,color: themeProvider.colorMain,),
-              circularStrokeCap: CircularStrokeCap.round,
-              progressColor: themeProvider.colorMain,
-            ),
+            PowerCircularView(powerPercent: powerPercent, themeProvider: themeProvider),
             SizedBox(height: spaceCardPaddingTB*2,),
             FlyText.title50(
-              powerProvider.power==null?"未绑定":powerProvider.power.toString(),color: themeProvider.colorMain,fontWeight: FontWeight.bold,
+              powerPerviewText,color: themeProvider.colorMain,fontWeight: FontWeight.bold,
             ),
             SizedBox(height: spaceCardPaddingTB*3,),
             _container(
-              child: _buildPower()
+              child: _buildPower(powerBuilding)
             )
           ],
         ),
       ),
     );
+  }
+  void _handlePowerPicker()async{
+    showPicker(context, _scaffoldKey,
+        title: "选择宿舍楼",
+        pickerDatas: PowerProvider.apartment,
+        colorRight: themeProvider.colorMain,
+        isArray: false,
+        onConfirm: (Picker picker, List value) {
+          String home = picker.getSelectedValues()[0].toString();
+          powerProvider.powerBuilding = home;
+        });
   }
   InkWell _buildButton(String title,{GestureTapCallback onTap}) {
     return InkWell(
@@ -109,20 +93,6 @@ class _PowerPageState extends State<PowerPage> {
         ),
       ),
     );
-  }
-  void _handlePowerPicker()async{
-    showPicker(context, _scaffoldKey,
-        title: "选择宿舍楼",
-        pickerDatas: PickerData.apartment,
-        colorRight: themeProvider.colorMain,
-        isArray: false,
-        onConfirm: (Picker picker, List value) {
-          String home = picker.getSelectedValues()[0].toString();
-          powerBuilding = home;
-          setState(() {
-
-          });
-        });
   }
   Widget _buildDiyButton(String title,{@required Widget child,GestureTapCallback onTap}){
     return InkWell(
@@ -164,7 +134,7 @@ class _PowerPageState extends State<PowerPage> {
   }
   Widget _buildInputButton(String title,{GestureTapCallback onTap}){
     return _buildDiyButton(title,
-        child: _buildInputBar("输入寝室号(如B1052)", _powerRoomidController)
+        child: _buildInputBar("输入寝室号(如M2B421、Z1B104)", _powerRoomidController)
     );
   }
   Widget _container({@required Widget child}){
@@ -191,7 +161,7 @@ class _PowerPageState extends State<PowerPage> {
       ),
     );
   }
-  Widget _buildPower(){
+  Widget _buildPower(String powerBuilding){
 
     return Padding(
       padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
@@ -200,14 +170,20 @@ class _PowerPageState extends State<PowerPage> {
             _buildPreviewButton("宿舍楼",powerBuilding??"未选择",onTap: ()=>_handlePowerPicker()),
             _buildInputButton("宿舍号"),
             SizedBox(height: spaceCardPaddingTB,),
-            FlyWidgetBuilder(
-                whenFirst: powerLoading,
-                firstChild: _buildButton("加载中……",onTap: (){},
-                ),
-                secondChild: _buildButton("绑定",onTap: ()=>_handlePower(),
-                ))
+        FlyWidgetBuilder(
+            whenFirst: powerLoading,
+            firstChild: _buildButton("加载中……",onTap: (){},
+            ),
+            secondChild: _buildButton("绑定",onTap: (){
+              powerProvider.powerRoomid = _powerRoomidController.text??"";
+              powerProvider.bindInfoAndGetPower(context);
+            },
+            ))
           ]
       ),
     );
   }
 }
+
+
+

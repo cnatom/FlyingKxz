@@ -88,7 +88,6 @@ class Cumt {
           print('检测到登录冲突，正在注销其他设备登录态');
           var document = parser.parse(loginResponse.data);
           var execution = document.body.querySelector("input[name='execution']").attributes['value']??'';
-          print(execution);
           loginResponse = await dio.post('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice',data: FormData.fromMap({
             '_eventId': 'continue',
             'execution': execution,
