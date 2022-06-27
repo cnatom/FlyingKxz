@@ -58,10 +58,19 @@ class _MyselfPageState extends State<MyselfPage>
     toLoginPage(context);
   }
 
-
+  Future<bool> _init()async{
+    bool ok = false;
+    await Future.wait([cumt.login(Prefs.username??"", Prefs.password??"")]).then((value)async{
+      ok = await Provider.of<BalanceProvider>(context,listen: false).getBalance();
+    }).then((value)async{
+      ok = await Provider.of<PowerProvider>(context,listen: false).getPreview();
+    });
+    return ok;
+  }
   @override
   void initState() {
     super.initState();
+    _init();
     sendInfo('我的', '初始化我的页面');
   }
 
@@ -78,11 +87,11 @@ class _MyselfPageState extends State<MyselfPage>
   }
 
   Future<void> _refresh() async {
-    // if (await _getPreviewInfo()) {
-    //   showToast('刷新成功');
-    // } else {
-    //   showToast('刷新失败');
-    // }
+    if(await _init()){
+      showToast("刷新成功！");
+    }else{
+      showToast("刷新失败～");
+    }
   }
 
   @override

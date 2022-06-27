@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/tip_page.dart';
 
+import '../../../../../CumtSpider/cumt.dart';
 import '../../../../../Model/prefs.dart';
 
 /*
@@ -40,14 +42,10 @@ class PowerProvider extends ChangeNotifier{
     "松竹": "12",
     "桃苑": "11"
   };
-  Dio _dio = Dio(BaseOptions(
-    connectTimeout: 5000,
-    receiveTimeout: 5000,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
-    },
-  ));
+  var options = Options(headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+  });
 
   Map<String, String> _url = {
     'account': 'http://ykt.cumt.edu.cn:8988/web/Common/Tsm.html',
@@ -91,6 +89,7 @@ class PowerProvider extends ChangeNotifier{
         _savePrefs(this.power, building, roomid);
         notifyListeners();
         if(show) showToast("获取电量成功!");
+        sendInfo("宿舍电量", "获取宿舍电量:$power");
         return true;
       }else{
         if(show) showToast(power);
@@ -98,7 +97,7 @@ class PowerProvider extends ChangeNotifier{
       }
     }catch (e){
       if(show){
-        showToast("获取电量失败,您可能需要连接校园内网CUMT_STU");
+        showToast("获取电量失败,您可能需要连接校园内网CUMT_STU\n"+e.toString());
         toTipPage();
       }
       sendInfo("宿舍电量", "获取宿舍电量失败:$powerBuilding $powerRoomid");
@@ -110,14 +109,14 @@ class PowerProvider extends ChangeNotifier{
     var url = _url['account'];
     var data = 'jsondata={"query_card":{"idtype":"sno","id":"' + username +
         '"}}&funname=synjones.onecard.query.card&json=true';
-    var res = await _dio.post(url,data: data);
+    var res = await cumt.dio.post(url,data: data,options: options);
     var map = jsonDecode(res.toString()) as Map<String,dynamic>;
     return map['query_card']['card'][0]['account'];
   }
   Future<String> _getAid() async{
     var url = _url['aid'];
     var data = 'jsondata={"query_applist":{ "apptype": "elec" }}&funname=synjones.onecard.query.applist&json=true';
-    var res = await _dio.post(url,data: data);
+    var res = await cumt.dio.post(url,data: data,options: options);
     var map = jsonDecode(res.toString()) as Map<String,dynamic>;
     return map['query_applist']['applist'][0]["aid"];
   }
@@ -129,7 +128,7 @@ class PowerProvider extends ChangeNotifier{
       'funname': 'synjones.onecard.query.elec.roominfo',
       'json': 'true'
     };
-    var res = await _dio.post(url,data: data);
+    var res = await cumt.dio.post(url,data: data,options: options);
     var map = jsonDecode(res.toString()) as Map<String,dynamic>;
     return map['query_elec_roominfo']['errmsg'];
   }

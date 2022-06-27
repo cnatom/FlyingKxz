@@ -14,11 +14,6 @@ class PowerPreviewView extends StatefulWidget {
 
 class _PowerPreviewViewState extends State<PowerPreviewView> {
   @override
-  void initState() {
-    super.initState();
-    Provider.of<PowerProvider>(context,listen: false).getPreview();
-  }
-  @override
   Widget build(BuildContext context) {
     final powerProvider = Provider.of<PowerProvider>(context);
     return PreviewView(

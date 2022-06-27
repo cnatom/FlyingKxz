@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flying_kxz/FlyingUiKit/toast.dart';
 
 import '../../../../../CumtSpider/cumt.dart';
 import '../../../../../CumtSpider/cumt_format.dart';
@@ -26,7 +27,7 @@ class BalanceProvider extends ChangeNotifier{
   Future<bool> getBalanceHistory()async{
     print(balance);
     try{
-      await cumt.login(Prefs.username??'', Prefs.password??'');
+      await cumt.login(Prefs.username??"", Prefs.password??"");
       var res = await cumt.dio.get(_urls['balanceHis']);
       debugPrint(res.toString());
       var map = jsonDecode(res.toString());
@@ -34,8 +35,8 @@ class BalanceProvider extends ChangeNotifier{
       detailInfo = BalanceDetailInfo.fromJson(map);
       notifyListeners();
       return true;
-    }on DioError catch(e){
-      debugPrint('获取校园卡流水失败');
+    }catch(e){
+      showToast("获取校园卡流水失败\n ${e.toString()}");
       return false;
     }
   }
@@ -47,7 +48,6 @@ class BalanceProvider extends ChangeNotifier{
       return true;
     }
     try{
-      await cumt.login(Prefs.username??'', Prefs.password??'');
       var res = await cumt.dio.get(_urls['balance']);
       var map = jsonDecode(res.toString());
       Prefs.cardNum = map['data']['ZH'];
