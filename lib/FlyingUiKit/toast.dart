@@ -7,11 +7,12 @@ import 'package:flying_kxz/FlyingUiKit/config.dart';
 import 'Text/text.dart';
 
 void showToast(String text,
-    {int duration = 2, int gravity = 2}) {
+    {String subTitle,int duration = 2, int gravity = 2}) {
   // Toast.show(text, context,
   //     backgroundRadius: 5, gravity: gravity, duration: duration);
   BotToast.showSimpleNotification(
     title: text,
+    subTitle: subTitle,
     titleStyle: TextStyle(fontSize: fontSizeMain40),
     hideCloseButton: true,
     borderRadius: borderRadiusValue,
