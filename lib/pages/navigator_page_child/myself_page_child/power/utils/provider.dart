@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/tip_page.dart';
@@ -10,22 +10,41 @@ import 'package:flying_kxz/pages/tip_page.dart';
 import '../../../../../CumtSpider/cumt.dart';
 import '../../../../../Model/prefs.dart';
 
-/*
-电量数据类
+enum PowerRequestType{
+  account,aid,power
+}
+typedef PowerPostCallback = String Function(Map<String,dynamic> map);
 
- */
 class PowerProvider extends ChangeNotifier{
-  String username = Prefs.username;
+  Cumt cumt = Cumt.getInstance();
   double power = Prefs.power;
   bool powerLoading = false;
-  static var apartment = ["研梅", "杏苑", "松竹", "桃苑"];
-  String get previewText => power==null?"未绑定":power.toString();
-  double get percent {
+  static List<String> apartment = ["研梅", "杏苑", "松竹", "桃苑"];
+  Map<String, dynamic> _buildingMap = {
+    "研梅": "14",
+    "杏苑": "13",
+    "松竹": "12",
+    "桃苑": "11"
+  };
+  Map<PowerRequestType, String> _urls = {
+    PowerRequestType.account: 'http://ykt.cumt.edu.cn:8988/web/Common/Tsm.html',
+    PowerRequestType.aid: 'http://ykt.cumt.edu.cn:8988/web/NetWork/AppList.html',
+    PowerRequestType.power: 'http://ykt.cumt.edu.cn:8988/web/Common/Tsm.html'
+  };
+  Map<String,String> headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+  };
+
+  // 预览信息
+  String get previewTextAtDetailPage => power==null?"未绑定":power.toString();
+  double get percentAtDetailPage {
     if(power!=null&&power>0.0&&power<=Prefs.power){
       return double.tryParse((power/Prefs.powerMax).toStringAsFixed(2))??0.0;
     }
     return 0.0;
   }
+
   //宿舍楼、宿舍号码
   String _powerRoomid;
   String _powerBuilding;
@@ -36,22 +55,7 @@ class PowerProvider extends ChangeNotifier{
     this._powerBuilding = powerBuilding;
     notifyListeners();
   }
-  Map<String, dynamic> _buildingMap = {
-    "研梅": "14",
-    "杏苑": "13",
-    "松竹": "12",
-    "桃苑": "11"
-  };
-  var options = Options(headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
-  });
 
-  Map<String, String> _url = {
-    'account': 'http://ykt.cumt.edu.cn:8988/web/Common/Tsm.html',
-    'aid': 'http://ykt.cumt.edu.cn:8988/web/NetWork/AppList.html',
-    'power': 'http://ykt.cumt.edu.cn:8988/web/Common/Tsm.html'
-  };
   Future<bool> getPreview()async{
     try{
       if(Prefs.powerBuilding!=null&&Prefs.powerRoomid!=null){
@@ -64,7 +68,7 @@ class PowerProvider extends ChangeNotifier{
       return false;
     }
   }
-  //绑定
+
   void bindInfoAndGetPower(BuildContext context)async{
     FocusScope.of(context).requestFocus(FocusNode());
     powerLoading = true;
@@ -78,11 +82,13 @@ class PowerProvider extends ChangeNotifier{
     powerLoading = false;
     notifyListeners();
   }
+
   Future<bool> _get(String building,String roomid,{bool show = false})async{
+    String power;
     try{
-      String account = await _getAccount(username);
+      String account = await _getAccount(Prefs.username);
       String aid = await _getAid();
-      String power = await _getPower(account, aid, username, building, roomid);
+      power = await _getPower(account, aid, Prefs.username, building, roomid);
       RegExp regExp = new RegExp(r'([0-9]\d*\.?\d*)$');
       if(regExp.hasMatch(power)){
         this.power = double.tryParse(regExp.firstMatch(power).group(0));
@@ -96,8 +102,9 @@ class PowerProvider extends ChangeNotifier{
         return false;
       }
     }catch (e){
+      debugPrint(e.toString());
       if(show){
-        showToast("获取电量失败,您可能需要连接校园内网CUMT_STU\n"+e.toString());
+        showToast(power.toString());
         toTipPage();
       }
       sendInfo("宿舍电量", "获取宿舍电量失败:$powerBuilding $powerRoomid");
@@ -105,32 +112,39 @@ class PowerProvider extends ChangeNotifier{
     }
   }
 
+  Future<String> _postStepFunc(String url,data,PowerPostCallback callback)async{
+    var res = await cumt.dio.post(url,data: data,options: Options(headers: headers));
+    var map = jsonDecode(res.toString()) as Map<String,dynamic>;
+    var result = callback(map);
+    return result;
+  }
   Future<String> _getAccount(String username) async{
-    var url = _url['account'];
+    var url = _urls[PowerRequestType.account];
     var data = 'jsondata={"query_card":{"idtype":"sno","id":"' + username +
         '"}}&funname=synjones.onecard.query.card&json=true';
-    var res = await cumt.dio.post(url,data: data,options: options);
-    var map = jsonDecode(res.toString()) as Map<String,dynamic>;
-    return map['query_card']['card'][0]['account'];
+    return await _postStepFunc(url, data, (map){
+      return map['query_card']['card'][0]['account'];
+    });
   }
+
   Future<String> _getAid() async{
-    var url = _url['aid'];
+    var url = _urls[PowerRequestType.aid];
     var data = 'jsondata={"query_applist":{ "apptype": "elec" }}&funname=synjones.onecard.query.applist&json=true';
-    var res = await cumt.dio.post(url,data: data,options: options);
-    var map = jsonDecode(res.toString()) as Map<String,dynamic>;
-    return map['query_applist']['applist'][0]["aid"];
+    return await _postStepFunc(url, data, (map){
+      return map['query_applist']['applist'][0]["aid"];
+    });
   }
   Future<String> _getPower(String account,String aid,String username,String building,String roomid) async{
-    var url = _url['power'];
+    var url = _urls[PowerRequestType.power];
     var data = {
       'jsondata': '{ "query_elec_roominfo": { "aid":"' + aid + '", "account": "' + account + '","room": { "roomid": "' + roomid + '", "room": "' + roomid + '" },  "floor": { "floorid": "", "floor": "" }, "area": { "area": "1", "areaname": "中国矿业大学（南湖校区）" }, "building": { "buildingid": "' +
           _buildingMap[building] + '", "building": "' + building + '" } } }',
       'funname': 'synjones.onecard.query.elec.roominfo',
       'json': 'true'
     };
-    var res = await cumt.dio.post(url,data: data,options: options);
-    var map = jsonDecode(res.toString()) as Map<String,dynamic>;
-    return map['query_elec_roominfo']['errmsg'];
+    return await _postStepFunc(url, data, (map){
+      return map['query_elec_roominfo']['errmsg'];
+    });
   }
 
   Future<bool> _savePrefs(double power,String building,String roomid) async {

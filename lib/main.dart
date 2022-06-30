@@ -1,47 +1,51 @@
+import 'dart:io';
+
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:flying_kxz/pages/null_page.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
+
+import 'CumtSpider/cumt.dart';
 import 'FlyingUiKit/Text/text.dart';
 import 'FlyingUiKit/Theme/theme.dart';
 import 'FlyingUiKit/config.dart';
 import 'Model/global.dart';
-import 'dart:io';
-import 'CumtSpider/cumt.dart';
 import 'chinese.dart';
 import 'pages/navigator_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  if (UniversalPlatform.isAndroid) {
-    //设置android状态栏为透明的沉浸。
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-  }
-
-  /// Prefs.init() 提取存储在本地的信息
+  _ifAndroidSetStatusBarTransparent();
   Future.wait([Prefs.init()]).whenComplete(() {
     if (Prefs.password == null) {
       Global.clearPrefsData();
       backImgFile = null;
     }
     ThemeProvider.init(); // 初始化主题
-    cumt.init(); //初始化爬虫模块
+    Cumt.getInstance().init(); //初始化爬虫模块
     runApp(MyApp()); //启动App
   });
 }
+
+void _ifAndroidSetStatusBarTransparent(){
+  if (UniversalPlatform.isAndroid) {
+    SystemUiOverlayStyle systemUiOverlayStyle =
+    SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
+}
+
 
 class MyApp extends StatefulWidget {
   @override

@@ -1,48 +1,30 @@
 
 import 'dart:convert';
-import 'dart:io';
+
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
-import 'package:flying_kxz/Model/balance_detail_info.dart';
-import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/CumtSpider/cumt_format.dart';
-import 'package:flying_kxz/Model/video__data.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/tip_page.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../FlyingUiKit/toast.dart';
-import '../pages/tip_page.dart';
-import 'cumt_interceptors.dart';
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:html/parser.dart' as parser;
 
-Cumt cumt = new Cumt();
-enum InquiryType {Course,Score,ScoreAll,Exam,Balance,BalanceHistory,Power}
+import '../FlyingUiKit/toast.dart';
+
+enum CumtInquiryType {Course,Score,ScoreAll,Exam,Balance,BalanceHistory,Power}
 class Cumt {
+  static Cumt _instance;
+  Cumt._internal();
+  factory Cumt.getInstance() => _getInstance();
+  static _getInstance(){
+    if(_instance == null){
+      _instance = Cumt._internal();
+    }
+    return _instance;
+  }
   bool haveLogin;
   String username = Prefs.username??'';
   String password = Prefs.password??'';
-  Map<InquiryType,String> _urlMap = {
-    InquiryType.Course:'http://jwxt.cumt.edu.cn/jwglxt/kbcx/xskbcx_cxXsKb.html',
-    InquiryType.Score:'http://jwxt.cumt.edu.cn/jwglxt/cjcx/cjcx_cxXsKccjList.html',
-    InquiryType.ScoreAll:'http://jwxt.cumt.edu.cn/jwglxt/cjcx/cjcx_cxDgXscj.html',
-    InquiryType.Exam:'http://jwxt.cumt.edu.cn/jwglxt/kwgl/kscx_cxXsksxxIndex.html',
-    InquiryType.Balance:'http://portal.cumt.edu.cn/ykt/balance',//校园卡余额
-    InquiryType.BalanceHistory:'http://portal.cumt.edu.cn/ykt/flow?flow_num=20',
-    InquiryType.Power:'http://www.houqinbao.com/hydropower/index.php?m=PayWeChat&c=IndexKd&a=find&schoolcode=13579'
-  };
-  Map<InquiryType,String> _urlVisitorMap = {
-    InquiryType.Course:'https://user.kxz.atcumt.com/jwxt/timetable',
-    InquiryType.Score:'https://user.kxz.atcumt.com/jwxt/grades',
-    InquiryType.ScoreAll:'https://user.kxz.atcumt.com/jwxt/grades',
-    InquiryType.Exam:'https://user.kxz.atcumt.com/jwxt/exam',
-    InquiryType.Balance:'https://api.kxz.atcumt.com/card/balance',
-    InquiryType.BalanceHistory:'https://api.kxz.atcumt.com/card/history'
-  };
   CookieJar cookieJar;
    Dio dio = new Dio(BaseOptions(
     headers: {
@@ -102,7 +84,7 @@ class Cumt {
             showToast('登录失败\n密码包含了用户的敏感信息(如：帐户、手机号或邮箱等)，请前往融合门户修改密码',duration: 5);
             return false;
           }
-        var res1 = await dio.get(loginResponse.headers.value('location'),options: Options(followRedirects: false));
+        await dio.get(loginResponse.headers.value('location'),options: Options(followRedirects: false));
         haveLogin = true;
         Prefs.username = username;
         Prefs.password = password;
@@ -146,8 +128,9 @@ class Cumt {
         showToast('已连接内网！');
       }
       return true;
-    }on DioError catch(e){
+    }catch(e){
       showToast('未连接内网');
+      debugPrint(e.toString());
       return false;
     }
   }

@@ -1,9 +1,7 @@
 //登录页面 是进入App的第一个页面
 import 'dart:ui';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
@@ -11,23 +9,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
-import 'package:flying_kxz/FlyingUiKit/buttons.dart';
-import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/FlyingUiKit/custome_router.dart';
 import 'package:flying_kxz/FlyingUiKit/dialog.dart';
 import 'package:flying_kxz/FlyingUiKit/loading.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 import 'package:flying_kxz/FlyingUiKit/webview.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/login_check_get.dart';
-import 'package:flying_kxz/NetRequest/login_post.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/privacy.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import 'app_upgrade.dart';
-import 'package:flying_kxz/CumtSpider/cumt.dart';
 
 //跳转到当前页面
 void toLoginPage(BuildContext context) async {
@@ -72,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
       });
       return;
     }
+    Cumt cumt = Cumt.getInstance();
     //检测是否激活&验证码
     if (await loginCheckGet(context, username: _username)) {
       //新登录
@@ -93,22 +90,6 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
 
-  }
-  //游客访问
-  void _visitorHandler() async {
-    FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
-    setState(() {
-      _loading = true;
-    });
-    if (await loginVisitor(context, 1,
-        username: "12345678", password: "12345678")) {
-      Prefs.visitor = true;
-      toNavigatorPage(context);
-    } else {
-      setState(() {
-        _loading = false;
-      });
-    }
   }
   @override
   Widget build(BuildContext context) {
@@ -298,8 +279,8 @@ class _LoginPageState extends State<LoginPage> {
                                   maxLine: 10,
                                 ),
                                 InkWell(
-                                  onTap: () => launch(
-                                      "http://authserver.cumt.edu.cn/authserver/login"),
+                                  onTap: () => launchUrl(
+                                      Uri.tryParse("http://authserver.cumt.edu.cn/authserver/login")),
                                   child: FlyText.main35("➡️点我跳转至融合门户验证或找回密码",
                                       maxLine: 10, color: Colors.blue),
                                 ),
@@ -330,7 +311,7 @@ class _LoginPageState extends State<LoginPage> {
 
   //小按钮
   Widget _buildFlatButton(String text,
-          {VoidCallback onPressed, double fontSize}) =>
+          {VoidCallback onPressed}) =>
       FlatButton(
         onPressed: onPressed,
         highlightColor: Colors.transparent, //点击后的颜色为透明

@@ -1,6 +1,7 @@
 //"我的"页面
 import 'dart:io';
 import 'dart:ui';
+
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
+import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
 import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
 import 'package:flying_kxz/FlyingUiKit/config.dart';
@@ -19,25 +21,22 @@ import 'package:flying_kxz/FlyingUiKit/webview.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/NetRequest/feedback_post.dart';
-import 'package:flying_kxz/CumtSpider/cumt.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/balance_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/components/preview.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/components/preview.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/components/preview.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
+
 import '../../FlyingUiKit/toast.dart';
 import 'myself_page_child/about_page.dart';
 import 'myself_page_child/cumtLogin_view.dart';
-import 'myself_page_child/components/preview_view.dart';
-import 'myself_page_child/power/power_page.dart';
 
 class MyselfPage extends StatefulWidget {
   @override
@@ -47,7 +46,19 @@ class MyselfPage extends StatefulWidget {
 class _MyselfPageState extends State<MyselfPage>
     with AutomaticKeepAliveClientMixin {
   ThemeProvider themeProvider;
-  bool loadingRepair = false;
+  Cumt cumt;
+
+  @override
+  void initState() {
+    super.initState();
+    _initInstance();
+    _initBalanceAndPowerProvider();
+    sendInfo('我的', '初始化我的页面');
+  }
+
+  void _initInstance(){
+    cumt = Cumt.getInstance();
+  }
 
   void _signOut() async {
     sendInfo('退出登录', '退出了登录');
@@ -58,7 +69,7 @@ class _MyselfPageState extends State<MyselfPage>
     toLoginPage(context);
   }
 
-  Future<bool> _init()async{
+  Future<bool> _initBalanceAndPowerProvider()async{
     bool ok = false;
     await Future.wait([cumt.login(Prefs.username??"", Prefs.password??"")]).then((value)async{
       ok = await Provider.of<BalanceProvider>(context,listen: false).getBalance();
@@ -67,12 +78,7 @@ class _MyselfPageState extends State<MyselfPage>
     });
     return ok;
   }
-  @override
-  void initState() {
-    super.initState();
-    _init();
-    sendInfo('我的', '初始化我的页面');
-  }
+
 
   Future<void> _feedback() async {
     String text = await FlyDialogInputShow(context,
@@ -87,7 +93,7 @@ class _MyselfPageState extends State<MyselfPage>
   }
 
   Future<void> _refresh() async {
-    if(await _init()){
+    if(await _initBalanceAndPowerProvider()){
       showToast("刷新成功！");
     }else{
       showToast("刷新失败～");

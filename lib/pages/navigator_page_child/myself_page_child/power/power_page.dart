@@ -41,9 +41,9 @@ class _PowerPageState extends State<PowerPage> {
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     powerProvider = Provider.of<PowerProvider>(context,listen: false);
-    powerPerviewText = context.select((PowerProvider p) => p.previewText);
+    powerPerviewText = context.select((PowerProvider p) => p.previewTextAtDetailPage);
     powerBuilding= context.select((PowerProvider p) => p.powerBuilding);
-    powerPercent= context.select((PowerProvider p) => p.percent);
+    powerPercent= context.select((PowerProvider p) => p.percentAtDetailPage);
     powerLoading = context.select((PowerProvider p) => p.powerLoading);
     return Scaffold(
       key: _scaffoldKey,

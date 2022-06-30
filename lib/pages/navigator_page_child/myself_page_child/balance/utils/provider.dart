@@ -3,7 +3,6 @@
 
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/FlyingUiKit/toast.dart';
 
@@ -14,8 +13,7 @@ import '../../../../../Model/prefs.dart';
 import '../../../../navigator_page.dart';
 
 class BalanceProvider extends ChangeNotifier{
-  String username = Prefs.username;
-  String password = Prefs.password;
+  Cumt cumt = Cumt.getInstance();
   String cardNum = Prefs.cardNum;
   String balance = Prefs.balance;
   BalanceDetailInfo detailInfo;
@@ -57,8 +55,9 @@ class BalanceProvider extends ChangeNotifier{
       sendInfo('校园卡', '获取校园卡余额:${Prefs.balance}');
       notifyListeners();
       return true;
-    }on DioError catch(e){
+    }catch(e){
       debugPrint('获取校园卡余额失败');
+      debugPrint(e.toString());
       return false;
     }
   }
