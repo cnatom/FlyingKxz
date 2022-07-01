@@ -2,7 +2,7 @@
 
   <h1 align="center">
     <picture>
-      <img src="readme_images/ic_launcher.png" style="zoom:90%;" />
+      <img src="docs/images/logo.png" style="zoom:90%;" />
     </picture>
   </h1>
 
@@ -21,7 +21,7 @@
 
 原本不打算开源的，因为这个项目从2020年10月第一条commit到现在已经过了两年，如今再看以前反复重构过的代码难免会感觉遍地屎山，不好意思给人家看。就像一个在成长的孩子，成年之后回望青春期的自己难免会感到幼稚可笑。
 
-### 但为什么又选择开源呢？
+但为什么又选择开源呢？
 
 第一是为了减轻负担。三个臭皮匠顶个诸葛亮，我一个臭皮匠实在是心力交瘁。。
 
@@ -32,8 +32,6 @@
 ### 开源初期的准备
 
 我会花大量精力来优化代码和架构，梳理出项目的大致逻辑，让大家都能看懂并且参与其中，共同遵守统一的设计规范。
-
-emmm，然后写一个堪比文档的README。
 
 ### 矿小助会收费吗？
 
@@ -50,8 +48,8 @@ emmm，然后写一个堪比文档的README。
 ## 规范
 
 ### commit规范
-
-正在写。。。
+使用vscode插件：[git-commit-plugin](https://marketplace.visualstudio.com/items?itemName=redjue.git-commit-plugin) 自动生成规范的commit。
+需要有概述和详情。
 
 ### 代码规范
 
@@ -59,13 +57,15 @@ emmm，然后写一个堪比文档的README。
 
 ## 开发者
 
-客户端：[@ccatom](https://github.com/cnatom)
+客户端：[@cnatom](https://github.com/cnatom)
 
 后端：[@boopo](https://github.com/boopo)
 
 ## 加入我们
 
-非常欢迎你的加入！[提一个 Issue](https://github.com/cnatom/MemorizeSwiftUI/issues/new) 或者提交一个 Pull Request。
+非常欢迎你的加入！[提一个 Issue](https://github.com/cnatom/FlyingKxz/issues/new) 或者提交一个PR。
 
-一起完善项目注释，共同讨论进步。
+你也可以加入[矿小助开发吹水群](https://jq.qq.com/?_wv=1027&k=AuOw7Yi4)与我们探讨哲学。
+
+一起完善项目，共同讨论进步。
 
