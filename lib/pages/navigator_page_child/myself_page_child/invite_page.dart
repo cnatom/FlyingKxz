@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/buttons.dart';
-import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
+import 'package:flying_kxz/flying_ui_kit/buttons.dart';
+import 'package:flying_kxz/flying_ui_kit/config.dart';
 
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/flying_ui_kit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

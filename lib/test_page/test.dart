@@ -2,14 +2,14 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
-import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
+import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
+import 'package:flying_kxz/flying_ui_kit/config.dart';
 import 'package:flying_kxz/test_page/child/newExam_view.dart';
 import 'package:flying_kxz/test_page/child/newPower_view.dart';
 import 'package:provider/provider.dart';
-import '../FlyingUiKit/container.dart';
-import '../FlyingUiKit/custome_router.dart';
+import '../flying_ui_kit/container.dart';
+import '../flying_ui_kit/custome_router.dart';
 import 'child/newCumtLogin_view.dart';
 
 //跳转到当前页面

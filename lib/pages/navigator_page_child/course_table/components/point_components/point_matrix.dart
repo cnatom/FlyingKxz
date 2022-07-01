@@ -2,10 +2,10 @@
 //单个点阵组件
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
-import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/container.dart';
-import 'package:flying_kxz/FlyingUiKit/loading.dart';
+import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
+import 'package:flying_kxz/flying_ui_kit/config.dart';
+import 'package:flying_kxz/flying_ui_kit/container.dart';
+import 'package:flying_kxz/flying_ui_kit/loading.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:provider/provider.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text_widgets.dart';
-import 'package:flying_kxz/FlyingUiKit/buttons.dart';
-import 'package:flying_kxz/FlyingUiKit/webview.dart';
+import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
+import 'package:flying_kxz/flying_ui_kit/Text/text_widgets.dart';
+import 'package:flying_kxz/flying_ui_kit/buttons.dart';
+import 'package:flying_kxz/flying_ui_kit/webview.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

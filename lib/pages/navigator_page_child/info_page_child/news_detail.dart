@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/appbar.dart';
-import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/loading.dart';
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
+import 'package:flying_kxz/flying_ui_kit/appbar.dart';
+import 'package:flying_kxz/flying_ui_kit/config.dart';
+import 'package:flying_kxz/flying_ui_kit/loading.dart';
+import 'package:flying_kxz/flying_ui_kit/toast.dart';
 import 'package:flying_kxz/Model/news_detail_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 //跳转到当前页面

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
-import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/flying_ui_kit/config.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 
 class ThemeProvider extends ChangeNotifier {

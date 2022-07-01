@@ -5,11 +5,11 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/flying_ui_kit/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:html/parser.dart' as parser;
 
-import '../FlyingUiKit/toast.dart';
+import '../flying_ui_kit/toast.dart';
 
 enum CumtInquiryType {Course,Score,ScoreAll,Exam,Balance,BalanceHistory,Power}
 class Cumt {

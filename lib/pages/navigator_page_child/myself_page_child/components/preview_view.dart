@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
+import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../FlyingUiKit/Text/text.dart';
-import '../../../../FlyingUiKit/container.dart';
+import '../../../../flying_ui_kit/Text/text.dart';
+import '../../../../flying_ui_kit/container.dart';
 
 class PreviewView extends StatelessWidget {
   GestureTapCallback onTap;

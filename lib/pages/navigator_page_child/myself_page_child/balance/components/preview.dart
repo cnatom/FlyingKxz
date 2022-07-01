@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/CumtSpider/cumt.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
+import 'package:flying_kxz/cumt_spider/cumt.dart';
+import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/components/preview_view.dart';
 import 'package:provider/provider.dart';
 

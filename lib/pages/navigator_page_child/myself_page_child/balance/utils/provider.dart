@@ -4,10 +4,10 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/flying_ui_kit/toast.dart';
 
-import '../../../../../CumtSpider/cumt.dart';
-import '../../../../../CumtSpider/cumt_format.dart';
+import '../../../../../cumt_spider/cumt.dart';
+import '../../../../../cumt_spider/cumt_format.dart';
 import '../../../../../Model/balance_detail_info.dart';
 import '../../../../../Model/prefs.dart';
 import '../../../../navigator_page.dart';

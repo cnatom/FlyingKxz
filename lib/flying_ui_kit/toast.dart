@@ -2,7 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
-import 'package:flying_kxz/FlyingUiKit/config.dart';
+import 'package:flying_kxz/flying_ui_kit/config.dart';
 
 import 'Text/text.dart';
 

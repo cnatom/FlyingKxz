@@ -4,10 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/appbar.dart';
-import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/loading.dart';
+import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
+import 'package:flying_kxz/flying_ui_kit/appbar.dart';
+import 'package:flying_kxz/flying_ui_kit/config.dart';
+import 'package:flying_kxz/flying_ui_kit/loading.dart';
 
 import 'package:flying_kxz/Model/book_detail_info.dart';
 import 'package:flying_kxz/Model/global.dart';

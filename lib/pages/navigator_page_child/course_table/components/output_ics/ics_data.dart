@@ -1,13 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/flying_ui_kit/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:ical/serializer.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../utils/course_data.dart';
 
 Future<String> courseToIcs(List<CourseData> list)async{

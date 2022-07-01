@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
-import 'package:flying_kxz/FlyingUiKit/appbar.dart';
-import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/loading.dart';
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
-import 'package:flying_kxz/NetRequest/balanceRecharge_post.dart';
+import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
+import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
+import 'package:flying_kxz/flying_ui_kit/appbar.dart';
+import 'package:flying_kxz/flying_ui_kit/config.dart';
+import 'package:flying_kxz/flying_ui_kit/loading.dart';
+import 'package:flying_kxz/flying_ui_kit/toast.dart';
+import 'package:flying_kxz/net_request/balanceRecharge_post.dart';
 import 'package:provider/provider.dart';
 
 void toBalanceRechargePage(BuildContext context){

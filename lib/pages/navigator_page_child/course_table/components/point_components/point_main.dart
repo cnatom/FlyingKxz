@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
+import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/point_components/point_array.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/point_components/point_matrix.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';

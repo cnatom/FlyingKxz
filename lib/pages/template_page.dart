@@ -2,7 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/FlyingUiKit/loading.dart';
+import 'package:flying_kxz/flying_ui_kit/loading.dart';
 
 class TemplatePage extends StatefulWidget {
   @override

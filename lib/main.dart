@@ -16,12 +16,12 @@ import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-import 'CumtSpider/cumt.dart';
-import 'FlyingUiKit/Text/text.dart';
-import 'FlyingUiKit/Theme/theme.dart';
-import 'FlyingUiKit/config.dart';
 import 'Model/global.dart';
 import 'chinese.dart';
+import 'cumt_spider/cumt.dart';
+import 'flying_ui_kit/Text/text.dart';
+import 'flying_ui_kit/Theme/theme.dart';
+import 'flying_ui_kit/config.dart';
 import 'pages/navigator_page.dart';
 
 void main() {

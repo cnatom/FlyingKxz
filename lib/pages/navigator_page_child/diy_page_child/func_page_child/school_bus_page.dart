@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/entypo_icons.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
-import 'package:flying_kxz/FlyingUiKit/appbar.dart';
-import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/container.dart';
+import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
+import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
+import 'package:flying_kxz/flying_ui_kit/appbar.dart';
+import 'package:flying_kxz/flying_ui_kit/config.dart';
+import 'package:flying_kxz/flying_ui_kit/container.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 
 import 'package:photo_view/photo_view.dart';

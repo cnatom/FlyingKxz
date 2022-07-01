@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
-import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/loading.dart';
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
+import 'package:flying_kxz/flying_ui_kit/config.dart';
+import 'package:flying_kxz/flying_ui_kit/loading.dart';
+import 'package:flying_kxz/flying_ui_kit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/NetRequest/book_get.dart';
+import 'package:flying_kxz/net_request/book_get.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'book_detail_page.dart';
 

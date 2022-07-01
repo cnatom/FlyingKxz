@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flying_kxz/FlyingUiKit/appbar.dart';
+import 'package:flying_kxz/flying_ui_kit/appbar.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../../navigator_page.dart';

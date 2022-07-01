@@ -1,4 +1,4 @@
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/flying_ui_kit/toast.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 

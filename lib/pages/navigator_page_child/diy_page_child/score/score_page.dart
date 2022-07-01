@@ -1,14 +1,14 @@
 import 'dart:ui';
-import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:flying_kxz/FlyingUiKit/Theme/theme.dart';
-import 'package:flying_kxz/FlyingUiKit/appbar.dart';
-import 'package:flying_kxz/FlyingUiKit/container.dart';
-import 'package:flying_kxz/FlyingUiKit/dialog.dart';
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
-import 'package:flying_kxz/FlyingUiKit/webview.dart';
+import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
+import 'package:flying_kxz/flying_ui_kit/appbar.dart';
+import 'package:flying_kxz/flying_ui_kit/container.dart';
+import 'package:flying_kxz/flying_ui_kit/dialog.dart';
+import 'package:flying_kxz/flying_ui_kit/toast.dart';
+import 'package:flying_kxz/flying_ui_kit/webview.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/import_score_page.dart';
@@ -16,8 +16,8 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_map.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_set_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:flying_kxz/FlyingUiKit/config.dart';
-import 'package:flying_kxz/FlyingUiKit/loading.dart';
+import 'package:flying_kxz/flying_ui_kit/config.dart';
+import 'package:flying_kxz/flying_ui_kit/loading.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 //跳转到当前页面

@@ -1,7 +1,7 @@
 //特殊字体组件
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:flying_kxz/FlyingUiKit/Text/text.dart';
+import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
 
 import '../config.dart';
 

@@ -3,11 +3,11 @@ import 'dart:core';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flying_kxz/FlyingUiKit/toast.dart';
+import 'package:flying_kxz/flying_ui_kit/toast.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/tip_page.dart';
 
-import '../../../../../CumtSpider/cumt.dart';
+import '../../../../../cumt_spider/cumt.dart';
 import '../../../../../Model/prefs.dart';
 
 enum PowerRequestType{

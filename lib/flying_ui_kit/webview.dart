@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/CumtSpider/cumt.dart';
+import 'package:flying_kxz/cumt_spider/cumt.dart';
 import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
