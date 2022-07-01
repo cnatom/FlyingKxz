@@ -1,15 +1,10 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_easyhub/animation/easy_falling_ball.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
 import 'package:flying_kxz/flying_ui_kit/loading.dart';
-import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/pages/backImage_view.dart';
 import 'package:provider/provider.dart';
+
 import 'Theme/theme.dart';
 import 'config.dart';
 

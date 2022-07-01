@@ -4,8 +4,6 @@ import 'package:badges/badges.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/flying_ui_kit/toast.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:provider/provider.dart';
 
 import 'Text/text.dart';

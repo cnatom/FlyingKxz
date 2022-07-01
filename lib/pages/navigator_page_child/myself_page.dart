@@ -1,7 +1,5 @@
 //"我的"页面
 import 'dart:io';
-import 'dart:ui';
-
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +31,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
-
 import '../../flying_ui_kit/toast.dart';
 import 'myself_page_child/about_page.dart';
 import 'myself_page_child/cumtLogin_view.dart';

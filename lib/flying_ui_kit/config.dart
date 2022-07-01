@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_screenutil/screenutil.dart';
 import 'dart:io';
 import 'Text/text.dart';
 void initConfigInfo(){

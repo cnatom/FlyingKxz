@@ -1,13 +1,9 @@
 
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
 import 'package:flying_kxz/flying_ui_kit/config.dart';
 import 'package:flying_kxz/flying_ui_kit/custome_router.dart';
-
-import 'login_page.dart';
 //跳转到当前页面
 void toNullPage(BuildContext context) async {
   Navigator.of(context).pushAndRemoveUntil(

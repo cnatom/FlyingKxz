@@ -1,16 +1,13 @@
-import 'dart:convert';
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
 import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
 import 'package:flying_kxz/flying_ui_kit/config.dart';
 import 'package:flying_kxz/flying_ui_kit/container.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
-import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/Model/prefs.dart';
-import 'dart:async';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_add_page.dart';
 import 'package:flying_kxz/test_page/component/unit_card.dart';
 import 'package:provider/provider.dart';
