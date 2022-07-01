@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'Text/text.dart';
-import 'config.dart';
 //白色背景AppBar(子页面AppBar)
 Widget FlyAppBar(BuildContext context, String title,
     {PreferredSizeWidget bottom,List<Widget> actions}) =>
     AppBar(
-      brightness: Theme.of(context).brightness,
+      systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
       actions: actions,
       centerTitle: true,
       bottom: bottom,

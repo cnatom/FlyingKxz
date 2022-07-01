@@ -132,32 +132,15 @@ class _StartPageState extends State<StartPage> {
     } else {
       await precacheImage(new AssetImage("images/background.png"), context);
     }
-    //初始化背景图路径
-    // if (Prefs.backImg != null) {
-    //   if (await File(Prefs.backImg).exists()){
-    //     backImgFile = File(Prefs.backImg);
-    //     backImg = new Image.file(backImgFile,fit: BoxFit.cover,gaplessPlayback: true,);
-    //
-    //   }
-    // }else{
-    //   backImg = new Image.asset("images/background.png",fit: BoxFit.cover,gaplessPlayback: true,);
-    //   await precacheImage(new AssetImage("images/background.png"), context);
-    // }
-    //选择进入界面
-    // Prefs.password = '123';
-    // toNavigatorPage(context);
-    // return;
     if (Prefs.password != null) {
       toNavigatorPage(context);
     } else {
       Global.clearPrefsData();
       backImgFile = null;
-      toLoginPage(context); //第一次登录进入登录页
+      toLoginPage(context);
     }
   }
 
-  @override
-  void initState() {}
 
   @override
   Widget build(BuildContext context) {

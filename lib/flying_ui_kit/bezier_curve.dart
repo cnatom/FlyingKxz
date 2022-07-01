@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 
@@ -29,7 +28,6 @@ Widget clipWidget(double height){
 class BottomClipper extends CustomClipper<Path>{
   @override
   Path getClip(Size size) {
-    // TODO: implement getClip
     var path = Path();
     path.lineTo(0, 0);
     path.lineTo(0, size.height-30);
@@ -46,7 +44,6 @@ class BottomClipper extends CustomClipper<Path>{
   }
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) {
-    // TODO: implement shouldReclip
     return false;
   }
 
