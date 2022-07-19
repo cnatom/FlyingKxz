@@ -1,18 +1,12 @@
 
 
 //实体类实例汇总
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/Model/rank_info.dart';
 import 'package:flying_kxz/Model/swiper_info.dart';
 import 'package:flying_kxz/Model/user_info.dart';
 import 'package:flying_kxz/Model/video__data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_info.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'balance_detail_info.dart';
 import 'book_detail_info.dart';
 import 'book_info.dart';
 import 'course_info.dart';

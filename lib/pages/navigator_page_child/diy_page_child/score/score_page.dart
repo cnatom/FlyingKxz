@@ -197,30 +197,6 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     );
   }
 
-  Widget _makeUpFilter(){
-    return Container(
-      padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB/2, spaceCardPaddingRL, spaceCardPaddingTB/2),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadiusValue),
-          color: Theme.of(context).cardColor
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          FlyText.main35("全部成绩（带补考无明细）"),
-          CupertinoSwitch(
-              activeColor: themeProvider.colorMain.withAlpha(200),
-              value: makeupFilter,
-              onChanged: (v){
-                setState(() {
-                  makeupFilter = !makeupFilter;
-                });
-              }
-          )
-        ],
-      ),
-    );
-  }
   Widget _searchBarButton(String title,String content,{GestureTapCallback onTap}){
     return Container(
       child: Material(
@@ -380,7 +356,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
     return double.parse(s, (e) => null) != null;
   }
   //成绩卡片
-  Widget chengjiCard(
+  Widget scoreCard(
       int curIndex,
       {String courseName = 'CourseName',
       String xuefen = '0',
@@ -412,7 +388,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
           child: Container(
             margin: EdgeInsets.fromLTRB(0, 0, spaceCardPaddingRL*0.8, 0),
             child: CircularPercentIndicator(
-              radius: fontSizeMain40*3,
+              radius: fontSizeMain40*2,
               lineWidth: 3.0,
               animation: false,
               animationDuration: 800,
@@ -616,7 +592,7 @@ class _ScorePageState extends State<ScorePage>  with AutomaticKeepAliveClientMix
                 Wrap(
                   runSpacing: spaceCardMarginTB,
                     children: Global.scoreInfo.data.map((item){
-                      return chengjiCard(
+                      return scoreCard(
                         _crossFadeStateIndex++,
                         courseName: item.courseName,
                         xuefen: item.xuefen,

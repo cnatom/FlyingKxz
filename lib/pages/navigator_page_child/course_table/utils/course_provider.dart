@@ -1,14 +1,8 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flying_kxz/cumt_spider/cumt_format.dart';
-import 'package:flying_kxz/flying_ui_kit/toast.dart';
-import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/cumt_spider/cumt.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/components/point_components/point_matrix.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/course_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/bean.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';

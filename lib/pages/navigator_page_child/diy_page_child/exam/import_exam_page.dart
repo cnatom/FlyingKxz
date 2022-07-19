@@ -14,7 +14,6 @@ import 'package:flying_kxz/flying_ui_kit/container.dart';
 import 'package:flying_kxz/flying_ui_kit/my_bottom_sheet.dart';
 import 'package:flying_kxz/flying_ui_kit/toast.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_temp_list_view.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_temp_list_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../../tip_page.dart';

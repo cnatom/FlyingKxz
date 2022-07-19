@@ -13,7 +13,6 @@ import 'package:flying_kxz/flying_ui_kit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/net_request/cumt_login.dart';
-import 'package:flying_kxz/net_request/userInfo_post.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -61,12 +60,6 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
           loginMethod: Prefs.cumtLoginMethod);
     }
   }
-  //获取用户信息
-  // getUserInfo()async{
-  //   if(Prefs.college==null||Prefs.className==null){
-  //     await userInfoPost(context, token: Prefs.token);
-  //   }
-  // }
   @override
   void initState() {
     super.initState();
