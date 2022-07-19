@@ -16,7 +16,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/platform_interface.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-
 //跳转到当前页面
 void toAboutPage(BuildContext context) {
   Navigator.push(
@@ -35,21 +34,24 @@ class _AboutPageState extends State<AboutPage> {
   /// 文本间距
   final double fontSize = fontSizeMini38;
 
-  Widget funcButton({int type = 0,
+  Widget funcButton(
+      {int type = 0,
       @required String imageResource,
       @required String title,
       @required subTitle,
       String qqNumber,
-    GestureTapCallback onTap}) {
+      GestureTapCallback onTap}) {
     return Container(
       width: ScreenUtil().setWidth(deviceWidth / 2) - spaceCardPaddingTB / 2,
       padding: EdgeInsets.fromLTRB(spaceCardPaddingTB / 2, spaceCardPaddingTB,
           spaceCardPaddingTB / 2, 0),
       child: InkWell(
-        onTap: onTap==null?() {
-          Clipboard.setData(ClipboardData(text: qqNumber));
-          showToast("已复制QQ号至剪切板", duration: 1);
-        }:onTap,
+        onTap: onTap == null
+            ? () {
+                Clipboard.setData(ClipboardData(text: qqNumber));
+                showToast("已复制QQ号至剪切板", duration: 1);
+              }
+            : onTap,
         child: Container(
           padding: EdgeInsets.all(spaceCardMarginRL),
           decoration: BoxDecoration(
@@ -61,12 +63,14 @@ class _AboutPageState extends State<AboutPage> {
                 width: fontSizeMini38 * 2.5,
                 height: fontSizeMini38 * 2.5,
                 child: ClipOval(
-                  child: qqNumber!=null?Image.network(
-                    type == 0
-                        ? "http://q1.qlogo.cn/g?b=qq&nk=$qqNumber&s=640"
-                        : "http://p.qlogo.cn/gh/$qqNumber/$qqNumber/640/",
-                    fit: BoxFit.cover,
-                  ):Image.asset("images/avatar.png"),
+                  child: qqNumber != null
+                      ? Image.network(
+                          type == 0
+                              ? "http://q1.qlogo.cn/g?b=qq&nk=$qqNumber&s=640"
+                              : "http://p.qlogo.cn/gh/$qqNumber/$qqNumber/640/",
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(imageResource),
                 ),
               ),
               SizedBox(
@@ -115,7 +119,7 @@ class _AboutPageState extends State<AboutPage> {
                   height: fontSizeMini38 * 3.5,
                 ),
                 SizedBox(
-                  height: fontSizeMini38*1.5,
+                  height: fontSizeMini38 * 1.5,
                 ),
                 Text(
                   '翔工作室',
@@ -127,7 +131,7 @@ class _AboutPageState extends State<AboutPage> {
                       letterSpacing: 3),
                 ),
                 SizedBox(
-                  height: fontSizeMini38*0.8,
+                  height: fontSizeMini38 * 0.8,
                 ),
                 Text(
                   '— 科技改变生活，技术成就梦想 —',
@@ -161,93 +165,49 @@ class _AboutPageState extends State<AboutPage> {
                                 ),
                               ),
                           children: [
-
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      0, 0, spaceCardMarginRL, 0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      FlyTitle('开发者'),
-                                      FlyText.miniTip30("点击卡片可复制成员QQ号码"),
-                                    ],
-                                  ),
-                                ),
-                                Wrap(
-                                  children: [
-                                    funcButton(
-                                        imageResource: 'images/mujinteng.jpg',
-                                        title: "牟金腾",
-                                        subTitle: "19级大数据2班",
-                                        qqNumber: "1004275481"),
-                                    funcButton(
-                                        imageResource: 'images/lvyingzhao.jpg',
-                                        title: "吕迎朝",
-                                        subTitle: "19级大数据2班",
-                                        qqNumber: "1662870160")
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height: fontSizeMini38 * 2,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      0, 0, spaceCardMarginRL, 0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      FlyTitle('反馈群'),
-                                      FlyText.miniTip30("点击卡片可复制群号"),
-                                    ],
-                                  ),
-                                ),
-                                Wrap(
-                                  children: [
-                                    funcButton(
-                                      type: 1,
-                                        title: "交流1群",
-                                        subTitle: "发布、反馈中心",
-                                        qqNumber: "839372371"),
-                                    funcButton(
-                                      type: 1,
-                                        title: "交流2群",
-                                        subTitle: "发布、反馈中心",
-                                        qqNumber: "957634136")
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height: fontSizeMini38 * 2,
-                                ),
-                                FlyTitle('关于工作室'),
-                                Row(
-                                  children: [
-                                    SizedBox(width: spaceCardPaddingTB / 2,),
-                                    funcButton(
-                                        type: 1,
-                                        imageResource: 'images/jiaoliuqun.jpg',
-                                        title: "长期招聘↗",
-                                        subTitle: "点我了解更多",
-                                        onTap: (){
-                                            launchUrl(Uri.parse("https://flyingstudio.feishu.cn/docs/doccnuWFYfcbHUZ65FmKB3iA6pf"));
-                                        }
-                                    ),
-                                  ],
-                                ),
-
-                              ],
-                            ),
+                            _buildUnit("开发者", "点击卡片可复制成员QQ号码", children: [
+                              funcButton(
+                                  imageResource: 'images/mujinteng.jpg',
+                                  title: "牟金腾",
+                                  subTitle: "19级大数据2班",
+                                  qqNumber: "1004275481"),
+                              funcButton(
+                                  imageResource: 'images/lvyingzhao.jpg',
+                                  title: "吕迎朝",
+                                  subTitle: "19级大数据2班",
+                                  qqNumber: "1662870160")
+                            ]),
+                            _buildUnit('反馈群', "点击卡片可复制群号", children: [
+                              funcButton(
+                                  type: 1,
+                                  title: "交流1群",
+                                  subTitle: "发布、反馈中心",
+                                  qqNumber: "839372371"),
+                              funcButton(
+                                  type: 1,
+                                  title: "交流2群",
+                                  subTitle: "发布、反馈中心",
+                                  qqNumber: "957634136")
+                            ]),
+                            _buildUnit("其他", "点击卡片进入页面", children: [
+                              funcButton(
+                                  type: 1,
+                                  imageResource: 'images/jiaoliuqun.jpg',
+                                  title: "关于工作室",
+                                  subTitle: "长期招聘↗",
+                                  onTap: () {
+                                    launchUrl(Uri.parse(
+                                        "https://flyingstudio.feishu.cn/docs/doccnuWFYfcbHUZ65FmKB3iA6pf"));
+                                  }),
+                              funcButton(
+                                  imageResource: "images/github.png",
+                                  title: "矿小助源代码",
+                                  subTitle: "求一个Star～",
+                                  onTap: () {
+                                    launchUrl(Uri.parse(
+                                        "https://github.com/cnatom/FlyingKxz"));
+                                  })
+                            ]),
                             Column(
                               children: [
                                 SizedBox(
@@ -255,14 +215,13 @@ class _AboutPageState extends State<AboutPage> {
                                 ),
                                 FlyTitle('你的支持是我们用爱发电最大的动力！'),
                                 Wrap(
-                                  children: [
-                                    _buildImage('images/help.png')
-                                  ],
+                                  children: [_buildImage('images/help.png')],
                                 ),
-                                SizedBox(height: 300,)
+                                SizedBox(
+                                  height: 300,
+                                )
                               ],
                             ),
-
                           ]),
                     ),
                   ),
@@ -273,17 +232,34 @@ class _AboutPageState extends State<AboutPage> {
         ),
       ),
     );
-
   }
-  Widget _buildImage(String resource){
+
+  Widget _buildUnit(String title, String subTitle,
+      {@required List<Widget> children}) {
+    return Column(
+      children: [
+        Padding(
+          padding:
+              EdgeInsets.fromLTRB(0, fontSizeMini38 * 2, spaceCardMarginRL, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              FlyTitle(title),
+              FlyText.miniTip30(subTitle),
+            ],
+          ),
+        ),
+        Wrap(
+          children: children,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildImage(String resource) {
     return Container(
       padding: EdgeInsets.fromLTRB(70, 30, 70, 0),
-      decoration: BoxDecoration(
-          boxShadow: [
-            boxShadowMain
-          ]
-      ),
-
+      decoration: BoxDecoration(boxShadow: [boxShadowMain]),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Image.asset("images/help.png"),
