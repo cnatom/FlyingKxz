@@ -25,9 +25,9 @@
 - 官网：[https://kxz.atcumt.com/](https://kxz.atcumt.com/)
 - 视频：[https://www.bilibili.com/video/BV1bU4y1p7pU](https://www.bilibili.com/video/BV1bU4y1p7pU)
 
-|                             主页                             |                             发现                             |                             我的                             |
-| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| <img src="/Users/atom/Documents/Projects/flying_kxz/docs/images/readme_1.png" style="zoom:20%;" /> | <img src="/Users/atom/Documents/Projects/flying_kxz/docs/images/readme_2.png" style="zoom:20%;" /> | <img src="/Users/atom/Documents/Projects/flying_kxz/docs/images/readme_3.png" style="zoom:20%;" /> |
+|                            主页                            |                            发现                            |                            我的                            |
+| :--------------------------------------------------------: | :--------------------------------------------------------: | :--------------------------------------------------------: |
+| <img src="./docs/images/readme_1.png" style="zoom:20%;" /> | <img src="./docs/images/readme_2.png" style="zoom:20%;" /> | <img src="./docs/images/readme_3.png" style="zoom:20%;" /> |
 
 ## commit规范
 使用vscode插件：[git-commit-plugin](https://marketplace.visualstudio.com/items?itemName=redjue.git-commit-plugin) 自动生成规范的commit。
