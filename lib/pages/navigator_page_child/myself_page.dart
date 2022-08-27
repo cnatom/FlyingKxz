@@ -32,7 +32,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 import '../../flying_ui_kit/toast.dart';
-import 'myself_page_child/about_page.dart';
+import 'myself_page_child/aboutus/about_page.dart';
 import 'myself_page_child/cumtLogin_view.dart';
 
 class MyselfPage extends StatefulWidget {

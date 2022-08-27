@@ -11,10 +11,13 @@ import 'package:flying_kxz/flying_ui_kit/appbar.dart';
 import 'package:flying_kxz/flying_ui_kit/config.dart';
 import 'package:flutter/services.dart';
 import 'package:flying_kxz/flying_ui_kit/toast.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/aboutus/about_detail.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/platform_interface.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import 'model/detail_info.dart';
 
 //跳转到当前页面
 void toAboutPage(BuildContext context) {
@@ -30,6 +33,7 @@ class AboutPage extends StatefulWidget {
 class _AboutPageState extends State<AboutPage> {
   final double leading = 0.9;
   final double textLineHeight = 1.5;
+
 
   /// 文本间距
   final double fontSize = fontSizeMini38;
@@ -165,12 +169,13 @@ class _AboutPageState extends State<AboutPage> {
                                 ),
                               ),
                           children: [
-                            _buildUnit("开发者", "点击卡片可复制成员QQ号码", children: [
+                            _buildUnit("开发者", "点击卡片查看详情", children: [
                               funcButton(
                                   imageResource: 'images/mujinteng.jpg',
                                   title: "牟金腾",
                                   subTitle: "19级大数据2班",
-                                  qqNumber: "1004275481"),
+                                  qqNumber: "1004275481",
+                              onTap: ()=>toAboutDetailPage(context,DetailInfo.mjt())),
                               funcButton(
                                   imageResource: 'images/lvyingzhao.jpg',
                                   title: "吕迎朝",
