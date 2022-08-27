@@ -65,13 +65,10 @@ class _MyselfPageState extends State<MyselfPage>
 
   // 初始化校园卡余额与宿舍电量
   Future<bool> _initBalanceAndPowerProvider()async{
-    bool ok = false;
+    bool ok = true;
     await Future.wait([cumt.login(Prefs.username??"", Prefs.password??"")]).then((value)async{
-      List<bool> resList = await Future.wait([
-        Provider.of<BalanceProvider>(context,listen: false).getBalance(),
-        Provider.of<BalanceProvider>(context,listen: false).getBalanceHistory(),
-      ]);
-      ok = resList[0]&&resList[1];
+      ok &= await Provider.of<BalanceProvider>(context,listen: false).getBalance();
+      ok &= await Provider.of<BalanceProvider>(context,listen: false).getBalanceHistory();
     }).then((value)async{
       ok &= await Provider.of<PowerProvider>(context,listen: false).getPreview();
     });

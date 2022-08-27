@@ -88,6 +88,7 @@ class Cumt {
         haveLogin = true;
         Prefs.username = username;
         Prefs.password = password;
+        debugPrint("登录融合门户成功");
         return true;
       }
       return true;

@@ -175,7 +175,7 @@ class _AboutPageState extends State<AboutPage> {
                                   title: "牟金腾",
                                   subTitle: "19级大数据2班",
                                   qqNumber: "1004275481",
-                              onTap: ()=>toAboutDetailPage(context,DetailInfo.mjt())),
+                              onTap: ()=>toAboutDetailPage(context,"1004275481",DetailInfo.mjt())),
                               funcButton(
                                   imageResource: 'images/lvyingzhao.jpg',
                                   title: "吕迎朝",

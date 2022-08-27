@@ -23,7 +23,7 @@ class BalanceProvider extends ChangeNotifier{
     'balanceHis':'http://portal.cumt.edu.cn/ykt/flow?flow_num=20'
   };
   //校园卡流水
-  Future<bool> getBalanceHistory()async{
+  Future<bool> getBalanceHistory({bool showToasts=false})async{
     try{
       var res = await cumt.dio.get(_urls['balanceHis']);
       debugPrint(res.toString());
@@ -33,7 +33,7 @@ class BalanceProvider extends ChangeNotifier{
       notifyListeners();
       return true;
     }on DioError catch(e){
-      showToast("获取校园卡流水失败\n ${e.message.toString()}");
+      if(showToasts) showToast("获取校园卡流水失败\n ${e.message.toString()}");
       return false;
     }
   }
@@ -50,7 +50,7 @@ class BalanceProvider extends ChangeNotifier{
       notifyListeners();
       return true;
     }catch(e){
-      debugPrint('获取校园卡余额失败');
+      debugPrint('获取校园卡余额失败'+e.toString());
       return false;
     }
   }

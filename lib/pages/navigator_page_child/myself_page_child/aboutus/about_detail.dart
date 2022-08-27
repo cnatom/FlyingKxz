@@ -1,29 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
 import 'package:flying_kxz/flying_ui_kit/appbar.dart';
 import 'package:flying_kxz/flying_ui_kit/container.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/aboutus/model/detail_info.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/aboutus/model/link_card.dart';
-import '../../../../flying_ui_kit/config.dart';
-import 'components/received_message_screen.dart';
-import 'components/send_messsage_screen.dart';
 
 //跳转到当前页面
-void toAboutDetailPage(BuildContext context, DetailInfo info) {
+void toAboutDetailPage(BuildContext context,String qqNumber,DetailInfo info) {
   Navigator.push(
       context,
       CupertinoPageRoute(
-          builder: (context) => AboutDetail(
+          builder: (context) => AboutDetail(qqNumber: qqNumber,
                 detailInfo: info,
               )));
 }
 
 class AboutDetail extends StatelessWidget {
   DetailInfo detailInfo;
-
-  AboutDetail({@required this.detailInfo, Key key}) : super(key: key);
+  String qqNumber;
+  AboutDetail({@required this.detailInfo,@required this.qqNumber, Key key}) : super(key: key);
   EdgeInsets margin = EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB,
       spaceCardMarginRL, spaceCardMarginTB);
 
@@ -35,6 +32,24 @@ class AboutDetail extends StatelessWidget {
         child: AnimationLimiter(
           child: Column(
             children: [
+              Container(
+                padding: EdgeInsets.all(spaceCardMarginRL*2),
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: fontSizeMain40*5,
+                      height: fontSizeMain40*5,
+                      child: ClipOval(
+                        child: Image.network("http://q1.qlogo.cn/g?b=qq&nk=$qqNumber&s=640",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Column(
                 children: AnimationConfiguration.toStaggeredList(
                     childAnimationBuilder: (widget) => SlideAnimation(
