@@ -103,7 +103,11 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
+  bool lock = false;
   Future<void> initFunc(BuildContext context) async {
+    // 防止二次执行
+    if(lock) return;
+    lock = true;
     // 获取当前App版本
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     Global.curVersion = packageInfo.version;
@@ -124,6 +128,7 @@ class _StartPageState extends State<StartPage> {
     //   toNullPage(context);
     //   return;
     // }
+
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists()) {
         backImgFile = File(Prefs.backImg);
@@ -141,6 +146,12 @@ class _StartPageState extends State<StartPage> {
     }
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
