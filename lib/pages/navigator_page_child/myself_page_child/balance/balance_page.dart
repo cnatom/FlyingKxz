@@ -30,16 +30,9 @@ class _BalancePageState extends State<BalancePage> {
   bool loading = true;
 
   @override
-  void initState() {
-    super.initState();
-    Provider.of<BalanceProvider>(context,listen: false).getBalanceHistory();
-  }
-
-  @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     balanceProvider = Provider.of<BalanceProvider>(context);
-
     return Scaffold(
       appBar: FlyAppBar(
         context,
@@ -51,7 +44,6 @@ class _BalancePageState extends State<BalancePage> {
         child: RefreshIndicator(
           color: themeProvider.colorMain,
           onRefresh: () async {
-            // await _getBalanceDetail();
             showToast("刷新成功");
             sendInfo('校园卡', '刷新了校园卡流水信息');
           },

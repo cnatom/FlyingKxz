@@ -43,20 +43,17 @@ class MyselfPage extends StatefulWidget {
 class _MyselfPageState extends State<MyselfPage>
     with AutomaticKeepAliveClientMixin {
   ThemeProvider themeProvider;
-  Cumt cumt;
+  Cumt cumt; // 用于网络请求
 
   @override
   void initState() {
     super.initState();
-    _initInstance();
+    cumt = Cumt.getInstance();
     _initBalanceAndPowerProvider();
     sendInfo('我的', '初始化我的页面');
   }
 
-  void _initInstance(){
-    cumt = Cumt.getInstance();
-  }
-
+  // 退出登录
   void _signOut() async {
     sendInfo('退出登录', '退出了登录');
     await Global.clearPrefsData();
@@ -66,10 +63,15 @@ class _MyselfPageState extends State<MyselfPage>
     toLoginPage(context);
   }
 
+  // 初始化校园卡余额与宿舍电量
   Future<bool> _initBalanceAndPowerProvider()async{
     bool ok = false;
     await Future.wait([cumt.login(Prefs.username??"", Prefs.password??"")]).then((value)async{
-      ok = await Provider.of<BalanceProvider>(context,listen: false).getBalance();
+      List<bool> resList = await Future.wait([
+        Provider.of<BalanceProvider>(context,listen: false).getBalance(),
+        Provider.of<BalanceProvider>(context,listen: false).getBalanceHistory(),
+      ]);
+      ok = resList[0]&&resList[1];
     }).then((value)async{
       ok = await Provider.of<PowerProvider>(context,listen: false).getPreview();
     });
