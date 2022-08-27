@@ -41,6 +41,7 @@ Future<void> sendInfo(String page,String action)async{
 //跳转到当前页面
 void toNavigatorPage(BuildContext context){
   Navigator.of(context).pushAndRemoveUntil(CustomRoute(FlyNavigatorPage(),milliseconds: 500),(route)=>route==null);
+
 }
 //底部导航栏页面,位于子页面的顶端
 class FlyNavigatorPage extends StatefulWidget {
@@ -64,8 +65,6 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
   void initState() {
     super.initState();
     cumtAutoLogin();//自动登录校园网
-    // getUserInfo();//获取用户信息
-    // noticeGetInfo();//获取通知信息
     WidgetsBinding.instance.addObserver(this);
     checkUpgrade(context);//检查软件更新
     sendInfo('主页', '初始化主页');

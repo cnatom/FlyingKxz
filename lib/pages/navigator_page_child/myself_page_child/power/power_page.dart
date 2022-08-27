@@ -58,11 +58,11 @@ class _PowerPageState extends State<PowerPage> {
     FlyDialogDIYShow(context, content: Wrap(
       runSpacing: spaceCardPaddingTB,
       children: [
-        FlyText.title45("请在充值页面点击图示按钮，前往充值",maxLine: 10,),
+        FlyText.title45('请在充值页面点击"缴公寓电费"',maxLine: 10,),
         Image.asset("images/powerRechargeHelp.png"),
         _buildButton("知道啦，前往充值页面↗",onTap: (){
           launchUrl(
-              Uri.parse("http://ykt.cumt.edu.cn:8988/web/common/checkEle.html"));
+              Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"));
         }),
       ],
     ));
@@ -242,29 +242,26 @@ class _PowerPageState extends State<PowerPage> {
   }
 
   Widget _buildPower(String powerBuilding) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-      child: _container(
-          title: "绑定信息",
-          child: Wrap(runSpacing: spaceCardPaddingTB, children: [
-            _buildPreviewButton("宿舍楼", powerBuilding ?? "未选择",
-                onTap: () => _handlePowerPicker()),
-            _buildInputButton("宿舍号"),
-            FlyWidgetBuilder(
-                whenFirst: powerLoading,
-                firstChild: _buildButton(
-                  "加载中……",
-                  onTap: () {},
-                ),
-                secondChild: _buildButton(
-                  "绑定",
-                  onTap: () {
-                    powerProvider.powerRoomid =
-                        _powerRoomidController.text ?? "";
-                    powerProvider.bindInfoAndGetPower(context);
-                  },
-                )),
-          ])),
-    );
+    return _container(
+        title: "绑定信息",
+        child: Wrap(runSpacing: spaceCardPaddingTB, children: [
+          _buildPreviewButton("宿舍楼", powerBuilding ?? "未选择",
+              onTap: () => _handlePowerPicker()),
+          _buildInputButton("宿舍号"),
+          FlyWidgetBuilder(
+              whenFirst: powerLoading,
+              firstChild: _buildButton(
+                "加载中……",
+                onTap: () {},
+              ),
+              secondChild: _buildButton(
+                "绑定",
+                onTap: () {
+                  powerProvider.powerRoomid =
+                      _powerRoomidController.text ?? "";
+                  powerProvider.bindInfoAndGetPower(context);
+                },
+              )),
+        ]));
   }
 }

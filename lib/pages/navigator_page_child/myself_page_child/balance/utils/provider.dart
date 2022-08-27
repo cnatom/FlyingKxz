@@ -25,7 +25,6 @@ class BalanceProvider extends ChangeNotifier{
   //校园卡流水
   Future<bool> getBalanceHistory()async{
     try{
-      // await cumt.login(Prefs.username??"", Prefs.password??"");
       var res = await cumt.dio.get(_urls['balanceHis']);
       debugPrint(res.toString());
       var map = jsonDecode(res.toString());

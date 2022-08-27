@@ -1,16 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/entypo_icons.dart';
 import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
 import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
 import 'package:flying_kxz/flying_ui_kit/appbar.dart';
 import 'package:flying_kxz/flying_ui_kit/config.dart';
-import 'package:flying_kxz/flying_ui_kit/container.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-
-import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 
 //跳转到当前页面
@@ -19,11 +15,6 @@ void toSchoolBusPage(BuildContext context) {
       context, CupertinoPageRoute(builder: (context) => SchoolBusPage()));
   sendInfo('校车', '初始化校车页面');
 }
-//跳转到当前页面
-//void toLoginPage(BuildContext context) async {
-//  Navigator.of(context).pushAndRemoveUntil(
-//      CustomRoute(LoginPage(), milliseconds: 1000), (route) => route == null);
-//}
 
 class SchoolBusPage extends StatefulWidget {
   @override

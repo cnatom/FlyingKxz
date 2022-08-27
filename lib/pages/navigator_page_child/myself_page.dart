@@ -73,7 +73,7 @@ class _MyselfPageState extends State<MyselfPage>
       ]);
       ok = resList[0]&&resList[1];
     }).then((value)async{
-      ok = await Provider.of<PowerProvider>(context,listen: false).getPreview();
+      ok &= await Provider.of<PowerProvider>(context,listen: false).getPreview();
     });
     return ok;
   }

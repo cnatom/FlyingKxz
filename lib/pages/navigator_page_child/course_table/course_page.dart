@@ -35,13 +35,16 @@ class CoursePageState extends State<CoursePage> {
   _outputIcs(){
     Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>OutputIcsPage(courseProvider.infoByCourse)));
   }
+  // 导入课表
   _importCourse()async{
     List<dynamic> list = await Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ImportPage()));
     courseProvider.handleCourseList(list);
   }
+  // 回到本周
   _backToCurWeek(){
     coursePageController.animateToPage(courseProvider.initialWeek-1, curve: Curves.easeOutQuint, duration: Duration(seconds: 1),);
   }
+  // 添加课程
   _addCourse()async{
     List<CourseData> newCourseDataList;
     newCourseDataList = await showFlyModalBottomSheet(
@@ -118,7 +121,7 @@ class CoursePageState extends State<CoursePage> {
     return AppBar(
       systemOverlayStyle: themeProvider.simpleMode ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
       backgroundColor: Colors.transparent,
-      title: FlyText.title45('第${courseProvider.curWeek}周 (测试版本)',
+      title: FlyText.title45('第${courseProvider.curWeek}周',
           fontWeight: FontWeight.w600, color: themeProvider.colorNavText),
       leading: _buildAction(Icons.cloud_download_outlined,onPressed: ()=>_importCourse()),
       actions: [
@@ -331,7 +334,7 @@ class CoursePageState extends State<CoursePage> {
   }
 
   Widget _buildBody() {
-    return courseProvider.info==null?Container():LayoutBuilder(
+    return LayoutBuilder(
       builder: (context, parSize) {
         List<Widget> children = [];
         double height = parSize.maxHeight;

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
 import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
 import 'package:flying_kxz/flying_ui_kit/appbar.dart';
+import 'package:flying_kxz/flying_ui_kit/buttons.dart';
 import 'package:flying_kxz/flying_ui_kit/config.dart';
 import 'package:flying_kxz/flying_ui_kit/loading.dart';
 import 'package:flying_kxz/flying_ui_kit/toast.dart';
@@ -11,6 +12,9 @@ import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../../../flying_ui_kit/dialog.dart';
 
 //跳转到当前页面
 void toBalancePage(BuildContext context) {
@@ -29,6 +33,32 @@ class _BalancePageState extends State<BalancePage> {
   BalanceProvider balanceProvider;
   bool loading = true;
 
+  // 刷新
+  Future<void> _refresh()async{
+    bool ok = await balanceProvider.getBalance();
+    String message = ok?"刷新成功":"刷新失败";
+    showToast(message);
+    sendInfo('校园卡', '刷新了校园卡流水信息:$message');
+  }
+
+  // 充值
+  void _charge(){
+    FlyDialogDIYShow(context, content: Wrap(
+      runSpacing: spaceCardPaddingTB,
+      children: [
+        FlyText.title45('请在充值页面点击"卡片充值"',maxLine: 10,),
+        Image.asset("images/balanceRechargeHelp.png"),
+        _buildButton("知道啦，前往充值页面↗",onTap: (){
+          launchUrl(
+              Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"));
+        }),
+      ],
+    ));
+    // toBalanceRechargePage(context);
+    // launchUrl(Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
@@ -43,18 +73,15 @@ class _BalancePageState extends State<BalancePage> {
         height: double.infinity,
         child: RefreshIndicator(
           color: themeProvider.colorMain,
-          onRefresh: () async {
-            showToast("刷新成功");
-            sendInfo('校园卡', '刷新了校园卡流水信息');
-          },
+          onRefresh: ()=>_refresh(),
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics()),
             child: Padding(
               padding: EdgeInsets.fromLTRB(
-                  spaceCardPaddingRL,
+                  spaceCardMarginRL,
                   spaceCardMarginTB,
-                  spaceCardPaddingRL,
+                  spaceCardMarginRL,
                   spaceCardMarginTB),
               child: Column(
                 children: [
@@ -185,6 +212,29 @@ class _BalancePageState extends State<BalancePage> {
     );
   }
 
+  InkWell _buildButton(String title, {bool primer = true,GestureTapCallback onTap}) {
+    Color borderColor = primer?Colors.transparent:themeProvider.colorMain;
+    Color textColor = primer?Colors.white:themeProvider.colorMain;
+    Color backgroundColor = primer?themeProvider.colorMain:Colors.transparent;
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(spaceCardMarginRL),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadiusValue),
+            border: Border.all(color: borderColor),
+            color: backgroundColor),
+        child: Center(
+          child: FlyText.title45(
+            title,
+            color: textColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildHeadCard(BuildContext context) {
     return _container(
         child: Column(
@@ -217,10 +267,7 @@ class _BalancePageState extends State<BalancePage> {
 
   InkWell _buildRechargeButton() {
     return InkWell(
-      onTap: () {
-        // toBalanceRechargePage(context);
-        showToast('暂未开放');
-      },
+      onTap: ()=>_charge(),
       child: Container(
         padding: EdgeInsets.all(spaceCardMarginRL),
         decoration: BoxDecoration(
