@@ -101,9 +101,9 @@ class PowerProvider extends ChangeNotifier{
         if(show) showToast(power);
         return false;
       }
-    }catch (e){
+    }on DioError catch (e){
       if(show){
-        showToast(power.toString());
+        showToast("请求失败:"+e.message+"\n可能未连接校内网",duration: 4);
         toTipPage();
       }
       sendInfo("宿舍电量", "获取宿舍电量失败:$powerBuilding $powerRoomid");
