@@ -102,7 +102,6 @@ class PowerProvider extends ChangeNotifier{
         return false;
       }
     }catch (e){
-      debugPrint(e.toString());
       if(show){
         showToast(power.toString());
         toTipPage();

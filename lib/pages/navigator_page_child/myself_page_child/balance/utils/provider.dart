@@ -26,7 +26,6 @@ class BalanceProvider extends ChangeNotifier{
   Future<bool> getBalanceHistory({bool showToasts=false})async{
     try{
       var res = await cumt.dio.get(_urls['balanceHis']);
-      debugPrint(res.toString());
       var map = jsonDecode(res.toString());
       map = CumtFormat.parseBalanceHis(map);
       detailInfo = BalanceDetailInfo.fromJson(map);
@@ -51,7 +50,6 @@ class BalanceProvider extends ChangeNotifier{
       notifyListeners();
       return true;
     }on DioError catch(e){
-       debugPrint('获取校园卡余额失败'+e.toString());
       return false;
     }
   }

@@ -67,9 +67,9 @@ class _MyselfPageState extends State<MyselfPage>
   Future<bool> _initBalanceAndPowerProvider()async{
     bool ok = true;
     await Future.wait([cumt.login(Prefs.username??"", Prefs.password??"")]).then((value)async{
-      Provider.of<BalanceProvider>(context,listen: false).getBalance();
-      Provider.of<PowerProvider>(context,listen: false).getPreview();
-      Provider.of<BalanceProvider>(context,listen: false).getBalanceHistory();
+      await Provider.of<BalanceProvider>(context,listen: false).getBalance();
+      await Provider.of<PowerProvider>(context,listen: false).getPreview();
+      await Provider.of<BalanceProvider>(context,listen: false).getBalanceHistory();
     });
     return ok;
   }
