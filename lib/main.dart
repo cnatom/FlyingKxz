@@ -103,17 +103,16 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  bool lock = false;
-  Future<void> initFunc(BuildContext context) async {
-    // 防止二次执行
-    if(lock) return;
-    lock = true;
+  void initFuncWithoutContext()async{
     // 获取当前App版本
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     Global.curVersion = packageInfo.version;
     //初始化配置（无需context）
     initConfigInfo();
-    //宽屏设备时，修改屏幕信息
+  }
+  Future<void> initFunc(BuildContext context) async {
+
+    //宽屏设备时，修改屏幕参考信息
     if (MediaQuery.of(context).size.height / MediaQuery.of(context).size.width <
         1.5) {
       deviceHeight = 1080;
@@ -128,7 +127,7 @@ class _StartPageState extends State<StartPage> {
     //   toNullPage(context);
     //   return;
     // }
-
+    // 初始化壁纸
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists()) {
         backImgFile = File(Prefs.backImg);
@@ -137,6 +136,7 @@ class _StartPageState extends State<StartPage> {
     } else {
       await precacheImage(new AssetImage("images/background.png"), context);
     }
+    // 选择跳转
     if (Prefs.password != null) {
       toNavigatorPage(context);
     } else {
@@ -150,7 +150,7 @@ class _StartPageState extends State<StartPage> {
   @override
   void initState() {
     super.initState();
-
+    initFuncWithoutContext();
   }
 
   @override
