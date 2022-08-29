@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:badges/badges.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +7,6 @@ import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
 import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
 import 'package:flying_kxz/flying_ui_kit/container.dart';
 import 'package:flying_kxz/flying_ui_kit/custome_router.dart';
-import 'package:flying_kxz/flying_ui_kit/notice.dart';
-import 'package:flying_kxz/flying_ui_kit/toast.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/net_request/cumt_login.dart';

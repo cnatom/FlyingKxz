@@ -31,69 +31,8 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  final double leading = 0.9;
-  final double textLineHeight = 1.5;
 
 
-  /// 文本间距
-  final double fontSize = fontSizeMini38;
-
-  Widget funcButton(
-      {int type = 0,
-      @required String imageResource,
-      @required String title,
-      @required subTitle,
-      String qqNumber,
-      GestureTapCallback onTap}) {
-    return Container(
-      width: ScreenUtil().setWidth(deviceWidth / 2) - spaceCardPaddingTB / 2,
-      padding: EdgeInsets.fromLTRB(spaceCardPaddingTB / 2, spaceCardPaddingTB,
-          spaceCardPaddingTB / 2, 0),
-      child: InkWell(
-        onTap: onTap == null
-            ? () {
-                Clipboard.setData(ClipboardData(text: qqNumber));
-                showToast("已复制QQ号至剪切板", duration: 1);
-              }
-            : onTap,
-        child: Container(
-          padding: EdgeInsets.all(spaceCardMarginRL),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(borderRadiusValue),
-              color: Theme.of(context).cardColor),
-          child: Row(
-            children: [
-              Container(
-                width: fontSizeMini38 * 2.5,
-                height: fontSizeMini38 * 2.5,
-                child: ClipOval(
-                  child: qqNumber != null
-                      ? Image.network(
-                          type == 0
-                              ? "http://q1.qlogo.cn/g?b=qq&nk=$qqNumber&s=640"
-                              : "http://p.qlogo.cn/gh/$qqNumber/$qqNumber/640/",
-                          fit: BoxFit.cover,
-                        )
-                      : Image.asset(imageResource),
-                ),
-              ),
-              SizedBox(
-                width: ScreenUtil().setWidth(deviceWidth / 40),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FlyText.main35(title,
-                      fontWeight: FontWeight.bold, maxLine: 1),
-                  FlyText.miniTip30(subTitle, maxLine: 1)
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,130 +54,193 @@ class _AboutPageState extends State<AboutPage> {
             SizedBox(
               height: fontSizeMini38 * 2,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'images/logo.png',
-                  height: fontSizeMini38 * 3.5,
-                ),
-                SizedBox(
-                  height: fontSizeMini38 * 1.5,
-                ),
-                Text(
-                  '翔工作室',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: colorLoginPageMain,
-                      fontSize: fontSizeMain40,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 3),
-                ),
-                SizedBox(
-                  height: fontSizeMini38 * 0.8,
-                ),
-                Text(
-                  '— 科技改变生活，技术成就梦想 —',
-                  style: TextStyle(
-                      color: colorLoginPageMain,
-                      fontSize: fontSizeTip33,
-                      letterSpacing: 3),
-                )
-              ],
-            ),
+            _buildHeader(),
             SizedBox(
               height: fontSizeMini38 * 4,
             ),
-            Container(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: fontSizeMini38 * 2,
-                  ),
-                  AnimationLimiter(
-                    child: Column(
-                      children: AnimationConfiguration.toStaggeredList(
-                          childAnimationBuilder: (widget) => SlideAnimation(
-                                duration: Duration(milliseconds: 500),
-                                delay: Duration(milliseconds: 50),
-                                horizontalOffset: 50,
-                                child: FadeInAnimation(
-                                  delay: Duration(milliseconds: 100),
-                                  duration: Duration(milliseconds: 500),
-                                  child: widget,
-                                ),
-                              ),
-                          children: [
-                            _buildUnit("开发者", "点击卡片查看详情", children: [
-                              funcButton(
-                                  imageResource: 'images/mujinteng.jpg',
-                                  title: "牟金腾",
-                                  subTitle: "19级大数据2班",
-                                  qqNumber: "1004275481",
-                              onTap: ()=>toAboutDetailPage(context,"1004275481",DetailInfo.mjt())),
-                              funcButton(
-                                  imageResource: 'images/lvyingzhao.jpg',
-                                  title: "吕迎朝",
-                                  subTitle: "19级大数据2班",
-                                  qqNumber: "1662870160")
-                            ]),
-                            _buildUnit('反馈群', "点击卡片可复制群号", children: [
-                              funcButton(
-                                  type: 1,
-                                  title: "交流1群",
-                                  subTitle: "发布、反馈中心",
-                                  qqNumber: "839372371"),
-                              funcButton(
-                                  type: 1,
-                                  title: "交流2群",
-                                  subTitle: "发布、反馈中心",
-                                  qqNumber: "957634136")
-                            ]),
-                            _buildUnit("其他", "点击卡片进入页面", children: [
-                              funcButton(
-                                  type: 1,
-                                  imageResource: 'images/jiaoliuqun.jpg',
-                                  title: "关于工作室",
-                                  subTitle: "长期招聘↗",
-                                  onTap: () {
-                                    launchUrl(Uri.parse(
-                                        "https://flyingstudio.feishu.cn/docs/doccnuWFYfcbHUZ65FmKB3iA6pf"));
-                                  }),
-                              funcButton(
-                                  imageResource: "images/github.png",
-                                  title: "矿小助源代码",
-                                  subTitle: "求一个Star～",
-                                  onTap: () {
-                                    launchUrl(Uri.parse(
-                                        "https://github.com/cnatom/FlyingKxz"));
-                                  })
-                            ]),
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height: fontSizeMini38 * 2,
-                                ),
-                                FlyTitle('你的支持是我们用爱发电最大的动力！'),
-                                Wrap(
-                                  children: [_buildImage('images/help.png')],
-                                ),
-                                SizedBox(
-                                  height: 300,
-                                )
-                              ],
-                            ),
-                          ]),
-                    ),
-                  ),
-                ],
-              ),
-            )
+            _buildBody(context)
           ],
         ),
       ),
     );
   }
 
+  Column _buildBody(BuildContext context) {
+    return Column(
+            children: [
+              SizedBox(
+                height: fontSizeMini38 * 2,
+              ),
+              AnimationLimiter(
+                child: Column(
+                  children: AnimationConfiguration.toStaggeredList(
+                      childAnimationBuilder: (widget) => SlideAnimation(
+                        duration: Duration(milliseconds: 500),
+                        delay: Duration(milliseconds: 50),
+                        horizontalOffset: 50,
+                        child: FadeInAnimation(
+                          delay: Duration(milliseconds: 100),
+                          duration: Duration(milliseconds: 500),
+                          child: widget,
+                        ),
+                      ),
+                      children: [
+                        _buildUnit("开发者", "点击卡片查看详情", children: [
+                          _buildButton(
+                              imageResource: 'images/mujinteng.jpg',
+                              title: "牟金腾",
+                              subTitle: "19级大数据2班",
+                              qqNumber: "1004275481",
+                              onTap: ()=>toAboutDetailPage(context,"1004275481",DetailInfo.mjt())),
+                          _buildButton(
+                              imageResource: 'images/lvyingzhao.jpg',
+                              title: "吕迎朝",
+                              subTitle: "19级大数据2班",
+                              qqNumber: "1662870160")
+                        ]),
+                        _buildUnit('反馈群', "点击卡片可复制群号", children: [
+                          _buildButton(
+                              type: 1,
+                              title: "交流1群",
+                              subTitle: "发布、反馈中心",
+                              qqNumber: "839372371"),
+                          _buildButton(
+                              type: 1,
+                              title: "交流2群",
+                              subTitle: "发布、反馈中心",
+                              qqNumber: "957634136")
+                        ]),
+                        _buildUnit("其他", "点击卡片进入页面", children: [
+                          _buildButton(
+                              type: 1,
+                              imageResource: 'images/jiaoliuqun.jpg',
+                              title: "关于工作室",
+                              subTitle: "长期招聘↗",
+                              onTap: () {
+                                launchUrl(Uri.parse(
+                                    "https://flyingstudio.feishu.cn/docs/doccnuWFYfcbHUZ65FmKB3iA6pf"));
+                              }),
+                          _buildButton(
+                              imageResource: "images/github.png",
+                              title: "矿小助源代码",
+                              subTitle: "求一个Star～",
+                              onTap: () {
+                                launchUrl(Uri.parse(
+                                    "https://github.com/cnatom/FlyingKxz"));
+                              })
+                        ]),
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: fontSizeMini38 * 2,
+                            ),
+                            FlyTitle('你的支持是我们用爱发电最大的动力！'),
+                            Wrap(
+                              children: [_buildImage('images/help.png')],
+                            ),
+                            SizedBox(
+                              height: 300,
+                            )
+                          ],
+                        ),
+                      ]),
+                ),
+              ),
+            ],
+          );
+  }
+
+  Column _buildHeader() {
+    return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'images/logo.png',
+                height: fontSizeMini38 * 3.5,
+              ),
+              SizedBox(
+                height: fontSizeMini38 * 1.5,
+              ),
+              Text(
+                '翔工作室',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: colorLoginPageMain,
+                    fontSize: fontSizeMain40,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 3),
+              ),
+              SizedBox(
+                height: fontSizeMini38 * 0.8,
+              ),
+              Text(
+                '— 科技改变生活，技术成就梦想 —',
+                style: TextStyle(
+                    color: colorLoginPageMain,
+                    fontSize: fontSizeTip33,
+                    letterSpacing: 3),
+              )
+            ],
+          );
+  }
+
+
+  Widget _buildButton(
+      {int type = 0,
+        @required String title,
+        String imageResource,
+        @required subTitle,
+        String qqNumber,
+        GestureTapCallback onTap}) {
+    return Container(
+      width: ScreenUtil().setWidth(deviceWidth / 2) - spaceCardPaddingTB / 2,
+      padding: EdgeInsets.fromLTRB(spaceCardPaddingTB / 2, spaceCardPaddingTB,
+          spaceCardPaddingTB / 2, 0),
+      child: InkWell(
+        onTap: onTap == null
+            ? () {
+          Clipboard.setData(ClipboardData(text: qqNumber));
+          showToast("已复制QQ号至剪切板", duration: 1);
+        }
+            : onTap,
+        child: Container(
+          padding: EdgeInsets.all(spaceCardMarginRL),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(borderRadiusValue),
+              color: Theme.of(context).cardColor),
+          child: Row(
+            children: [
+              Container(
+                width: fontSizeMini38 * 2.5,
+                height: fontSizeMini38 * 2.5,
+                child: ClipOval(
+                  child: qqNumber != null
+                      ? Image.network(
+                    type == 0
+                        ? "http://q1.qlogo.cn/g?b=qq&nk=$qqNumber&s=640"
+                        : "http://p.qlogo.cn/gh/$qqNumber/$qqNumber/640/",
+                    fit: BoxFit.cover,
+                  )
+                      : Image.asset(imageResource),
+                ),
+              ),
+              SizedBox(
+                width: ScreenUtil().setWidth(deviceWidth / 40),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FlyText.main35(title,
+                      fontWeight: FontWeight.bold, maxLine: 1),
+                  FlyText.miniTip30(subTitle, maxLine: 1)
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
   Widget _buildUnit(String title, String subTitle,
       {@required List<Widget> children}) {
     return Column(

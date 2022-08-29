@@ -9,10 +9,8 @@ import 'package:flying_kxz/flying_ui_kit/dialog.dart';
 import 'package:flying_kxz/flying_ui_kit/loading.dart';
 import 'package:flying_kxz/flying_ui_kit/picker.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/flying_ui_kit/toast.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -79,42 +77,50 @@ class _PowerPageState extends State<PowerPage> {
     powerPercent = context.select((PowerProvider p) => p.percentAtDetailPage);
     powerLoading = context.select((PowerProvider p) => p.powerLoading);
     return Scaffold(
+
       key: _scaffoldKey,
       appBar: FlyAppBar(context, "宿舍电量"),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB,
-              spaceCardMarginRL, spaceCardMarginTB),
-          child: Column(
-            children: [
-              PowerCircularView(
-                  powerPercent: powerPercent, themeProvider: themeProvider),
-              SizedBox(
-                height: spaceCardPaddingTB * 2,
-              ),
-              FlyText.title50(
-                powerPerviewText,
-                color: themeProvider.colorMain,
-                fontWeight: FontWeight.bold,
-              ),
-              SizedBox(
-                height: spaceCardPaddingTB * 3,
-              ),
-              _buildPower(powerBuilding),
-              SizedBox(
-                height: spaceCardPaddingTB * 3,
-              ),
-              _container(
-                  title: "充值",
-                  child: Wrap(
-                    runSpacing: spaceCardPaddingTB,
-                    children: [
-                      _buildButton("前往充值", primer:false,onTap: () => _charge()),
-                    ],
-                  )),
-            ],
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            // 触摸收起键盘
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB,
+                spaceCardMarginRL, spaceCardMarginTB),
+            child: Column(
+              children: [
+                PowerCircularView(
+                    powerPercent: powerPercent, themeProvider: themeProvider),
+                SizedBox(
+                  height: spaceCardPaddingTB * 2,
+                ),
+                FlyText.title50(
+                  powerPerviewText,
+                  color: themeProvider.colorMain,
+                  fontWeight: FontWeight.bold,
+                ),
+                SizedBox(
+                  height: spaceCardPaddingTB * 3,
+                ),
+                _buildPower(powerBuilding),
+                SizedBox(
+                  height: spaceCardPaddingTB * 3,
+                ),
+                _container(
+                    title: "充值",
+                    child: Wrap(
+                      runSpacing: spaceCardPaddingTB,
+                      children: [
+                        _buildButton("前往充值", primer:false,onTap: () => _charge()),
+                      ],
+                    )),
+              ],
+            ),
           ),
         ),
       ),

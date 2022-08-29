@@ -39,8 +39,9 @@ class BalanceProvider extends ChangeNotifier{
   }
   //校园卡余额
   Future<bool> getBalance()async{
+    Response res;
     try{
-      var res = await cumt.dio.get(_urls['balance']);
+      res = await cumt.dio.get(_urls['balance']);
       var map = jsonDecode(res.toString());
       Prefs.cardNum = map['data']['ZH'];
       Prefs.balance = (double.parse(map['data']['YE'])/100).toStringAsFixed(2);
@@ -49,8 +50,8 @@ class BalanceProvider extends ChangeNotifier{
       sendInfo('校园卡', '获取校园卡余额:${Prefs.balance}');
       notifyListeners();
       return true;
-    }catch(e){
-      debugPrint('获取校园卡余额失败'+e.toString());
+    }on DioError catch(e){
+       debugPrint('获取校园卡余额失败'+e.toString());
       return false;
     }
   }

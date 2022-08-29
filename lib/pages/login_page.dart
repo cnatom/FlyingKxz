@@ -89,8 +89,8 @@ class _LoginPageState extends State<LoginPage> {
         _loading = false;
       });
     }
-
   }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

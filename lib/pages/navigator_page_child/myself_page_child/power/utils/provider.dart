@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:core';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/flying_ui_kit/toast.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/tip_page.dart';
-
 import '../../../../../cumt_spider/cumt.dart';
 import '../../../../../Model/prefs.dart';
 
@@ -69,6 +67,7 @@ class PowerProvider extends ChangeNotifier{
     }
   }
 
+  // 绑定宿舍信息
   void bindInfoAndGetPower(BuildContext context)async{
     FocusScope.of(context).requestFocus(FocusNode());
     powerLoading = true;
@@ -82,6 +81,7 @@ class PowerProvider extends ChangeNotifier{
     powerLoading = false;
     notifyListeners();
   }
+
 
   Future<bool> _get(String building,String roomid,{bool show = false})async{
     String power;
