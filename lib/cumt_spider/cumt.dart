@@ -10,6 +10,7 @@ import 'package:flying_kxz/Model/prefs.dart';
 import 'package:html/parser.dart' as parser;
 
 import '../flying_ui_kit/toast.dart';
+import 'cumt_interceptors.dart';
 
 enum CumtInquiryType {Course,Score,ScoreAll,Exam,Balance,BalanceHistory,Power}
 class Cumt {
@@ -38,7 +39,7 @@ class Cumt {
   Future<void> init()async{
     haveLogin = false;
     cookieJar = new CookieJar();
-    // dio.interceptors.add(new CumtInterceptors());
+    dio.interceptors.add(new CumtInterceptors());
     dio.interceptors.add(new CookieManager(cookieJar,));
   }
   Future<void> clearCookie()async{
