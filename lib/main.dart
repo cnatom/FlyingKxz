@@ -111,7 +111,8 @@ class _StartPageState extends State<StartPage> {
     initConfigInfo();
   }
   Future<void> initFunc(BuildContext context) async {
-
+    deviceWidth = 1080;
+    deviceHeight = 1920;
     //宽屏设备时，修改屏幕参考信息
     if (MediaQuery.of(context).size.height / MediaQuery.of(context).size.width <
         1.5) {

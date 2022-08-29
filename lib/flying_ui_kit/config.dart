@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'Text/text.dart';
 void initConfigInfo(){
-  deviceWidth = 1080;
-  deviceHeight = 1920;
   colorMain = Color(0xff00c5a8);
   colorSecond = Color(0xFF33CC99).withAlpha(255);
   colorMainText = Color.fromARGB(255, 0, 0, 0);
