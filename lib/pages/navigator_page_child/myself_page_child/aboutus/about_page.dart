@@ -87,16 +87,35 @@ class _AboutPageState extends State<AboutPage> {
                       children: [
                         _buildUnit("开发者", "点击卡片查看详情", children: [
                           _buildButton(
-                              imageResource: 'images/mujinteng.jpg',
                               title: "牟金腾",
                               subTitle: "19级大数据2班",
                               qqNumber: "1004275481",
                               onTap: ()=>toAboutDetailPage(context,"1004275481",DetailInfo.mjt())),
                           _buildButton(
-                              imageResource: 'images/lvyingzhao.jpg',
                               title: "吕迎朝",
                               subTitle: "19级大数据2班",
-                              qqNumber: "1662870160")
+                              qqNumber: "1662870160",
+                              onTap: ()=>toAboutDetailPage(context,"1662870160",DetailInfo.lyz())),
+                          _buildButton(
+                              title: "管永富",
+                              subTitle: "18级工作室站长",
+                              qqNumber: "1337612820",
+                              onTap: ()=>toAboutDetailPage(context,"1337612820",DetailInfo.gyf())),
+                          _buildButton(
+                              title: "王逸鸣",
+                              subTitle: "19级计科2班",
+                              qqNumber: "522942475",
+                              onTap: ()=>toAboutDetailPage(context,"522942475",DetailInfo.wym())),
+                          _buildButton(
+                              title: "李家鑫",
+                              subTitle: "19级大数据2班",
+                              qqNumber: "1156573954",
+                              onTap: ()=>toAboutDetailPage(context,"1156573954",DetailInfo.ljx())),
+                          _buildButton(
+                              title: "罗纯颖",
+                              subTitle: "19级大数据2班",
+                              qqNumber: "1651711016",
+                              onTap: ()=>toAboutDetailPage(context,"1651711016",DetailInfo.lcy())),
                         ]),
                         _buildUnit('反馈群', "点击卡片可复制群号", children: [
                           _buildButton(
