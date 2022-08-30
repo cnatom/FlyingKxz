@@ -91,7 +91,7 @@ class _MyselfPageState extends State<MyselfPage>
     if(await _initBalanceAndPowerProvider()){
       showToast("刷新成功！");
     }else{
-      showToast("刷新失败～");
+      showToast("刷新失败(连续请求会导致失败，等会再来把)",duration: 4);
     }
   }
 

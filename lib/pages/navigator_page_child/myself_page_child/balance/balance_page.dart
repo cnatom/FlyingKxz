@@ -41,7 +41,7 @@ class _BalancePageState extends State<BalancePage> {
     ok &= await Provider.of<BalanceProvider>(context,listen: false).getBalance();
     ok &= await Provider.of<BalanceProvider>(context,listen: false).getBalanceHistory();
     String message = ok?"刷新成功":"刷新失败(连续获取数据会导致请求失败)";
-    showToast(message);
+    showToast(message,duration: 4);
     sendInfo('校园卡', '刷新了校园卡流水信息:$message');
   }
 
