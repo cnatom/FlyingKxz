@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
 import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
+import 'package:flying_kxz/flying_ui_kit/config.dart';
 import 'package:flying_kxz/flying_ui_kit/container.dart';
 import 'package:flying_kxz/flying_ui_kit/custome_router.dart';
 import 'package:flying_kxz/Model/global.dart';
@@ -42,10 +42,10 @@ void toNavigatorPage(BuildContext context) {
   sendInfo('App', '打开');
 }
 
+// 底部Navigator按钮数据类
 class BottomNavigationBarModel {
   final String title;
   final IconData iconData;
-
   BottomNavigationBarModel(this.title, this.iconData);
 }
 
@@ -82,12 +82,15 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
 
   @override
   void dispose() {
+    // 移除生命周期监听
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
+  /// 生命周期回调
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    // 在resumed的时候自动登录校园网
     if (state == AppLifecycleState.resumed) {
       cumtAutoLogin();
     }
@@ -95,21 +98,11 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
 
   final List<BottomNavigationBarModel> _buttonBarItem = [
     BottomNavigationBarModel("主页", FeatherIcons.home),
-    BottomNavigationBarModel(
-      '发现',
-      OMIcons.explore,
-    ),
+    BottomNavigationBarModel('发现', OMIcons.explore),
     BottomNavigationBarModel('我的', Icons.person_outline),
   ];
 
-  BottomNavigationBarItem _bottomNavigationBar(String title, IconData iconData,
-          {double size}) =>
-      BottomNavigationBarItem(
-          label: title,
-          icon: Icon(
-            iconData,
-            size: size,
-          ));
+
 
   @override
   Widget build(BuildContext context) {
@@ -117,13 +110,12 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
     themeProvider = Provider.of<ThemeProvider>(context);
     return FlyNavBackground(
         child: Intro(
-            padding: const EdgeInsets.all(8),
-            borderRadius: BorderRadius.all(Radius.circular(4)),
+            padding: const EdgeInsets.all(0),
+            borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
             maskColor: const Color.fromRGBO(0, 0, 0, .6),
             noAnimation: false,
             maskClosable: false,
-            buttonTextBuilder: (order) =>
-                order == 3 ? 'Custom Button Text' : 'Next',
+            buttonTextBuilder: (order) => '好的',
             child: Scaffold(
               backgroundColor: Colors.transparent,
               body: _buildBody(),
@@ -134,7 +126,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
   BottomNavigationBar _buildBottomNavigationBar() {
     return BottomNavigationBar(
         items: _buttonBarItem
-            .map((item) => _bottomNavigationBar(item.title, item.iconData)),
+            .map((item) => _buildBottomNavigationItem(item.title, item.iconData)).toList(),
         onTap: (int index) {
           navigatorPageController.jumpToPage(index);
         },
@@ -165,6 +157,15 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
       },
     );
   }
+
+  BottomNavigationBarItem _buildBottomNavigationItem(String title, IconData iconData,
+      {double size}) =>
+      BottomNavigationBarItem(
+          label: title,
+          icon: Icon(
+            iconData,
+            size: size,
+          ));
 
   @override
   bool get wantKeepAlive => true;
