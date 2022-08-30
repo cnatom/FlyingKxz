@@ -75,6 +75,7 @@ dependencies:
   flutter_inappwebview: ^5.3.2
   ical: ^0.1.4
   open_file: ^3.2.1
+  flutter_intro: ^3.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
