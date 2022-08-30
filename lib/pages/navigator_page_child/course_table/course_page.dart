@@ -77,15 +77,21 @@ class CoursePageState extends State<CoursePage> {
     sendInfo('主页', '添加了课程：${newCourseDataList[0].title}');
   }
 
+  void _introduce(){
+    String prefsTag = "course_page_introduce";
+    // 课表为空，则显示引导页面
+    if(Prefs.prefs.getBool(prefsTag)==null){
+      Future.delayed(const Duration(seconds: 1), () {
+        Intro.of(context).start();
+        Prefs.prefs.setBool(prefsTag, true);
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    // 课表为空，则显示引导页面
-    if(Prefs.courseData==null){
-      Future.delayed(const Duration(seconds: 1), () {
-        Intro.of(context).start();
-      });
-    }
+    _introduce();
   }
 
   @override
