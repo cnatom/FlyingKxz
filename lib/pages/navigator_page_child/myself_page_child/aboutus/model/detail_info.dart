@@ -49,9 +49,21 @@ class DetailInfo{
     ];
   }
   DetailInfo.ljx(){
-    info = [];
+    info = [
+      ReceivedMessageScreen(message: '🤩Hi！Hi！Hi！！！！'),
+      ReceivedMessageScreen(message: "🥳我是负责运营岗，为矿小助做运营宣讲的李家鑫er～"),
+      ReceivedMessageScreen(message: "🥺从大一入学面试工作室时被要求“做一个矿小助的竞品分析”开始，到大三时真的能有机会参与其中和大家一起完善并让更多的人知道、了解甚至喜欢上矿小助！在工作室能遇到这些性格超棒、能力出众的矿小助开发者们并且一起努力过，是我大学生活里非常宝贵的一段经历呜呜呜"),
+      ReceivedMessageScreen(message: "💃如果你喜欢运营、开发、设计、交好朋友就来来来！！和志同道合的人在一起才能享受到真正的happy！！"),
+      ReceivedMessageScreen(message: "🐧我的QQ",linkModel: AboutLinkModel("https://qm.qq.com/cgi-bin/qm/qr?k=0gMMg5HdT7h84lRr0FdJ6XsfviWPrjZO&noverify=0&personal_qrcode_source=3","小啵","北海虽赊，扶摇可接"),),
+    ];
   }
   DetailInfo.lcy(){
-    info = [];
+    info = [
+    ReceivedMessageScreen(message: '👋Hi~'),
+    ReceivedMessageScreen(message: '😌我是矿小助的UI设计罗纯颖。'),
+    ReceivedMessageScreen(message: "😀很高兴能为矿小助的成长出一份力。",linkModel: AboutLinkModel("https://kxz.atcumt.com/","矿小助官网","矿大人都在用的宝藏App"),),
+    ReceivedMessageScreen(message: "🤩在工作室学到了很多东西，认识了很多很厉害的人。工作室聚会也很好玩，东西很好吃。",linkModel: AboutLinkModel("https://flyingstudio.feishu.cn/wiki/wikcnx2KKhcZ7Eza3gJq1x0Y4Yg","关于翔工作室","中国矿业大学最早的，由学生自主管理的校园互联网工作室"),),
+    ReceivedMessageScreen(message: "🐧我的QQ",linkModel: AboutLinkModel("https://qm.qq.com/cgi-bin/qm/qr?k=EQurywQsQw_Nnui-a-ctn3hjuTTil_4S&noverify=0&personal_qrcode_source=4","很多","很多饭没吃"),),
+    ];
   }
 }

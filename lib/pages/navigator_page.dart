@@ -38,6 +38,7 @@ Future<void> sendInfo(String page,String action)async{
 //跳转到当前页面
 void toNavigatorPage(BuildContext context){
   Navigator.of(context).pushAndRemoveUntil(CustomRoute(FlyNavigatorPage(),milliseconds: 500),(route)=>route==null);
+  sendInfo('App', '打开');
 
 }
 //底部导航栏页面,位于子页面的顶端
@@ -64,7 +65,8 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage> with AutomaticKeepAl
     cumtAutoLogin();//自动登录校园网
     WidgetsBinding.instance.addObserver(this);
     checkUpgrade(context);//检查软件更新
-    sendInfo('主页', '初始化主页');
+
+
   }
   @override
   void dispose() {

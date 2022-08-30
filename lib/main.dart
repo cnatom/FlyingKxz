@@ -55,6 +55,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   ThemeProvider themeProvider;
 
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -152,10 +153,12 @@ class _StartPageState extends State<StartPage> {
   void initState() {
     super.initState();
     initFuncWithoutContext();
+
   }
 
   @override
   Widget build(BuildContext context) {
+
     initFunc(context);
     return Scaffold(
       backgroundColor: Colors.white,
