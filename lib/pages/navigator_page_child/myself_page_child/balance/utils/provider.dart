@@ -7,10 +7,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/flying_ui_kit/toast.dart';
 
+import '../../../../../Model/prefs.dart';
 import '../../../../../cumt_spider/cumt.dart';
 import '../../../../../cumt_spider/cumt_format.dart';
 import '../../../../../Model/balance_detail_info.dart';
-import '../../../../../Model/prefs.dart';
 import '../../../../navigator_page.dart';
 
 class BalanceProvider extends ChangeNotifier{
@@ -18,6 +18,12 @@ class BalanceProvider extends ChangeNotifier{
   String cardNum = Prefs.cardNum;
   String balance = Prefs.balance;
   BalanceDetailInfo detailInfo;
+  BalanceProvider(){
+    if(detailInfo==null && Prefs.balanceHis!=null){
+      var map = jsonDecode(Prefs.balanceHis);
+      detailInfo = BalanceDetailInfo.fromJson(map);
+    }
+  }
   Map<String,dynamic> _urls = {
     'balance':'http://portal.cumt.edu.cn/ykt/balance',
     'balanceHis':'http://portal.cumt.edu.cn/ykt/flow?flow_num=20'
@@ -28,6 +34,7 @@ class BalanceProvider extends ChangeNotifier{
       var res = await cumt.dio.get(_urls['balanceHis']);
       var map = jsonDecode(res.toString());
       map = CumtFormat.parseBalanceHis(map);
+      Prefs.balanceHis = jsonEncode(map);
       detailInfo = BalanceDetailInfo.fromJson(map);
       notifyListeners();
       return true;
@@ -52,6 +59,14 @@ class BalanceProvider extends ChangeNotifier{
     }on DioError catch(e){
       return false;
     }
+  }
+
+  //课程列表打包存储到本地
+  _savePrefs(){
+
+  }
+  //Prefs列表-> info,pointArray,infoByCourse
+  _handlePrefs(){
   }
 
 
