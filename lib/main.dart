@@ -55,6 +55,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   ThemeProvider themeProvider;
 
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -103,13 +104,17 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  Future<void> initFunc(BuildContext context) async {
+  void initFuncWithoutContext()async{
     // 获取当前App版本
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     Global.curVersion = packageInfo.version;
     //初始化配置（无需context）
     initConfigInfo();
-    //宽屏设备时，修改屏幕信息
+  }
+  Future<void> initFunc(BuildContext context) async {
+    deviceWidth = 1080;
+    deviceHeight = 1920;
+    //宽屏设备时，修改屏幕参考信息
     if (MediaQuery.of(context).size.height / MediaQuery.of(context).size.width <
         1.5) {
       deviceHeight = 1080;
@@ -120,10 +125,11 @@ class _StartPageState extends State<StartPage> {
     //初始化配置
     initSize();
     //内测结束跳转
-    if(DateTime.now().isAfter(DateTime(2022,8,15))){
-      toNullPage(context);
-      return;
-    }
+    // if(DateTime.now().isAfter(DateTime(2022,8,15))){
+    //   toNullPage(context);
+    //   return;
+    // }
+    // 初始化壁纸
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists()) {
         backImgFile = File(Prefs.backImg);
@@ -132,6 +138,7 @@ class _StartPageState extends State<StartPage> {
     } else {
       await precacheImage(new AssetImage("images/background.png"), context);
     }
+    // 选择跳转
     if (Prefs.password != null) {
       toNavigatorPage(context);
     } else {
@@ -143,7 +150,15 @@ class _StartPageState extends State<StartPage> {
 
 
   @override
+  void initState() {
+    super.initState();
+    initFuncWithoutContext();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     initFunc(context);
     return Scaffold(
       backgroundColor: Colors.white,

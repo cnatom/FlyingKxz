@@ -3,13 +3,14 @@
 
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/flying_ui_kit/toast.dart';
 
+import '../../../../../Model/prefs.dart';
 import '../../../../../cumt_spider/cumt.dart';
 import '../../../../../cumt_spider/cumt_format.dart';
 import '../../../../../Model/balance_detail_info.dart';
-import '../../../../../Model/prefs.dart';
 import '../../../../navigator_page.dart';
 
 class BalanceProvider extends ChangeNotifier{
@@ -17,36 +18,36 @@ class BalanceProvider extends ChangeNotifier{
   String cardNum = Prefs.cardNum;
   String balance = Prefs.balance;
   BalanceDetailInfo detailInfo;
+  BalanceProvider(){
+    if(detailInfo==null && Prefs.balanceHis!=null){
+      var map = jsonDecode(Prefs.balanceHis);
+      detailInfo = BalanceDetailInfo.fromJson(map);
+    }
+  }
   Map<String,dynamic> _urls = {
     'balance':'http://portal.cumt.edu.cn/ykt/balance',
     'balanceHis':'http://portal.cumt.edu.cn/ykt/flow?flow_num=20'
   };
   //校园卡流水
-  Future<bool> getBalanceHistory()async{
-    print(balance);
+  Future<bool> getBalanceHistory({bool showToasts=false})async{
     try{
-      await cumt.login(Prefs.username??"", Prefs.password??"");
       var res = await cumt.dio.get(_urls['balanceHis']);
-      debugPrint(res.toString());
       var map = jsonDecode(res.toString());
       map = CumtFormat.parseBalanceHis(map);
+      Prefs.balanceHis = jsonEncode(map);
       detailInfo = BalanceDetailInfo.fromJson(map);
       notifyListeners();
       return true;
-    }catch(e){
-      showToast("获取校园卡流水失败\n ${e.toString()}");
+    }on DioError catch(e){
+      if(showToasts) showToast("获取校园卡流水失败\n ${e.message.toString()}");
       return false;
     }
   }
   //校园卡余额
   Future<bool> getBalance()async{
-    if(Prefs.visitor){
-      Prefs.cardNum = '123456';
-      Prefs.balance = '52.1';
-      return true;
-    }
+    Response res;
     try{
-      var res = await cumt.dio.get(_urls['balance']);
+      res = await cumt.dio.get(_urls['balance']);
       var map = jsonDecode(res.toString());
       Prefs.cardNum = map['data']['ZH'];
       Prefs.balance = (double.parse(map['data']['YE'])/100).toStringAsFixed(2);
@@ -55,11 +56,17 @@ class BalanceProvider extends ChangeNotifier{
       sendInfo('校园卡', '获取校园卡余额:${Prefs.balance}');
       notifyListeners();
       return true;
-    }catch(e){
-      debugPrint('获取校园卡余额失败');
-      debugPrint(e.toString());
+    }on DioError catch(e){
       return false;
     }
+  }
+
+  //课程列表打包存储到本地
+  _savePrefs(){
+
+  }
+  //Prefs列表-> info,pointArray,infoByCourse
+  _handlePrefs(){
   }
 
 
