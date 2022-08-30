@@ -14,6 +14,7 @@ import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../cumt_spider/cumt.dart';
 import '../../../../flying_ui_kit/dialog.dart';
 
 //跳转到当前页面
@@ -35,8 +36,11 @@ class _BalancePageState extends State<BalancePage> {
 
   // 刷新
   Future<void> _refresh()async{
-    bool ok = await balanceProvider.getBalance();
-    String message = ok?"刷新成功":"刷新失败";
+    Cumt cumt = Cumt.getInstance();
+    bool ok = true;
+    ok &= await Provider.of<BalanceProvider>(context,listen: false).getBalance();
+    ok &= await Provider.of<BalanceProvider>(context,listen: false).getBalanceHistory();
+    String message = ok?"刷新成功":"刷新失败(连续获取数据会导致请求失败)";
     showToast(message);
     sendInfo('校园卡', '刷新了校园卡流水信息:$message');
   }
