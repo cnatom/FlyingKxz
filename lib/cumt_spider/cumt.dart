@@ -94,33 +94,9 @@ class Cumt {
       }
       return true;
     }on DioError catch(e){
-      _handleError(e);
       return false;
     }
 
-  }
-  //在每次请求前都要检查
-  _handleError(DioError e,)async{
-    switch(e.type){
-      case DioErrorType.connectTimeout:
-        showToast('连接超时QAQ');
-        break;
-      case DioErrorType.sendTimeout:
-        showToast( '发送超时QAQ');
-        break;
-      case DioErrorType.receiveTimeout:
-        showToast( '接收超时QAQ');
-        break;
-      case DioErrorType.response:
-        showToast( '响应码错误QAQ');
-        break;
-      case DioErrorType.cancel:
-        showToast( '请求被取消QAQ');
-        break;
-      case DioErrorType.other:
-        showToast( '未知错误QAQ');
-        break;
-    }
   }
   static Future<bool> checkConnect()async{
     try{
