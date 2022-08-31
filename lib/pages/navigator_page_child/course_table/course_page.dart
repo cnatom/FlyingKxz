@@ -77,22 +77,18 @@ class CoursePageState extends State<CoursePage> {
     sendInfo('主页', '添加了课程：${newCourseDataList[0].title}');
   }
 
-  void _introduce(){
+  void _introduce(BuildContext context){
     String prefsTag = "course_page_introduce";
     // 课表为空，则显示引导页面
     if(Prefs.prefs.getBool(prefsTag)==null){
-      Future.delayed(const Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 2), () {
         Intro.of(context).start();
         Prefs.prefs.setBool(prefsTag, true);
       });
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _introduce();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -162,48 +158,60 @@ class CoursePageState extends State<CoursePage> {
       backgroundColor: Colors.transparent,
       title: FlyText.title45('第${courseProvider.curWeek}周',
           fontWeight: FontWeight.w600, color: themeProvider.colorNavText),
-      leading: _buildAction(Icons.cloud_download_outlined,
-          introStep: 1,
-          introText: "从教务系统导入课表",
-          onPressed: () => _importCourse()),
+      leading: IntroStepBuilder(
+        order: 1,
+        text: "从教务系统导入课表",
+        onWidgetLoad: (){
+          _introduce(context);
+        },
+        builder: (context,key){
+          return _buildAction(key,Icons.cloud_download_outlined,
+              onPressed: () => _importCourse());
+        },
+      ),
       actions: [
-        _buildAction(Icons.add,
-            introStep: 2,
-            introText: "添加自定义课表",
-            onPressed: () => _addCourse()),
-        _buildAction(Boxicons.bx_share_alt,
-            introStep: 3,
-            introText: "将课表导出到系统日历",
-            onPressed: () => _outputIcs()),
-        _buildAction(Boxicons.bx_menu_alt_right,
-            introStep: 4,
-            introText: "查看课程预览",
-            onPressed: () => _rightGlobalKey.currentState.show()),
+        IntroStepBuilder(
+          order: 2,
+          text: "添加自定义课表",
+          builder: (context,key){
+            return _buildAction(key,Icons.add, onPressed: () => _addCourse());
+          },
+        ),
+        IntroStepBuilder(
+          order: 3,
+          text: "将课表导出到系统日历",
+          builder: (context,key){
+            return IconButton(
+              key: key,
+              icon: Icon(
+                Boxicons.bx_share_alt,
+                color: themeProvider.colorNavText,
+              ),
+              onPressed: () =>  _outputIcs()
+            );
+          },
+        ),
+        IntroStepBuilder(
+          order: 4,
+          text: "查看课程预览",
+          builder: (context,key){
+            return _buildAction(key,Boxicons.bx_menu_alt_right, onPressed: () => _rightGlobalKey.currentState.show());
+          },
+        )
       ],
     );
   }
 
-  Widget _buildAction(IconData iconData,
-      {int introStep, String introText, VoidCallback onPressed}) {
-    Widget _iconButton({Key key}) {
-      return IconButton(
-        key: key,
-        icon: Icon(
-          iconData,
-          color: themeProvider.colorNavText,
-        ),
-        onPressed: onPressed,
-      );
-    }
-
-    if (introStep != null && introStep > 0) {
-      return new IntroStepBuilder(
-          order: introStep,
-          text: introText,
-          builder: (context, key) => _iconButton(key: key));
-    } else {
-      return _iconButton();
-    }
+  Widget _buildAction(Key key,IconData iconData,
+      {VoidCallback onPressed}) {
+    return IconButton(
+      key: key,
+      icon: Icon(
+        iconData,
+        color: themeProvider.colorNavText,
+      ),
+      onPressed: onPressed,
+    );
   }
 
   Widget _buildShowRightButton() {

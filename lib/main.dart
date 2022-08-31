@@ -4,6 +4,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/Model/prefs.dart';
@@ -11,7 +12,6 @@ import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
-import 'package:flying_kxz/pages/null_page.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -54,7 +54,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeProvider themeProvider;
-
 
   @override
   Widget build(BuildContext context) {
