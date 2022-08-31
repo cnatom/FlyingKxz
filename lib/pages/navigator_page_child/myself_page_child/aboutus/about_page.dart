@@ -85,7 +85,7 @@ class _AboutPageState extends State<AboutPage> {
                         ),
                       ),
                       children: [
-                        _buildUnit("开发者", "点击卡片查看详情", children: [
+                        _buildUnit("项目组", "点击卡片查看详情", children: [
                           _buildButton(
                               title: "牟金腾",
                               subTitle: "19级大数据2班",
@@ -266,7 +266,7 @@ class _AboutPageState extends State<AboutPage> {
       children: [
         Padding(
           padding:
-              EdgeInsets.fromLTRB(0, fontSizeMini38 * 2, spaceCardMarginRL, 0),
+              EdgeInsets.fromLTRB(spaceCardMarginRL, fontSizeMini38 * 2, spaceCardMarginRL, 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
