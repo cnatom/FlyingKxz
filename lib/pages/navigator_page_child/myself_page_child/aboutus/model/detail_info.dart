@@ -23,7 +23,7 @@ class DetailInfo{
       ReceivedMessageScreen(message: "😀 我是负责后端系统设计的吕迎朝，你也可以叫我 boopo 或者 出梦"),
       ReceivedMessageScreen(message: "🤔 多年以后，面对SQLite, 我还会想起矿小助1.0发布的下午。那时的我刚学会增删改查，服务因为并发写入而阻塞。。。"),
       ReceivedMessageScreen(message: "😋 如果你对后端技术感兴趣，欢迎加入翔工作室"),
-      ReceivedMessageScreen(message: "🥳 我会在这里更新一些文章",linkModel: AboutLinkModel("boopo · Yuque","出梦的数字花园","Not Invented Here Syndrome"),),
+      ReceivedMessageScreen(message: "🥳 我会在这里更新一些文章",linkModel: AboutLinkModel("https://www.yuque.com/boopo","出梦的数字花园","Not Invented Here Syndrome"),),
       ReceivedMessageScreen(message: "😊 这是我的github",linkModel: AboutLinkModel("https://github.com/boopo","boopo·Github","服务端开发"),),
       ReceivedMessageScreen(message: "🐧",linkModel: AboutLinkModel("https://qm.qq.com/cgi-bin/qm/qr?k=8GF1c-Xz8LjAupERFAkskIoJwt8C7U8M&noverify=0&personal_qrcode_source=3","boopo","西郊有密林，助君出重围"),),
     ];
