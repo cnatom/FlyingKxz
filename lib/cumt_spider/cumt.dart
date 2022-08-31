@@ -32,9 +32,9 @@ class Cumt {
       'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
     "X-Requested-With": "XMLHttpRequest"},
     validateStatus: (status) { return status < 500; },
-    sendTimeout: 3000,
-    receiveTimeout: 3000,
-    connectTimeout: 3000,));
+    sendTimeout: 4000,
+    receiveTimeout: 4000,
+    connectTimeout: 4000,));
 
   Future<void> init()async{
     haveLogin = false;
