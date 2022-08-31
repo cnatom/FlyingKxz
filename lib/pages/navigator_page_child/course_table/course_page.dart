@@ -77,9 +77,9 @@ class CoursePageState extends State<CoursePage> {
     sendInfo('主页', '添加了课程：${newCourseDataList[0].title}');
   }
 
+  // 第一次使用时显示引导页
   void _introduce(BuildContext context){
     String prefsTag = "course_page_introduce";
-    // 课表为空，则显示引导页面
     if(Prefs.prefs.getBool(prefsTag)==null){
       Future.delayed(const Duration(seconds: 2), () {
         Intro.of(context).start();

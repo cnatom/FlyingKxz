@@ -78,7 +78,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
     }
   }
   //添加自定义倒计时
-  void add()async{
+  void _add()async{
     await showFlyModalBottomSheet(
       context: context,
       isScrollControlled: false,
@@ -118,9 +118,6 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    // examCurList.sort((a,b){
-    //   return DateTime(a.year,a.month,a.day).compareTo(DateTime(b.year,b.month,b.day));
-    // });
     themeProvider = Provider.of<ThemeProvider>(context);
     return Padding(
       padding: EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
@@ -128,11 +125,8 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
         children: [
           flyTContainer(
             action: [
-              InkWell(
-                onTap: ()=>add(),
-                child: Icon(Icons.add,size: fontSizeMain40*1.5,color: themeProvider.colorNavText.withOpacity(0.5),),),
-              InkWell(onTap: ()=>import(),
-                child: Icon(Icons.cloud_download_outlined,size: fontSizeMain40*1.5,color: themeProvider.colorNavText.withOpacity(0.5),),)
+              _buildActionIconButton(Icons.add,onTap: ()=>_add()),
+              _buildActionIconButton(Icons.cloud_download_outlined,onTap: ()=>import()),
             ],
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -148,6 +142,12 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
         ],
       ),
     );
+  }
+
+  InkWell _buildActionIconButton(IconData iconData,{GestureTapCallback onTap}) {
+    return InkWell(
+              onTap: onTap,
+              child: Icon(iconData,size: fontSizeMain40*1.5,color: themeProvider.colorNavText.withOpacity(0.5),),);
   }
   Widget filterButton(){
     return InkWell(
@@ -391,7 +391,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
   }
   Widget addDiyExamButton(){
     return InkWell(
-      onTap: ()=>add(),
+      onTap: ()=>_add(),
       child: FlyContainer(
         decoration: BoxDecoration(
             color: Theme.of(context).cardColor.withOpacity(themeProvider.transCard),
