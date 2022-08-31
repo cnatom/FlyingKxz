@@ -85,7 +85,7 @@ class _AboutPageState extends State<AboutPage> {
                         ),
                       ),
                       children: [
-                        _buildUnit("开发者", "点击卡片查看详情", children: [
+                        _buildUnit("项目组", "点击卡片查看详情", children: [
                           _buildButton(
                               title: "牟金腾",
                               subTitle: "19级大数据2班",
@@ -108,12 +108,12 @@ class _AboutPageState extends State<AboutPage> {
                               onTap: ()=>toAboutDetailPage(context,"522942475",DetailInfo.wym())),
                           _buildButton(
                               title: "李家鑫",
-                              subTitle: "19级大数据2班",
+                              subTitle: "19级会计2班",
                               qqNumber: "1156573954",
                               onTap: ()=>toAboutDetailPage(context,"1156573954",DetailInfo.ljx())),
                           _buildButton(
                               title: "罗纯颖",
-                              subTitle: "19级大数据2班",
+                              subTitle: "19级信安3班",
                               qqNumber: "1651711016",
                               onTap: ()=>toAboutDetailPage(context,"1651711016",DetailInfo.lcy())),
                         ]),
@@ -266,7 +266,7 @@ class _AboutPageState extends State<AboutPage> {
       children: [
         Padding(
           padding:
-              EdgeInsets.fromLTRB(0, fontSizeMini38 * 2, spaceCardMarginRL, 0),
+              EdgeInsets.fromLTRB(spaceCardMarginRL, fontSizeMini38 * 2, spaceCardMarginRL, 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

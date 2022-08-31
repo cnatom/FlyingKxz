@@ -32,9 +32,9 @@ class Cumt {
       'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
     "X-Requested-With": "XMLHttpRequest"},
     validateStatus: (status) { return status < 500; },
-    sendTimeout: 3000,
-    receiveTimeout: 3000,
-    connectTimeout: 3000,));
+    sendTimeout: 4000,
+    receiveTimeout: 4000,
+    connectTimeout: 4000,));
 
   Future<void> init()async{
     haveLogin = false;
@@ -94,33 +94,9 @@ class Cumt {
       }
       return true;
     }on DioError catch(e){
-      _handleError(e);
       return false;
     }
 
-  }
-  //在每次请求前都要检查
-  _handleError(DioError e,)async{
-    switch(e.type){
-      case DioErrorType.connectTimeout:
-        showToast('连接超时QAQ');
-        break;
-      case DioErrorType.sendTimeout:
-        showToast( '发送超时QAQ');
-        break;
-      case DioErrorType.receiveTimeout:
-        showToast( '接收超时QAQ');
-        break;
-      case DioErrorType.response:
-        showToast( '响应码错误QAQ');
-        break;
-      case DioErrorType.cancel:
-        showToast( '请求被取消QAQ');
-        break;
-      case DioErrorType.other:
-        showToast( '未知错误QAQ');
-        break;
-    }
   }
   static Future<bool> checkConnect()async{
     try{

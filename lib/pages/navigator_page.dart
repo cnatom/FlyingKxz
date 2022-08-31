@@ -108,19 +108,17 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
   Widget build(BuildContext context) {
     super.build(context);
     themeProvider = Provider.of<ThemeProvider>(context);
-    return FlyNavBackground(
-        child: Intro(
-            padding: const EdgeInsets.all(0),
-            borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
-            maskColor: const Color.fromRGBO(0, 0, 0, .6),
-            noAnimation: false,
-            maskClosable: false,
-            buttonTextBuilder: (order) => '好的',
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: _buildBody(),
-              bottomNavigationBar: _buildBottomNavigationBar(),
-            )));
+    return Intro(
+      padding: const EdgeInsets.all(0),
+      borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
+      buttonTextBuilder: (order) => '好的',
+      child: FlyNavBackground(
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: _buildBody(),
+            bottomNavigationBar: _buildBottomNavigationBar(),
+          )),
+    );
   }
 
   BottomNavigationBar _buildBottomNavigationBar() {
