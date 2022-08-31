@@ -108,12 +108,12 @@ class _AboutPageState extends State<AboutPage> {
                               onTap: ()=>toAboutDetailPage(context,"522942475",DetailInfo.wym())),
                           _buildButton(
                               title: "李家鑫",
-                              subTitle: "19级大数据2班",
+                              subTitle: "19级会计2班",
                               qqNumber: "1156573954",
                               onTap: ()=>toAboutDetailPage(context,"1156573954",DetailInfo.ljx())),
                           _buildButton(
                               title: "罗纯颖",
-                              subTitle: "19级大数据2班",
+                              subTitle: "19级信安3班",
                               qqNumber: "1651711016",
                               onTap: ()=>toAboutDetailPage(context,"1651711016",DetailInfo.lcy())),
                         ]),
