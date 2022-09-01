@@ -1,9 +1,9 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
-import 'package:flying_kxz/flying_ui_kit/config.dart';
-import 'package:flying_kxz/flying_ui_kit/custome_router.dart';
+import 'package:flying_kxz/ui/Text/text.dart';
+import 'package:flying_kxz/ui/config.dart';
+import 'package:flying_kxz/ui/custome_router.dart';
 //跳转到当前页面
 void toNullPage(BuildContext context) async {
   Navigator.of(context).pushAndRemoveUntil(

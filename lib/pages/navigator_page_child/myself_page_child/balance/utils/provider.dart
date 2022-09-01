@@ -2,11 +2,11 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flying_kxz/flying_ui_kit/toast.dart';
+import 'package:flying_kxz/cumt/cumt.dart';
+import 'package:flying_kxz/cumt/cumt_format.dart';
+import 'package:flying_kxz/ui/toast.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/model/detail_model.dart';
 import '../../../../../Model/prefs.dart';
-import '../../../../../cumt_spider/cumt.dart';
-import '../../../../../cumt_spider/cumt_format.dart';
 import '../../../../navigator_page.dart';
 enum BalanceRequestType{
   Balance,BalanceHis

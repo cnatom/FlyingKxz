@@ -2,12 +2,12 @@
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
-// import 'package:flying_kxz/cumt_spider/cumt.dart';
-// import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
-// import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
-// import 'package:flying_kxz/flying_ui_kit/appbar.dart';
-// import 'package:flying_kxz/flying_ui_kit/loading.dart';
-// import 'package:flying_kxz/flying_ui_kit/toast.dart';
+// import 'package:flying_kxz/cumt/cumt.dart';
+// import 'package:flying_kxz/ui/Text/text.dart';
+// import 'package:flying_kxz/ui/Theme/theme.dart';
+// import 'package:flying_kxz/ui/appbar.dart';
+// import 'package:flying_kxz/ui/loading.dart';
+// import 'package:flying_kxz/ui/toast.dart';
 // import 'package:flying_kxz/model/global.dart';
 // import 'package:flying_kxz/model/video__data.dart';
 // import 'package:flying_kxz/pages/navigator_page.dart';
@@ -16,7 +16,7 @@
 // import 'package:html/parser.dart' as parser;
 // import 'package:url_launcher/url_launcher.dart';
 //
-// import '../../../flying_ui_kit/toast.dart';
+// import '../../../ui/toast.dart';
 //
 // //跳转到当前页面
 // void toVideoPage(BuildContext context) {

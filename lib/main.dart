@@ -18,10 +18,10 @@ import 'package:universal_platform/universal_platform.dart';
 
 import 'Model/global.dart';
 import 'chinese.dart';
-import 'cumt_spider/cumt.dart';
-import 'flying_ui_kit/Text/text.dart';
-import 'flying_ui_kit/Theme/theme.dart';
-import 'flying_ui_kit/config.dart';
+import 'cumt/cumt.dart';
+import 'ui/Text/text.dart';
+import 'ui/Theme/theme.dart';
+import 'ui/config.dart';
 import 'pages/navigator_page.dart';
 
 void main() {
