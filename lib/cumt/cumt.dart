@@ -25,7 +25,6 @@ class Cumt {
     }
     return _instance;
   }
-  bool haveLogin;
   String username = Prefs.username??'';
   String password = Prefs.password??'';
   CookieJar cookieJar;
@@ -39,7 +38,6 @@ class Cumt {
     connectTimeout: 4000,));
 
   Future<void> init()async{
-    haveLogin = false;
     cookieJar = new CookieJar();
     dio.interceptors.add(new CumtInterceptors());
     dio.interceptors.add(new CookieManager(cookieJar,));
@@ -86,7 +84,6 @@ class Cumt {
   }
   Future<bool> login(String username,String password)async{
     try{
-      if(haveLogin) return true;
       var res = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice',options: Options(followRedirects:true,));
       if(res.toString().length>35000){
         //解析并登录
@@ -121,7 +118,6 @@ class Cumt {
             return false;
           }
         await dio.get(loginResponse.headers.value('location'),options: Options(followRedirects: false));
-        haveLogin = true;
         Prefs.username = username;
         Prefs.password = password;
         debugPrint("登录融合门户成功");
@@ -153,17 +149,15 @@ class Cumt {
   }
   //获取姓名手机号
   Future<Map<String,dynamic>> getNamePhone()async{
-    if(await login(username, password)){
-      var res = await dio.get('http://portal.cumt.edu.cn/portal/api/v1/api/http/8',);
-      debugPrint(res.toString());
-      var map = jsonDecode(res.toString());
-      map = map['entities'][0];
-      var result = {
-        'name':map['name']??'',
-        'phone':map['phone']??''
-      };
-      return result;
-    }
+    var res = await dio.get('http://portal.cumt.edu.cn/portal/api/v1/api/http/8',);
+    debugPrint(res.toString());
+    var map = jsonDecode(res.toString());
+    map = map['entities'][0];
+    var result = {
+      'name':map['name']??'',
+      'phone':map['phone']??''
+    };
+    return result;
   }
 
 

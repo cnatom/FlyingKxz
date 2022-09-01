@@ -37,7 +37,7 @@ class _BalancePageState extends State<BalancePage> {
           runSpacing: spaceCardPaddingTB,
           children: [
             FlyText.title45(
-              '请在充值页面点击"卡片充值"',
+              '请在充值页面点击"卡片充值"。\n充值需要内网或VPN！',
               maxLine: 10,
             ),
             Image.asset("images/balanceRechargeHelp.png"),
@@ -71,10 +71,10 @@ class _BalancePageState extends State<BalancePage> {
                 _buildHeadCard(context),
                 _buildBalanceDetail(context),
                 Center(
-                  child: Wrap(
-                    runSpacing: spaceCardMarginTB,
+                  child: Column(
                     children: [
-                      FlyText.miniTip30("流水信息更新时间："+balanceProvider.getBalanceHisDate),
+                      FlyText.miniTip30("更新时间："+balanceProvider.getBalanceHisDate),
+                      FlyText.miniTip30('"我的"页面初始化时自动获取'),
 
                     ],
                   ),
@@ -226,7 +226,7 @@ class _BalancePageState extends State<BalancePage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          Prefs.balance ?? "0.00",
+          balanceProvider.balance,
           style: TextStyle(
               fontSize: ScreenUtil().setSp(90), fontWeight: FontWeight.bold),
         ),
@@ -234,7 +234,7 @@ class _BalancePageState extends State<BalancePage> {
           height: spaceCardPaddingTB / 2,
         ),
         FlyText.mini30(
-          "卡号：" + (Prefs.cardNum == null ? "000000" : Prefs.cardNum),
+          "卡号：" + balanceProvider.cardNum,
           color: Theme.of(context).primaryColor.withOpacity(0.5),
         ),
         SizedBox(

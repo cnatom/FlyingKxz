@@ -81,7 +81,7 @@ class CoursePageState extends State<CoursePage> {
   void _introduce(BuildContext context){
     String prefsTag = "course_page_introduce";
     if(Prefs.prefs.getBool(prefsTag)==null){
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 1), () {
         Intro.of(context).start();
         Prefs.prefs.setBool(prefsTag, true);
       });

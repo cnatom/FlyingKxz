@@ -14,6 +14,7 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
+import '../cumt/cumt.dart';
 import 'app_upgrade.dart';
 import 'navigator_page_child/course_table/course_page.dart';
 import 'package:flutter_intro/flutter_intro.dart';
@@ -24,13 +25,13 @@ Future<void> sendInfo(String page, String action) async {
     "action": action,
     "page": page,
     "info": {
-      "name": Prefs.name,
+      "name": Prefs.name??"",
       "time": DateTime.now().toString(),
       "system": Platform.operatingSystem,
       "version": Global.curVersion
     }
   };
-  Dio().post("https://user.kxz.atcumt.com/admin/action", data: info);
+  Cumt.getInstance().dio.post("https://user.kxz.atcumt.com/admin/action", data: info);
   print("sendInfo:" + page + ':' + action);
 }
 
@@ -39,7 +40,6 @@ void toNavigatorPage(BuildContext context) {
   Navigator.of(context).pushAndRemoveUntil(
       CustomRoute(FlyNavigatorPage(), milliseconds: 500),
       (route) => route == null);
-  sendInfo('App', '打开');
 }
 
 // 底部Navigator按钮数据类
@@ -78,6 +78,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
     cumtAutoLogin(); //自动登录校园网
     WidgetsBinding.instance.addObserver(this);
     checkUpgrade(context); //检查软件更新
+    sendInfo('App', '打开');
   }
 
   @override

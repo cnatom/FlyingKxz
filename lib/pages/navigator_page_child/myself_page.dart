@@ -86,14 +86,6 @@ class _MyselfPageState extends State<MyselfPage>
     }
   }
 
-  Future<void> _refresh() async {
-    if(await _initBalanceAndPowerProvider()){
-      showToast("刷新成功！");
-    }else{
-      showToast("刷新失败(连续请求会导致失败，等会再来把)",duration: 4);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -131,26 +123,22 @@ class _MyselfPageState extends State<MyselfPage>
           systemOverlayStyle: themeProvider.simpleMode ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
         ),
       ),
-      body: RefreshIndicator(
-        color: themeProvider.colorMain,
-        onRefresh: () => _refresh(),
-        child: Container(
-          height: double.infinity,
-          child: SingleChildScrollView(
-            physics:
-                AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {
-                // 触摸收起键盘
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-                child: Column(
-                  children: children,
-                ),
+      body: Container(
+        height: double.infinity,
+        child: SingleChildScrollView(
+          physics:
+              AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              // 触摸收起键盘
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                  spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+              child: Column(
+                children: children,
               ),
             ),
           ),

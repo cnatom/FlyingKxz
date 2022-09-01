@@ -19,7 +19,7 @@ class _BalancePreviewViewState extends State<BalancePreviewView> {
     final balanceProvider = Provider.of<BalanceProvider>(context);
     return PreviewView(
         "校园卡",
-        "余额  " + (balanceProvider.balance ?? "0.0") + "元",
+        "余额  " + balanceProvider.balance + "元",
         Icons.monetization_on_outlined,
         onTap: () =>toBalancePage(context));
   }

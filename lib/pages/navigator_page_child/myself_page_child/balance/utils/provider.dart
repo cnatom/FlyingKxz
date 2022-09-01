@@ -33,7 +33,7 @@ class BalanceProvider extends ChangeNotifier{
       var map = jsonDecode(res.toString());
       cardNum = map['data']['ZH'];
       balance = (double.parse(map['data']['YE'])/100).toStringAsFixed(2);
-      getBalanceDate = DateTime.now().toString();
+      getBalanceDate = DateTime.now().toString().substring(0,16);
       sendInfo('校园卡', '获取校园卡余额:${balance}');
       notifyListeners();
       return true;
@@ -49,7 +49,7 @@ class BalanceProvider extends ChangeNotifier{
       var map = jsonDecode(res.toString());
       map = CumtFormat.parseBalanceHis(map);
       detailInfo = BalanceDetailModel.fromJson(map);
-      getBalanceHisDate = DateTime.now().toIso8601String();
+      getBalanceHisDate = DateTime.now().toString().substring(0,16);
       notifyListeners();
       return true;
     }on DioError catch(e){
@@ -83,19 +83,28 @@ class BalanceProvider extends ChangeNotifier{
     Prefs.balanceHis = jsonEncode(value.toJson());
     _detailInfo = value;
   }
+  /// Getter
+
 
   String get cardNum{
-    if(_cardNum==null && Prefs.cardNum!=null){
-      _cardNum = Prefs.cardNum;
+    if(_cardNum==null){
+      if(Prefs.cardNum!=null){
+        _cardNum = Prefs.cardNum;
+      }else{
+        _cardNum = "000000";
+      }
     }
     return _cardNum;
   }
 
-  /// Getter
 
   String get balance{
-    if(_balance==null && Prefs.balance!=null){
-      _balance = Prefs.balance;
+    if(_balance==null){
+      if(Prefs.balance!=null){
+        _balance = Prefs.balance;
+      }else{
+        _balance = "0.0";
+      }
     }
     return _balance;
   }
@@ -109,15 +118,23 @@ class BalanceProvider extends ChangeNotifier{
   }
 
   String get getBalanceDate{
-    if(_getBalanceDate==null && Prefs.balanceRequestDate!=null){
-      _getBalanceDate = Prefs.balanceRequestDate;
+    if(_getBalanceDate==null){
+      if(Prefs.balanceRequestDate!=null){
+        _getBalanceDate = Prefs.balanceRequestDate;
+      }else{
+        _getBalanceDate = "未更新";
+      }
     }
     return _getBalanceDate;
   }
 
   String get getBalanceHisDate{
-    if(_getBalanceHisDate==null && Prefs.balanceRequestHisDate!=null){
-      _getBalanceHisDate = Prefs.balanceRequestHisDate;
+    if(_getBalanceHisDate==null){
+      if(Prefs.balanceRequestHisDate!=null){
+        _getBalanceHisDate = Prefs.balanceRequestHisDate;
+      }else{
+        _getBalanceHisDate = "未更新";
+      }
     }
     return _getBalanceHisDate;
   }
