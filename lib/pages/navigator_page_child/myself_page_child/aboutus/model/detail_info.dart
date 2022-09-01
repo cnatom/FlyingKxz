@@ -33,7 +33,7 @@ class DetailInfo{
       ReceivedMessageScreen(message: '🌸很高兴在这里和你相遇，我是"花学长"！'),
       ReceivedMessageScreen(message: "☘️矿小助的成长历程贯穿了我的大学生活，创作宣传视频，设计新版LOGO，开发下载官网，编写运营推文。用不长不短的四年，做几件值得骄傲一生的事情，真的很有意义！",linkModel: AboutLinkModel("https://kxz.atcumt.com/","矿小助官网","矿大人都在用的宝藏App"),),
       ReceivedMessageScreen(message: "🤩你绝对想不到，我最初加入的是视频组。但是四年时间里，我学习了设计，运营，开发，产品等各种互联网知识，翔工作室是互联网爱好者的乐园，加入我们，我们一起飞翔！",linkModel: AboutLinkModel("https://flyingstudio.feishu.cn/wiki/wikcnx2KKhcZ7Eza3gJq1x0Y4Yg","关于翔工作室","中国矿业大学最早的，由学生自主管理的校园互联网工作室"),),
-      ReceivedMessageScreen(message: "🎉我的Blog",linkModel: AboutLinkModel("https://abiscuit.com/","abiscuit's dream","喜欢做梦，想变成光"),),
+      ReceivedMessageScreen(message: "🎉我的Blog",linkModel: AboutLinkModel("https://abiscuit.net","abiscuit's dream","喜欢做梦，想变成光"),),
       ReceivedMessageScreen(message: "🐧我的QQ",linkModel: AboutLinkModel("https://qm.qq.com/cgi-bin/qm/qr?k=9aggfWj5RMDqYhoUXPJc_RvP3IWmcUY2","花","我要相信光！"),),
     ];
   }
