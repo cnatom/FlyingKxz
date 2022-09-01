@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_intro/flutter_intro.dart';
-import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
-import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
-import 'package:flying_kxz/flying_ui_kit/config.dart';
-import 'package:flying_kxz/flying_ui_kit/loading.dart';
+import 'package:flying_kxz/ui/Text/text.dart';
+import 'package:flying_kxz/ui/Theme/theme.dart';
+import 'package:flying_kxz/ui/config.dart';
+import 'package:flying_kxz/ui/loading.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
@@ -19,7 +19,7 @@ import 'components/course_table_child.dart';
 import 'components/output_ics/output_ics_page.dart';
 import 'components/point_components/point_main.dart';
 import 'components/back_curWeek.dart';
-import 'package:flying_kxz/flying_ui_kit/my_bottom_sheet.dart';
+import 'package:flying_kxz/ui/my_bottom_sheet.dart';
 import 'utils/course_provider.dart';
 
 class CoursePage extends StatefulWidget {
@@ -81,7 +81,7 @@ class CoursePageState extends State<CoursePage> {
   void _introduce(BuildContext context){
     String prefsTag = "course_page_introduce";
     if(Prefs.prefs.getBool(prefsTag)==null){
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 1), () {
         Intro.of(context).start();
         Prefs.prefs.setBool(prefsTag, true);
       });

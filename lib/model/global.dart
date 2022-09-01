@@ -2,16 +2,10 @@
 
 //实体类实例汇总
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/Model/rank_info.dart';
-import 'package:flying_kxz/Model/swiper_info.dart';
-import 'package:flying_kxz/Model/user_info.dart';
-import 'package:flying_kxz/Model/video__data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_info.dart';
 import 'book_detail_info.dart';
 import 'book_info.dart';
-import 'course_info.dart';
 import '../pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
-import 'login_info.dart';
 
 //获取当前学年学期
 void getSchoolYearTerm(){
@@ -36,22 +30,14 @@ void getSchoolYearTerm(){
 }
 
 class Global{
-  static CourseInfo courseInfo = new CourseInfo(); //课表信息
-  static LoginInfo loginInfo = new LoginInfo();//登录信息
-  static UserInfo userInfo = new UserInfo();//用户信息
   static ScoreInfo scoreInfo = new ScoreInfo();//成绩信息
   static List<ExamData> examList = [];//考试列表
-  static VideoInfo videoInfo = new VideoInfo();
   static BookInfo bookInfo = new BookInfo();//图书馆书籍信息
   static BookDetailInfo bookDetailInfo = new BookDetailInfo();
   static DateTime nowDate = DateTime.now(); //当前日期
-  static SwiperInfo swiperInfo = new SwiperInfo();//轮播图
-  static RankInfo rankInfo = new RankInfo();//内测用户排名
   static bool igUpgrade;//是否忽略更新
   static String curVersion;
   static Future<void> clearPrefsData()async{
-    loginInfo = new LoginInfo();
-    courseInfo = new CourseInfo();
     scoreInfo = new ScoreInfo();
     examList = [];
     await Prefs.prefs.clear();

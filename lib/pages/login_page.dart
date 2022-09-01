@@ -9,20 +9,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/cumt_spider/cumt.dart';
-import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
-import 'package:flying_kxz/flying_ui_kit/config.dart';
-import 'package:flying_kxz/flying_ui_kit/custome_router.dart';
-import 'package:flying_kxz/flying_ui_kit/dialog.dart';
-import 'package:flying_kxz/flying_ui_kit/loading.dart';
-import 'package:flying_kxz/flying_ui_kit/toast.dart';
-import 'package:flying_kxz/flying_ui_kit/webview.dart';
+import 'package:flying_kxz/ui/Text/text.dart';
+import 'package:flying_kxz/ui/config.dart';
+import 'package:flying_kxz/ui/custome_router.dart';
+import 'package:flying_kxz/ui/dialog.dart';
+import 'package:flying_kxz/ui/loading.dart';
+import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/webview.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/net_request/login_check_get.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/privacy.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import '../cumt/cumt.dart';
 import 'app_upgrade.dart';
 
 //跳转到当前页面
@@ -70,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
     }
     Cumt cumt = Cumt.getInstance();
     //检测是否激活&验证码
-    if (await loginCheckGet(context, username: _username)) {
+    if (await cumt.loginCheckGet(context, username: _username)) {
       //新登录
       if(await cumt.login(_username, _password,)){
 

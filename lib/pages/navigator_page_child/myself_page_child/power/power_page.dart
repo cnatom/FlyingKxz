@@ -1,20 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
-import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
-import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
-import 'package:flying_kxz/flying_ui_kit/appbar.dart';
-import 'package:flying_kxz/flying_ui_kit/config.dart';
-import 'package:flying_kxz/flying_ui_kit/dialog.dart';
-import 'package:flying_kxz/flying_ui_kit/loading.dart';
-import 'package:flying_kxz/flying_ui_kit/picker.dart';
+import 'package:flying_kxz/ui/Text/text.dart';
+import 'package:flying_kxz/ui/Theme/theme.dart';
+import 'package:flying_kxz/ui/appbar.dart';
+import 'package:flying_kxz/ui/config.dart';
+import 'package:flying_kxz/ui/dialog.dart';
+import 'package:flying_kxz/ui/loading.dart';
+import 'package:flying_kxz/ui/picker.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../../cumt_spider/cumt.dart';
 import 'components/circular_view.dart';
 
 void toPowerPage(BuildContext context) {
@@ -34,7 +32,7 @@ class _PowerPageState extends State<PowerPage> {
       new TextEditingController(text: Prefs.powerRoomid ?? '');
   ThemeProvider themeProvider;
   PowerProvider powerProvider;
-  String powerPerviewText;
+  String powerPreviewText;
   String powerBuilding;
   double powerPercent;
   bool powerLoading;
@@ -56,7 +54,7 @@ class _PowerPageState extends State<PowerPage> {
     FlyDialogDIYShow(context, content: Wrap(
       runSpacing: spaceCardPaddingTB,
       children: [
-        FlyText.title45('请在充值页面点击"缴公寓电费"',maxLine: 10,),
+        FlyText.title45('请在充值页面点击"缴公寓电费"。\n充值需要内网或VPN！',maxLine: 10,),
         Image.asset("images/powerRechargeHelp.png"),
         _buildButton("知道啦，前往充值页面↗",onTap: (){
           launchUrl(
@@ -71,7 +69,7 @@ class _PowerPageState extends State<PowerPage> {
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     powerProvider = Provider.of<PowerProvider>(context, listen: false);
-    powerPerviewText =
+    powerPreviewText =
         context.select((PowerProvider p) => p.previewTextAtDetailPage);
     powerBuilding = context.select((PowerProvider p) => p.powerBuilding);
     powerPercent = context.select((PowerProvider p) => p.percentAtDetailPage);
@@ -81,7 +79,9 @@ class _PowerPageState extends State<PowerPage> {
       key: _scaffoldKey,
       appBar: FlyAppBar(context, "宿舍电量（需内网或VPN）"),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics()
+        ),
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
@@ -97,19 +97,19 @@ class _PowerPageState extends State<PowerPage> {
                 PowerCircularView(
                     powerPercent: powerPercent, themeProvider: themeProvider),
                 SizedBox(
-                  height: spaceCardPaddingTB * 2,
+                  height: spaceCardMarginTB * 2,
                 ),
                 FlyText.title50(
-                  powerPerviewText,
+                  powerPreviewText,
                   color: themeProvider.colorMain,
                   fontWeight: FontWeight.bold,
                 ),
                 SizedBox(
-                  height: spaceCardPaddingTB * 3,
+                  height: spaceCardMarginTB * 3,
                 ),
                 _buildPower(powerBuilding),
                 SizedBox(
-                  height: spaceCardPaddingTB * 3,
+                  height: spaceCardMarginTB,
                 ),
                 _container(
                     title: "充值",
@@ -119,6 +119,7 @@ class _PowerPageState extends State<PowerPage> {
                         _buildButton("前往充值", primer:false,onTap: () => _charge()),
                       ],
                     )),
+                SizedBox(height: 200,)
               ],
             ),
           ),
@@ -199,7 +200,7 @@ class _PowerPageState extends State<PowerPage> {
         ));
   }
 
-  Widget _buildInputButton(String title, {GestureTapCallback onTap}) {
+  Widget _buildInputButton(String title) {
     return _buildDiyButton(title,
         child: _buildInputBar("输入寝室号(如M2B421、Z1B104)", _powerRoomidController));
   }

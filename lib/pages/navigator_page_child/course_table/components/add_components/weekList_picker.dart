@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
-import 'package:flying_kxz/flying_ui_kit/buttons.dart';
-import 'package:flying_kxz/flying_ui_kit/config.dart';
+import 'package:flying_kxz/ui/Text/text.dart';
+import 'package:flying_kxz/ui/buttons.dart';
+import 'package:flying_kxz/ui/config.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 
 class WeekListPicker extends StatefulWidget {

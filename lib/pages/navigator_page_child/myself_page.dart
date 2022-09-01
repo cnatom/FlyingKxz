@@ -7,18 +7,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
-import 'package:flying_kxz/cumt_spider/cumt.dart';
-import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
-import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
-import 'package:flying_kxz/flying_ui_kit/config.dart';
-import 'package:flying_kxz/flying_ui_kit/container.dart';
-import 'package:flying_kxz/flying_ui_kit/dialog.dart';
-import 'package:flying_kxz/flying_ui_kit/loading.dart';
-import 'package:flying_kxz/flying_ui_kit/toast.dart';
-import 'package:flying_kxz/flying_ui_kit/webview.dart';
+import 'package:flying_kxz/cumt/cumt.dart';
+import 'package:flying_kxz/ui/Text/text.dart';
+import 'package:flying_kxz/ui/Theme/theme.dart';
+import 'package:flying_kxz/ui/config.dart';
+import 'package:flying_kxz/ui/container.dart';
+import 'package:flying_kxz/ui/dialog.dart';
+import 'package:flying_kxz/ui/loading.dart';
+import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/webview.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/net_request/feedback_post.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
@@ -31,9 +30,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
-import '../../flying_ui_kit/toast.dart';
+import '../../ui/toast.dart';
 import 'myself_page_child/aboutus/about_page.dart';
-import 'myself_page_child/cumtLogin_view.dart';
+import 'myself_page_child/cumt_login/cumtLogin_view.dart';
 
 class MyselfPage extends StatefulWidget {
   @override
@@ -82,16 +81,8 @@ class _MyselfPageState extends State<MyselfPage>
         confirmText: "发送",
         maxLines: 10);
     if (text != null) {
-      await feedbackPost(context, text: text);
+      await cumt.dio.post("https://user.kxz.atcumt.com/admin/version_new", data: {'data': text,});
       sendInfo('反馈与建议', '发送了反馈:$text');
-    }
-  }
-
-  Future<void> _refresh() async {
-    if(await _initBalanceAndPowerProvider()){
-      showToast("刷新成功！");
-    }else{
-      showToast("刷新失败(连续请求会导致失败，等会再来把)",duration: 4);
     }
   }
 
@@ -132,26 +123,22 @@ class _MyselfPageState extends State<MyselfPage>
           systemOverlayStyle: themeProvider.simpleMode ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
         ),
       ),
-      body: RefreshIndicator(
-        color: themeProvider.colorMain,
-        onRefresh: () => _refresh(),
-        child: Container(
-          height: double.infinity,
-          child: SingleChildScrollView(
-            physics:
-                AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {
-                // 触摸收起键盘
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-                child: Column(
-                  children: children,
-                ),
+      body: Container(
+        height: double.infinity,
+        child: SingleChildScrollView(
+          physics:
+              AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              // 触摸收起键盘
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                  spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+              child: Column(
+                children: children,
               ),
             ),
           ),

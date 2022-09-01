@@ -18,10 +18,10 @@ import 'package:universal_platform/universal_platform.dart';
 
 import 'Model/global.dart';
 import 'chinese.dart';
-import 'cumt_spider/cumt.dart';
-import 'flying_ui_kit/Text/text.dart';
-import 'flying_ui_kit/Theme/theme.dart';
-import 'flying_ui_kit/config.dart';
+import 'cumt/cumt.dart';
+import 'ui/Text/text.dart';
+import 'ui/Theme/theme.dart';
+import 'ui/config.dart';
 import 'pages/navigator_page.dart';
 
 void main() {
@@ -45,15 +45,8 @@ void _ifAndroidSetStatusBarTransparent(){
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 }
-
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  ThemeProvider themeProvider;
+class MyApp extends StatelessWidget {
+  const MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: BalanceProvider()),
       ],
       builder: (context, _) {
-        themeProvider = Provider.of<ThemeProvider>(context);
+        ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
         return MaterialApp(
           navigatorKey: FlyNavigatorPageState.navigatorKey,
           themeMode: themeProvider.themeMode,
@@ -96,21 +89,15 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-//启动页
-class StartPage extends StatefulWidget {
-  @override
-  _StartPageState createState() => _StartPageState();
-}
-
-class _StartPageState extends State<StartPage> {
-  void initFuncWithoutContext()async{
+class StartPage extends StatelessWidget {
+  StartPage({Key key}) : super(key: key);
+  static bool lock = false;
+  Future<void> initFunc(BuildContext context) async {
     // 获取当前App版本
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     Global.curVersion = packageInfo.version;
     //初始化配置（无需context）
     initConfigInfo();
-  }
-  Future<void> initFunc(BuildContext context) async {
     deviceWidth = 1080;
     deviceHeight = 1920;
     //宽屏设备时，修改屏幕参考信息
@@ -149,19 +136,15 @@ class _StartPageState extends State<StartPage> {
 
 
   @override
-  void initState() {
-    super.initState();
-    initFuncWithoutContext();
-
-  }
-
-  @override
   Widget build(BuildContext context) {
-
-    initFunc(context);
+    if(lock==false){
+      lock = true;
+      initFunc(context);
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(),
     );
   }
 }
+

@@ -3,19 +3,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flying_kxz/cumt_spider/cumt.dart';
-import 'package:flying_kxz/cumt_spider/cumt_format.dart';
-import 'package:flying_kxz/flying_ui_kit/Text/text.dart';
-import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
-import 'package:flying_kxz/flying_ui_kit/appbar.dart';
-import 'package:flying_kxz/flying_ui_kit/config.dart';
-import 'package:flying_kxz/flying_ui_kit/dialog.dart';
-import 'package:flying_kxz/flying_ui_kit/toast.dart';
+import 'package:flying_kxz/ui/Text/text.dart';
+import 'package:flying_kxz/ui/Theme/theme.dart';
+import 'package:flying_kxz/ui/appbar.dart';
+import 'package:flying_kxz/ui/config.dart';
+import 'package:flying_kxz/ui/dialog.dart';
+import 'package:flying_kxz/ui/toast.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../../cumt/cumt.dart';
+import '../../../../cumt/cumt_format.dart';
 
 class ImportPage extends StatefulWidget {
   @override
