@@ -1,12 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/cumt_spider/cumt.dart';
-import 'package:flying_kxz/flying_ui_kit/Theme/theme.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/components/preview_view.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../../Model/prefs.dart';
-import '../../../../navigator_page.dart';
 import '../balance_page.dart';
 import '../utils/provider.dart';
 

@@ -23,11 +23,12 @@ class Prefs{
   static String _className = 'className';//班级
   static String _power = 'powerNew';//宿舍电量
   static String _powerMax = 'powerMaxNew';//宿舍最大电量
-
   static String _powerBuilding = "powerBuilding";// 研梅
   static String _powerRoomid = "powerRoomid";// M2B421
   static String _balance = 'balance';//校园卡余额
   static String _balanceHis = 'balanceHis';//校园卡流水
+  static String _balanceRequestDate = 'balanceRequestDate'; // 最近查询校园卡的时间
+  static String _balanceRequestHisDate = 'balanceRequestHisDate'; // 最近查询校园卡流水的时间
   static String _cardNum = 'cardNum';//卡号
   static String _rank = 'rank';//用户内测排名
   static String _courseData = 'courseData';//课表
@@ -62,6 +63,8 @@ class Prefs{
   static String get powerRoomid => prefs.getString(_powerRoomid);
   static String get balance => prefs.getString(_balance);
   static String get balanceHis => prefs.getString(_balanceHis);
+  static String get balanceRequestDate => prefs.getString(_balanceRequestDate);
+  static String get balanceRequestHisDate => prefs.getString(_balanceRequestHisDate);
   static String get cardNum => prefs.getString(_cardNum);
   static String get rank => prefs.getString(_rank);
   static String get courseData => prefs.getString(_courseData);
@@ -94,6 +97,8 @@ class Prefs{
   static set powerBuilding(String value) =>prefs.setString(_powerBuilding, value);
   static set balance(String value) =>prefs.setString(_balance, value);
   static set balanceHis(String value) =>prefs.setString(_balanceHis, value);
+  static set balanceRequestDate(String value) =>prefs.setString(_balanceRequestDate, value);
+  static set balanceRequestHisDate(String value) =>prefs.setString(_balanceRequestHisDate, value);
   static set cardNum(String value) =>prefs.setString(_cardNum, value);
   static set rank(String value) =>prefs.setString(_rank, value);
   static set courseData(String value) =>prefs.setString(_courseData, value);
