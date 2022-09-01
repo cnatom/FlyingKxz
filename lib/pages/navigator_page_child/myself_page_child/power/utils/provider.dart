@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:core';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
-import 'package:flying_kxz/ui/toast.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/tip_page.dart';
+import 'package:flying_kxz/ui/toast.dart';
+
 import '../../../../../Model/prefs.dart';
 
 enum PowerRequestType{

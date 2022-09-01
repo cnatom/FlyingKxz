@@ -1,5 +1,6 @@
 //"我的"页面
 import 'dart:io';
+
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,17 +8,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
-import 'package:flying_kxz/cumt/cumt.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/container.dart';
-import 'package:flying_kxz/ui/dialog.dart';
-import 'package:flying_kxz/ui/loading.dart';
-import 'package:flying_kxz/ui/toast.dart';
-import 'package:flying_kxz/ui/webview.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/cumt/cumt.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
@@ -26,11 +19,18 @@ import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/components/preview.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
+import 'package:flying_kxz/ui/Text/text.dart';
+import 'package:flying_kxz/ui/Theme/theme.dart';
+import 'package:flying_kxz/ui/config.dart';
+import 'package:flying_kxz/ui/container.dart';
+import 'package:flying_kxz/ui/dialog.dart';
+import 'package:flying_kxz/ui/loading.dart';
+import 'package:flying_kxz/ui/webview.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
-import '../../ui/toast.dart';
+
 import 'myself_page_child/aboutus/about_page.dart';
 import 'myself_page_child/cumt_login/cumtLogin_view.dart';
 

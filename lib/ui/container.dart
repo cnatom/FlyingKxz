@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/ui/loading.dart';
 import 'package:flying_kxz/pages/backImage_view.dart';
+import 'package:flying_kxz/ui/loading.dart';
 import 'package:provider/provider.dart';
 
 import 'Theme/theme.dart';

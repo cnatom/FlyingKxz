@@ -1,21 +1,15 @@
 //关于我们
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/aboutus/about_detail.dart';
 import 'package:flying_kxz/ui/Text/text.dart';
 import 'package:flying_kxz/ui/Text/text_widgets.dart';
-import 'package:flying_kxz/ui/appbar.dart';
 import 'package:flying_kxz/ui/config.dart';
-import 'package:flutter/services.dart';
 import 'package:flying_kxz/ui/toast.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/aboutus/about_detail.dart';
-import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/platform_interface.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import 'model/detail_info.dart';
 

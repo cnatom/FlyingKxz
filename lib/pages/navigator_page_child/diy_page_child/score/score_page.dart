@@ -1,24 +1,25 @@
 import 'dart:ui';
-import 'package:flutter_intro/flutter_intro.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/appbar.dart';
-import 'package:flying_kxz/ui/container.dart';
-import 'package:flying_kxz/ui/dialog.dart';
-import 'package:flying_kxz/ui/toast.dart';
-import 'package:flying_kxz/ui/webview.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/import_score_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_info.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_map.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_set_page.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:flying_kxz/ui/Text/text.dart';
+import 'package:flying_kxz/ui/Theme/theme.dart';
+import 'package:flying_kxz/ui/appbar.dart';
 import 'package:flying_kxz/ui/config.dart';
+import 'package:flying_kxz/ui/container.dart';
+import 'package:flying_kxz/ui/dialog.dart';
 import 'package:flying_kxz/ui/loading.dart';
+import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/webview.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
