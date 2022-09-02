@@ -120,6 +120,10 @@ class _PowerPageState extends State<PowerPage> {
                         _buildButton("前往充值", primer:false,onTap: () => _charge()),
                       ],
                     )),
+                SizedBox(
+                  height: spaceCardMarginTB,
+                ),
+                Center(child: FlyText.miniTip30("更新时间:"+powerProvider.requestDateTime),),
                 SizedBox(height: 200,)
               ],
             ),

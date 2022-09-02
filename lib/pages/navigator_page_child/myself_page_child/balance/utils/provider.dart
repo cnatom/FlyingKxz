@@ -124,7 +124,7 @@ class BalanceProvider extends ChangeNotifier{
       if(Prefs.balanceRequestDate!=null){
         _getBalanceDate = Prefs.balanceRequestDate;
       }else{
-        _getBalanceDate = "未更新";
+        _getBalanceDate = "……";
       }
     }
     return _getBalanceDate;
@@ -135,7 +135,7 @@ class BalanceProvider extends ChangeNotifier{
       if(Prefs.balanceRequestHisDate!=null){
         _getBalanceHisDate = Prefs.balanceRequestHisDate;
       }else{
-        _getBalanceHisDate = "未更新";
+        _getBalanceHisDate = "……";
       }
     }
     return _getBalanceHisDate;
