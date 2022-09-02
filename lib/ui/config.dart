@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:io';
+
+import 'package:flutter/material.dart';
+
 import 'Text/text.dart';
 void initConfigInfo(){
   colorMain = Color(0xff00c5a8);

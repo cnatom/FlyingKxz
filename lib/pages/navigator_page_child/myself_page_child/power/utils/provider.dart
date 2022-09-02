@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:core';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
-import 'package:flying_kxz/ui/toast.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/tip_page.dart';
+import 'package:flying_kxz/ui/toast.dart';
+
 import '../../../../../Model/prefs.dart';
 
 enum PowerRequestType{
@@ -14,21 +16,25 @@ enum PowerRequestType{
 typedef PowerPostCallback = String Function(Map<String,dynamic> map);
 
 class PowerProvider extends ChangeNotifier{
-  Cumt cumt = Cumt.getInstance();
   double power = Prefs.power;
+
   bool powerLoading = false;
+
   static List<String> apartment = ["研梅", "杏苑", "松竹", "桃苑"];
+
   Map<String, dynamic> _buildingMap = {
     "研梅": "14",
     "杏苑": "13",
     "松竹": "12",
     "桃苑": "11"
   };
+
   Map<PowerRequestType, String> _urls = {
     PowerRequestType.account: 'http://ykt.cumt.edu.cn:8988/web/Common/Tsm.html',
     PowerRequestType.aid: 'http://ykt.cumt.edu.cn:8988/web/NetWork/AppList.html',
     PowerRequestType.power: 'http://ykt.cumt.edu.cn:8988/web/Common/Tsm.html'
   };
+
   Map<String,String> headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
@@ -53,6 +59,9 @@ class PowerProvider extends ChangeNotifier{
     this._powerBuilding = powerBuilding;
     notifyListeners();
   }
+
+  //更新时间
+  String _requestDateTime;
 
   Future<bool> getPreview()async{
     try{
@@ -92,6 +101,7 @@ class PowerProvider extends ChangeNotifier{
       RegExp regExp = new RegExp(r'([0-9]\d*\.?\d*)$');
       if(regExp.hasMatch(power)){
         this.power = double.tryParse(regExp.firstMatch(power).group(0));
+        requestDateTime = DateTime.now().toString().substring(0,16);
         _savePrefs(this.power, building, roomid);
         notifyListeners();
         if(show) showToast("获取电量成功!");
@@ -112,11 +122,12 @@ class PowerProvider extends ChangeNotifier{
   }
 
   Future<String> _postStepFunc(String url,data,PowerPostCallback callback)async{
-    var res = await cumt.dio.post(url,data: data,options: Options(headers: headers));
+    var res = await Cumt.getInstance().dio.post(url,data: data,options: Options(headers: headers));
     var map = jsonDecode(res.toString()) as Map<String,dynamic>;
     var result = callback(map);
     return result;
   }
+
   Future<String> _getAccount(String username) async{
     var url = _urls[PowerRequestType.account];
     var data = 'jsondata={"query_card":{"idtype":"sno","id":"' + username +
@@ -166,5 +177,19 @@ class PowerProvider extends ChangeNotifier{
     return true;
   }
 
+  set requestDateTime(String value) {
+    Prefs.powerRequestDate = value;
+    _requestDateTime = value;
+  }
 
+  String get requestDateTime{
+    if(_requestDateTime==null){
+      if(Prefs.powerRequestDate!=null){
+        _requestDateTime = Prefs.powerRequestDate;
+      }else{
+        _requestDateTime = "……";
+      }
+    }
+    return _requestDateTime;
+  }
 }

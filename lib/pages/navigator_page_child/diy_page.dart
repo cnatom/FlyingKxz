@@ -3,16 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/Text/text.dart';
 import 'package:flying_kxz/ui/Theme/theme.dart';
 import 'package:flying_kxz/ui/config.dart';
 import 'package:flying_kxz/ui/container.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:provider/provider.dart';
+
 import 'diy_page_child/book/book_page.dart';
-import 'diy_page_child/exam/exam_page.dart';
 import 'diy_page_child/bus/school_bus_page.dart';
 import 'diy_page_child/calendar/school_calendar_page.dart';
+import 'diy_page_child/exam/exam_page.dart';
 import 'diy_page_child/score/score_page.dart';
 class DiyPage extends StatefulWidget {
   @override

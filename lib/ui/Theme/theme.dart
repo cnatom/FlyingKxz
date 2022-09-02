@@ -1,8 +1,9 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flying_kxz/ui/config.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/ui/config.dart';
 
 class ThemeProvider extends ChangeNotifier {
   static ThemeMode _themeMode = ThemeMode.light;

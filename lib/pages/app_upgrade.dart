@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/ui/Text/text.dart';
 import 'package:flying_kxz/ui/config.dart';
 import 'package:flying_kxz/ui/toast.dart';
-import 'package:flying_kxz/Model/global.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_platform/universal_platform.dart';

@@ -1,15 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Text/text_widgets.dart';
 import 'package:flying_kxz/ui/appbar.dart';
-import 'package:flying_kxz/ui/buttons.dart';
 import 'package:flying_kxz/ui/config.dart';
 import 'package:flying_kxz/ui/toast.dart';
-import 'package:flying_kxz/ui/webview.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 

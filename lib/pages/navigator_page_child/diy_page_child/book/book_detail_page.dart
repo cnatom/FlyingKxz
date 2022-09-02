@@ -4,14 +4,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/Text/text.dart';
 import 'package:flying_kxz/ui/appbar.dart';
 import 'package:flying_kxz/ui/config.dart';
 import 'package:flying_kxz/ui/loading.dart';
 
-import 'package:flying_kxz/Model/book_detail_info.dart';
-import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
+import 'model/book_detail_info.dart';
 //跳转到当前页面
 void toBookDetailPage(BuildContext context,String url,String bookName) {
   Navigator.push(

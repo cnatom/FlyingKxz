@@ -1,23 +1,24 @@
 import 'dart:io';
-import 'package:dio/dio.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_intro/flutter_intro.dart';
+import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/cumt_login.dart';
 import 'package:flying_kxz/ui/Text/text.dart';
 import 'package:flying_kxz/ui/Theme/theme.dart';
 import 'package:flying_kxz/ui/config.dart';
 import 'package:flying_kxz/ui/container.dart';
 import 'package:flying_kxz/ui/custome_router.dart';
-import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/cumt_login.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
+
 import '../cumt/cumt.dart';
 import 'app_upgrade.dart';
 import 'navigator_page_child/course_table/course_page.dart';
-import 'package:flutter_intro/flutter_intro.dart';
 
 Future<void> sendInfo(String page, String action) async {
   var info = {

@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
+import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:flying_kxz/ui/Text/text.dart';
 import 'package:flying_kxz/ui/Theme/theme.dart';
 import 'package:flying_kxz/ui/appbar.dart';
@@ -8,11 +11,9 @@ import 'package:flying_kxz/ui/config.dart';
 import 'package:flying_kxz/ui/dialog.dart';
 import 'package:flying_kxz/ui/loading.dart';
 import 'package:flying_kxz/ui/picker.dart';
-import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import 'components/circular_view.dart';
 
 void toPowerPage(BuildContext context) {
@@ -119,6 +120,10 @@ class _PowerPageState extends State<PowerPage> {
                         _buildButton("前往充值", primer:false,onTap: () => _charge()),
                       ],
                     )),
+                SizedBox(
+                  height: spaceCardMarginTB,
+                ),
+                Center(child: FlyText.miniTip30("更新时间:"+powerProvider.requestDateTime),),
                 SizedBox(height: 200,)
               ],
             ),

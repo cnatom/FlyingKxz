@@ -3,9 +3,10 @@
 //实体类实例汇总
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_info.dart';
-import 'book_detail_info.dart';
-import 'book_info.dart';
+
 import '../pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
+import '../pages/navigator_page_child/diy_page_child/book/model/book_detail_info.dart';
+import '../pages/navigator_page_child/diy_page_child/book/model/book_info.dart';
 
 //获取当前学年学期
 void getSchoolYearTerm(){

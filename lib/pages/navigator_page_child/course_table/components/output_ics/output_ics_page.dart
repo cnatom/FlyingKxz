@@ -1,11 +1,14 @@
 
 
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/components/output_ics/ics_data.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_color.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/ui/Text/text.dart';
 import 'package:flying_kxz/ui/Text/text_widgets.dart';
 import 'package:flying_kxz/ui/Theme/theme.dart';
@@ -15,14 +18,7 @@ import 'package:flying_kxz/ui/config.dart';
 import 'package:flying_kxz/ui/container.dart';
 import 'package:flying_kxz/ui/dialog.dart';
 import 'package:flying_kxz/ui/toast.dart';
-import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/components/output_ics/ics_data.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_color.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:universal_platform/universal_platform.dart';

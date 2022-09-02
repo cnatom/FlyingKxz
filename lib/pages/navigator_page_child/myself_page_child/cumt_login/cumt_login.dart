@@ -1,11 +1,11 @@
 //校园网登陆
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flying_kxz/ui/toast.dart';
-import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/ui/toast.dart';
 
 Future<bool> cumtLoginGet(BuildContext context,{@required String username,@required String password,@required int loginMethod}) async {
   Prefs.cumtLoginUsername = username;

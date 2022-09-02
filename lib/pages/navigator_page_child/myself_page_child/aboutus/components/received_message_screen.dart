@@ -23,7 +23,6 @@ class ReceivedMessageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     final messageTextGroup = Flexible(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -79,7 +78,7 @@ class ReceivedMessageScreen extends StatelessWidget {
   Widget _linkView(BuildContext context,AboutLinkModel linkModel){
     return InkWell(
       onTap: (){
-        launchUrl(Uri.parse(linkModel.link));
+        launchUrl(Uri.parse(linkModel.link),mode: LaunchMode.externalApplication);
       },
       child: FlyContainer(
         padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB, spaceCardPaddingRL, spaceCardPaddingTB),

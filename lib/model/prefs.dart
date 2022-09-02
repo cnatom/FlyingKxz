@@ -1,7 +1,6 @@
 
 
 import 'dart:core';
-import 'dart:ffi';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,6 +24,7 @@ class Prefs{
   static String _powerMax = 'powerMaxNew';//宿舍最大电量
   static String _powerBuilding = "powerBuilding";// 研梅
   static String _powerRoomid = "powerRoomid";// M2B421
+  static String _powerRequestDate = "powerRequestDate";// 最近查询宿舍电量的时间
   static String _balance = 'balance';//校园卡余额
   static String _balanceHis = 'balanceHis';//校园卡流水
   static String _balanceRequestDate = 'balanceRequestDate'; // 最近查询校园卡的时间
@@ -61,6 +61,7 @@ class Prefs{
   static double get powerMax => prefs.getDouble(_powerMax);
   static String get powerBuilding => prefs.getString(_powerBuilding);
   static String get powerRoomid => prefs.getString(_powerRoomid);
+  static String get powerRequestDate => prefs.getString(_powerRequestDate);
   static String get balance => prefs.getString(_balance);
   static String get balanceHis => prefs.getString(_balanceHis);
   static String get balanceRequestDate => prefs.getString(_balanceRequestDate);
@@ -95,6 +96,7 @@ class Prefs{
   static set powerMax(double value) =>prefs.setDouble(_powerMax, value);
   static set powerRoomid(String value) =>prefs.setString(_powerRoomid, value);
   static set powerBuilding(String value) =>prefs.setString(_powerBuilding, value);
+  static set powerRequestDate(String value) =>prefs.setString(_powerRequestDate, value);
   static set balance(String value) =>prefs.setString(_balance, value);
   static set balanceHis(String value) =>prefs.setString(_balanceHis, value);
   static set balanceRequestDate(String value) =>prefs.setString(_balanceRequestDate, value);

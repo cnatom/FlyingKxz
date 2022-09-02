@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/Text/text.dart';
 import 'package:flying_kxz/ui/config.dart';
 import 'package:flying_kxz/ui/loading.dart';
 import 'package:flying_kxz/ui/toast.dart';
-import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
+
 import 'book_detail_page.dart';
-import 'book_get.dart';
+import 'utils/book_get.dart';
 
 class BookData {
   BookData(

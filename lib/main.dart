@@ -4,7 +4,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/Model/prefs.dart';
@@ -19,10 +18,10 @@ import 'package:universal_platform/universal_platform.dart';
 import 'Model/global.dart';
 import 'chinese.dart';
 import 'cumt/cumt.dart';
+import 'pages/navigator_page.dart';
 import 'ui/Text/text.dart';
 import 'ui/Theme/theme.dart';
 import 'ui/config.dart';
-import 'pages/navigator_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

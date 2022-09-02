@@ -1,21 +1,23 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_add_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/import_exam_page.dart';
 import 'package:flying_kxz/ui/Text/text.dart';
 import 'package:flying_kxz/ui/Theme/theme.dart';
 import 'package:flying_kxz/ui/config.dart';
 import 'package:flying_kxz/ui/container.dart';
 import 'package:flying_kxz/ui/my_bottom_sheet.dart';
 import 'package:flying_kxz/ui/toast.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
-import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/Model/prefs.dart';
-import 'dart:async';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_add_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/import_exam_page.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
+
 import '../../../navigator_page.dart';
 
 class ExamView extends StatefulWidget {
