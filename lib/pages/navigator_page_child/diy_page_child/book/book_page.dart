@@ -11,7 +11,7 @@ import 'package:flying_kxz/ui/loading.dart';
 import 'package:flying_kxz/ui/toast.dart';
 
 import 'book_detail_page.dart';
-import 'book_get.dart';
+import 'utils/book_get.dart';
 
 class BookData {
   BookData(
