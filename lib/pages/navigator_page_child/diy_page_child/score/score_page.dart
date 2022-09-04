@@ -70,6 +70,13 @@ class _ScorePageState extends State<ScorePage>
     ScoreMap.init();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    Global.scoreInfo = new ScoreInfo();
+    Intro.of(context).dispose();
+  }
+
   _import() async {
     var result = await Navigator.push(
         context, CupertinoPageRoute(builder: (context) => ImportScorePage()));
@@ -167,6 +174,9 @@ class _ScorePageState extends State<ScorePage>
           ],
         ));
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -675,11 +685,7 @@ class _ScorePageState extends State<ScorePage>
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    Global.scoreInfo = new ScoreInfo();
-  }
+
 
   Widget nullView() {
     return Container();
