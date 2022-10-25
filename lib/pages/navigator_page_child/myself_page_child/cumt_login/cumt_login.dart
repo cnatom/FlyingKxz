@@ -45,8 +45,10 @@ Future<bool> cumtLoginGet(BuildContext context,{@required String username,@requi
             showToast( "账号不存在，请切换运营商再尝试",);
           }else if(map['msg']=='UmFkOkxpbWl0IFVzZXJzIEVycg=='){
             showToast('您的登陆超限\n请在"用户自助服务系统"下线终端。',);
+          }else if(map['msg']=='QXV0aGVudGljYXRpb24gRmFpbCBFcnJDb2RlPTE2'){
+            showToast("本时段不允许上网",);
           }else{
-            showToast("未知错误，欢迎向我们反馈QAQ",);
+            showToast("未知错误，欢迎向我们反馈QAQ");
           }
           break;
         }
