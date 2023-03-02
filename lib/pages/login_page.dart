@@ -311,10 +311,10 @@ class _LoginPageState extends State<LoginPage> {
   //小按钮
   Widget _buildFlatButton(String text,
           {VoidCallback onPressed}) =>
-      FlatButton(
+      TextButton(
         onPressed: onPressed,
-        highlightColor: Colors.transparent, //点击后的颜色为透明
-        splashColor: Colors.transparent, //点击波纹的颜色为透明
+        // highlightColor: Colors.transparent, //点击后的颜色为透明
+        // splashColor: Colors.transparent, //点击波纹的颜色为透明
         child: FlyText.main35(
           text,
           color: Colors.white.withOpacity(0.6),

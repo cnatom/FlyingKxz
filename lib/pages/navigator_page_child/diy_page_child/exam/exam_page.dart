@@ -105,10 +105,10 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
             borderRadius: BorderRadius.all(Radius.circular(10))),
         content: FlyText.main40('确定删除此倒计时卡片？'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             child: FlyText.main40('确定',color: themeProvider.colorMain),),
-          FlatButton(
+          TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: FlyText.mainTip40('取消',),
           ),

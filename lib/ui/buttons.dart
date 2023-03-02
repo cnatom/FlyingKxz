@@ -133,10 +133,10 @@ Widget FlyPreviewCardButton(
     );
 
 //小按钮
-Widget FlyGreyFlatButton(String text, {VoidCallback onPressed,double fontSize}) => FlatButton(
+Widget FlyGreyFlatButton(String text, {VoidCallback onPressed,double fontSize}) => TextButton(
   onPressed: onPressed,
-  highlightColor: Colors.transparent, //点击后的颜色为透明
-  splashColor: Colors.transparent, //点击波纹的颜色为透明
+  // highlightColor: Colors.transparent, //点击后的颜色为透明
+  // splashColor: Colors.transparent, //点击波纹的颜色为透明
   child: FlyText.mainTip35(text),
 );
 

@@ -476,11 +476,11 @@ class _MyselfPageState extends State<MyselfPage>
               maxLine: 100,
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 onPressed: () => _signOut(),
                 child: FlyText.main40('确定', color: colorMain),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
                 child: FlyText.mainTip40(
                   '取消',

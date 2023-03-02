@@ -240,10 +240,10 @@ class _CourseCardState extends State<CourseCard> {
             borderRadius: BorderRadius.all(Radius.circular(10))),
         content: FlyText.main40('确定删除此课程?'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             child: FlyText.main40('确定',color: colorMain),),
-          FlatButton(
+          TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: FlyText.mainTip40('取消',),
           ),

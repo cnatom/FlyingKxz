@@ -222,7 +222,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              FlatButton(
+              TextButton(
                 onLongPress: (){
                   if(!miniLoading){
                     if(curPage==1) {
@@ -251,7 +251,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                 child: miniLoading==true?loadingAnimationIOS():FlyText.main40(
                   "$curPage/$allPage",),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   if(!miniLoading){
                     if(curPage<allPage){
