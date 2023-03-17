@@ -18,7 +18,6 @@ import 'package:universal_platform/universal_platform.dart';
 import 'Model/global.dart';
 import 'chinese.dart';
 import 'cumt/cumt.dart';
-import 'pages/navigator_page.dart';
 import 'ui/Text/text.dart';
 import 'ui/Theme/theme.dart';
 import 'ui/config.dart';

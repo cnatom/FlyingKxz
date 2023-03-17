@@ -27,7 +27,7 @@ dependencies:
   photo_view: any
   cached_network_image: any
   flutter_swiper: any
-  dio: any
+  dio: ^4.0.0
   badges: ^2.0.1
 #  flutter_page_indicator:
   sliding_up_panel: any

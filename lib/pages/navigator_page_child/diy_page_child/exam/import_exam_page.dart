@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
@@ -169,9 +169,7 @@ class _ImportExamPageState extends State<ImportExamPage> {
           children: [
             InkWell(
               onTap: ()=>_showDetail(),
-              child: Badge(
-                padding: EdgeInsets.all(3),
-                elevation: 1,
+              child: badges.Badge(
                 badgeContent: Text(result.length.toString(),style: TextStyle(color: Colors.white),),
                 child: Icon(Icons.list,size: 35,color: textColor,),
               ),
