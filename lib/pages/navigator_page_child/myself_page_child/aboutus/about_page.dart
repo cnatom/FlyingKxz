@@ -5,10 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/aboutus/about_detail.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Text/text_widgets.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'model/detail_info.dart';

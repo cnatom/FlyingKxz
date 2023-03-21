@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/components/preview_view.dart';
 import 'package:provider/provider.dart';

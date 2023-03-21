@@ -19,13 +19,7 @@ import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/components/preview.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/container.dart';
-import 'package:flying_kxz/ui/dialog.dart';
-import 'package:flying_kxz/ui/loading.dart';
-import 'package:flying_kxz/ui/webview.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';

@@ -6,10 +6,7 @@ import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/bottom_sheet.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/ui.dart';
 
 class ExamAddView extends StatefulWidget {
   @override

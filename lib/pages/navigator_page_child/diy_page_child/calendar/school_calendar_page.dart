@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/ui/appbar.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../../navigator_page.dart';

@@ -5,7 +5,7 @@ import 'package:flying_kxz/pages/backImage_view.dart';
 import 'package:flying_kxz/ui/loading.dart';
 import 'package:provider/provider.dart';
 
-import 'Theme/theme.dart';
+import 'theme.dart';
 import 'config.dart';
 
 class FlyContainer extends StatefulWidget {

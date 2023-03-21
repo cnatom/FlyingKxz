@@ -1,6 +1,6 @@
 //背景图片
 import 'package:flutter/cupertino.dart';
-import 'package:flying_kxz/ui/config.dart';
+import 'package:flying_kxz/ui/ui.dart';
 
 GlobalKey<BackImgViewState> backImgViewKey = new GlobalKey<BackImgViewState>();
 class BackImgView extends StatefulWidget {

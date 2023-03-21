@@ -2,11 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/add_components/weekList_picker.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/bottom_sheet.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/dialog.dart';
-import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/ui.dart';
 
 import 'lessonWeekNum_picker.dart';
 

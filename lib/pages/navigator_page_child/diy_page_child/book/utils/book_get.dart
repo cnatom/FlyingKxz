@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/global.dart';
 
-import '../model/book_info.dart';
+import '../entity.dart';
 
 //获取课表数据
 //xnm: '2019' 代表2019-2020学年

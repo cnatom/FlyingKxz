@@ -65,19 +65,6 @@ class CourseProvider extends ChangeNotifier{
     notifyListeners();
     sendInfo('主页', '导入了课表');
   }
-  ///获取2019年第1学期课表
-  ///CourseProvider().get("token","2019","1");
-  get(String year,String term) {
-    // loading = true;
-    notifyListeners();
-    String newDateTimeStr;
-    if(term=='1'){
-      newDateTimeStr = '$year-09-07';
-    }else{
-      newDateTimeStr = '${int.parse(year)+1}-03-01';
-    }
-    setAdmissionDateTime(newDateTimeStr);
-  }
   /// 修改当前周
   /// CourseProvider().changeWeek(5);
   changeWeek(int week){

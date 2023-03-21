@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
-import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:ical/serializer.dart';
 import 'package:path_provider/path_provider.dart';
 

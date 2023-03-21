@@ -3,10 +3,7 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_color.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
 class CourseTableChild extends StatefulWidget {

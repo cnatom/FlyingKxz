@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
+import 'package:flying_kxz/ui/text.dart';
 import 'package:flying_kxz/ui/toast.dart';
 
 import 'config.dart';

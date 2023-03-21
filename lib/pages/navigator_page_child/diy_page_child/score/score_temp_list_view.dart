@@ -2,9 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/bottom_sheet.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
 class ScoreTempListView extends StatefulWidget {

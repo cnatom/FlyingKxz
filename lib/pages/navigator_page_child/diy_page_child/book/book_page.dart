@@ -5,10 +5,7 @@ import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/loading.dart';
-import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/ui.dart';
 
 import 'book_detail_page.dart';
 import 'utils/book_get.dart';
@@ -34,7 +31,6 @@ class BookData {
 }
 //跳转到当前页面
 void toBookPage(BuildContext context) {
-
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BookPage()));
   sendInfo('图书馆', '初始化图书馆页面');

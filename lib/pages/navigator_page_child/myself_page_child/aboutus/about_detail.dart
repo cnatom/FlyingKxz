@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/aboutus/model/detail_info.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/appbar.dart';
+import 'package:flying_kxz/ui/ui.dart';
 
 //跳转到当前页面
 void toAboutDetailPage(BuildContext context,String qqNumber,DetailInfo info) {

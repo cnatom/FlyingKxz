@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 
-import 'Text/text.dart';
+import 'text.dart';
 void showPicker(BuildContext context,GlobalKey scaffoldKey,{String title,@required List pickerDatas,@required Color colorRight,@required PickerConfirmCallback onConfirm,bool isArray = true}) {
   var picker = new Picker(
       textStyle: TextStyle(fontSize: fontSizeMain40,color: Theme.of(context).primaryColor),

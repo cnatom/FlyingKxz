@@ -6,7 +6,7 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score
 
 import '../pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
 import '../pages/navigator_page_child/diy_page_child/book/model/book_detail_info.dart';
-import '../pages/navigator_page_child/diy_page_child/book/model/book_info.dart';
+import '../pages/navigator_page_child/diy_page_child/book/entity.dart';
 
 //获取当前学年学期
 void getSchoolYearTerm(){
@@ -39,8 +39,6 @@ class Global{
   static bool igUpgrade;//是否忽略更新
   static String curVersion;
   static Future<void> clearPrefsData()async{
-    scoreInfo = new ScoreInfo();
-    examList = [];
     await Prefs.prefs.clear();
     getSchoolYearTerm();
   }

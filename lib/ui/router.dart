@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class CustomRoute extends PageRouteBuilder{
+class FadeTransitionRouter extends PageRouteBuilder{
   final Widget widget;
-  CustomRoute(this.widget,{int milliseconds = 1000})
+  FadeTransitionRouter(this.widget,{int milliseconds = 1000})
       :super(
       transitionDuration:Duration(milliseconds:milliseconds),
       pageBuilder:(

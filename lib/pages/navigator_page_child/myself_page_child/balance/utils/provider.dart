@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
 import 'package:flying_kxz/cumt/cumt_format.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/model/detail_model.dart';
-import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/ui.dart';
 
 import '../../../../../Model/prefs.dart';
 import '../../../../navigator_page.dart';

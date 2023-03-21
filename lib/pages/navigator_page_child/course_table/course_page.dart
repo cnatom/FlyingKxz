@@ -8,11 +8,7 @@ import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/loading.dart';
-import 'package:flying_kxz/ui/my_bottom_sheet.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../../Model/prefs.dart';
@@ -21,7 +17,6 @@ import 'components/back_curWeek.dart';
 import 'components/course_table_child.dart';
 import 'components/output_ics/output_ics_page.dart';
 import 'components/point_components/point_main.dart';
-import 'utils/course_provider.dart';
 
 class CoursePage extends StatefulWidget {
   @override

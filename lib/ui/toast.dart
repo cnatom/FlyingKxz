@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flying_kxz/ui/config.dart';
 
-import 'Text/text.dart';
+import 'text.dart';
 
 void showToast(String text,
     {String subTitle,int duration = 2, int gravity = 2}) {

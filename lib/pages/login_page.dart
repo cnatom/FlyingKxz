@@ -3,22 +3,13 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/privacy.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/custome_router.dart';
-import 'package:flying_kxz/ui/dialog.dart';
-import 'package:flying_kxz/ui/loading.dart';
-import 'package:flying_kxz/ui/toast.dart';
-import 'package:flying_kxz/ui/webview.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../cumt/cumt.dart';
@@ -27,7 +18,7 @@ import 'app_upgrade.dart';
 //跳转到当前页面
 void toLoginPage(BuildContext context) async {
   Navigator.of(context).pushAndRemoveUntil(
-      CustomRoute(LoginPage(), milliseconds: 1000), (route) => route == null);
+      FadeTransitionRouter(LoginPage(), milliseconds: 1000), (route) => route == null);
 }
 
 //登录页面

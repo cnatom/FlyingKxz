@@ -4,17 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_temp_list_view.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/appbar.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/container.dart';
-import 'package:flying_kxz/ui/my_bottom_sheet.dart';
-import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../cumt/cumt.dart';
 import '../../../../cumt/cumt_format.dart';
+import '../../../../ui/sheet.dart';
 import '../../../tip_page.dart';
 import 'import_help_page.dart';
 

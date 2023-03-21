@@ -8,11 +8,7 @@ import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/cumt_login.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/container.dart';
-import 'package:flying_kxz/ui/custome_router.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +35,7 @@ Future<void> sendInfo(String page, String action) async {
 //跳转到当前页面
 void toNavigatorPage(BuildContext context) {
   Navigator.of(context).pushAndRemoveUntil(
-      CustomRoute(FlyNavigatorPage(), milliseconds: 500),
+      FadeTransitionRouter(FlyNavigatorPage(), milliseconds: 500),
       (route) => route == null);
 }
 

@@ -1,13 +1,11 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/custome_router.dart';
+import 'package:flying_kxz/ui/ui.dart';
 //跳转到当前页面
 void toNullPage(BuildContext context) async {
   Navigator.of(context).pushAndRemoveUntil(
-      CustomRoute(NullPage(), milliseconds: 1000), (route) => route == null);
+      FadeTransitionRouter(NullPage(), milliseconds: 1000), (route) => route == null);
 }
 class NullPage extends StatelessWidget {
   @override

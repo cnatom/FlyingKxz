@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/appbar.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/loading.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 

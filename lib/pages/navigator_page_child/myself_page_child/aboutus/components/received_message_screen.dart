@@ -2,13 +2,8 @@
 import 'dart:math' as math; // import this
 
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:provider/provider.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../../../ui/config.dart';
-import '../../../../../ui/container.dart';
 import '../model/link_card.dart';
 import 'custom_shape.dart';
 
