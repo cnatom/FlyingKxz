@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -83,7 +84,6 @@ class PowerProvider extends ChangeNotifier{
     notifyListeners();
     if(powerBuilding!=null&&powerRoomid!=null&&powerRoomid.isNotEmpty){
       await _get(powerBuilding, powerRoomid,show: true);
-      sendInfo("宿舍电量", "绑定宿舍:$powerBuilding $powerRoomid");
     }else{
       showToast( "请输入完整");
     }
@@ -105,7 +105,7 @@ class PowerProvider extends ChangeNotifier{
         _savePrefs(this.power, building, roomid);
         notifyListeners();
         if(show) showToast("获取电量成功!");
-        sendInfo("宿舍电量", "获取宿舍电量:$power");
+        Logger.sendInfo("宿舍电量", "获取,成功,$powerBuilding,$powerRoomid",{"power":power});
         return true;
       }else{
         if(show) showToast(power);
@@ -116,7 +116,7 @@ class PowerProvider extends ChangeNotifier{
         showToast("请求失败:"+e.message+"\n可能未连接校内网",duration: 4);
         toTipPage();
       }
-      sendInfo("宿舍电量", "获取宿舍电量失败:$powerBuilding $powerRoomid");
+      Logger.sendInfo("Power", "获取,失败,$powerBuilding,$powerRoomid",{});
       return false;
     }
   }

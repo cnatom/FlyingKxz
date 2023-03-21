@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/course_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/bean.dart';
@@ -63,7 +64,7 @@ class CourseProvider extends ChangeNotifier{
     }
     _savePrefs();
     notifyListeners();
-    sendInfo('主页', '导入了课表');
+    Logger.sendInfo("Course", "导入", {"info":infoByCourse.map((e) => e.toJson()).toList()});
   }
   /// 修改当前周
   /// CourseProvider().changeWeek(5);
@@ -116,22 +117,6 @@ class CourseProvider extends ChangeNotifier{
     CoursePageState.coursePageController = new PageController(initialPage: curWeek-1,);
     curMondayDate = admissionDate.add(Duration(days: 7*(curWeek-1)));
     notifyListeners();
-  }
-  /// 用于测试数据
-  /// CourseProvider().test();
-  void test(){
-    for(int index = 1;index<=22;index++){
-      debugPrint("第$index周课程");
-      for(var course in info[index]){
-        debugPrint(course.toJson().toString());
-      }
-      for(var i in pointArray[index]){
-        debugPrint(i.toString());
-      }
-    }
-    for(int i = 0;i<infoByCourse.length;i++){
-      debugPrint(infoByCourse[i].title);
-    }
   }
   bool _equal(CourseData courseData1,CourseData courseData2){
     if(courseData1.title==courseData2.title&&

@@ -1,19 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../ui/dialog.dart';
-
 //跳转到当前页面
 void toBalancePage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BalancePage()));
-  sendInfo('校园卡', '初始化校园卡页面');
+  Logger.sendInfo('Balance', '进入',{});
 }
 
 class BalancePage extends StatefulWidget {

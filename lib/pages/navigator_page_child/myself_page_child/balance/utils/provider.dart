@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
 import 'package:flying_kxz/cumt/cumt_format.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/model/detail_model.dart';
 import 'package:flying_kxz/ui/ui.dart';
 
@@ -36,10 +37,11 @@ class BalanceProvider extends ChangeNotifier{
       cardNum = map['data']['ZH'];
       balance = (double.parse(map['data']['YE'])/100).toStringAsFixed(2);
       getBalanceDate = DateTime.now().toString().substring(0,16);
-      sendInfo('校园卡', '获取校园卡余额:${balance}');
+      Logger.sendInfo('Balance', '余额,成功',{'cardNum':cardNum,'balance':balance});
       notifyListeners();
       return true;
     }on DioError catch(e){
+      Logger.sendInfo('Balance', '余额,失败',{'cardNum':cardNum,'balance':balance});
       return false;
     }
   }
@@ -53,9 +55,11 @@ class BalanceProvider extends ChangeNotifier{
       detailInfo = BalanceDetailModel.fromJson(map);
       getBalanceHisDate = DateTime.now().toString().substring(0,16);
       notifyListeners();
+      Logger.sendInfo("Balance", "历史,成功", map);
       return true;
     }on DioError catch(e){
       if(showToasts) showToast("获取校园卡流水失败\n ${e.message.toString()}");
+      Logger.sendInfo("Balance", "历史,失败", {});
       return false;
     }
   }

@@ -8,12 +8,14 @@ import 'package:flying_kxz/model/global.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 
+import '../../../../model/logger/log.dart';
 import 'model/book_detail_info.dart';
 //跳转到当前页面
 void toBookDetailPage(BuildContext context,String url,String bookName) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BookDetailPage(url: url,bookName: bookName,)));
-  sendInfo('图书馆', '查看图书明细:$bookName');
+  Logger.sendInfo('BookDetail', '查看图书,$bookName',{});
+
 }
 class BookDetailPage extends StatefulWidget {
   final String url;

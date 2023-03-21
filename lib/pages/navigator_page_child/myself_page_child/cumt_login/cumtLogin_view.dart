@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/cumt_login.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -166,7 +167,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
 void toCumtLoginHelpPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => CumtLoginHelpPage()));
-  sendInfo('校园网登录', '初始化帮助页面');
+  Logger.sendInfo('CumtLoginHelp', '进入',{});
 }
 class CumtLoginHelpPage extends StatefulWidget {
   @override

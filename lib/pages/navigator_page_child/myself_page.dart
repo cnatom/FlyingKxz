@@ -11,6 +11,7 @@ import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
@@ -43,12 +44,12 @@ class _MyselfPageState extends State<MyselfPage>
     super.initState();
     cumt = Cumt.getInstance();
     _initBalanceAndPowerProvider();
-    sendInfo('我的', '初始化我的页面');
+    Logger.sendInfo("Myself", "初始化", {});
   }
 
   // 退出登录
   void _signOut() async {
-    sendInfo('退出登录', '退出了登录');
+    Logger.sendInfo("Myself", "退出登录", {});
     await Global.clearPrefsData();
     backImgFile = null;
     await cumt.clearCookie();
@@ -76,7 +77,7 @@ class _MyselfPageState extends State<MyselfPage>
         maxLines: 10);
     if (text != null) {
       await cumt.dio.post("https://user.kxz.atcumt.com/admin/version_new", data: {'data': text,});
-      sendInfo('反馈与建议', '发送了反馈:$text');
+      Logger.sendInfo('Myself', '反馈',{"feedback":text});
     }
   }
 

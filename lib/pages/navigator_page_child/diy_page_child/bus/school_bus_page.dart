@@ -6,11 +6,13 @@ import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../model/logger/log.dart';
+
 //跳转到当前页面
 void toSchoolBusPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => SchoolBusPage()));
-  sendInfo('校车', '初始化校车页面');
+  Logger.sendInfo('SchoolBus', '进入',{});
 }
 
 class SchoolBusPage extends StatefulWidget {
@@ -183,7 +185,6 @@ class _BusTimeListViewState extends State<BusTimeListView> {
     //检查是否即将到该时间点
     bool checkTime(String timeStr) {
       DateTime now = DateTime.now();
-      debugPrint(now.weekday.toString());
       List timeSpl = timeStr.split(":");
       DateTime dateTime = DateTime(
           now.year,

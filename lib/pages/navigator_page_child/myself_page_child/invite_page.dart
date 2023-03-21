@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -54,7 +55,7 @@ class _InvitePageState extends State<InvitePage> {
               onTap: (){
                 Clipboard.setData(ClipboardData(text: "http://kxz.atcumt.com/"));
                 showToast("已复制到粘贴板，快分享给好友吧~");
-                sendInfo('分享App', '分享了矿小助官网');
+                Logger.sendInfo("Invite", "分享", {"type":"官网"});
               },
               child: Container(
                 height: fontSizeMain40*3,
@@ -78,7 +79,7 @@ class _InvitePageState extends State<InvitePage> {
               onTap: (){
                 Clipboard.setData(ClipboardData(text: "957634136"));
                 showToast( "已复制到粘贴板，快分享给好友吧~");
-                sendInfo('分享App', '分享了QQ群号');
+                Logger.sendInfo("Invite", "分享", {"type":"QQ群"});
               },
               child: Container(
                 height: fontSizeMain40*3,

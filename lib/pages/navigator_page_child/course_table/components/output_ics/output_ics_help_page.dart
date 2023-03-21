@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -124,6 +125,6 @@ class _IcsHelpPageState extends State<IcsHelpPage> {
   @override
   void initState() {
     super.initState();
-    sendInfo("课表导出", "初始化帮助页");
+    Logger.sendInfo("OutputIcsHelp", "进入", {});
   }
 }

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 
@@ -30,7 +31,7 @@ Future<bool> cumtLoginGet(BuildContext context,{@required String username,@requi
     debugPrint(map.toString());
     if (map['result']=="1") {
       showToast("登录成功！\n以后打开App就会自动连接！",gravity: Toast.CENTER,duration: 2);
-      sendInfo('校园网登录', '登录成功:$username,$loginMethod');
+      Logger.sendInfo('CumtLogin', '登录,成功,$username,$loginMethod',{});
       return true;
     }else{
       switch(map["ret_code"]){
@@ -80,7 +81,7 @@ Future<bool> cumtAutoLoginGet(BuildContext context,{@required String username,@r
     Map<String, dynamic> map = jsonDecode(res.toString().substring(1,res.toString().length-1));
     if (map['result']=="1") {
       showToast("已自动登录校园网！");
-      sendInfo('校园网登录', '成功自动登录校园网:${Prefs.cumtLoginUsername},${Prefs.cumtLoginMethod}');
+      Logger.sendInfo('CumtLogin', '自动登录,成功,${Prefs.cumtLoginUsername},${Prefs.cumtLoginMethod}',{});
       return true;
     }
     return false;

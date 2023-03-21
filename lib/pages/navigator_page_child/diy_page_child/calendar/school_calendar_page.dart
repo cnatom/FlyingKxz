@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:photo_view/photo_view.dart';
 
@@ -10,7 +11,7 @@ import '../../../navigator_page.dart';
 void toSchoolCalendarPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => SchoolCalendarPage()));
-  sendInfo('校历', '初始化校历页面');
+  Logger.sendInfo('SchoolCalendar', '进入',{});
 }
 
 class SchoolCalendarPage extends StatelessWidget {

@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 
@@ -33,7 +34,7 @@ class BookData {
 void toBookPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BookPage()));
-  sendInfo('图书馆', '初始化图书馆页面');
+  Logger.sendInfo('Book', "进入", {});
 }
 
 
@@ -58,7 +59,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
       curPage = page;
     }
     setState(() {loading = false;});
-    sendInfo('图书馆', '搜索书籍：$book');
+    Logger.sendInfo('Book', "搜索", {});
   }
   switchPage({@required int page})async{
     setState(() {

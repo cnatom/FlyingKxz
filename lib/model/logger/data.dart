@@ -13,18 +13,22 @@ class LoggerData {
   Map<String,dynamic> _data;
   String _page;
   String _time;
+  LoggerInfo _info;
   LoggerData({
     @required String username,
     @required String action,
     @required Map<String,dynamic> data,
     @required String page,
     @required String time,
+    @required LoggerInfo info,
+
   }){
     _username = username;
     _action = action;
     _data = data;
     _page = page;
     _time = time;
+    _info = info;
   }
 
   LoggerData.fromJson(dynamic json) {
@@ -33,6 +37,7 @@ class LoggerData {
     _data = json['data'];
     _page = json['page'];
     _time = json['time'];
+    _info = json['info'] != null ? LoggerInfo.fromJson(json['info']) : null;
   }
 
   LoggerData copyWith({  String username,
@@ -40,19 +45,20 @@ class LoggerData {
     Map<String,dynamic> data,
     String page,
     String time,
-    LoggerBaseData info,
+    LoggerInfo info,
   }) => LoggerData(  username: username ?? _username,
     action: action ?? _action,
     data: data ?? _data,
     page: page ?? _page,
     time: time ?? _time,
+    info: info ?? _info,
   );
   String get username => _username;
   String get action => _action;
   Map<String,dynamic> get data => _data;
   String get page => _page;
   String get time => _time;
-
+  LoggerInfo get info => _info;
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['username'] = _username;
@@ -60,6 +66,7 @@ class LoggerData {
     map['data'] = _data;
     map['page'] = _page;
     map['time'] = _time;
+    map['info'] = _info == null ? null : _info.toJson();
     return map;
   }
 
@@ -70,8 +77,8 @@ class LoggerData {
 /// version : ""
 /// phone : ""
 
-class LoggerBaseData {
-  LoggerBaseData({
+class LoggerInfo {
+  LoggerInfo({
     @required String name,
     @required String system,
     @required String version,
@@ -82,7 +89,7 @@ class LoggerBaseData {
     _phone = phone;
   }
 
-  LoggerBaseData.fromJson(dynamic json) {
+  LoggerInfo.fromJson(dynamic json) {
     _name = json['name'];
     _phone = json['phone'];
     _system = json['system'];
@@ -92,11 +99,11 @@ class LoggerBaseData {
   String _system;
   String _version;
   String _phone;
-  LoggerBaseData copyWith({  String name,
+  LoggerInfo copyWith({  String name,
     String system,
     String version,
     String phone,
-  }) => LoggerBaseData(  name: name ?? _name,
+  }) => LoggerInfo(  name: name ?? _name,
     system: system ?? _system,
     version: version ?? _version,
     phone: phone ?? _phone,

@@ -73,7 +73,6 @@ class _WeekListPickerState extends State<WeekListPicker> {
               }
               weekList.sort();
             });
-            debugPrint(weekList.toString());
           },
         );
       }).toList(),

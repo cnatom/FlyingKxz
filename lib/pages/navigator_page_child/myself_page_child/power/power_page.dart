@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +13,7 @@ import 'components/circular_view.dart';
 void toPowerPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => PowerPage()));
-  sendInfo('宿舍电量', '初始化宿舍电量页面');
+  Logger.sendInfo("Power", "进入", {});
 }
 
 class PowerPage extends StatefulWidget {

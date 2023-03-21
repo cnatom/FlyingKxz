@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/import_score_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_info.dart';
@@ -28,7 +29,7 @@ void toScorePage(BuildContext context) {
                   BorderRadius.all(Radius.circular(borderRadiusValue)),
               buttonTextBuilder: (order) => '好的',
               child: ScorePage())));
-  sendInfo('成绩', '初始化成绩页面');
+  Logger.sendInfo('Score', '进入',{});
 }
 
 class ScorePage extends StatefulWidget {
@@ -94,7 +95,7 @@ class _ScorePageState extends State<ScorePage>
     }
     _calcuTotalScore();
     setState(() {});
-    sendInfo('成绩', '查询了成绩');
+
   }
 
   //计算总加权和总绩点

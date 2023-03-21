@@ -6,6 +6,7 @@ import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_add_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/import_exam_page.dart';
@@ -52,7 +53,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
     examCurList = _parseToCurList(Global.examList);
     setState(() {});
     showToast('导入成功');
-    sendInfo('考试倒计时', '导入考试');
+    Logger.sendInfo('Exam', '导入,成功',{'info':importList});
   }
   List<ExamData> _parseToCurList(List<ExamData> examList,){
     List<ExamData> result = [];
@@ -379,7 +380,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
             //存储
             Global.examList = examCurList+examOutList;
             Prefs.examData = ExamData.examJsonEncode(Global.examList);
-            sendInfo('考试倒计时', '删除了考试:${item.courseName}');
+            Logger.sendInfo('Exam', '删除考试,${item.courseName}',{});
           }
     },
         child: examCard(item.courseName, item.location, item.dateTime, item.year, item.month, item.day,outView: outView),

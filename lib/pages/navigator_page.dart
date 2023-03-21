@@ -5,6 +5,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/cumt_login.dart';
@@ -16,21 +17,7 @@ import '../cumt/cumt.dart';
 import 'app_upgrade.dart';
 import 'navigator_page_child/course_table/course_page.dart';
 
-Future<void> sendInfo(String page, String action) async {
-  var info = {
-    "username": Prefs.username,
-    "action": action,
-    "page": page,
-    "info": {
-      "name": Prefs.name??"",
-      "time": DateTime.now().toString(),
-      "system": Platform.operatingSystem,
-      "version": Global.curVersion
-    }
-  };
-  Cumt.getInstance().dio.post("https://user.kxz.atcumt.com/admin/action", data: info);
-  print("sendInfo:" + page + ':' + action);
-}
+
 
 //跳转到当前页面
 void toNavigatorPage(BuildContext context) {
@@ -75,7 +62,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
     cumtAutoLogin(); //自动登录校园网
     WidgetsBinding.instance.addObserver(this);
     checkUpgrade(context); //检查软件更新
-    sendInfo('App', '打开');
+    Logger.sendInfo("Navigator", "打开",{});
   }
 
   @override

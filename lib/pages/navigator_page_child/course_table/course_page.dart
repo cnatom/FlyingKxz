@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_intro/flutter_intro.dart';
+import 'package:flying_kxz/model/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
@@ -70,7 +71,7 @@ class CoursePageState extends State<CoursePage> {
       courseProvider.add(newCourseData);
     }
     setState(() {});
-    sendInfo('主页', '添加了课程：${newCourseDataList[0].title}');
+    Logger.sendInfo("Course", "添加,成功", {'info':newCourseDataList.map((e) => e.toJson()).toList()});
   }
 
   // 第一次使用时显示引导页
