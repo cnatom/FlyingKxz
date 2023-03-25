@@ -36,9 +36,6 @@ class Prefs{
   static String _examDataDiy = 'examDataDiy';//自定义考试
   static String _schoolYear = 'schoolYear';//当前学年
   static String _schoolTerm = 'schoolTerm';//当前学期
-  static String _cumtLoginUsername = "cumtLoginUsername";//校园网账号
-  static String _cumtLoginPassword = "cumtLoginPassword";//校园网账号
-  static String _cumtLoginMethod = "cumtLoginMethod";//登录方式
   static String _admissionDate = "admissionDate1";//开学日期
   static String _themeData = "themeData";
   static String _visitor = "visitor";//游客模式
@@ -72,9 +69,6 @@ class Prefs{
   static String get examData => prefs.getString(_examData);
   static String get schoolYear => prefs.getString(_schoolYear);
   static String get schoolTerm => prefs.getString(_schoolTerm);
-  static String get cumtLoginUsername => prefs.getString(_cumtLoginUsername);
-  static String get cumtLoginPassword => prefs.getString(_cumtLoginPassword);
-  static int get cumtLoginMethod => prefs.getInt(_cumtLoginMethod);
   static String get admissionDate=> prefs.getString(_admissionDate);
   static String get themeData => prefs.getString(_themeData);
   static bool get visitor => prefs.getBool(_visitor);
@@ -107,9 +101,6 @@ class Prefs{
   static set examData(String value) =>prefs.setString(_examData, value);
   static set schoolYear(String value) =>prefs.setString(_schoolYear, value);
   static set schoolTerm(String value) =>prefs.setString(_schoolTerm, value);
-  static set cumtLoginUsername(String value) =>prefs.setString(_cumtLoginUsername, value);
-  static set cumtLoginPassword(String value) =>prefs.setString(_cumtLoginPassword, value);
-  static set cumtLoginMethod(int value) =>prefs.setInt(_cumtLoginMethod, value);
   static set admissionDate(String value) =>prefs.setString(_admissionDate, value);
   static set themeData(String value) =>prefs.setString(_themeData, value);
   static set visitor(bool value) =>prefs.setBool(_visitor, value);

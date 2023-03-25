@@ -6,7 +6,7 @@ import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/model/logger/log.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_add_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/import_exam_page.dart';

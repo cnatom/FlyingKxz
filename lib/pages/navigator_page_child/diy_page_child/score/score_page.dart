@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/model/logger/log.dart';
+import 'package:flying_kxz/util/logger/log.dart';
+import 'package:flying_kxz/model/security/security.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/import_score_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_info.dart';
@@ -41,7 +42,6 @@ class _ScorePageState extends State<ScorePage>
     with AutomaticKeepAliveClientMixin {
   ScrollController controller = new ScrollController();
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  String curScoreYearStr = "全部学年", curScoreTermStr = "全部学期"; //当前所选的学期学年信息
   String jiaquanTotal; //总加权
   String jidianTotal; //总绩点
 
@@ -67,7 +67,6 @@ class _ScorePageState extends State<ScorePage>
   void dispose() {
     super.dispose();
     Global.scoreInfo = new ScoreInfo();
-    Intro.of(context).dispose();
   }
 
   _import() async {
@@ -75,6 +74,7 @@ class _ScorePageState extends State<ScorePage>
         context, CupertinoPageRoute(builder: (context) => ImportScorePage()));
     if (result == null || result.isEmpty) return;
     _show(result);
+    Logger.sendInfo("Score", "提取,成功", {"info": SecurityUtil.base64Encode(result.toString())});
   }
 
   _show(dynamic json) async {

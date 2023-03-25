@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/model/logger/log.dart';
+import 'package:flying_kxz/model/security/security.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/course_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/bean.dart';
@@ -46,6 +47,7 @@ class CourseProvider extends ChangeNotifier{
     if(list==null)return;
     _initData();
     _initDateTime();
+    List loggerInfo = []; // 用于记录日志
     for(var item in list){
       CourseData courseData = new CourseData(
         weekList: item['weekList'],
@@ -61,10 +63,19 @@ class CourseProvider extends ChangeNotifier{
         info[week].add(courseData);
         pointArray[week][courseData.lessonNum~/2+1][courseData.weekNum]++;
       }
+      loggerInfo.add({
+        "title":courseData.title,
+        "location":courseData.location,
+        "teacher":courseData.teacher,
+        "credit":courseData.credit,
+        "weekList":courseData.weekList,
+        "weekNum":courseData.weekNum,
+        "lessonNum":courseData.lessonNum,
+      });
     }
     _savePrefs();
     notifyListeners();
-    Logger.sendInfo("Course", "导入", {"info":infoByCourse.map((e) => e.toJson()).toList()});
+    Logger.sendInfo("Course", "导入,成功", {"info":SecurityUtil.base64Encode(loggerInfo.toString())});
   }
   /// 修改当前周
   /// CourseProvider().changeWeek(5);

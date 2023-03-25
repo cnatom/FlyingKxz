@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_intro/flutter_intro.dart';
-import 'package:flying_kxz/model/logger/log.dart';
+import 'package:flying_kxz/cumt/cumt.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
@@ -167,6 +168,10 @@ class CoursePageState extends State<CoursePage> {
         },
       ),
       actions: [
+        IconButton(onPressed: ()async{
+          Cumt cumt = Cumt.getInstance();
+          await cumt.login("08192988", "Redsunjinyi");
+        }, icon: Icon(Icons.ac_unit)),
         IntroStepBuilder(
           order: 2,
           text: "添加自定义课表",

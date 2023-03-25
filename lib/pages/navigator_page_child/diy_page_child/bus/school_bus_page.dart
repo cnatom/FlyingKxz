@@ -6,7 +6,7 @@ import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../model/logger/log.dart';
+import '../../../../util/logger/log.dart';
 
 //跳转到当前页面
 void toSchoolBusPage(BuildContext context) {

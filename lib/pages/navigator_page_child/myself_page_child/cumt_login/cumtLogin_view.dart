@@ -1,15 +1,13 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/model/logger/log.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/cumt_login.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'util/login.dart';
+import 'util/util.dart';
+
 
 class CumtLoginView extends StatefulWidget {
   @override
@@ -17,182 +15,263 @@ class CumtLoginView extends StatefulWidget {
 }
 
 class _CumtLoginViewState extends State<CumtLoginView> {
-  TextEditingController _userNameController;
-  TextEditingController _passWordController;
+  final TextEditingController _usernameController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
   ThemeProvider themeProvider;
-  String _username; //账号
-  String _password; //密码
-  bool ok = false;
-  int loginType = Prefs.cumtLoginMethod??1;
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>(); //表单状态
+  CumtLoginAccount cumtLoginAccount = CumtLoginAccount();
+  @override
+  void initState() {
+    super.initState();
+    _usernameController.text = cumtLoginAccount.username;
+    _passwordController.text = cumtLoginAccount.password;
+  }
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     return Padding(
-      padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
-      child: Form(
-        key: _formKey,
-        child: Wrap(
-          runSpacing: 10,
-          children: [
-            Container(),
-            Container(),
-            Wrap(
-              runSpacing: 10,
-              children: [
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: ()=>toCumtLoginHelpPage(context),
-                      child: Text("校园网自动登录秘籍",style: TextStyle(fontSize: fontSizeMain40,color: themeProvider.colorNavText.withOpacity(0.8),decoration: TextDecoration.underline),textWidthBasis: TextWidthBasis.longestLine,),
-                    ),
-                  ],
-                ),
-                Container(),
-                inputBar('输入账号', _userNameController,
-                    onSaved: (String value) => _username = value),
-                inputBar('输入密码', _passWordController,
-                    onSaved: (String value) => _password = value,obscureText:true),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: ()=>launch("http://202.119.196.6:8080/Self/login/"),
-                  child: Text("用户自助服务系统",style: TextStyle(fontSize: fontSizeMain40,color: themeProvider.colorNavText.withOpacity(0.8),decoration: TextDecoration.underline),textWidthBasis: TextWidthBasis.longestLine,),
-                ),
-                Container(
-                  child: DropdownButton(
-                    style: TextStyle(fontSize: fontSizeMini38,color: themeProvider.colorNavText.withOpacity(0.8)),
-                    iconEnabledColor: themeProvider.colorNavText,
-                    dropdownColor: Theme.of(context).cardColor.withOpacity(0.5),
-                    elevation: 0,
-                    underline: Container(),
-                    value: loginType ,
-                    onChanged: (value) {
-                      setState(() {
-                        loginType = value;
-                      });
-                    }, items: [
-                    DropdownMenuItem(value: 0,child: Text("校园"),onTap: (){},),
-                    DropdownMenuItem(value: 1,child: Text("电信"),onTap: (){},),
-                    DropdownMenuItem(value: 2,child: Text("联通"),onTap: (){},),
-                    DropdownMenuItem(value: 3,child: Text("移动"),onTap: (){},),
-                  ],
-                  ),
-                )
-              ],
-            ),
-
-            Wrap(
-              runSpacing: 10,
-              children: [
-                cumtLoginButton(0,"登录",onTap: ()=>_loginFunc()),
-                cumtLoginButton(1,"注销",onTap: ()=>cumtLogoutGet(context)),
-                FlyText.mini30("小助会记住您的账号密码（本地存储）\n打开App后可以自动帮您连接校园网",color:themeProvider.colorNavText.withOpacity(0.5),maxLine: 5),
-                Container()
-              ],
-            ),
-
-          ],
-        ),
+      padding: EdgeInsets.fromLTRB(
+          spaceCardPaddingRL, spaceCardPaddingTB, spaceCardPaddingRL, 0),
+      child: Wrap(
+        runSpacing: spaceCardPaddingTB,
+        children: [
+          Container(),
+          buildTextField("账号", _usernameController, showPopButton: true),
+          buildTextField("密码", _passwordController, obscureText: true),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SizedBox(width: 10),
+              buildPickerButton(onTap: () => _showLocationMethodPicker()),
+              SizedBox(width: 10),
+              cumtLoginButton(0, "登录", onTap: () => _handleLogin(context)),
+              SizedBox(width: 10),
+              cumtLoginButton(1, "注销", onTap: () => _handleLogout(context)),
+            ],
+          ),
+          Container()
+        ],
       ),
     );
   }
-  //点击登录后的行为
-  _loginFunc() async {
-    FocusScope.of(context).requestFocus(FocusNode());//收起键盘
-    //提取输入框数据
-    var _form = _formKey.currentState;
-    _form.save();
-    //判空
-    if (_password.isEmpty||_username.isEmpty) {
-      showToast( "请填写账号密码");
-      return;
-    }
-    //登录请求并决定是否跳转
-    await cumtLoginGet(context,username: _username,password: _password,loginMethod: loginType);
+
+  InkWell buildPickerButton({GestureTapCallback onTap}) {
+    return InkWell(
+                onTap: onTap,
+                child: Row(
+                  children: [
+                    FlyText.main40(
+                      "${cumtLoginAccount.cumtLoginLocation?.name} ${cumtLoginAccount.cumtLoginMethod?.name}",
+                      color: themeProvider.colorNavText,
+                    ),
+                    Icon(Icons.arrow_drop_down,color: themeProvider.colorNavText,),
+                  ],
+                ));
   }
+
+  Widget buildTextField(
+      String labelText, TextEditingController textEditingController,
+      {obscureText = false, showPopButton = false}) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadiusValue),
+          border: Border.all(color: themeProvider.colorNavText.withOpacity(0.3),
+              width: 1,),),
+      child: Stack(
+        alignment: Alignment.centerRight,
+        children: [
+          TextField(
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: fontSizeMain40, color: themeProvider.colorNavText),
+            controller: textEditingController,
+            obscureText: obscureText,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintStyle: TextStyle(
+                  fontSize: fontSizeMain40,
+                  color: themeProvider.colorNavText.withOpacity(0.9)),
+              hintText: labelText, //点击后显示的提示语
+            ),
+          ),
+          showPopButton
+              ? PopupMenuButton<CumtLoginAccount>(
+                  icon: Icon(Icons.arrow_drop_down_outlined,color: themeProvider.colorNavText,),
+                  onOpened: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  onSelected: (account) {
+                    setState(() {
+                      cumtLoginAccount = account.clone();
+                      _usernameController.text = cumtLoginAccount.username;
+                      _passwordController.text = cumtLoginAccount.password;
+                    });
+                  },
+                  itemBuilder: (context) {
+                    return CumtLoginAccount.list.map((account) {
+                      return PopupMenuItem<CumtLoginAccount>(
+                        value: account,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "${account.username}"
+                                " ${account.cumtLoginLocation?.name} ${account.cumtLoginMethod?.name}",
+                              ),
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  CumtLoginAccount.removeList(account);
+                                  showToast("删除成功");
+                                  Navigator.of(context).pop();
+                                },
+                                icon: const Icon(Icons.close))
+                          ],
+                        ),
+                      );
+                    }).toList();
+                  })
+              : Container(),
+        ],
+      ),
+    );
+  }
+
   //输入框组件
   Widget inputBar(String hintText, TextEditingController controller,
-      {FormFieldSetter<String> onSaved, bool obscureText = false}) =>
+          {FormFieldSetter<String> onSaved, bool obscureText = false}) =>
       Container(
         decoration: BoxDecoration(
             color: Theme.of(context).disabledColor.withOpacity(0.4),
-            borderRadius: BorderRadius.circular(5)
-        ),
+            borderRadius: BorderRadius.circular(5)),
         child: TextFormField(
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: fontSizeMain40,color: themeProvider.colorNavText),
-          obscureText: obscureText, //是否是密码
-          controller: controller, //控制正在编辑的文本。通过其可以拿到输入的文本值
+          style: TextStyle(
+              fontSize: fontSizeMain40, color: themeProvider.colorNavText),
+          obscureText: obscureText,
+          //是否是密码
+          controller: controller,
+          //控制正在编辑的文本。通过其可以拿到输入的文本值
           decoration: InputDecoration(
-            hintStyle: TextStyle(fontSize: fontSizeMain40,color: themeProvider.colorNavText.withOpacity(0.5)),
+            hintStyle: TextStyle(
+                fontSize: fontSizeMain40,
+                color: themeProvider.colorNavText.withOpacity(0.5)),
             border: InputBorder.none, //下划线
             hintText: hintText, //点击后显示的提示语
           ),
           onSaved: onSaved,
         ),
       );
-  //登录按钮
-  Widget cumtLoginButton(int type,String title,{@required GestureTapCallback onTap})=>Material(
-    borderRadius: BorderRadius.circular(5),
-    elevation: 0,
-    color: type==0?themeProvider.colorMain.withOpacity(0.8):Theme.of(context).disabledColor.withOpacity(0.5),
-    child: InkWell(
-      splashColor: Colors.black12,
-      borderRadius: BorderRadius.circular(5),
-      onTap: onTap,
-      child: Container(
-          height: fontSizeMain40*2.5,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),),
-          child: FlyText.title45(title,color: type==0?Colors.white:themeProvider.colorNavText.withOpacity(0.8))
-      ),
-    ),
-  );
 
-  @override
-  void initState() {
-    super.initState();
-    _userNameController = new TextEditingController(text: Prefs.cumtLoginUsername??Prefs.username??"");
-    _passWordController = new TextEditingController(text: Prefs.cumtLoginPassword??"");
+  void _handleLogout(BuildContext context) {
+    CumtLogin.logout(account: cumtLoginAccount).then((value) {
+      showToast(value);
+    });
   }
 
+  void _handleLogin(BuildContext context) {
+    if (_usernameController.text.trim().isEmpty ||
+        _passwordController.text.trim().isEmpty) {
+      showToast('账号或密码不能为空');
+      return;
+    }
+    cumtLoginAccount.username = _usernameController.text.trim();
+    cumtLoginAccount.password = _passwordController.text.trim();
 
+    CumtLogin.login(account: cumtLoginAccount).then((value) {
+      setState(() {
+        showToast(value);
+      });
+    });
+  }
+
+  //登录按钮
+  Widget cumtLoginButton(int type, String title,
+      {@required GestureTapCallback onTap}) {
+    return Expanded(
+      child: Material(
+        borderRadius: BorderRadius.circular(5),
+        elevation: 0,
+        color: type == 0
+            ? themeProvider.colorMain.withOpacity(0.8)
+            : Theme.of(context).disabledColor.withOpacity(0.5),
+        child: InkWell(
+          splashColor: Colors.black12,
+          borderRadius: BorderRadius.circular(5),
+          onTap: onTap,
+          child: Container(
+              height: fontSizeMain40 * 2.5,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: FlyText.title45(title,
+                  color: type == 0
+                      ? Colors.white
+                      : themeProvider.colorNavText.withOpacity(0.8))),
+        ),
+      ),
+    );
+  }
+
+  void _showLocationMethodPicker() {
+    Picker(
+        adapter: PickerDataAdapter<dynamic>(pickerData: [
+          CumtLoginLocationExtension.nameList,
+          CumtLoginMethodExtension.nameList,
+        ], isArray: true),
+        changeToFirst: true,
+        hideHeader: false,
+        onConfirm: (Picker picker, List value) {
+          setState(() {
+            cumtLoginAccount
+                .setCumtLoginLocationByName(picker.getSelectedValues()[0]);
+            cumtLoginAccount
+                .setCumtLoginMethodByName(picker.getSelectedValues()[1]);
+          });
+        }).showModal(context);
+  }
 }
+
 //跳转到当前页面
 void toCumtLoginHelpPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => CumtLoginHelpPage()));
-  Logger.sendInfo('CumtLoginHelp', '进入',{});
+  Logger.sendInfo('CumtLoginHelp', '进入', {});
 }
+
 class CumtLoginHelpPage extends StatefulWidget {
   @override
   _CumtLoginHelpPageState createState() => _CumtLoginHelpPageState();
 }
 
 class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
-  Widget helpItem(String imageResource,String text,)=>Wrap(
-    children: [
-      FlyText.title45(text,maxLine: 100,),
-      Padding(
-        padding: EdgeInsets.all(ScreenUtil().setWidth(deviceWidth*0.1)),
-        child: Container(
-          decoration: BoxDecoration(
-              boxShadow: [
-                boxShadowMain
-              ]
+  Widget helpItem(
+    String imageResource,
+    String text,
+  ) =>
+      Wrap(
+        children: [
+          FlyText.title45(
+            text,
+            maxLine: 100,
           ),
-          child: Center(
-            child: Image.asset(imageResource,fit: BoxFit.fill,),
-          ),
-        ),
-      )
-    ],
-  );
+          Padding(
+            padding: EdgeInsets.all(ScreenUtil().setWidth(deviceWidth * 0.1)),
+            child: Container(
+              decoration: BoxDecoration(boxShadow: [boxShadowMain]),
+              child: Center(
+                child: Image.asset(
+                  imageResource,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
+          )
+        ],
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,10 +292,9 @@ class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
                   '4、打开矿小助输入账号密码就可以登录了\n（第二次打开这个框框就不用填账号密码了哦）'),
               helpItem('images/cumtLoginHelp1.png',
                   "你以为这就结束了？？？\n用脚趾头想想也知道那必不可能（滑稽\n\n矿小助还可以一键登录校园网\n(前提是你已经用上述步骤手动登录过了)\n\n1、连接wifi，等待出现wifi标志"),
-              helpItem('images/cumtLoginHelp3.png',
-                  "2、打开矿小助"),
-
-              helpItem('images/cumtLoginHelp4.png',
+              helpItem('images/cumtLoginHelp3.png', "2、打开矿小助"),
+              helpItem(
+                  'images/cumtLoginHelp4.png',
                   "然后就可以愉快的上网了～\n\n"
                       "Q:什么情况下会触发自动登录函数？\n1.初始化矿小助时\n2.将矿小助从后台调出时（版本号需 > 1.4.06）\n\n"
                       "如果喜欢的话可以将矿小助推荐给其他人哦～\n\n"

@@ -8,10 +8,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
-import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
-import 'package:flying_kxz/model/logger/log.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
@@ -50,7 +49,6 @@ class _MyselfPageState extends State<MyselfPage>
   // 退出登录
   void _signOut() async {
     Logger.sendInfo("Myself", "退出登录", {});
-    await Global.clearPrefsData();
     backImgFile = null;
     await cumt.clearCookie();
     cumt.init();
@@ -237,7 +235,7 @@ class _MyselfPageState extends State<MyselfPage>
     return _buttonList(children: <Widget>[
       FlyFlexibleButton(
         icon: Icons.language_outlined,
-        title: '校园网登录',
+        title: '校园网自动登录',
         secondChild: CumtLoginView(),
       ),
       FlyFlexibleButton(

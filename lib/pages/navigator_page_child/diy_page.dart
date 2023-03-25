@@ -3,8 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:flying_kxz/model/logger/log.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 

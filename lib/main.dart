@@ -10,6 +10,7 @@ import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
@@ -23,12 +24,13 @@ import 'ui/ui.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   _ifAndroidSetStatusBarTransparent();
-  Future.wait([Prefs.init()]).whenComplete(() {
+  Future.wait([Prefs.init(),]).whenComplete(() {
     if (Prefs.password == null) {
       Global.clearPrefsData();
       backImgFile = null;
     }
     ThemeProvider.init(); // 初始化主题
+    CumtLoginPrefs.init(); //初始化校园网登录模块
     Cumt.getInstance().init(); //初始化爬虫模块
     runApp(MyApp()); //启动App
   });

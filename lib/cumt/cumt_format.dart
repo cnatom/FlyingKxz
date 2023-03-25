@@ -67,8 +67,6 @@ class CumtFormat{
                 lesson = _getLesson(lessonWeek);
                 weekList = _getWeekList(lessonWeek);
                 weekNum = c;
-                print(lesson.toString());
-                print(duration.toString());
                 for(int i = 0;i<duration.length;i++){
 
                   durationNum = duration[i];

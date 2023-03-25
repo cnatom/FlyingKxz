@@ -17,8 +17,6 @@ void showToast(String text,
     hideCloseButton: true,
     borderRadius: borderRadiusValue,
     duration: Duration(seconds: duration),
-    enableSlideOff: false,
-    align: const Alignment(0, -0.85)
   );
 }
 

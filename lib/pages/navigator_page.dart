@@ -5,10 +5,9 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/model/logger/log.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/cumt_login.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +15,7 @@ import 'package:provider/provider.dart';
 import '../cumt/cumt.dart';
 import 'app_upgrade.dart';
 import 'navigator_page_child/course_table/course_page.dart';
+import 'navigator_page_child/myself_page_child/cumt_login/util/login.dart';
 
 
 
@@ -48,12 +48,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
 
   //校园网自动登录
   void cumtAutoLogin() async {
-    if (Prefs.cumtLoginUsername != null) {
-      await cumtAutoLoginGet(context,
-          username: Prefs.cumtLoginUsername,
-          password: Prefs.cumtLoginPassword,
-          loginMethod: Prefs.cumtLoginMethod);
-    }
+    CumtLogin.autoLogin();
   }
 
   @override
