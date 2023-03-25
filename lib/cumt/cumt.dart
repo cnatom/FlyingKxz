@@ -81,16 +81,17 @@ class Cumt {
       return false;
     }
   }
-  Future<bool> login(String username,String password)async{
+
+  Future<bool> login(String username,String password,{String service = "http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice"})async{
     try{
-      var res = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice',options: Options(followRedirects:true,));
+      var res = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=$service',options: Options(followRedirects:true,));
       if(res.toString().length>35000){
         //解析并登录
         var document = parser.parse(res.data);
         var pwdSalt = document.body.querySelector("#pwdEncryptSalt").attributes['value']??'';
         var execution = document.body.querySelectorAll('#execution')[2].attributes['value']??'';
         var newPassword = await _pwdAes(password??Prefs.password, pwdSalt);
-        var loginResponse = await dio.post('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice',data: FormData.fromMap({
+        var loginResponse = await dio.post('http://authserver.cumt.edu.cn/authserver/login?service=$service',data: FormData.fromMap({
           'username': username??Prefs.username,
           'password': newPassword,
           '_eventId': 'submit',
@@ -102,7 +103,7 @@ class Cumt {
           print('检测到登录冲突，正在注销其他设备登录态');
           var document = parser.parse(loginResponse.data);
           var execution = document.body.querySelector("input[name='execution']").attributes['value']??'';
-          loginResponse = await dio.post('http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice',data: FormData.fromMap({
+          loginResponse = await dio.post('http://authserver.cumt.edu.cn/authserver/login?service=$service',data: FormData.fromMap({
             '_eventId': 'continue',
             'execution': execution,
           }),options: Options(followRedirects: false),);
@@ -116,9 +117,12 @@ class Cumt {
             showToast('登录失败\n密码包含了用户的敏感信息(如：帐户、手机号或邮箱等)，请前往融合门户修改密码',duration: 5);
             return false;
           }
-        await dio.get(loginResponse.headers.value('location'),options: Options(followRedirects: false));
+        var res2 =  await dio.get(loginResponse.headers.value('location'),options: Options(followRedirects: false));
         Prefs.username = username;
         Prefs.password = password;
+        print("_____________________________________________");
+          // 校园卡服务大厅登录
+
         debugPrint("登录融合门户成功");
         return true;
       }
@@ -128,6 +132,23 @@ class Cumt {
     }
 
   }
+  Future<bool> loginFWDT(String username,String password,{String service = "http://ykt.cumt.edu.cn:8088/ias/prelogin?sysid=FWDT"})async{
+    try{
+      var res = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=$service',options: Options(followRedirects:true,));
+      var document2 = parser.parse(res.data);
+      var ssoticketid = document2.body.querySelector("input[id='ssoticketid']").attributes['value']??'';
+      var res6 = await dio.post("http://ykt.cumt.edu.cn/cassyno/index",data: FormData.fromMap({
+        "errorcode": "1",
+        "continueurl":"",
+        "ssoticketid": ssoticketid
+      }),options: Options(followRedirects: false));
+      return true;
+    }on DioError catch(e){
+      return false;
+    }
+
+  }
+
   static Future<bool> checkConnect()async{
     try{
       showToast('正在检测内网环境……',duration: 4);

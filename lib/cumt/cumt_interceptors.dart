@@ -17,6 +17,8 @@ class CumtInterceptors extends Interceptor {
     debugPrint("接收 " + response.statusCode.toString());
     debugPrint(t + "响应体:");
     print(response.toString());
+    debugPrint(t + "header:");
+    print(response.headers.toString());
     super.onResponse(response, handler);
   }
   @override

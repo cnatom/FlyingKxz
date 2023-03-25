@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/entity.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -11,7 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 void toBalancePage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BalancePage()));
-  Logger.sendInfo('Balance', '进入',{});
+  Logger.sendInfo('Balance', '进入', {});
 }
 
 class BalancePage extends StatefulWidget {
@@ -42,6 +43,21 @@ class _BalancePageState extends State<BalancePage> {
         ));
   }
 
+  // 初始化校园卡余额与宿舍电量
+  Future<bool> _initBalanceHis() async {
+    bool ok = true;
+    ok &= await Provider.of<BalanceProvider>(context, listen: false)
+        .getBalanceHistory(showToasts: true);
+    return ok;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initBalanceHis();
+  }
+
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
@@ -67,13 +83,15 @@ class _BalancePageState extends State<BalancePage> {
                 Center(
                   child: Column(
                     children: [
-                      FlyText.miniTip30("更新时间："+balanceProvider.getBalanceHisDate),
+                      FlyText.miniTip30(
+                          "更新时间：" + balanceProvider.getBalanceHisDate),
                       FlyText.miniTip30('"我的"页面初始化时自动获取'),
-
                     ],
                   ),
                 ),
-                SizedBox(height: 300,)
+                SizedBox(
+                  height: 300,
+                )
               ],
             ),
           ),
@@ -96,24 +114,25 @@ class _BalancePageState extends State<BalancePage> {
         SizedBox(
           height: spaceCardPaddingTB * 2,
         ),
-        balanceProvider.detailInfo != null
-            ? Wrap(
-                runSpacing: spaceCardPaddingTB * 1.5,
-                children: balanceProvider.detailInfo.data.map((item) {
-                  return _buildDetailItem(
-                      item.location, item.time, item.costMoney, item.balance);
-                }).toList(),
+        balanceProvider.detailEntity != null
+            ? ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+                itemCount: balanceProvider.detailEntity.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var item = balanceProvider.detailEntity[index];
+                  return _buildDetailItem(item['title'], item['time'],
+                      item['change'], item['balance']);
+                },
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
               )
-            : loadingAnimationIOS(),
+            : loadingAnimationIOS()
       ],
     ));
   }
 
   Row _buildDetailItem(
       String title, String time, String change, String balance) {
-    //处理小数点
-    balance = (double.parse(balance) / 100).toStringAsFixed(2);
-    change = (double.parse(change) / 100).toStringAsFixed(2);
     //修改余额改变的正负号 并添加色彩
     double changeInt = double.parse(change);
     Color colorItem; //卡片色彩 正为绿 负为橙
@@ -129,6 +148,7 @@ class _BalancePageState extends State<BalancePage> {
         Container(
           height: fontSizeMain40 * 3,
           width: 5,
+          margin: EdgeInsets.fromLTRB(0, spaceCardPaddingTB*1.5, 0, 0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
             color: colorItem,

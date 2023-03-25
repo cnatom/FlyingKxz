@@ -21,6 +21,7 @@ class Logger {
       version: Global.curVersion??"",
       phone: Prefs.phone??"",
     );
+    print(info.toJson());
     Network.post("http://118.195.147.37:5000/admin/action_new",
         params: info.toJson());
   }

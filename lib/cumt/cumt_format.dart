@@ -283,24 +283,7 @@ class CumtFormat{
     }
     return weekList;
   }
-  //校园卡流水
-  static Map<String,dynamic> parseBalanceHis(Map<String,dynamic> data){
-    var l1 = [];
-    for(var a in data['data']){
-      l1.add({
-        "cardNumber": a['XGH'],
-        "Type": a['JYLX'],
-        "Location": a['ZDMC'],
-        "name": a['SHMC'],
-        "costMoney": a['JYE'],
-        "balance": a['YE'],
-        "time": a['JYSJ']
-      });
-    }
-    return {
-      'data':l1
-    };
-  }
+
   //考试
   static List<Map<String,dynamic>> parseExam(String html){
     List<Map<String,dynamic>> result = [];

@@ -26,7 +26,7 @@ class Prefs{
   static String _powerRoomid = "powerRoomid";// M2B421
   static String _powerRequestDate = "powerRequestDate";// 最近查询宿舍电量的时间
   static String _balance = 'balance';//校园卡余额
-  static String _balanceHis = 'balanceHis';//校园卡流水
+  static String _balanceHis = 'balanceHis6';//校园卡流水
   static String _balanceRequestDate = 'balanceRequestDate'; // 最近查询校园卡的时间
   static String _balanceRequestHisDate = 'balanceRequestHisDate'; // 最近查询校园卡流水的时间
   static String _cardNum = 'cardNum';//卡号
