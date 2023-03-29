@@ -4,23 +4,23 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/search/model.dart';
 import 'package:flying_kxz/util/logger/log.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
+import 'package:provider/provider.dart';
 
-import 'book_detail_page.dart';
-import 'utils/book_get.dart';
+import '../detail/detail_page.dart';
 
-class BookData {
-  BookData(
+class BookSearchData {
+  BookSearchData(
       {this.name,
-      this.author,
-      this.publisher,
-      this.searchCode,
-      this.image,
-      this.available,
-      this.eCount,
-      this.pCount});
+        this.author,
+        this.publisher,
+        this.searchCode,
+        this.image,
+        this.available,
+        this.eCount,
+        this.pCount});
   String name;
   String author;
   String publisher;
@@ -31,31 +31,42 @@ class BookData {
   int pCount;
 }
 //跳转到当前页面
-void toBookPage(BuildContext context) {
+void toBookSearchPage(BuildContext context, {@required String bookName}) {
   Navigator.push(
-      context, CupertinoPageRoute(builder: (context) => BookPage()));
+      context, CupertinoPageRoute(builder: (context) => BookSearchPage(bookName: bookName,)));
   Logger.sendInfo('Book', "进入", {});
 }
 
 
-class BookPage extends StatefulWidget {
+class BookSearchPage extends StatefulWidget {
+  final String bookName;
+
+  const BookSearchPage({Key key,@required this.bookName}) : super(key: key);
   @override
-  _BookPageState createState() => _BookPageState();
+  _BookSearchPageState createState() => _BookSearchPageState();
 }
 
-class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
+class _BookSearchPageState extends State<BookSearchPage> with AutomaticKeepAliveClientMixin{
   int curPage = 0;//当前页
   int allPage = 0;//总页数
-  int row = 10;//单页搜索结果数
+  int row = 20;//单页搜索结果数
   String curBookName;//当前搜索书籍名称
   bool loading;//加载动画
   bool miniLoading = false;//切换页面时的迷你动画
   FocusNode searchBarFocus = new FocusNode();
-
+  ThemeProvider themeProvider;
+  BookSearchModel model = BookSearchModel();
+  initState() {
+    super.initState();
+    if(widget.bookName != null){
+      curBookName = widget.bookName;
+      getShowBookView(widget.bookName);
+    }
+  }
   getShowBookView(String book,{int page = 1})async{
     setState(() {loading = true;});
-    if(await bookGet(book: book,row: row.toString(),page: page.toString())){
-      allPage = ((Global.bookInfo.data.all??0)/row).ceil();
+    if(await model.bookGet(book: book,row: row.toString(),page: page.toString()) != null){
+      allPage = ((model.entity.data.all??0)/row).ceil();
       curPage = page;
     }
     setState(() {loading = false;});
@@ -65,7 +76,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
     setState(() {
       loading = true;
     });
-    await bookGet(book: curBookName,row: row.toString(),page: page.toString());
+    await model.bookGet(book: curBookName, page: page.toString(),row: row.toString());
     setState(() {loading = false;});
   }
   Widget bookCard(int curIndex,
@@ -101,20 +112,6 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
             color: colorMain,
           )
         ],
-      );
-    }
-    Widget rowContentDetail(String bookCode,String location,String current){
-      return Container(
-        padding: EdgeInsets.fromLTRB(0, spaceCardPaddingTB/1.5, 0, spaceCardPaddingTB/1.5),
-        color:Colors.grey.withAlpha(5),
-        child:Row(
-          children: [
-            Expanded(child: FlyText.main35(location??"-",textAlign: TextAlign.center,maxLine: 3)),
-            Expanded(child: FlyText.main35(bookCode??'-',textAlign: TextAlign.center,maxLine: 3)),
-            Expanded(child: FlyText.main35(current??'-',textAlign: TextAlign.center,color: colorMain,maxLine: 3)),
-
-          ],
-        ),
       );
     }
     return Container(
@@ -206,9 +203,10 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
+          padding: EdgeInsets.symmetric(horizontal: spaceCardPaddingRL,vertical: spaceCardPaddingTB),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(200),
-              color: Theme.of(context).cardColor.withAlpha(200),
+              color: Theme.of(context).cardColor,
               boxShadow: [
                 BoxShadow(
                     color: Colors.black12.withAlpha(20),
@@ -219,7 +217,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              TextButton(
+              InkWell(
                 onLongPress: (){
                   if(!miniLoading){
                     if(curPage==1) {
@@ -231,7 +229,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
 
                   }
                 },
-                onPressed: () {
+                onTap: () {
                   if(!miniLoading){
                     if(curPage>1){
                       switchPage(page: --curPage);
@@ -240,16 +238,16 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                     }
                   }
                 },
-                child: FlyText.main35("上一页"),
+                child: FlyText.title45("上一页",color: themeProvider.colorMain,),
               ),
               Container(
                 alignment: Alignment.center,
-                width: fontSizeMini38*5,
-                child: miniLoading==true?loadingAnimationIOS():FlyText.main40(
+                width: fontSizeMini38*9,
+                child: miniLoading==true?loadingAnimationIOS():FlyText.title45(
                   "$curPage/$allPage",),
               ),
-              TextButton(
-                onPressed: () {
+              InkWell(
+                onTap: () {
                   if(!miniLoading){
                     if(curPage<allPage){
                       switchPage(page: ++curPage);
@@ -258,7 +256,7 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
                     }
                   }
                 },
-                child: FlyText.main35("下一页",),
+                child: FlyText.title45("下一页",color: themeProvider.colorMain,),
               ),
             ],
           ),
@@ -279,35 +277,31 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
     );
   }
   Widget loadingView(){
-    return SingleChildScrollView(
-      child: Center(
-        child: loadingAnimationIOS(),
-      ),
+    return Center(
+      child: loadingAnimationIOS(),
     );
   }
   Widget infoView(){
-    int curIndex = 0;
     return Stack(
       children: [
         SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
-              Column(
-                children: Global.bookInfo.data.bookList.map((item){
-                  return bookCard(curIndex++,
-                      name: item.name??"",
-                      author: item.author??"",
-                      publisher: item.publisher??"",
-                      searchCode: item.searchCode??"",
-                      available: item.status??false,
-                      eCount: item.ecount.toString(),
-                      pCount: item.pcount.toString(),
-                      image:
-                      item.image!=''?item.image:"",
-                      statusNow: item.statusNow);
-                }).toList(),
-              ),
+              ListView.builder(shrinkWrap: true,physics: NeverScrollableScrollPhysics(),itemCount: model.entity.data.bookList.length,itemBuilder: (context,index){
+                var item = model.entity.data.bookList[index];
+                return bookCard(index,
+                    name: item.name??"",
+                    author: item.author??"",
+                    publisher: item.publisher??"",
+                    searchCode: item.searchCode??"",
+                    available: item.status??false,
+                    eCount: item.ecount.toString(),
+                    pCount: item.pcount.toString(),
+                    image:
+                    item.image!=''?item.image:"",
+                    statusNow: item.statusNow);
+              }),
               FlyText.mini30(""),
               FlyText.mini30("长按“上一页”按钮可返回首页"),
               SizedBox(height: ScreenUtil().setHeight(deviceHeight/5),)
@@ -327,28 +321,21 @@ class _BookPageState extends State<BookPage> with AutomaticKeepAliveClientMixin{
     switch(loading) {
       case true:child = loadingView();break;
       case false:{
-        child = Global.bookInfo.data==null?infoEmptyView():infoView();
+        child = model.entity==null?infoEmptyView():infoView();
         break;
       }
     }
     return child;
   }
-  @override
-  void initState() {
-    super.initState();
-  }
 
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+    themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        brightness: Theme.of(context).brightness,
+          brightness: Theme.of(context).brightness,
           leadingWidth: 0,
           leading: Container(),
           title: Row(

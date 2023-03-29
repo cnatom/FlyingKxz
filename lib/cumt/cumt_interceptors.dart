@@ -31,7 +31,7 @@ class CumtInterceptors extends Interceptor {
   }
   void debugPrintMap(Map<String,dynamic> map){
     for(var key in map.keys){
-      debugPrint(t+t+t+key+' : '+map[key]);
+      debugPrint(t+t+t+key+' : '+map[key].toString());
     }
   }
 }

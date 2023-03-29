@@ -201,7 +201,7 @@ class _PowerPageState extends State<PowerPage> {
 
   Widget _buildInputButton(String title) {
     return _buildDiyButton(title,
-        child: _buildInputBar("输入寝室号(如M2B421、Z1B104)", _powerRoomidController));
+        child: _buildInputBar("输入大寝室号(如 M2B421 )", _powerRoomidController));
   }
 
   Widget _container({@required String title, @required Widget child}) {
@@ -253,7 +253,7 @@ class _PowerPageState extends State<PowerPage> {
         child: Wrap(runSpacing: spaceCardPaddingTB, children: [
           _buildPreviewButton("宿舍楼", powerBuilding ?? "未选择",
               onTap: () => _handlePowerPicker()),
-          _buildInputButton("宿舍号"),
+          _buildInputButton("大寝号"),
           FlyWidgetBuilder(
               whenFirst: powerLoading,
               firstChild: _buildButton(

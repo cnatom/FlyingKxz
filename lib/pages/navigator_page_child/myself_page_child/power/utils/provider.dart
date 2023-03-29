@@ -107,7 +107,7 @@ class PowerProvider extends ChangeNotifier{
         Logger.sendInfo("宿舍电量", "获取,成功,$powerBuilding,$powerRoomid",{"power":power});
         return true;
       }else{
-        if(show) showToast(power);
+        if(show) showToast("$power\n大寝号是6位，区别于小寝号！",duration: 5);
         return false;
       }
     }on DioError catch (e){

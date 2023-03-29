@@ -1,19 +1,16 @@
 //主页
-
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_intro/flutter_intro.dart';
-import 'package:flying_kxz/cumt/cumt.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/components/state_text.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
-
 import '../../../Model/prefs.dart';
 import 'components/add_components/course_add_view.dart';
 import 'components/back_curWeek.dart';
@@ -155,8 +152,7 @@ class CoursePageState extends State<CoursePage> {
           ? SystemUiOverlayStyle.dark
           : SystemUiOverlayStyle.light,
       backgroundColor: Colors.transparent,
-      title: FlyText.title45('第${courseProvider.curWeek}周',
-          fontWeight: FontWeight.w600, color: themeProvider.colorNavText),
+      title: CumtLoginStateText(defaultText: '第${courseProvider.curWeek}周',),
       leading: IntroStepBuilder(
         order: 1,
         text: "从教务系统导入课表",

@@ -54,6 +54,9 @@ class CumtLoginAccount{
     if(list.remove(value)){
       CumtLoginPrefs.cumtLoginAccountList = jsonEncode(list);
     }
+    if(list.isEmpty){
+      CumtLoginPrefs.clear();
+    }
   }
 
   /// 值拷贝

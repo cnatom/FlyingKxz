@@ -6,12 +6,18 @@ class CumtLoginPrefs {
     prefs = await SharedPreferences.getInstance();
   }
   static SharedPreferences prefs;
+  static clear(){
+    prefs.remove(_cumtLoginUsername);
+    prefs.remove(_cumtLoginPassword);
+    prefs.remove(_cumtLoginAccountList);
+    prefs.remove(_cumtLoginMethod);
+    prefs.remove(_cumtLoginLocation);
+  }
   static const String _cumtLoginUsername = "cumtLoginUsername1";
   static const String _cumtLoginPassword = "cumtLoginPassword1";
   static const String _cumtLoginAccountList = "cumtLoginAccountList1";
   static const String _cumtLoginMethod = "cumtLoginMethod1";
   static const String _cumtLoginLocation = "cumtLoginLocation1";
-
 
   static String get cumtLoginUsername => _get(_cumtLoginUsername);
   static String get cumtLoginPassword => _get(_cumtLoginPassword);

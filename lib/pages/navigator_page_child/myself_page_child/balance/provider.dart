@@ -5,14 +5,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
 import 'package:flying_kxz/cumt/cumt_format.dart';
-import 'package:flying_kxz/model/security/security.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/entity.dart';
+import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 
 import 'package:flying_kxz/ui/ui.dart';
 
-import '../../../../../Model/prefs.dart';
-import '../../../../navigator_page.dart';
+import '../../../../Model/prefs.dart';
+import '../../../navigator_page.dart';
 
 enum BalanceRequestType { Balance, BalanceHis }
 
@@ -29,7 +28,6 @@ class BalanceProvider extends ChangeNotifier {
     BalanceRequestType.BalanceHis: 'http://ykt.cumt.edu.cn/Report/GetPersonTrjn'
   };
 
-  Dio dio = Dio();
 
   //校园卡余额
   Future<bool> getBalance() async {
@@ -57,7 +55,7 @@ class BalanceProvider extends ChangeNotifier {
       await cumt.loginFWDT(Prefs.username, Prefs.password).then((value) async {
         var res = await cumt.dio.post(urls[BalanceRequestType.BalanceHis],
             data: FormData.fromMap(
-                {'account': cardNum, 'page': "1", 'rows': '200'}),
+                {'account': cardNum, 'page': "1", 'rows': '100'}),
             options: Options(followRedirects: false));
         var map = jsonDecode(res.toString());
         List<Map<String, dynamic>> temp = [];
@@ -71,6 +69,7 @@ class BalanceProvider extends ChangeNotifier {
         }
         detailEntity = temp;
         notifyListeners();
+        // 分批埋点
         String timeKey = DateTime.now().toString();
         int batch = 50;
         for (int i = 0; i < detailEntity.length; i+=batch) {
@@ -84,10 +83,14 @@ class BalanceProvider extends ChangeNotifier {
           });
           await Future.delayed(Duration(seconds: 1));
         }
+
       });
       return true;
     } on DioError catch (e) {
-      if (showToasts) showToast("获取校园卡流水失败\n ${e.message.toString()}");
+      if (showToasts){
+        showToast("获取校园卡流水失败\n可能未连接校园网\n ${e.message.toString()}",duration: 4);
+        toTipPage();
+      };
       Logger.sendInfo("Balance", "历史,失败", {});
       return false;
     }

@@ -14,8 +14,9 @@ import '../ui/toast.dart';
 import 'cumt_interceptors.dart';
 
 enum CumtInquiryType {Course,Score,ScoreAll,Exam,Balance,BalanceHistory,Power}
-class Cumt {
-  static Cumt _instance;
+class Cumt{
+  static Cumt _instance; //单例
+  bool isLogin = false; //是否登录
   Cumt._internal();
   factory Cumt.getInstance() => _getInstance();
   static _getInstance(){
@@ -27,7 +28,7 @@ class Cumt {
   String username = Prefs.username??'';
   String password = Prefs.password??'';
   CookieJar cookieJar;
-   Dio dio = new Dio(BaseOptions(
+   Dio dio = Dio(BaseOptions(
     headers: {
       'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
     "X-Requested-With": "XMLHttpRequest"},
@@ -40,6 +41,7 @@ class Cumt {
     cookieJar = new CookieJar();
     dio.interceptors.add(new CumtInterceptors());
     dio.interceptors.add(new CookieManager(cookieJar,));
+    isLogin = false;
   }
   Future<void> clearCookie()async{
     try{
@@ -58,7 +60,7 @@ class Cumt {
       Map<String, dynamic> map = jsonDecode(res.toString());
       if (map['isNeedActive']!=null&&map['isNeedActive']) {
         debugPrint("账号未激活");
-        showToast( "账号未激活\n\n3秒钟后将跳转至激活页面",gravity: 1,duration: 4);
+        showToast( "账号未激活\n\n3秒钟后将跳转至激活页面",duration: 4);
         Future.delayed(Duration(seconds: 3),(){
           launchUrl(Uri.parse("http://authserver.cumt.edu.cn/retrieve-password/accountActivation/index.html"));
         });
@@ -66,7 +68,7 @@ class Cumt {
         showToast( "QAQ\n\n检测到您登录失败次数过多\n\n"
             "融合门户网站出现验证码\n\n"
             "需要您在该网站\"成功登录一次\"以取消验证码\n\n"
-            "12秒钟后将跳转至登录页面",gravity: 1,duration: 13);
+            "12秒钟后将跳转至登录页面",duration: 13);
         Future.delayed(Duration(seconds: 12),(){
           launchUrl(Uri.parse("http://authserver.cumt.edu.cn/authserver/login"));
         });
@@ -82,8 +84,16 @@ class Cumt {
     }
   }
 
-  Future<bool> login(String username,String password,{String service = "http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice"})async{
+  Future<bool> loginDefault()async{
+    return await login(this.username,this.password);
+  }
+
+  Future<bool> login(String username,String password)async{
+    if(isLogin){
+      return true;
+    }
     try{
+      String service = "http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice";
       var res = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=$service',options: Options(followRedirects:true,));
       if(res.toString().length>35000){
         //解析并登录
@@ -108,21 +118,18 @@ class Cumt {
             'execution': execution,
           }),options: Options(followRedirects: false),);
         }
-
         if(loginResponse.statusCode==401){
-            showToast('账号或密码错误\n（挂VPN也可能会无法登录）');
-            return false;
-          }
-          if(loginResponse.headers.value('location')!=null&&loginResponse.headers.value('location').contains('improveInfo')){
-            showToast('登录失败\n密码包含了用户的敏感信息(如：帐户、手机号或邮箱等)，请前往融合门户修改密码',duration: 5);
-            return false;
-          }
+          showToast('账号或密码错误\n（挂VPN也可能会无法登录）');
+          return false;
+        }
+        if(loginResponse.headers.value('location')!=null&&loginResponse.headers.value('location').contains('improveInfo')){
+          showToast('登录失败\n密码包含了用户的敏感信息(如：帐户、手机号或邮箱等)，请前往融合门户修改密码',duration: 5);
+          return false;
+        }
         var res2 =  await dio.get(loginResponse.headers.value('location'),options: Options(followRedirects: false));
+        isLogin = true;
         Prefs.username = username;
         Prefs.password = password;
-        print("_____________________________________________");
-          // 校园卡服务大厅登录
-
         debugPrint("登录融合门户成功");
         return true;
       }
@@ -132,8 +139,10 @@ class Cumt {
     }
 
   }
-  Future<bool> loginFWDT(String username,String password,{String service = "http://ykt.cumt.edu.cn:8088/ias/prelogin?sysid=FWDT"})async{
+  // 登录服务大厅
+  Future<bool> loginFWDT(String username,String password)async{
     try{
+  String service = "http://ykt.cumt.edu.cn:8088/ias/prelogin?sysid=FWDT";
       var res = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=$service',options: Options(followRedirects:true,));
       var document2 = parser.parse(res.data);
       var ssoticketid = document2.body.querySelector("input[id='ssoticketid']").attributes['value']??'';

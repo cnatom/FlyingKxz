@@ -8,8 +8,8 @@ import 'package:flying_kxz/model/global.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 
-import '../../../../util/logger/log.dart';
-import 'model/book_detail_info.dart';
+import '../../../../../util/logger/log.dart';
+import 'entity.dart';
 //跳转到当前页面
 void toBookDetailPage(BuildContext context,String url,String bookName) {
   Navigator.push(
@@ -35,7 +35,7 @@ class _BookDetailPageState extends State<BookDetailPage>{
     //Json解码为Map
     Map<String,dynamic> map = jsonDecode(res.toString());
     if (map['status']==200) {
-      Global.bookDetailInfo = BookDetailInfo.fromJson(map);
+      Global.bookDetailInfo = BookDetailEntity.fromJson(map);
       setState(() {
         loading = false;
       });

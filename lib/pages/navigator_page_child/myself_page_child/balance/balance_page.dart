@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/entity.dart';
 import 'package:flying_kxz/util/logger/log.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/provider.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,16 +43,13 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   // 初始化校园卡余额与宿舍电量
-  Future<bool> _initBalanceHis() async {
-    bool ok = true;
-    ok &= await Provider.of<BalanceProvider>(context, listen: false)
+  Future<void> _initBalanceHis() async {
+    await Provider.of<BalanceProvider>(context, listen: false)
         .getBalanceHistory(showToasts: true);
-    return ok;
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initBalanceHis();
   }
@@ -67,7 +63,7 @@ class _BalancePageState extends State<BalancePage> {
         context,
         "校园卡",
       ),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: SingleChildScrollView(
           physics:
@@ -107,7 +103,7 @@ class _BalancePageState extends State<BalancePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FlyText.main40("校园卡流水",
+            FlyText.main40("校园卡流水（需内网或VPN）",
                 color: Theme.of(context).primaryColor.withOpacity(0.5)),
           ],
         ),

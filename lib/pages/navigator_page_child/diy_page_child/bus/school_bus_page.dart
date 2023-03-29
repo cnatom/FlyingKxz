@@ -6,6 +6,7 @@ import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../ui/tabbar.dart';
 import '../../../../util/logger/log.dart';
 
 //跳转到当前页面
@@ -104,29 +105,14 @@ class _SchoolBusPageState extends State<SchoolBusPage>
               });
             })
           ],
-          bottom: TabBar(
-              labelColor: Theme.of(context).primaryColor,
-              controller: _tabController,
-              labelStyle: TextStyle(
-                  fontSize: fontSizeMini38, fontWeight: FontWeight.bold),
-              unselectedLabelStyle: TextStyle(
-                fontSize: fontSizeMini38,
-                fontWeight: FontWeight.bold,
-              ),
-              indicatorSize: TabBarIndicatorSize.label,
-              indicator: UnderlineTabIndicator(
-                  borderSide: BorderSide(
-                      width: 2, color: Theme.of(context).primaryColor),
-                  insets: EdgeInsets.fromLTRB(
-                      fontSizeMain40 * 1.2, 0, fontSizeMain40 * 1.2, 0)),
-              tabs: [
-                Tab(
-                  text: "南湖公教楼",
-                ),
-                Tab(
-                  text: "文昌中心路",
-                ),
-              ])),
+          bottom: FlyTabBar(tabController: _tabController,tabs: [
+            Tab(
+              text: "南湖公教楼",
+            ),
+            Tab(
+              text: "文昌中心路",
+            ),
+          ],)),
       body: Column(
         children: [
           Expanded(
@@ -146,6 +132,8 @@ class _SchoolBusPageState extends State<SchoolBusPage>
     );
   }
 }
+
+
 
 class BusTimeListView extends StatefulWidget {
   BusTimeListView(this.north, this.south);

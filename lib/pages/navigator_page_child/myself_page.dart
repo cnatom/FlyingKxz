@@ -10,12 +10,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/spider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/prefs.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/components/preview.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/preview.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/components/preview.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
@@ -26,6 +28,7 @@ import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 import 'myself_page_child/aboutus/about_page.dart';
+import 'myself_page_child/cumt_login/cumtLogin_help_page.dart';
 import 'myself_page_child/cumt_login/cumtLogin_view.dart';
 
 class MyselfPage extends StatefulWidget {
@@ -51,20 +54,25 @@ class _MyselfPageState extends State<MyselfPage>
     Logger.sendInfo("Myself", "退出登录", {});
     backImgFile = null;
     await cumt.clearCookie();
+    CumtLoginPrefs.clear();
+    Prefs.prefs.clear();
+    BookSpider.dispose();
     cumt.init();
     toLoginPage(context);
   }
 
   // 初始化校园卡余额与宿舍电量
-  Future<bool> _initBalanceAndPowerProvider()async{
+  Future<bool> _initBalanceAndPowerProvider() async {
     bool ok = true;
-    await Future.wait([cumt.login(Prefs.username??"", Prefs.password??"")]).then((value)async{
-      ok &= await Provider.of<BalanceProvider>(context,listen: false).getBalance();
-      ok &= await Provider.of<PowerProvider>(context,listen: false).getPreview();
+    await Future.wait([cumt.login(Prefs.username ?? "", Prefs.password ?? "")])
+        .then((value) async {
+      ok &= await Provider.of<BalanceProvider>(context, listen: false)
+          .getBalance();
+      ok &=
+          await Provider.of<PowerProvider>(context, listen: false).getPreview();
     });
     return ok;
   }
-
 
   Future<void> _feedback() async {
     String text = await FlyDialogInputShow(context,
@@ -73,8 +81,11 @@ class _MyselfPageState extends State<MyselfPage>
         confirmText: "发送",
         maxLines: 10);
     if (text != null) {
-      await cumt.dio.post("https://user.kxz.atcumt.com/admin/version_new", data: {'data': text,});
-      Logger.sendInfo('Myself', '反馈',{"feedback":text});
+      await cumt.dio
+          .post("https://user.kxz.atcumt.com/admin/version_new", data: {
+        'data': text,
+      });
+      Logger.sendInfo('Myself', '反馈', {"feedback": text});
     }
   }
 
@@ -112,7 +123,9 @@ class _MyselfPageState extends State<MyselfPage>
         child: AppBar(
           leading: Container(),
           backgroundColor: Colors.transparent,
-          systemOverlayStyle: themeProvider.simpleMode ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
+          systemOverlayStyle: themeProvider.simpleMode
+              ? SystemUiOverlayStyle.dark
+              : SystemUiOverlayStyle.light,
         ),
       ),
       body: Container(
@@ -236,6 +249,12 @@ class _MyselfPageState extends State<MyselfPage>
         icon: Icons.language_outlined,
         title: '校园网自动登录',
         secondChild: CumtLoginView(),
+        onStart: (context) {
+          print('hello');
+          if (CumtLoginPrefs.cumtLoginUsername == "") {
+            toCumtLoginHelpPage(context);
+          }
+        },
       ),
       FlyFlexibleButton(
         title: "个性化",
@@ -371,10 +390,19 @@ class _MyselfPageState extends State<MyselfPage>
     return InkWell(
       onTap: () => themeProvider.colorMain = color,
       child: Container(
-        height: fontSizeMain40 * 2,
-        width: fontSizeMain40 * 2,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100), color: color),
+            borderRadius: BorderRadius.circular(100), border: Border.all(color: themeProvider.colorMain == color ? themeProvider.colorMain : Colors.transparent, width: 2.5)),
+        child: Padding(
+          padding: const EdgeInsets.all(1.5),
+          child: Container(
+            height: fontSizeMain40 * 2,
+            width: fontSizeMain40 * 2,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: color
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -609,6 +637,7 @@ class FlyFlexibleButton extends StatefulWidget {
   final IconData icon;
   final String previewStr;
   final GestureTapCallback onTap;
+  final void Function(BuildContext context) onStart; // 打开前的操作，只会执行一次
 
   const FlyFlexibleButton(
       {Key key,
@@ -616,7 +645,8 @@ class FlyFlexibleButton extends StatefulWidget {
       this.title,
       this.icon,
       this.previewStr,
-      this.onTap})
+      this.onTap,
+      this.onStart})
       : super(key: key);
 
   @override
@@ -627,7 +657,7 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
   bool showSecond = false;
   double opacity = 0;
   ThemeProvider themeProvider;
-
+  bool onStarted = false; //是否执行过onStart
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
@@ -682,6 +712,10 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
   Widget _button() => InkWell(
         onTap: widget.onTap ??
             () {
+              if(onStarted==false&&widget.onStart!=null){
+                widget.onStart(context);
+                onStarted = true;
+              }
               setState(() {
                 showSecond = !showSecond;
                 if (showSecond) {

@@ -3,11 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/new_book_page.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
-import 'diy_page_child/book/book_page.dart';
+import 'diy_page_child/book/search/book_page.dart';
 import 'diy_page_child/bus/school_bus_page.dart';
 import 'diy_page_child/calendar/school_calendar_page.dart';
 import 'diy_page_child/exam/exam_page.dart';
@@ -57,7 +58,7 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
                             children: [
                               Wrap(
                                 children: [
-                                  funcButton(imageResource: 'images/tushuguan.png',title: '图书馆',color:colorFuncButton[0],subTitle: '馆藏查询、图书推荐',onTap: ()=>toBookPage(context)),
+                                  funcButton(imageResource: 'images/tushuguan.png',title: '图书馆',color:colorFuncButton[0],subTitle: '馆藏查询、图书推荐',onTap: ()=>toNewBookPage(context)),
                                   funcButton(imageResource: 'images/chengji.png',title: '成绩',color:colorFuncButton[5],subTitle: '自动计算、自由筛选',onTap: ()=>toScorePage(context)),
                                   funcButton(imageResource: 'images/xiaoche.png',title: '校车',color:colorFuncButton[1],subTitle: '通勤班车时间表',onTap: ()=>toSchoolBusPage(context)),
                                   funcButton(imageResource: 'images/xiaoli.png',title: '校历',color:colorFuncButton[2],subTitle: '本学年校历',onTap: ()=>toSchoolCalendarPage(context)),

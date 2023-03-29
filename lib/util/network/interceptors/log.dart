@@ -33,7 +33,7 @@ class MyLogInterceptors extends Interceptor {
   }
   void debugPrintMap(Map<String,dynamic> map){
     for(var key in map.keys){
-      print(t+t+t+key+' : '+map[key]);
+      print(t+t+t+key+' : '+map[key].toString());
     }
   }
 }

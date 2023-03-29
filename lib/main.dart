@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:package_info/package_info.dart';
@@ -109,7 +109,7 @@ class StartPage extends StatelessWidget {
     //初始化配置
     initSize();
     //内测结束跳转
-    // if(DateTime.now().isAfter(DateTime(2022,8,15))){
+    // if(DateTime.now().isAfter(DateTime(2023,4,5))){
     //   toNullPage(context);
     //   return;
     // }

@@ -12,23 +12,19 @@ extension CumtLoginLocationExtension on CumtLoginLocation {
       String username, String password, CumtLoginMethod loginMethod) {
     String head =
         "http://10.2.5.251:801/eportal/?c=Portal&a=login&login_method=1&user_account=$username${loginMethod.code}&user_password=$password";
-    switch (this) {
-      case CumtLoginLocation.nh:
-        return head;
-      case CumtLoginLocation.wc:
-        return "$head&wlan_ac_name=BRAS";
+    if(this==CumtLoginLocation.wc){
+      return "$head&wlan_ac_name=BRAS";
     }
+    return head;
   }
 
   String get logoutUrl {
     String head =
         "http://10.2.5.251:801/eportal/?c=Portal&a=logout&login_method=1";
-    switch (this) {
-      case CumtLoginLocation.nh:
-        return head;
-      case CumtLoginLocation.wc:
-        return "$head&wlan_ac_name=BRAS";
+    if(this==CumtLoginLocation.wc){
+      return "$head&wlan_ac_name=BRAS";
     }
+    return head;
   }
 
   String get name {
