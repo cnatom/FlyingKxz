@@ -13,7 +13,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../ui/toast.dart';
 import 'cumt_interceptors.dart';
 
-enum CumtInquiryType {Course,Score,ScoreAll,Exam,Balance,BalanceHistory,Power}
 class Cumt{
   static Cumt _instance; //单例
   bool isLogin = false; //是否登录
@@ -84,6 +83,7 @@ class Cumt{
     }
   }
 
+  // 在每个需要融合门户的请求前都要调用一次
   Future<bool> loginDefault()async{
     return await login(this.username,this.password);
   }

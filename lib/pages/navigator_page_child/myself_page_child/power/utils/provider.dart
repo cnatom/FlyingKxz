@@ -94,6 +94,7 @@ class PowerProvider extends ChangeNotifier{
   Future<bool> _get(String building,String roomid,{bool show = false})async{
     String power;
     try{
+      await Cumt.getInstance().loginDefault();
       String account = await _getAccount(Prefs.username);
       String aid = await _getAid();
       power = await _getPower(account, aid, Prefs.username, building, roomid);

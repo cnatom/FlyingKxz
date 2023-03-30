@@ -63,7 +63,7 @@ class _TipPageState extends State<TipPage> {
                       ),
                     ),
                     Center(
-                      child: FlyText.miniTip30('连接后记得去网站："http://10.2.5.251"登录',maxLine: 100,),
+                      child: FlyText.miniTip30('连接后记得去网站："http://10.2.5.251"登录，或者使用矿小助的"校园网自动登录"功能登录',maxLine: 100,),
                     )
                   ],
                 ),
@@ -78,8 +78,8 @@ class _TipPageState extends State<TipPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _buildButton('苹果VPN',MdiIcons.apple ,'iOS VPN指引','http://nic.cumt.edu.cn/info/1201/2407.htm'),
-                        _buildButton('安卓VPN',MdiIcons.android ,'安卓 VPN指引','http://nic.cumt.edu.cn/info/1201/2408.htm')
+                        _buildButton('苹果VPN',MdiIcons.apple ,'iOS VPN指引','https://nic.cumt.edu.cn/info/1013/1759.htm'),
+                        _buildButton('安卓VPN',MdiIcons.android ,'安卓 VPN指引','https://nic.cumt.edu.cn/info/1013/1758.htm')
 
                       ],
                     )

@@ -45,7 +45,6 @@ class _MyselfPageState extends State<MyselfPage>
   void initState() {
     super.initState();
     cumt = Cumt.getInstance();
-    _initBalanceAndPowerProvider();
     Logger.sendInfo("Myself", "初始化", {});
   }
 
@@ -61,18 +60,7 @@ class _MyselfPageState extends State<MyselfPage>
     toLoginPage(context);
   }
 
-  // 初始化校园卡余额与宿舍电量
-  Future<bool> _initBalanceAndPowerProvider() async {
-    bool ok = true;
-    await Future.wait([cumt.login(Prefs.username ?? "", Prefs.password ?? "")])
-        .then((value) async {
-      ok &= await Provider.of<BalanceProvider>(context, listen: false)
-          .getBalance();
-      ok &=
-          await Provider.of<PowerProvider>(context, listen: false).getPreview();
-    });
-    return ok;
-  }
+
 
   Future<void> _feedback() async {
     String text = await FlyDialogInputShow(context,

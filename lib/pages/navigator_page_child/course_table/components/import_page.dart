@@ -21,6 +21,7 @@ class _ImportPageState extends State<ImportPage> {
   InAppWebViewController _controller;
   ThemeProvider themeProvider;
   double progress = 0.0;
+
   bool loadingWeb = true;
   bool loading = false;
   @override

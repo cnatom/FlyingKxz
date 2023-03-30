@@ -6,37 +6,55 @@ import 'package:flying_kxz/ui/text.dart';
 import 'package:flying_kxz/ui/theme.dart';
 import 'package:provider/provider.dart';
 
-class CumtLoginStateText extends StatefulWidget {
-  final String defaultText;
-
-  CumtLoginStateText({@required this.defaultText});
-
-  @override
-  _CumtLoginStateTextState createState() => _CumtLoginStateTextState();
+enum StateTextAnimationDirection {
+  up,
+  down,
 }
 
-class _CumtLoginStateTextState extends State<CumtLoginStateText>
+class CumtLoginStateText extends StatefulWidget {
+  final String defaultText;
+  final StateTextAnimationDirection Function(String oldText) onDirection;
+
+  CumtLoginStateText({@required this.defaultText, this.onDirection});
+
+  @override
+  CumtLoginStateTextState createState() => CumtLoginStateTextState();
+}
+
+class CumtLoginStateTextState extends State<CumtLoginStateText>
     with
         WidgetsBindingObserver,
         AutomaticKeepAliveClientMixin,
         SingleTickerProviderStateMixin {
-  String result = "";
+  String result;
   String oldResult = "";
   ThemeProvider themeProvider;
   CumtLoginAccount account = CumtLoginAccount();
   AnimationController _controller;
   Animation<double> _animation;
+  StateTextAnimationDirection direction = StateTextAnimationDirection.down;
+  @override
+  void didUpdateWidget(covariant CumtLoginStateText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.defaultText != oldWidget.defaultText) {
+      direction = widget.onDirection(oldWidget.defaultText);
+      refreshText(widget.defaultText,);
+      ;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    result=widget.defaultText;
     WidgetsBinding.instance.addObserver(this);
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 200),
     );
 
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    _animation = Tween<double>(begin: 0.0, end: 1.0)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
     autoLogin();
   }
 
@@ -49,7 +67,6 @@ class _CumtLoginStateTextState extends State<CumtLoginStateText>
 
   void autoLogin() async {
     if (account.isEmpty) {
-      result = widget.defaultText;
       _controller.forward();
       return;
     }
@@ -88,16 +105,16 @@ class _CumtLoginStateTextState extends State<CumtLoginStateText>
         return Stack(
           children: [
             Transform.translate(
-              offset: Offset(0.0, -_animation.value*10),
+              offset: Offset(0.0, (-_animation.value * 10)*(direction.index*2-1)),
               child: Opacity(
-                opacity: 1-_animation.value,
+                opacity: 1 - _animation.value,
                 child: FlyText.title45(oldResult,
-                fontWeight: FontWeight.w600,
-                color: themeProvider.colorNavText),
+                    fontWeight: FontWeight.w600,
+                    color: themeProvider.colorNavText),
               ),
             ),
             Transform.translate(
-              offset: Offset(0.0, (1-_animation.value)*10),
+              offset: Offset(0.0, (1 - _animation.value) * 10*(direction.index*2-1)),
               child: Opacity(
                 opacity: _animation.value,
                 child: FlyText.title45(result,

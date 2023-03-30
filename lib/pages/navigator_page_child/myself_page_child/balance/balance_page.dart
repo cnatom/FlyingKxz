@@ -45,7 +45,7 @@ class _BalancePageState extends State<BalancePage> {
   // 初始化校园卡余额与宿舍电量
   Future<void> _initBalanceHis() async {
     await Provider.of<BalanceProvider>(context, listen: false)
-        .getBalanceHistory(showToasts: true);
+        .getBalanceHistory(context,showToasts: true);
   }
 
   @override

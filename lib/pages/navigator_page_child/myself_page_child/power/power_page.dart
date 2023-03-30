@@ -61,6 +61,11 @@ class _PowerPageState extends State<PowerPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     powerProvider = Provider.of<PowerProvider>(context, listen: false);
@@ -261,7 +266,7 @@ class _PowerPageState extends State<PowerPage> {
                 onTap: () {},
               ),
               secondChild: _buildButton(
-                "绑定",
+                "绑定 & 刷新",
                 onTap: () {
                   powerProvider.powerRoomid =
                       _powerRoomidController.text ?? "";

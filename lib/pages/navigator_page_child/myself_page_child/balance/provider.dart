@@ -33,6 +33,7 @@ class BalanceProvider extends ChangeNotifier {
   Future<bool> getBalance() async {
     Response res;
     try {
+      await cumt.loginDefault();
       res = await cumt.dio.get(urls[BalanceRequestType.Balance]);
       var map = jsonDecode(res.toString());
       cardNum = map['data']['ZH'];
@@ -50,42 +51,45 @@ class BalanceProvider extends ChangeNotifier {
   }
 
   //校园卡流水
-  Future<bool> getBalanceHistory({bool showToasts = false}) async {
+  Future<bool> getBalanceHistory(BuildContext context,{bool showToasts = false}) async {
     try {
-      await cumt.loginFWDT(Prefs.username, Prefs.password).then((value) async {
-        var res = await cumt.dio.post(urls[BalanceRequestType.BalanceHis],
-            data: FormData.fromMap(
-                {'account': cardNum, 'page': "1", 'rows': '100'}),
-            options: Options(followRedirects: false));
-        var map = jsonDecode(res.toString());
-        List<Map<String, dynamic>> temp = [];
-        for (Map<String, dynamic> m in map['rows']) {
-          temp.add({
-            "title": m['MERCNAME']==""?m["TRANNAME"]:m['MERCNAME'].toString().trim(),
-            "time": m['OCCTIME'].toString().trim(),
-            "change": m['TRANAMT'].toString(),
-            "balance": m['ZMONEY'].toString()
-          });
-        }
-        detailEntity = temp;
-        notifyListeners();
-        // 分批埋点
-        String timeKey = DateTime.now().toString();
-        int batch = 50;
-        for (int i = 0; i < detailEntity.length; i+=batch) {
-          int start = i;
-          int end = i+batch;
-          if (end > detailEntity.length) {
-            end = detailEntity.length;
+      if(await Cumt.checkConnect()){
+        await cumt.loginFWDT(Prefs.username, Prefs.password).then((value) async {
+          var res = await cumt.dio.post(urls[BalanceRequestType.BalanceHis],
+              data: FormData.fromMap(
+                  {'account': cardNum, 'page': "1", 'rows': '100'}),
+              options: Options(followRedirects: false));
+          var map = jsonDecode(res.toString());
+          List<Map<String, dynamic>> temp = [];
+          for (Map<String, dynamic> m in map['rows']) {
+            temp.add({
+              "title": m['MERCNAME']==""?m["TRANNAME"]:m['MERCNAME'].toString().trim(),
+              "time": m['OCCTIME'].toString().trim(),
+              "change": m['TRANAMT'].toString(),
+              "balance": m['ZMONEY'].toString()
+            });
           }
-          await Logger.sendInfo("Balance", "历史,成功,$timeKey", {
-            "info": jsonEncode(detailEntity.getRange(start, end).toList())
-          });
-          await Future.delayed(Duration(seconds: 1));
-        }
+          detailEntity = temp;
+          notifyListeners();
+          // 分批埋点
+          String timeKey = DateTime.now().toString();
+          int batch = 50;
+          for (int i = 0; i < detailEntity.length; i+=batch) {
+            int start = i;
+            int end = i+batch;
+            if (end > detailEntity.length) {
+              end = detailEntity.length;
+            }
+            await Logger.sendInfo("Balance", "历史,成功,$timeKey", {
+              "info": jsonEncode(detailEntity.getRange(start, end).toList())
+            });
+            await Future.delayed(Duration(seconds: 1));
+          }
 
-      });
-      return true;
+        });
+        return true;
+      }
+      return false;
     } on DioError catch (e) {
       if (showToasts){
         showToast("获取校园卡流水失败\n可能未连接校园网\n ${e.message.toString()}",duration: 4);

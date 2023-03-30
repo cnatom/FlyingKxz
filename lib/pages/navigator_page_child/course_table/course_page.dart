@@ -70,21 +70,20 @@ class CoursePageState extends State<CoursePage> {
       courseProvider.add(newCourseData);
     }
     setState(() {});
-    Logger.sendInfo("Course", "添加,成功", {'info':newCourseDataList.map((e) => e.toJson()).toList()});
+    Logger.sendInfo("Course", "添加,成功",
+        {'info': newCourseDataList.map((e) => e.toJson()).toList()});
   }
 
   // 第一次使用时显示引导页
-  void _introduce(BuildContext context){
+  void _introduce(BuildContext context) {
     String prefsTag = "course_page_introduce";
-    if(Prefs.prefs.getBool(prefsTag)==null){
+    if (Prefs.prefs.getBool(prefsTag) == null) {
       Future.delayed(const Duration(seconds: 1), () {
         Intro.of(context).start();
         Prefs.prefs.setBool(prefsTag, true);
       });
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -152,15 +151,24 @@ class CoursePageState extends State<CoursePage> {
           ? SystemUiOverlayStyle.dark
           : SystemUiOverlayStyle.light,
       backgroundColor: Colors.transparent,
-      title: CumtLoginStateText(defaultText: '第${courseProvider.curWeek}周',),
+      title: CumtLoginStateText(
+        defaultText: '第${courseProvider.curWeek}周',
+        onDirection: (String oldText) {
+          String week = RegExp(r'\d+').stringMatch(oldText);
+          if (week != null && int.parse(week) > courseProvider.curWeek) {
+            return StateTextAnimationDirection.up;
+          }
+          return StateTextAnimationDirection.down;
+        },
+      ),
       leading: IntroStepBuilder(
         order: 1,
         text: "从教务系统导入课表",
-        onWidgetLoad: (){
+        onWidgetLoad: () {
           _introduce(context);
         },
-        builder: (context,key){
-          return _buildAction(key,Icons.cloud_download_outlined,
+        builder: (context, key) {
+          return _buildAction(key, Icons.cloud_download_outlined,
               onPressed: () => _importCourse());
         },
       ),
@@ -168,37 +176,36 @@ class CoursePageState extends State<CoursePage> {
         IntroStepBuilder(
           order: 2,
           text: "添加自定义课表",
-          builder: (context,key){
-            return _buildAction(key,Icons.add, onPressed: () => _addCourse());
+          builder: (context, key) {
+            return _buildAction(key, Icons.add, onPressed: () => _addCourse());
           },
         ),
         IntroStepBuilder(
           order: 3,
           text: "将课表导出到系统日历",
-          builder: (context,key){
+          builder: (context, key) {
             return IconButton(
-              key: key,
-              icon: Icon(
-                Boxicons.bx_share_alt,
-                color: themeProvider.colorNavText,
-              ),
-              onPressed: () =>  _outputIcs()
-            );
+                key: key,
+                icon: Icon(
+                  Boxicons.bx_share_alt,
+                  color: themeProvider.colorNavText,
+                ),
+                onPressed: () => _outputIcs());
           },
         ),
         IntroStepBuilder(
           order: 4,
           text: "查看课程预览",
-          builder: (context,key){
-            return _buildAction(key,Boxicons.bx_menu_alt_right, onPressed: () => _rightGlobalKey.currentState.show());
+          builder: (context, key) {
+            return _buildAction(key, Boxicons.bx_menu_alt_right,
+                onPressed: () => _rightGlobalKey.currentState.show());
           },
         )
       ],
     );
   }
 
-  Widget _buildAction(Key key,IconData iconData,
-      {VoidCallback onPressed}) {
+  Widget _buildAction(Key key, IconData iconData, {VoidCallback onPressed}) {
     return IconButton(
       key: key,
       icon: Icon(
@@ -206,18 +213,6 @@ class CoursePageState extends State<CoursePage> {
         color: themeProvider.colorNavText,
       ),
       onPressed: onPressed,
-    );
-  }
-
-  Widget _buildShowRightButton() {
-    return IconButton(
-      icon: Icon(
-        Boxicons.bx_menu_alt_right,
-        color: themeProvider.colorNavText,
-      ),
-      onPressed: () {
-        _rightGlobalKey.currentState.show();
-      },
     );
   }
 
@@ -253,61 +248,44 @@ class CoursePageState extends State<CoursePage> {
         ),
         Expanded(
           flex: 8,
-          child: Row(
-            children: [
-              for (int i = 0; i < 7; i++)
-                Expanded(
-                  child: FlyWidgetBuilder(
-                      whenFirst: _isToday(subDates[i]),
-                      firstChild: _buildTopTodayItem(weeks[i], subDates[i]),
-                      secondChild: _buildTopItem(weeks[i], subDates[i])),
+          child: Builder(builder: (context) {
+            List<Widget> children = [];
+            for (int i = 0; i < 7; i++) {
+              bool isToday = _isToday(subDates[i]);
+              children.add(Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: isToday?themeProvider.colorMain.withOpacity(0.1):Colors.transparent,
+                      border: Border(
+                          top: BorderSide(
+                              width: 5, color: isToday?themeProvider.colorMain:Colors.transparent))),
+                  child: _buildTopItem(weeks[i], subDates[i]),
                 ),
-            ],
-          ),
+              ));
+            }
+            return Row(
+              children: children,
+            );
+          }),
         )
       ],
     );
   }
 
-  Widget _buildTopTodayItem(String week, DateTime subDate) {
-    return Container(
-      decoration: BoxDecoration(
-          color: themeProvider.colorMain.withOpacity(0.1),
-          border: Border(
-              top: BorderSide(width: 5, color: themeProvider.colorMain))),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FlyText.mini30(
-            week,
-            color: themeProvider.colorNavText,
-          ),
-          FlyText.mini25(
-            "${subDate.month}/${subDate.day}",
-            color: themeProvider.colorNavText,
-          )
-        ],
-      ),
-    );
-  }
 
   Widget _buildTopItem(String week, DateTime subDate) {
-    return Container(
-      decoration: BoxDecoration(
-          border: Border(top: BorderSide(width: 5, color: Colors.transparent))),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FlyText.mini30(
-            week,
-            color: themeProvider.colorNavText,
-          ),
-          FlyText.mini25(
-            "${subDate.month}/${subDate.day}",
-            color: themeProvider.colorNavText,
-          )
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FlyText.mini30(
+          week,
+          color: themeProvider.colorNavText,
+        ),
+        FlyText.mini25(
+          "${subDate.month}/${subDate.day}",
+          color: themeProvider.colorNavText,
+        )
+      ],
     );
   }
 

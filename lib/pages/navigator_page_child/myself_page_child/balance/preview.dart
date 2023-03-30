@@ -15,6 +15,16 @@ class BalancePreviewView extends StatefulWidget {
 
 class _BalancePreviewViewState extends State<BalancePreviewView> {
 
+  initData() async {
+    await Provider.of<BalanceProvider>(context, listen: false)
+        .getBalance();
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initData();
+  }
   @override
   Widget build(BuildContext context) {
     final balanceProvider = Provider.of<BalanceProvider>(context);
