@@ -29,7 +29,7 @@ class _NewBookPageState extends State<NewBookPage> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
   }
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,6 @@ class _NewBookPageState extends State<NewBookPage> with SingleTickerProviderStat
             bottom: FlyTabBar(tabController: tabController, tabs: [
               Tab(text: "当前借阅"),
               Tab(text: "借阅历史"),
-              Tab(text: "我的图书馆"),
             ]),
         ),
         body: TabBarView(
@@ -54,7 +53,6 @@ class _NewBookPageState extends State<NewBookPage> with SingleTickerProviderStat
           children: [
             LoanPage(loanType: LoanType.loanCur,),
             LoanPage(loanType: LoanType.loanHis,),
-            MyLibraryPage(),
           ],
         ),
       ),

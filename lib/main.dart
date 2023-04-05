@@ -25,7 +25,9 @@ import 'ui/ui.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   _ifAndroidSetStatusBarTransparent();
-  Future.wait([Prefs.init(),]).whenComplete(() {
+  Future.wait([
+    Prefs.init(),
+  ]).whenComplete(() {
     if (Prefs.password == null) {
       Global.clearPrefsData();
       backImgFile = null;
@@ -37,13 +39,14 @@ void main() {
   });
 }
 
-void _ifAndroidSetStatusBarTransparent(){
+void _ifAndroidSetStatusBarTransparent() {
   if (UniversalPlatform.isAndroid) {
     SystemUiOverlayStyle systemUiOverlayStyle =
-    SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
 
@@ -81,7 +84,15 @@ class MyApp extends StatelessWidget {
           ],
           locale: Locale("zh"),
           debugShowCheckedModeBanner: false,
-          home: StartPage(),
+          home: GestureDetector(
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus &&
+                    currentFocus.focusedChild != null) {
+                  FocusManager.instance.primaryFocus.unfocus();
+                }
+              },
+              child: StartPage()),
         );
       },
     );
@@ -91,6 +102,7 @@ class MyApp extends StatelessWidget {
 class StartPage extends StatelessWidget {
   StartPage({Key key}) : super(key: key);
   static bool lock = false;
+
   Future<void> initFunc(BuildContext context) async {
     // 获取当前App版本
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -110,7 +122,7 @@ class StartPage extends StatelessWidget {
     //初始化配置
     initSize();
     //内测结束跳转
-    // if(DateTime.now().isAfter(DateTime(2023,4,5))){
+    // if(DateTime.now().isAfter(DateTime(2023,4,15))){
     //   toNullPage(context);
     //   return;
     // }
@@ -133,10 +145,9 @@ class StartPage extends StatelessWidget {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    if(lock==false){
+    if (lock == false) {
       lock = true;
       initFunc(context);
     }
@@ -146,4 +157,3 @@ class StartPage extends StatelessWidget {
     );
   }
 }
-

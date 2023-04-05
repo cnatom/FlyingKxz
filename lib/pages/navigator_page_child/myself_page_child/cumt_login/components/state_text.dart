@@ -54,7 +54,7 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
     );
 
     _animation = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+        .animate(_controller);
     autoLogin();
   }
 
@@ -72,9 +72,9 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
     }
     refreshText("正在登录校园网...");
     var res = await CumtLogin.autoLogin(account: account);
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(milliseconds: 600));
     refreshText(res);
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(milliseconds: 600));
     refreshText(widget.defaultText);
   }
 

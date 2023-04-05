@@ -5,9 +5,10 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'cumtLogin_help_page.dart';
 import 'util/login.dart';
 import 'util/util.dart';
-
 
 class CumtLoginView extends StatefulWidget {
   @override
@@ -21,12 +22,14 @@ class _CumtLoginViewState extends State<CumtLoginView> {
   ThemeProvider themeProvider;
   CumtLoginAccount cumtLoginAccount = CumtLoginAccount();
   CumtLogin cumtLogin = CumtLogin();
+
   @override
   void initState() {
     super.initState();
     _usernameController.text = cumtLoginAccount.username;
     _passwordController.text = cumtLoginAccount.password;
   }
+
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
@@ -37,8 +40,17 @@ class _CumtLoginViewState extends State<CumtLoginView> {
         runSpacing: spaceCardPaddingTB,
         children: [
           Container(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildLinkButton(onTap: ()=> launchUrl(Uri.parse("http://202.119.196.6:8080/Self/login/"))),
+              buildIconButton(onTap: ()=> toCumtLoginHelpPage(context))
+            ],
+          ),
+          Container(),
           buildTextField("账号", _usernameController, showPopButton: true),
           buildTextField("密码", _passwordController, obscureText: true),
+          Container(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -50,24 +62,46 @@ class _CumtLoginViewState extends State<CumtLoginView> {
               cumtLoginButton(1, "注销", onTap: () => _handleLogout(context)),
             ],
           ),
+          Container(),
           Container()
+
         ],
       ),
     );
   }
 
+  InkWell buildIconButton({GestureTapCallback onTap}) {
+    return InkWell(
+              onTap: onTap,
+              child: Icon(
+                Icons.help_outline,
+                color: themeProvider.colorNavText,
+              ),
+            );
+  }
+
+  Widget buildLinkButton({GestureTapCallback onTap}) {
+    return InkWell(
+              onTap: onTap,
+              child: Text("用户自助服务系统",style: TextStyle(fontSize: fontSizeMain40,color: themeProvider.colorNavText,decoration: TextDecoration.underline,),),
+            );
+  }
+
   InkWell buildPickerButton({GestureTapCallback onTap}) {
     return InkWell(
-                onTap: onTap,
-                child: Row(
-                  children: [
-                    FlyText.main40(
-                      "${cumtLoginAccount.cumtLoginLocation?.name} ${cumtLoginAccount.cumtLoginMethod?.name}",
-                      color: themeProvider.colorNavText,
-                    ),
-                    Icon(Icons.arrow_drop_down,color: themeProvider.colorNavText,),
-                  ],
-                ));
+        onTap: onTap,
+        child: Row(
+          children: [
+            FlyText.main40(
+              "${cumtLoginAccount.cumtLoginLocation?.name} ${cumtLoginAccount.cumtLoginMethod?.name}",
+              color: themeProvider.colorNavText,
+            ),
+            Icon(
+              Icons.arrow_drop_down,
+              color: themeProvider.colorNavText,
+            ),
+          ],
+        ));
   }
 
   Widget buildTextField(
@@ -76,8 +110,11 @@ class _CumtLoginViewState extends State<CumtLoginView> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadiusValue),
-          border: Border.all(color: themeProvider.colorNavText.withOpacity(0.3),
-              width: 1,),),
+        border: Border.all(
+          color: themeProvider.colorNavText.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
       child: Stack(
         alignment: Alignment.centerRight,
         children: [
@@ -97,7 +134,10 @@ class _CumtLoginViewState extends State<CumtLoginView> {
           ),
           showPopButton
               ? PopupMenuButton<CumtLoginAccount>(
-                  icon: Icon(Icons.arrow_drop_down_outlined,color: themeProvider.colorNavText,),
+                  icon: Icon(
+                    Icons.arrow_drop_down_outlined,
+                    color: themeProvider.colorNavText,
+                  ),
                   onOpened: () {
                     FocusScope.of(context).unfocus();
                   },
@@ -196,7 +236,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
         elevation: 0,
         color: type == 0
             ? themeProvider.colorMain.withOpacity(0.8)
-            : Theme.of(context).disabledColor.withOpacity(0.5),
+            : Theme.of(context).disabledColor.withOpacity(0.3),
         child: InkWell(
           splashColor: Colors.black12,
           borderRadius: BorderRadius.circular(5),
