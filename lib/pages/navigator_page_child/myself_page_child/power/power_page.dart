@@ -53,7 +53,7 @@ class _PowerPageState extends State<PowerPage> {
         Image.asset("images/powerRechargeHelp.png"),
         _buildButton("知道啦，前往充值页面↗",onTap: (){
           launchUrl(
-              Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"));
+              Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"),mode: LaunchMode.externalApplication);
         }),
       ],
     ));

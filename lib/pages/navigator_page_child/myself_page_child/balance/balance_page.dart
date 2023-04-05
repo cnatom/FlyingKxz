@@ -36,7 +36,7 @@ class _BalancePageState extends State<BalancePage> {
             ),
             Image.asset("images/balanceRechargeHelp.png"),
             _buildButton("知道啦，前往充值页面↗", onTap: () {
-              launchUrl(Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"));
+              launchUrl(Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"),mode: LaunchMode.externalApplication);
             }),
           ],
         ));
