@@ -88,8 +88,10 @@ class BalanceProvider extends ChangeNotifier {
 
         });
         return true;
+      }else{
+        toTipPage();
+        return false;
       }
-      return false;
     } on DioError catch (e) {
       if (showToasts){
         showToast("获取校园卡流水失败\n可能未连接校园网\n ${e.message.toString()}",duration: 4);

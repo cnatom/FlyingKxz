@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:flying_kxz/ui/toast.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:url_launcher/url_launcher.dart';

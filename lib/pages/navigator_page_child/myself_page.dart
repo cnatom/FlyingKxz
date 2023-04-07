@@ -32,6 +32,7 @@ import 'myself_page_child/cumt_login/cumtLogin_help_page.dart';
 import 'myself_page_child/cumt_login/cumtLogin_view.dart';
 
 class MyselfPage extends StatefulWidget {
+  const MyselfPage({Key key}) : super(key: key);
   @override
   _MyselfPageState createState() => _MyselfPageState();
 }
@@ -121,18 +122,11 @@ class _MyselfPageState extends State<MyselfPage>
         child: SingleChildScrollView(
           physics:
               AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              // 触摸收起键盘
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                  spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-              child: Column(
-                children: children,
-              ),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+                spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+            child: Column(
+              children: children,
             ),
           ),
         ),

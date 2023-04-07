@@ -19,11 +19,12 @@ import 'components/output_ics/output_ics_page.dart';
 import 'components/point_components/point_main.dart';
 
 class CoursePage extends StatefulWidget {
+  const CoursePage({Key key}) : super(key: key);
   @override
   CoursePageState createState() => CoursePageState();
 }
 
-class CoursePageState extends State<CoursePage> {
+class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMixin{
   CourseProvider courseProvider;
   ThemeProvider themeProvider;
   GlobalKey<PointMainState> _rightGlobalKey = new GlobalKey<PointMainState>();
@@ -51,6 +52,7 @@ class CoursePageState extends State<CoursePage> {
       duration: Duration(seconds: 1),
     );
   }
+
 
   // 添加课程
   _addCourse() async {
@@ -87,6 +89,7 @@ class CoursePageState extends State<CoursePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: CourseProvider()),

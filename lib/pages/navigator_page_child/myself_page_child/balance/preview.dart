@@ -21,7 +21,6 @@ class _BalancePreviewViewState extends State<BalancePreviewView> {
   }
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initData();
   }
