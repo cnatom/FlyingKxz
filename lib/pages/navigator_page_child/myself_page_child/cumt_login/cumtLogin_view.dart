@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
@@ -264,6 +265,12 @@ class _CumtLoginViewState extends State<CumtLoginView> {
         ], isArray: true),
         changeToFirst: true,
         hideHeader: false,
+        backgroundColor: Theme.of(context).cardColor,
+        confirmText: '确定',
+        textStyle: TextStyle(fontSize: fontSizeMain40,color: Theme.of(context).primaryColor),
+        confirmTextStyle: TextStyle(fontSize: fontSizeMain40,color: themeProvider.colorMain),
+        cancelText: '取消',
+        cancelTextStyle: TextStyle(fontSize: fontSizeMain40,color: Colors.grey),
         onConfirm: (Picker picker, List value) {
           setState(() {
             cumtLoginAccount

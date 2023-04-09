@@ -41,7 +41,6 @@ class _MyselfPageState extends State<MyselfPage>
     with AutomaticKeepAliveClientMixin {
   ThemeProvider themeProvider;
   Cumt cumt; // 用于网络请求
-
   @override
   void initState() {
     super.initState();
