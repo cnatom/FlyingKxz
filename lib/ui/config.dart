@@ -14,7 +14,6 @@ void initConfigInfo(){
   colorPageBackground = Color.fromARGB(255, 247,247,247);
   colorLoginPageMain = Color.fromARGB(255, 40,216,161);
 
-
   borderRadiusValue = 10;
   colorLessonCard = [
     Color.fromARGB(255, 102,204,153),

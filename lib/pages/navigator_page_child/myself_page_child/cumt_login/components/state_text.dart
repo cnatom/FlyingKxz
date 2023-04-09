@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/account.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/login.dart';
-import 'package:flying_kxz/ui/text.dart';
-import 'package:flying_kxz/ui/theme.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/util.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
 enum StateTextAnimationDirection {

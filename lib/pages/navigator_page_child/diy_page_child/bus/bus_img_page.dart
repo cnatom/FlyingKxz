@@ -8,7 +8,7 @@ import '../../../../util/logger/log.dart';
 void toBusImagePage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => SchoolCalendarPage()));
-  Logger.sendInfo('SchoolCalendar', '进入',{});
+  Logger.sendInfo('SchoolBus', '查看校车图片',{});
 }
 
 class SchoolCalendarPage extends StatelessWidget {
