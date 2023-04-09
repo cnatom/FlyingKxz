@@ -26,8 +26,10 @@ import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 import 'myself_page_child/aboutus/about_page.dart';
+import 'myself_page_child/balance/provider.dart';
 import 'myself_page_child/cumt_login/cumtLogin_help_page.dart';
 import 'myself_page_child/cumt_login/cumtLogin_view.dart';
+import 'myself_page_child/power/utils/provider.dart';
 
 class MyselfPage extends StatefulWidget {
   const MyselfPage({Key key}) : super(key: key);
@@ -51,11 +53,8 @@ class _MyselfPageState extends State<MyselfPage>
   void _signOut() async {
     Logger.sendInfo("Myself", "退出登录", {});
     backImgFile = null;
-    await cumt.clearCookie();
-    CumtLoginPrefs.clear();
-    Prefs.prefs.clear();
     BookSpider.dispose();
-    cumt.init();
+    await Future.wait([cumt.clearCookie(),Prefs.prefs.clear(),cumt.init()]);
     toLoginPage(context);
   }
 
@@ -80,26 +79,47 @@ class _MyselfPageState extends State<MyselfPage>
   Widget build(BuildContext context) {
     super.build(context);
     themeProvider = Provider.of<ThemeProvider>(context);
-    return _myselfScaffold(children: [
-      SizedBox(
-        height: kToolbarHeight,
-      ),
-      _header(), // 个人资料区域
-      Wrap(
-        runSpacing: spaceCardMarginTB,
-        children: [
-          // NoticeCard(),
-          _preview(), // 校园卡、宿舍电量
-          _container1(), // 校园网登录、、
-          _container2(), // 关于我们、、
-          _container3() // 退出登录、、
-        ],
-      ),
-      SizedBox(
-        height: 10,
-      ),
-      _privacyTextButton()
-    ]);
+    final powerProvider = Provider.of<PowerProvider>(context);
+    final balanceProvider = Provider.of<BalanceProvider>(context);
+    return RefreshIndicator(
+      color: themeProvider.colorMain,
+      onRefresh: () async{
+        if(await balanceProvider.getBalance()){
+          showToast("刷新成功:校园卡余额");
+        }else{
+          showToast("刷新失败:校园卡余额");
+        }
+        if(Prefs.powerBuilding!=null){
+          var ok = await powerProvider.getPreview();
+          await Future.delayed(Duration(seconds: 1));
+          if(ok){
+            showToast("刷新成功:宿舍电量");
+          }else{
+            showToast("刷新失败:宿舍电量");
+          }
+        }
+      },
+      child: _myselfScaffold(children: [
+        SizedBox(
+          height: kToolbarHeight,
+        ),
+        _header(), // 个人资料区域
+        Wrap(
+          runSpacing: spaceCardMarginTB,
+          children: [
+            // NoticeCard(),
+            _preview(), // 校园卡、宿舍电量
+            _container1(), // 校园网登录、、
+            _container2(), // 关于我们、、
+            _container3() // 退出登录、、
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        _privacyTextButton()
+      ]),
+    );
   }
 
   Widget _myselfScaffold({@required List<Widget> children}) {

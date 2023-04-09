@@ -30,7 +30,10 @@ class BalanceProvider extends ChangeNotifier {
 
 
   //校园卡余额
-  Future<bool> getBalance() async {
+  Future<bool> getBalance({int count = 2}) async {
+    if (count == 0) {
+      return false;
+    }
     Response res;
     try {
       await cumt.loginDefault();
@@ -46,14 +49,15 @@ class BalanceProvider extends ChangeNotifier {
     } on DioError catch (e) {
       Logger.sendInfo(
           'Balance', '余额,失败', {'cardNum': cardNum, 'balance': balance});
-      return false;
+      cumt.isLogin = false;
+      return getBalance(count: count - 1);
     }
   }
 
   //校园卡流水
   Future<bool> getBalanceHistory(BuildContext context,{bool showToasts = false}) async {
     try {
-      if(await Cumt.checkConnect()){
+      if(await Cumt.checkConnect(showToasts: showToasts)){
         await cumt.loginFWDT(Prefs.username, Prefs.password).then((value) async {
           var res = await cumt.dio.post(urls[BalanceRequestType.BalanceHis],
               data: FormData.fromMap(
@@ -70,6 +74,7 @@ class BalanceProvider extends ChangeNotifier {
             });
           }
           detailEntity = temp;
+          getBalanceHisDate = DateTime.now().toString().substring(0, 16);
           notifyListeners();
           // 分批埋点
           String timeKey = DateTime.now().toString();

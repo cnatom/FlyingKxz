@@ -43,7 +43,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buildLinkButton(onTap: ()=> launchUrl(Uri.parse("http://202.119.196.6:8080/Self/login/"))),
+              buildLinkButton(onTap: ()=> launchUrl(Uri.parse("http://202.119.196.6:8080/Self/login/"),mode: LaunchMode.externalApplication)),
               buildIconButton(onTap: ()=> toCumtLoginHelpPage(context))
             ],
           ),

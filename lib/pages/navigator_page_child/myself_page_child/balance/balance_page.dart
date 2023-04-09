@@ -63,8 +63,22 @@ class _BalancePageState extends State<BalancePage> {
         context,
         "校园卡",
       ),
-      body: SizedBox(
-        width: double.infinity,
+      body: RefreshIndicator(
+        color: themeProvider.colorMain,
+        onRefresh: ()async{
+          if(await balanceProvider.getBalance(count: 1)){
+            showToast("刷新成功:校园卡余额");
+          }else{
+            showToast("刷新失败:校园卡余额");
+          }
+          bool ok = await balanceProvider.getBalanceHistory(context);
+          await Future.delayed(Duration(seconds: 1));
+          if(ok){
+            showToast("刷新成功:校园卡流水");
+          }else{
+            showToast("刷新失败:校园卡流水");
+          }
+        },
         child: SingleChildScrollView(
           physics:
               BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -75,6 +89,10 @@ class _BalancePageState extends State<BalancePage> {
               runSpacing: spaceCardPaddingTB,
               children: [
                 _buildHeadCard(context),
+                Center(
+                  child: FlyText.miniTip30(
+                      "更新时间：" + balanceProvider.getBalanceHisDate),
+                ),
                 _buildBalanceDetail(context),
                 Center(
                   child: Column(

@@ -114,6 +114,7 @@ class _SchoolBusPageState extends State<SchoolBusPage>
               ),
               Expanded(
                 child: TabBarView(
+                  physics: BouncingScrollPhysics(),
                   controller: _tabController,
                   children: [
                     BusTimeListView(_model.finalList[0], _model.finalList[1]),
@@ -160,6 +161,7 @@ class _SchoolBusPageState extends State<SchoolBusPage>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Icon(Icons.chevron_right,color: Colors.transparent,),
             FlyText.main40(
               title,
               fontWeight: FontWeight.bold,

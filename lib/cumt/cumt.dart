@@ -120,7 +120,7 @@ class Cumt{
           }),options: Options(followRedirects: false),);
         }
         if(loginResponse.statusCode==401){
-          showToast('账号或密码错误\n（挂VPN也可能会无法登录）');
+          showToast('账号或密码错误');
           return false;
         }
         if(loginResponse.headers.value('location')!=null&&loginResponse.headers.value('location').contains('improveInfo')){
@@ -159,16 +159,16 @@ class Cumt{
 
   }
 
-  static Future<bool> checkConnect()async{
+  static Future<bool> checkConnect({bool showToasts = true})async{
     try{
-      showToast('正在检测内网环境……',duration: 4);
+      showToasts?showToast('正在检测内网环境……',duration: 4):null;
       var res = await Dio(BaseOptions(connectTimeout: 4000,receiveTimeout: 4000,sendTimeout: 4000)).get('http://jwxt.cumt.edu.cn/jwglxt');
       if(res!=null){
-        showToast('已连接内网！');
+        showToasts?showToast('已连接内网！'):null;
       }
       return true;
     }catch(e){
-      showToast('未连接内网');
+      showToasts?showToast('未连接内网'):null;
       debugPrint(e.toString());
       return false;
     }

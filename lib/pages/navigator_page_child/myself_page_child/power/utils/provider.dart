@@ -65,7 +65,7 @@ class PowerProvider extends ChangeNotifier{
 
   Future<bool> getPreview()async{
     try{
-      if(Prefs.powerBuilding!=null&&Prefs.powerRoomid!=null){
+      if(Prefs.powerBuilding!=null){
         bool ok = await _get(Prefs.powerBuilding, Prefs.powerRoomid);
         if(ok) return true;
       }
