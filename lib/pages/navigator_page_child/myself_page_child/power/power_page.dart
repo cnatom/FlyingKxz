@@ -2,15 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/appbar.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/dialog.dart';
-import 'package:flying_kxz/ui/loading.dart';
-import 'package:flying_kxz/ui/picker.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,7 +13,7 @@ import 'components/circular_view.dart';
 void toPowerPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => PowerPage()));
-  sendInfo('宿舍电量', '初始化宿舍电量页面');
+  Logger.sendInfo("Power", "进入", {});
 }
 
 class PowerPage extends StatefulWidget {
@@ -59,11 +53,16 @@ class _PowerPageState extends State<PowerPage> {
         Image.asset("images/powerRechargeHelp.png"),
         _buildButton("知道啦，前往充值页面↗",onTap: (){
           launchUrl(
-              Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"));
+              Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"),mode: LaunchMode.externalApplication);
         }),
       ],
     ));
 
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -207,7 +206,7 @@ class _PowerPageState extends State<PowerPage> {
 
   Widget _buildInputButton(String title) {
     return _buildDiyButton(title,
-        child: _buildInputBar("输入寝室号(如M2B421、Z1B104)", _powerRoomidController));
+        child: _buildInputBar("输入大寝室号(如 M2B421 )", _powerRoomidController));
   }
 
   Widget _container({@required String title, @required Widget child}) {
@@ -259,7 +258,7 @@ class _PowerPageState extends State<PowerPage> {
         child: Wrap(runSpacing: spaceCardPaddingTB, children: [
           _buildPreviewButton("宿舍楼", powerBuilding ?? "未选择",
               onTap: () => _handlePowerPicker()),
-          _buildInputButton("宿舍号"),
+          _buildInputButton("大寝号"),
           FlyWidgetBuilder(
               whenFirst: powerLoading,
               firstChild: _buildButton(
@@ -267,7 +266,7 @@ class _PowerPageState extends State<PowerPage> {
                 onTap: () {},
               ),
               secondChild: _buildButton(
-                "绑定",
+                "绑定 & 刷新",
                 onTap: () {
                   powerProvider.powerRoomid =
                       _powerRoomidController.text ?? "";

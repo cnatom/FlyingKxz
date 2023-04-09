@@ -5,8 +5,8 @@ import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_info.dart';
 
 import '../pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
-import '../pages/navigator_page_child/diy_page_child/book/model/book_detail_info.dart';
-import '../pages/navigator_page_child/diy_page_child/book/model/book_info.dart';
+import '../pages/navigator_page_child/diy_page_child/book/detail/entity.dart';
+import '../pages/navigator_page_child/diy_page_child/book/search/entity.dart';
 
 //获取当前学年学期
 void getSchoolYearTerm(){
@@ -33,14 +33,11 @@ void getSchoolYearTerm(){
 class Global{
   static ScoreInfo scoreInfo = new ScoreInfo();//成绩信息
   static List<ExamData> examList = [];//考试列表
-  static BookInfo bookInfo = new BookInfo();//图书馆书籍信息
-  static BookDetailInfo bookDetailInfo = new BookDetailInfo();
+  static BookDetailEntity bookDetailInfo = new BookDetailEntity();
   static DateTime nowDate = DateTime.now(); //当前日期
   static bool igUpgrade;//是否忽略更新
   static String curVersion;
   static Future<void> clearPrefsData()async{
-    scoreInfo = new ScoreInfo();
-    examList = [];
     await Prefs.prefs.clear();
     getSchoolYearTerm();
   }

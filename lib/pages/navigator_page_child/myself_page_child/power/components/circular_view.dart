@@ -2,7 +2,7 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-import '../../../../../ui/Theme/theme.dart';
+import '../../../../../ui/ui.dart';
 class PowerCircularView extends StatelessWidget {
   const PowerCircularView({
     Key key,

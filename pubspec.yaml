@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.4.10
+version: 1.5.0
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -27,7 +27,7 @@ dependencies:
   photo_view: any
   cached_network_image: any
   flutter_swiper: any
-  dio: any
+  dio: ^4.0.0
   badges: ^2.0.1
 #  flutter_page_indicator:
   sliding_up_panel: any
@@ -38,7 +38,6 @@ dependencies:
   provider: any
   shared_preferences: any
   flutter_easyhub: any
-#  connectivity: any
   flutter_picker: any
   flutter_feather_icons: any
   outline_material_icons: any
@@ -70,15 +69,17 @@ dependencies:
   webview_flutter: ^2.0.4
   percent_indicator: ^4.2.2
   share_plus: ^2.1.4
-  html: ^0.14.0+4
+  html: ^0.14.0+4 # html爬虫
   line_awesome_flutter: ^1.0.1
   flutter_inappwebview: ^5.3.2
-  ical: ^0.1.4
-  open_file: ^3.2.1
-  flutter_intro: ^3.0.2
+  ical: ^0.1.4 # 课表导出到日历
+  flutter_intro: ^3.0.2 #引导页
+  connectivity_plus: ^3.0.3 #检测wifi或者流量，用于校园网自动登录
+  animations: ^2.0.7 # Navigator跳转动画
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  dio: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -91,6 +92,7 @@ flutter:
   uses-material-design: true
   assets:
     - images/
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

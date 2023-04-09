@@ -8,33 +8,31 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
-import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/spider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/prefs.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/components/preview.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/preview.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/components/preview.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/container.dart';
-import 'package:flying_kxz/ui/dialog.dart';
-import 'package:flying_kxz/ui/loading.dart';
-import 'package:flying_kxz/ui/webview.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 import 'myself_page_child/aboutus/about_page.dart';
+import 'myself_page_child/balance/provider.dart';
+import 'myself_page_child/cumt_login/cumtLogin_help_page.dart';
 import 'myself_page_child/cumt_login/cumtLogin_view.dart';
+import 'myself_page_child/power/utils/provider.dart';
 
 class MyselfPage extends StatefulWidget {
+  const MyselfPage({Key key}) : super(key: key);
   @override
   _MyselfPageState createState() => _MyselfPageState();
 }
@@ -48,30 +46,18 @@ class _MyselfPageState extends State<MyselfPage>
   void initState() {
     super.initState();
     cumt = Cumt.getInstance();
-    _initBalanceAndPowerProvider();
-    sendInfo('我的', '初始化我的页面');
+    Logger.sendInfo("Myself", "初始化", {});
   }
 
   // 退出登录
   void _signOut() async {
-    sendInfo('退出登录', '退出了登录');
-    await Global.clearPrefsData();
+    Logger.sendInfo("Myself", "退出登录", {});
     backImgFile = null;
-    await cumt.clearCookie();
-    cumt.init();
+    BookSpider.dispose();
+    await Future.wait([cumt.clearCookie(),Prefs.prefs.clear(),cumt.init()]);
     toLoginPage(context);
   }
 
-  // 初始化校园卡余额与宿舍电量
-  Future<bool> _initBalanceAndPowerProvider()async{
-    bool ok = true;
-    await Future.wait([cumt.login(Prefs.username??"", Prefs.password??"")]).then((value)async{
-      ok &= await Provider.of<BalanceProvider>(context,listen: false).getBalance();
-      ok &= await Provider.of<PowerProvider>(context,listen: false).getPreview();
-      ok &= await Provider.of<BalanceProvider>(context,listen: false).getBalanceHistory();
-    });
-    return ok;
-  }
 
 
   Future<void> _feedback() async {
@@ -81,8 +67,11 @@ class _MyselfPageState extends State<MyselfPage>
         confirmText: "发送",
         maxLines: 10);
     if (text != null) {
-      await cumt.dio.post("https://user.kxz.atcumt.com/admin/version_new", data: {'data': text,});
-      sendInfo('反馈与建议', '发送了反馈:$text');
+      await cumt.dio
+          .post("https://user.kxz.atcumt.com/admin/version_new", data: {
+        'data': text,
+      });
+      Logger.sendInfo('Myself', '反馈', {"feedback": text});
     }
   }
 
@@ -90,26 +79,47 @@ class _MyselfPageState extends State<MyselfPage>
   Widget build(BuildContext context) {
     super.build(context);
     themeProvider = Provider.of<ThemeProvider>(context);
-    return _myselfScaffold(children: [
-      SizedBox(
-        height: kToolbarHeight,
-      ),
-      _header(), // 个人资料区域
-      Wrap(
-        runSpacing: spaceCardMarginTB,
-        children: [
-          // NoticeCard(),
-          _preview(), // 校园卡、宿舍电量
-          _container1(), // 校园网登录、、
-          _container2(), // 关于我们、、
-          _container3() // 退出登录、、
-        ],
-      ),
-      SizedBox(
-        height: 10,
-      ),
-      _privacyTextButton()
-    ]);
+    final powerProvider = Provider.of<PowerProvider>(context);
+    final balanceProvider = Provider.of<BalanceProvider>(context);
+    return RefreshIndicator(
+      color: themeProvider.colorMain,
+      onRefresh: () async{
+        if(await balanceProvider.getBalance()){
+          showToast("刷新成功:校园卡余额");
+        }else{
+          showToast("刷新失败:校园卡余额");
+        }
+        if(Prefs.powerBuilding!=null){
+          var ok = await powerProvider.getPreview();
+          await Future.delayed(Duration(seconds: 1));
+          if(ok){
+            showToast("刷新成功:宿舍电量");
+          }else{
+            showToast("刷新失败:宿舍电量");
+          }
+        }
+      },
+      child: _myselfScaffold(children: [
+        SizedBox(
+          height: kToolbarHeight,
+        ),
+        _header(), // 个人资料区域
+        Wrap(
+          runSpacing: spaceCardMarginTB,
+          children: [
+            // NoticeCard(),
+            _preview(), // 校园卡、宿舍电量
+            _container1(), // 校园网登录、、
+            _container2(), // 关于我们、、
+            _container3() // 退出登录、、
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        _privacyTextButton()
+      ]),
+    );
   }
 
   Widget _myselfScaffold({@required List<Widget> children}) {
@@ -120,7 +130,9 @@ class _MyselfPageState extends State<MyselfPage>
         child: AppBar(
           leading: Container(),
           backgroundColor: Colors.transparent,
-          systemOverlayStyle: themeProvider.simpleMode ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
+          systemOverlayStyle: themeProvider.simpleMode
+              ? SystemUiOverlayStyle.dark
+              : SystemUiOverlayStyle.light,
         ),
       ),
       body: Container(
@@ -128,18 +140,11 @@ class _MyselfPageState extends State<MyselfPage>
         child: SingleChildScrollView(
           physics:
               AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              // 触摸收起键盘
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                  spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-              child: Column(
-                children: children,
-              ),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+                spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+            child: Column(
+              children: children,
             ),
           ),
         ),
@@ -242,8 +247,14 @@ class _MyselfPageState extends State<MyselfPage>
     return _buttonList(children: <Widget>[
       FlyFlexibleButton(
         icon: Icons.language_outlined,
-        title: '校园网登录',
+        title: '校园网自动登录',
         secondChild: CumtLoginView(),
+        onStart: (context) {
+          print('hello');
+          if (CumtLoginPrefs.cumtLoginUsername == "") {
+            toCumtLoginHelpPage(context);
+          }
+        },
       ),
       FlyFlexibleButton(
         title: "个性化",
@@ -379,10 +390,19 @@ class _MyselfPageState extends State<MyselfPage>
     return InkWell(
       onTap: () => themeProvider.colorMain = color,
       child: Container(
-        height: fontSizeMain40 * 2,
-        width: fontSizeMain40 * 2,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100), color: color),
+            borderRadius: BorderRadius.circular(100), border: Border.all(color: themeProvider.colorMain == color ? themeProvider.colorMain : Colors.transparent, width: 2.5)),
+        child: Padding(
+          padding: const EdgeInsets.all(1.5),
+          child: Container(
+            height: fontSizeMain40 * 2,
+            width: fontSizeMain40 * 2,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: color
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -476,11 +496,11 @@ class _MyselfPageState extends State<MyselfPage>
               maxLine: 100,
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 onPressed: () => _signOut(),
                 child: FlyText.main40('确定', color: colorMain),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
                 child: FlyText.mainTip40(
                   '取消',
@@ -617,6 +637,7 @@ class FlyFlexibleButton extends StatefulWidget {
   final IconData icon;
   final String previewStr;
   final GestureTapCallback onTap;
+  final void Function(BuildContext context) onStart; // 打开前的操作，只会执行一次
 
   const FlyFlexibleButton(
       {Key key,
@@ -624,7 +645,8 @@ class FlyFlexibleButton extends StatefulWidget {
       this.title,
       this.icon,
       this.previewStr,
-      this.onTap})
+      this.onTap,
+      this.onStart})
       : super(key: key);
 
   @override
@@ -635,7 +657,7 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
   bool showSecond = false;
   double opacity = 0;
   ThemeProvider themeProvider;
-
+  bool onStarted = false; //是否执行过onStart
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
@@ -690,6 +712,10 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
   Widget _button() => InkWell(
         onTap: widget.onTap ??
             () {
+              if(onStarted==false&&widget.onStart!=null){
+                widget.onStart(context);
+                onStarted = true;
+              }
               setState(() {
                 showSecond = !showSecond;
                 if (showSecond) {

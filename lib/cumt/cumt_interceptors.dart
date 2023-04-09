@@ -17,6 +17,8 @@ class CumtInterceptors extends Interceptor {
     debugPrint("接收 " + response.statusCode.toString());
     debugPrint(t + "响应体:");
     print(response.toString());
+    debugPrint(t + "header:");
+    print(response.headers.toString());
     super.onResponse(response, handler);
   }
   @override
@@ -29,7 +31,7 @@ class CumtInterceptors extends Interceptor {
   }
   void debugPrintMap(Map<String,dynamic> map){
     for(var key in map.keys){
-      debugPrint(t+t+t+key+' : '+map[key]);
+      debugPrint(t+t+t+key+' : '+map[key].toString());
     }
   }
 }

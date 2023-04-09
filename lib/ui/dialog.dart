@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
+import 'package:flying_kxz/ui/text.dart';
 import 'package:flying_kxz/ui/toast.dart';
 
 import 'config.dart';
@@ -47,11 +47,11 @@ Future<String> FlyDialogInputShow(BuildContext context,
       ),
       actions: <Widget>[
 
-        FlatButton(
+        TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: FlyText.mainTip40("取消", ),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             if (result == '') {
               showToast( "小助听不懂哑语哦~");

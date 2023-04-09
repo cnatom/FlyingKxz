@@ -1,13 +1,12 @@
 import 'dart:convert';
 
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'Text/text.dart';
-import 'Theme/theme.dart';
+import 'text.dart';
+import 'theme.dart';
 import 'container.dart';
 
 // void noticeGetInfo()async{
@@ -73,7 +72,7 @@ class NoticeCardState extends State<NoticeCard> {
               spaceCardPaddingRL, fontSizeMain40 * 1.3),
           child:Row(
             children: <Widget>[
-              Badge(
+              badges.Badge(
                 showBadge: true,
                 child: Icon(
                   Icons.info_outline,

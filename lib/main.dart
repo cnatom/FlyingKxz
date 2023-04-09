@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,8 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/provider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
@@ -18,32 +18,33 @@ import 'package:universal_platform/universal_platform.dart';
 import 'Model/global.dart';
 import 'chinese.dart';
 import 'cumt/cumt.dart';
-import 'pages/navigator_page.dart';
-import 'ui/Text/text.dart';
-import 'ui/Theme/theme.dart';
-import 'ui/config.dart';
+import 'ui/ui.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   _ifAndroidSetStatusBarTransparent();
-  Future.wait([Prefs.init()]).whenComplete(() {
+  Future.wait([
+    Prefs.init(),
+  ]).whenComplete(() {
     if (Prefs.password == null) {
       Global.clearPrefsData();
       backImgFile = null;
     }
     ThemeProvider.init(); // 初始化主题
+    CumtLoginPrefs.init(); //初始化校园网登录模块
     Cumt.getInstance().init(); //初始化爬虫模块
     runApp(MyApp()); //启动App
   });
 }
 
-void _ifAndroidSetStatusBarTransparent(){
+void _ifAndroidSetStatusBarTransparent() {
   if (UniversalPlatform.isAndroid) {
     SystemUiOverlayStyle systemUiOverlayStyle =
-    SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
 
@@ -81,7 +82,15 @@ class MyApp extends StatelessWidget {
           ],
           locale: Locale("zh"),
           debugShowCheckedModeBanner: false,
-          home: StartPage(),
+          home: GestureDetector(
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus &&
+                    currentFocus.focusedChild != null) {
+                  FocusManager.instance.primaryFocus.unfocus();
+                }
+              },
+              child: StartPage()),
         );
       },
     );
@@ -91,6 +100,7 @@ class MyApp extends StatelessWidget {
 class StartPage extends StatelessWidget {
   StartPage({Key key}) : super(key: key);
   static bool lock = false;
+
   Future<void> initFunc(BuildContext context) async {
     // 获取当前App版本
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -110,7 +120,7 @@ class StartPage extends StatelessWidget {
     //初始化配置
     initSize();
     //内测结束跳转
-    // if(DateTime.now().isAfter(DateTime(2022,8,15))){
+    // if(DateTime.now().isAfter(DateTime(2023,4,15))){
     //   toNullPage(context);
     //   return;
     // }
@@ -133,10 +143,9 @@ class StartPage extends StatelessWidget {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    if(lock==false){
+    if (lock == false) {
       lock = true;
       initFunc(context);
     }
@@ -146,4 +155,3 @@ class StartPage extends StatelessWidget {
     );
   }
 }
-

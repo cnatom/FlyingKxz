@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'Text/text.dart';
+import 'text.dart';
 void initConfigInfo(){
   colorMain = Color(0xff00c5a8);
   colorSecond = Color(0xFF33CC99).withAlpha(255);
@@ -13,7 +13,6 @@ void initConfigInfo(){
   scaffoldBackgroundColor = Color.fromARGB(255, 255,255,255);
   colorPageBackground = Color.fromARGB(255, 247,247,247);
   colorLoginPageMain = Color.fromARGB(255, 40,216,161);
-
 
   borderRadiusValue = 10;
   colorLessonCard = [

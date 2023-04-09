@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/course_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/bean.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
+
+import '../../../../util/util.dart';
 
 
 /* 课程数据类
@@ -45,6 +47,7 @@ class CourseProvider extends ChangeNotifier{
     if(list==null)return;
     _initData();
     _initDateTime();
+    List loggerInfo = []; // 用于记录日志
     for(var item in list){
       CourseData courseData = new CourseData(
         weekList: item['weekList'],
@@ -60,23 +63,19 @@ class CourseProvider extends ChangeNotifier{
         info[week].add(courseData);
         pointArray[week][courseData.lessonNum~/2+1][courseData.weekNum]++;
       }
+      loggerInfo.add({
+        "title":courseData.title,
+        "location":courseData.location,
+        "teacher":courseData.teacher,
+        "credit":courseData.credit,
+        "weekList":courseData.weekList,
+        "weekNum":courseData.weekNum,
+        "lessonNum":courseData.lessonNum,
+      });
     }
     _savePrefs();
     notifyListeners();
-    sendInfo('主页', '导入了课表');
-  }
-  ///获取2019年第1学期课表
-  ///CourseProvider().get("token","2019","1");
-  get(String year,String term) {
-    // loading = true;
-    notifyListeners();
-    String newDateTimeStr;
-    if(term=='1'){
-      newDateTimeStr = '$year-09-07';
-    }else{
-      newDateTimeStr = '${int.parse(year)+1}-03-01';
-    }
-    setAdmissionDateTime(newDateTimeStr);
+    Logger.sendInfo("Course", "导入,成功", {"info":SecurityUtil.base64Encode(loggerInfo.toString())});
   }
   /// 修改当前周
   /// CourseProvider().changeWeek(5);
@@ -129,22 +128,6 @@ class CourseProvider extends ChangeNotifier{
     CoursePageState.coursePageController = new PageController(initialPage: curWeek-1,);
     curMondayDate = admissionDate.add(Duration(days: 7*(curWeek-1)));
     notifyListeners();
-  }
-  /// 用于测试数据
-  /// CourseProvider().test();
-  void test(){
-    for(int index = 1;index<=22;index++){
-      debugPrint("第$index周课程");
-      for(var course in info[index]){
-        debugPrint(course.toJson().toString());
-      }
-      for(var i in pointArray[index]){
-        debugPrint(i.toString());
-      }
-    }
-    for(int i = 0;i<infoByCourse.length;i++){
-      debugPrint(infoByCourse[i].title);
-    }
   }
   bool _equal(CourseData courseData1,CourseData courseData2){
     if(courseData1.title==courseData2.title&&

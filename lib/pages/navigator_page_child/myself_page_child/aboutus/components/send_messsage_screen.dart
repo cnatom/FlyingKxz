@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../../../ui/Text/text.dart';
+import '../../../../../ui/ui.dart';
 import 'custom_shape.dart';
 
 class SentMessageScreen extends StatelessWidget {

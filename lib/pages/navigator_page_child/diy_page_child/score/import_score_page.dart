@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
@@ -6,15 +6,10 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
 import 'package:flying_kxz/cumt/cumt_format.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_temp_list_view.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/appbar.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/container.dart';
-import 'package:flying_kxz/ui/my_bottom_sheet.dart';
-import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../ui/sheet.dart';
 import '../../../tip_page.dart';
 import 'import_help_page.dart';
 
@@ -172,9 +167,7 @@ class _ImportScorePageState extends State<ImportScorePage> {
           children: [
             InkWell(
               onTap: ()=>_showDetail(),
-              child: Badge(
-                padding: EdgeInsets.all(3),
-                elevation: 1,
+              child: badges.Badge(
                 badgeContent: Text(result.length.toString(),style: TextStyle(color: Colors.white),),
                 child: Icon(Icons.list,size: 35,color: textColor,),
               ),

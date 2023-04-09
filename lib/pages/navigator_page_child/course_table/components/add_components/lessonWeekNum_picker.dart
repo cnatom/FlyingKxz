@@ -1,12 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/bottom_sheet.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/loading.dart';
-import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
 class LessonWeekNumPicker extends StatefulWidget {
@@ -131,7 +126,7 @@ class _LessonWeekNumPickerState extends State<LessonWeekNumPicker> {
     if (lesson == null) lesson = lessonNum;
     if (dur == null) dur = duration;
     if (lesson + dur - 1 > 10) {
-      showToast("节次超限啦(X_X)", gravity: 1);
+      showToast("节次超限啦(X_X)");
       return false;
     }
     return true;

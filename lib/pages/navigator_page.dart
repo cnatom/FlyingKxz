@@ -3,43 +3,22 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_intro/flutter_intro.dart';
-import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/cumt_login.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/container.dart';
-import 'package:flying_kxz/ui/custome_router.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 
-import '../cumt/cumt.dart';
 import 'app_upgrade.dart';
 import 'navigator_page_child/course_table/course_page.dart';
 
-Future<void> sendInfo(String page, String action) async {
-  var info = {
-    "username": Prefs.username,
-    "action": action,
-    "page": page,
-    "info": {
-      "name": Prefs.name??"",
-      "time": DateTime.now().toString(),
-      "system": Platform.operatingSystem,
-      "version": Global.curVersion
-    }
-  };
-  Cumt.getInstance().dio.post("https://user.kxz.atcumt.com/admin/action", data: info);
-  print("sendInfo:" + page + ':' + action);
-}
+
 
 //跳转到当前页面
 void toNavigatorPage(BuildContext context) {
   Navigator.of(context).pushAndRemoveUntil(
-      CustomRoute(FlyNavigatorPage(), milliseconds: 500),
+      FadeTransitionRouter(FlyNavigatorPage(), milliseconds: 500),
       (route) => route == null);
 }
 
@@ -58,43 +37,30 @@ class FlyNavigatorPage extends StatefulWidget {
 var navigatorPageController = PageController(initialPage: 0);
 
 class FlyNavigatorPageState extends State<FlyNavigatorPage>
-    with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
+    with AutomaticKeepAliveClientMixin,WidgetsBindingObserver{
   int _currentIndex = 0; //数组索引，通过改变索引值改变视图
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   ThemeProvider themeProvider;
 
-  //校园网自动登录
-  void cumtAutoLogin() async {
-    if (Prefs.cumtLoginUsername != null) {
-      await cumtAutoLoginGet(context,
-          username: Prefs.cumtLoginUsername,
-          password: Prefs.cumtLoginPassword,
-          loginMethod: Prefs.cumtLoginMethod);
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    cumtAutoLogin(); //自动登录校园网
     WidgetsBinding.instance.addObserver(this);
     checkUpgrade(context); //检查软件更新
-    sendInfo('App', '打开');
+    Logger.sendInfo("Navigator", "打开",{});
   }
-
   @override
   void dispose() {
-    // 移除生命周期监听
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   /// 生命周期回调
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // 在resumed的时候自动登录校园网
-    if (state == AppLifecycleState.resumed) {
-      cumtAutoLogin();
+    if (state == AppLifecycleState.inactive) {
+      navigatorPageController.jumpToPage(0);
     }
   }
 
@@ -159,14 +125,16 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
   }
 
   BottomNavigationBarItem _buildBottomNavigationItem(String title, IconData iconData,
-      {double size}) =>
-      BottomNavigationBarItem(
-          label: title,
-          icon: Icon(
-            iconData,
-            size: size,
-          ));
+      {double size}){
+    return BottomNavigationBarItem(
+        label: title,
+        icon: Icon(
+          iconData,
+          size: size,
+        ));
+  }
 
   @override
   bool get wantKeepAlive => true;
 }
+

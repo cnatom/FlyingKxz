@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/exam/exam_data.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/bottom_sheet.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/ui.dart';
 
 class ExamAddView extends StatefulWidget {
   @override
@@ -122,7 +120,7 @@ class _ExamAddViewState extends State<ExamAddView> {
     );
     Global.examList.add(newCountDownInfo);
     Prefs.examData = ExamData.examJsonEncode(Global.examList);
-    sendInfo('考试倒计时', '添加了考试:${newCountDownInfo.courseName}');
+    Logger.sendInfo('Exam', '添加',newCountDownInfo.toJson());
     Navigator.pop(context);
   }
 

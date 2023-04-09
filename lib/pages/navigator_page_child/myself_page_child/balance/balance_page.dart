@@ -1,23 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/utils/provider.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/appbar.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/loading.dart';
+import 'package:flying_kxz/util/logger/log.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/provider.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../../ui/dialog.dart';
 
 //跳转到当前页面
 void toBalancePage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BalancePage()));
-  sendInfo('校园卡', '初始化校园卡页面');
+  Logger.sendInfo('Balance', '进入', {});
 }
 
 class BalancePage extends StatefulWidget {
@@ -42,10 +36,22 @@ class _BalancePageState extends State<BalancePage> {
             ),
             Image.asset("images/balanceRechargeHelp.png"),
             _buildButton("知道啦，前往充值页面↗", onTap: () {
-              launchUrl(Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"));
+              launchUrl(Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"),mode: LaunchMode.externalApplication);
             }),
           ],
         ));
+  }
+
+  // 初始化校园卡余额与宿舍电量
+  Future<void> _initBalanceHis() async {
+    await Provider.of<BalanceProvider>(context, listen: false)
+        .getBalanceHistory(context,showToasts: true);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initBalanceHis();
   }
 
   @override
@@ -57,8 +63,22 @@ class _BalancePageState extends State<BalancePage> {
         context,
         "校园卡",
       ),
-      body: Container(
-        width: double.infinity,
+      body: RefreshIndicator(
+        color: themeProvider.colorMain,
+        onRefresh: ()async{
+          if(await balanceProvider.getBalance(count: 1)){
+            showToast("刷新成功:校园卡余额");
+          }else{
+            showToast("刷新失败:校园卡余额");
+          }
+          bool ok = await balanceProvider.getBalanceHistory(context);
+          await Future.delayed(Duration(seconds: 1));
+          if(ok){
+            showToast("刷新成功:校园卡流水");
+          }else{
+            showToast("刷新失败:校园卡流水");
+          }
+        },
         child: SingleChildScrollView(
           physics:
               BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -69,17 +89,23 @@ class _BalancePageState extends State<BalancePage> {
               runSpacing: spaceCardPaddingTB,
               children: [
                 _buildHeadCard(context),
+                Center(
+                  child: FlyText.miniTip30(
+                      "更新时间：" + balanceProvider.getBalanceHisDate),
+                ),
                 _buildBalanceDetail(context),
                 Center(
                   child: Column(
                     children: [
-                      FlyText.miniTip30("更新时间："+balanceProvider.getBalanceHisDate),
+                      FlyText.miniTip30(
+                          "更新时间：" + balanceProvider.getBalanceHisDate),
                       FlyText.miniTip30('"我的"页面初始化时自动获取'),
-
                     ],
                   ),
                 ),
-                SizedBox(height: 300,)
+                SizedBox(
+                  height: 300,
+                )
               ],
             ),
           ),
@@ -95,31 +121,32 @@ class _BalancePageState extends State<BalancePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FlyText.main40("校园卡流水",
+            FlyText.main40("校园卡流水（需内网或VPN）",
                 color: Theme.of(context).primaryColor.withOpacity(0.5)),
           ],
         ),
         SizedBox(
           height: spaceCardPaddingTB * 2,
         ),
-        balanceProvider.detailInfo != null
-            ? Wrap(
-                runSpacing: spaceCardPaddingTB * 1.5,
-                children: balanceProvider.detailInfo.data.map((item) {
-                  return _buildDetailItem(
-                      item.location, item.time, item.costMoney, item.balance);
-                }).toList(),
+        balanceProvider.detailEntity != null
+            ? ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+                itemCount: balanceProvider.detailEntity.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var item = balanceProvider.detailEntity[index];
+                  return _buildDetailItem(item['title'], item['time'],
+                      item['change'], item['balance']);
+                },
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
               )
-            : loadingAnimationIOS(),
+            : loadingAnimationIOS()
       ],
     ));
   }
 
   Row _buildDetailItem(
       String title, String time, String change, String balance) {
-    //处理小数点
-    balance = (double.parse(balance) / 100).toStringAsFixed(2);
-    change = (double.parse(change) / 100).toStringAsFixed(2);
     //修改余额改变的正负号 并添加色彩
     double changeInt = double.parse(change);
     Color colorItem; //卡片色彩 正为绿 负为橙
@@ -135,6 +162,7 @@ class _BalancePageState extends State<BalancePage> {
         Container(
           height: fontSizeMain40 * 3,
           width: 5,
+          margin: EdgeInsets.fromLTRB(0, spaceCardPaddingTB*1.5, 0, 0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
             color: colorItem,

@@ -4,21 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flying_kxz/ui/config.dart';
 
-import 'Text/text.dart';
+import 'text.dart';
 
 void showToast(String text,
-    {String subTitle,int duration = 2, int gravity = 2}) {
+    {String subTitle,int duration = 3,bool bottom = false}) {
   // Toast.show(text, context,
   //     backgroundRadius: 5, gravity: gravity, duration: duration);
   BotToast.showSimpleNotification(
     title: text,
     subTitle: subTitle,
+    align: bottom?Alignment(0, 1):Alignment(0, -0.99), // bottom为true时，显示在底部，否则显示在顶部
     titleStyle: TextStyle(fontSize: fontSizeMain40),
     hideCloseButton: true,
     borderRadius: borderRadiusValue,
     duration: Duration(seconds: duration),
-    enableSlideOff: false,
-    align: const Alignment(0, -0.85)
   );
 }
 

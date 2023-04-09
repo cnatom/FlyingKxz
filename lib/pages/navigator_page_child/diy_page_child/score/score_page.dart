@@ -5,20 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/Model/global.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/import_score_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_info.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_map.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_set_page.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/appbar.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/container.dart';
-import 'package:flying_kxz/ui/dialog.dart';
-import 'package:flying_kxz/ui/loading.dart';
-import 'package:flying_kxz/ui/toast.dart';
-import 'package:flying_kxz/ui/webview.dart';
+import 'package:flying_kxz/ui/ui.dart';
+import 'package:flying_kxz/util/util.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +29,7 @@ void toScorePage(BuildContext context) {
                   BorderRadius.all(Radius.circular(borderRadiusValue)),
               buttonTextBuilder: (order) => '好的',
               child: ScorePage())));
-  sendInfo('成绩', '初始化成绩页面');
+  Logger.sendInfo('Score', '进入',{});
 }
 
 class ScorePage extends StatefulWidget {
@@ -48,7 +41,6 @@ class _ScorePageState extends State<ScorePage>
     with AutomaticKeepAliveClientMixin {
   ScrollController controller = new ScrollController();
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  String curScoreYearStr = "全部学年", curScoreTermStr = "全部学期"; //当前所选的学期学年信息
   String jiaquanTotal; //总加权
   String jidianTotal; //总绩点
 
@@ -70,11 +62,18 @@ class _ScorePageState extends State<ScorePage>
     ScoreMap.init();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    Global.scoreInfo = new ScoreInfo();
+  }
+
   _import() async {
     var result = await Navigator.push(
         context, CupertinoPageRoute(builder: (context) => ImportScorePage()));
     if (result == null || result.isEmpty) return;
     _show(result);
+    Logger.sendInfo("Score", "提取,成功", {"info": SecurityUtil.base64Encode(result.toString())});
   }
 
   _show(dynamic json) async {
@@ -95,7 +94,7 @@ class _ScorePageState extends State<ScorePage>
     }
     _calcuTotalScore();
     setState(() {});
-    sendInfo('成绩', '查询了成绩');
+
   }
 
   //计算总加权和总绩点
@@ -167,6 +166,9 @@ class _ScorePageState extends State<ScorePage>
           ],
         ));
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -675,11 +677,7 @@ class _ScorePageState extends State<ScorePage>
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    Global.scoreInfo = new ScoreInfo();
-  }
+
 
   Widget nullView() {
     return Container();

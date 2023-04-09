@@ -3,13 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/cumt/cumt_format.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_map.dart';
-import 'package:flying_kxz/ui/Text/text.dart';
-import 'package:flying_kxz/ui/Theme/theme.dart';
-import 'package:flying_kxz/ui/appbar.dart';
-import 'package:flying_kxz/ui/config.dart';
-import 'package:flying_kxz/ui/dialog.dart';
-import 'package:flying_kxz/ui/text_editer.dart';
-import 'package:flying_kxz/ui/toast.dart';
+import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
 class ScoreSetPage extends StatefulWidget {
@@ -198,12 +192,12 @@ class _ScoreSetViewState extends State<ScoreSetView> {
               widget.k==null?Column(
                 children: [
                   SizedBox(height: spaceCardMarginBigTB,),
-                  FlyInputBar(context, '评级(如"优秀")', controller0)
+                  inputBar(context, '评级(如"优秀")', controller0)
                 ],
               ):Container(),
               Container(),
-              FlyInputBar(context, "总评"+"(0~100)", controller1),
-              FlyInputBar(context, "绩点"+"(0.0~5.0)", controller2),
+              inputBar(context, "总评"+"(0~100)", controller1),
+              inputBar(context, "绩点"+"(0.0~5.0)", controller2),
               Container(),
               Container(),
               Row(
@@ -213,23 +207,32 @@ class _ScoreSetViewState extends State<ScoreSetView> {
                   IconButton(icon: Icon(Icons.check,color: themeProvider.colorMain,size: 30,), onPressed: ()=>widget.k==null?add():ok()),
                 ],
               )
-              // Center(
-              //   child: InkWell(
-              //     onTap: ()=>ok(),
-              //     child: Container(
-              //       padding: EdgeInsets.fromLTRB(40, 12, 40, 12),
-              //       decoration: BoxDecoration(
-              //           borderRadius: BorderRadius.circular(100),
-              //           color: themeProvider.colorMain
-              //       ),
-              //       child: FlyText.main40('确定',color: Colors.white,fontWeight: FontWeight.bold,),
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ],
       ),
     );
   }
+  Widget inputBar(BuildContext context,String hintText, TextEditingController controller,
+      {FormFieldSetter<String> onSaved,EdgeInsetsGeometry padding,bool obscureText = false,TextAlign textAlign = TextAlign.center}) =>
+      Container(
+        padding: padding,
+        decoration: BoxDecoration(
+            color: Theme.of(context).disabledColor,
+            borderRadius: BorderRadius.circular(100)
+        ),
+        child: TextFormField(
+          textAlign: textAlign,
+          style: TextStyle(fontSize: fontSizeMain40),
+          obscureText: obscureText, //是否是密码
+          controller: controller, //控制正在编辑的文本。通过其可以拿到输入的文本值
+          cursorColor: colorMain,
+          decoration: InputDecoration(
+            hintStyle: TextStyle(fontSize: fontSizeMain40),
+            border: InputBorder.none, //下划线
+            hintText: hintText, //点击后显示的提示语
+          ),
+          onSaved: onSaved,
+        ),
+      );
 }

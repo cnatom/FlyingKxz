@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 
-import 'Text/text.dart';
+import 'text.dart';
+
 //白色背景AppBar(子页面AppBar)
 Widget FlyAppBar(BuildContext context, String title,
-    {PreferredSizeWidget bottom,List<Widget> actions}) =>
+        {PreferredSizeWidget bottom,
+        List<Widget> actions,
+        Widget titleWidget}) =>
     AppBar(
       systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
       actions: actions,
       centerTitle: true,
       bottom: bottom,
-      title: FlyText.title45(title,fontWeight: FontWeight.w500,color: Theme.of(context).primaryColor,),
+      title: titleWidget ??
+          FlyText.title45(
+            title,
+            fontWeight: FontWeight.w500,
+            color: Theme.of(context).primaryColor,
+          ),
       leading: IconButton(
         icon: Icon(
           Icons.arrow_back_ios,
