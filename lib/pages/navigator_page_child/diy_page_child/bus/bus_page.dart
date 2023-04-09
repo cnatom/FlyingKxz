@@ -34,6 +34,7 @@ class _SchoolBusPageState extends State<SchoolBusPage>
       "「文昌校区」：\n中心区、网络大讲堂（原电教馆)站；\n\n"
       "「南湖校区」：行健楼站、博学四楼站、\n博学五楼站、 “青春广场”（原松苑餐厅)站。\n\n"
       "「特别说明」：20:00后由网络大讲堂（原电教馆）始发，满员后循环发车。";
+
   @override
   void initState() {
     super.initState();
@@ -56,28 +57,29 @@ class _SchoolBusPageState extends State<SchoolBusPage>
       create: (context) => BusModel(),
       child: Builder(builder: (context) {
         final _model = Provider.of<BusModel>(context);
-        final themeProvider = Provider.of<ThemeProvider>(context);
         return Scaffold(
-          appBar:
-              FlyAppBar(context, "班车时刻" + (_model.showRest ? "（休息日）" : "（工作日）"),
-                  actions: [
-                    IconButton(
-                        icon: Icon(
-                          Entypo.switch_icon,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        onPressed: () {
-                          _model.switchRest();
-                        }),
-                    IconButton(
-                        icon: Icon(
-                          Icons.image_search_rounded,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        onPressed: () {
-                          toBusImagePage(context);
-                        })
-                  ],),
+          appBar: FlyAppBar(
+            context,
+            "班车时刻" + (_model.showRest ? "（休息日）" : "（工作日）"),
+            actions: [
+              IconButton(
+                  icon: Icon(
+                    Entypo.switch_icon,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  onPressed: () {
+                    _model.switchRest();
+                  }),
+              IconButton(
+                  icon: Icon(
+                    Icons.image_search_rounded,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  onPressed: () {
+                    toBusImagePage(context);
+                  })
+            ],
+          ),
           body: Column(
             children: [
               FlyTabBar(
@@ -123,7 +125,7 @@ class _SchoolBusPageState extends State<SchoolBusPage>
                 ),
               ),
               Container(
-                height: ScreenUtil.bottomBarHeight*1.5,
+                  padding: EdgeInsets.symmetric(vertical: 5),
                   alignment: Alignment.topCenter,
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -136,6 +138,7 @@ class _SchoolBusPageState extends State<SchoolBusPage>
                     ),
                   ),
                   child: FlyText.mainTip40("生效日期：2023.2.16 - 2023.7.10")),
+              SizedBox(height: ScreenUtil.bottomBarHeight,)
             ],
           ),
         );
@@ -161,7 +164,10 @@ class _SchoolBusPageState extends State<SchoolBusPage>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.chevron_right,color: Colors.transparent,),
+            Icon(
+              Icons.chevron_right,
+              color: Colors.transparent,
+            ),
             FlyText.main40(
               title,
               fontWeight: FontWeight.bold,
@@ -213,8 +219,6 @@ class _BusTimeListViewState extends State<BusTimeListView> {
       ],
     );
   }
-
-
 
   Widget _buildColumn(List<String> timeList) {
     bool temp = false;

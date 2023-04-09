@@ -42,13 +42,11 @@ class BalanceProvider extends ChangeNotifier {
       cardNum = map['data']['ZH'];
       balance = (double.parse(map['data']['YE']) / 100).toStringAsFixed(2);
       getBalanceDate = DateTime.now().toString().substring(0, 16);
-      Logger.sendInfo(
-          'Balance', '余额,成功', {'cardNum': cardNum, 'balance': balance});
+      Logger.sendInfo('Balance', '余额,成功', {'cardNum': cardNum, 'balance': balance});
       notifyListeners();
       return true;
     } on DioError catch (e) {
-      Logger.sendInfo(
-          'Balance', '余额,失败', {'cardNum': cardNum, 'balance': balance});
+      Logger.sendInfo('Balance', '余额,失败', {'cardNum': cardNum, 'balance': balance});
       cumt.isLogin = false;
       return getBalance(count: count - 1);
     }
