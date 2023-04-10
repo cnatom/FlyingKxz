@@ -187,7 +187,6 @@ class ThemeProvider extends ChangeNotifier {
 class FlyThemes {
   static final darkTheme = ThemeData(
       brightness: Brightness.dark,
-      buttonColor: colorMain.withOpacity(0.8),
       //弹窗背景色
       dialogBackgroundColor: Color(0xff1c1c1e),
       //按钮按下的色彩
@@ -240,7 +239,6 @@ class FlyThemes {
   static final diyTheme =
       ThemeData(scaffoldBackgroundColor: Colors.transparent);
   static final lightTheme = ThemeData(
-      buttonColor: colorMain,
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       //子页面背景色

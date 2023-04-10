@@ -99,7 +99,6 @@ class MyApp extends StatelessWidget {
 
 class StartPage extends StatelessWidget {
   StartPage({Key key}) : super(key: key);
-  static bool lock = false;
 
   Future<void> initFunc(BuildContext context) async {
     // 获取当前App版本
@@ -145,13 +144,14 @@ class StartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (lock == false) {
-      lock = true;
-      initFunc(context);
-    }
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(),
+    return FutureBuilder(
+      future: initFunc(context),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: Container(),
+        );
+      }
     );
   }
 }
