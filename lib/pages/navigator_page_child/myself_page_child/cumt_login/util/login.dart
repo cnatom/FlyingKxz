@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:universal_platform/universal_platform.dart';
 import 'locations.dart';
 import 'package:dio/dio.dart';
 import 'account.dart';
@@ -49,12 +48,10 @@ class CumtLogin {
     if (connectivityResult == ConnectivityResult.wifi) {
       if (!account.isEmpty) {
         var res = await login(account: account);
-        if (res == CumtLoginResult.SUCCESS ||
-            res == CumtLoginResult.LOGGED_IN) {
-          return res;
-        }
+        return res;
+      }else{
+        return "账号为空";
       }
-      return "账号为空";
     } else if (connectivityResult == ConnectivityResult.mobile) {
       return CumtLoginResult.MOBILE_ERROR;
     } else {
@@ -107,6 +104,7 @@ class CumtLogin {
       if (result == CumtLoginResult.SUCCESS ||
           result == CumtLoginResult.LOGGED_IN) {
         CumtLoginAccount.addList(account);
+        account.refreshAccountPrefs();
       }
       return result;
     } catch (e) {

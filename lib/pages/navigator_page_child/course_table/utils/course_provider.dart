@@ -75,7 +75,7 @@ class CourseProvider extends ChangeNotifier{
     }
     _savePrefs();
     notifyListeners();
-    Logger.sendInfo("Course", "导入,成功", {"info":SecurityUtil.base64Encode(loggerInfo.toString())});
+    Logger.log("Course", "导入,成功", {"info":SecurityUtil.base64Encode(loggerInfo.toString())});
   }
   /// 修改当前周
   /// CourseProvider().changeWeek(5);

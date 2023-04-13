@@ -29,7 +29,7 @@ void toScorePage(BuildContext context) {
                   BorderRadius.all(Radius.circular(borderRadiusValue)),
               buttonTextBuilder: (order) => '好的',
               child: ScorePage())));
-  Logger.sendInfo('Score', '进入',{});
+  Logger.log('Score', '进入',{});
 }
 
 class ScorePage extends StatefulWidget {
@@ -73,7 +73,7 @@ class _ScorePageState extends State<ScorePage>
         context, CupertinoPageRoute(builder: (context) => ImportScorePage()));
     if (result == null || result.isEmpty) return;
     _show(result);
-    Logger.sendInfo("Score", "提取,成功", {"info": SecurityUtil.base64Encode(result.toString())});
+    Logger.log("Score", "提取,成功", {"info": SecurityUtil.base64Encode(result.toString())});
   }
 
   _show(dynamic json) async {

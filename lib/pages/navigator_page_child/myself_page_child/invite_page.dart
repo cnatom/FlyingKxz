@@ -55,7 +55,7 @@ class _InvitePageState extends State<InvitePage> {
               onTap: (){
                 Clipboard.setData(ClipboardData(text: "http://kxz.atcumt.com/"));
                 showToast("已复制到粘贴板，快分享给好友吧~");
-                Logger.sendInfo("Invite", "分享", {"type":"官网"});
+                Logger.log("Invite", "分享", {"type":"官网"});
               },
               child: Container(
                 height: fontSizeMain40*3,
@@ -79,7 +79,7 @@ class _InvitePageState extends State<InvitePage> {
               onTap: (){
                 Clipboard.setData(ClipboardData(text: "957634136"));
                 showToast( "已复制到粘贴板，快分享给好友吧~");
-                Logger.sendInfo("Invite", "分享", {"type":"QQ群"});
+                Logger.log("Invite", "分享", {"type":"QQ群"});
               },
               child: Container(
                 height: fontSizeMain40*3,

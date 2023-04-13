@@ -34,7 +34,7 @@ class BookSearchData {
 void toBookSearchPage(BuildContext context, {@required String bookName}) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BookSearchPage(bookName: bookName,)));
-  Logger.sendInfo('Book', "进入", {});
+  Logger.log('Book', "进入", {});
 }
 
 
@@ -70,7 +70,6 @@ class _BookSearchPageState extends State<BookSearchPage> with AutomaticKeepAlive
       curPage = page;
     }
     setState(() {loading = false;});
-    Logger.sendInfo('Book', "搜索", {});
   }
   switchPage({@required int page})async{
     setState(() {

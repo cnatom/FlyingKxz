@@ -11,7 +11,7 @@ import '../../../navigator_page.dart';
 void toSchoolCalendarPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => SchoolCalendarPage()));
-  Logger.sendInfo('SchoolCalendar', '进入',{});
+  Logger.log('SchoolCalendar', '进入',{});
 }
 
 class SchoolCalendarPage extends StatelessWidget {

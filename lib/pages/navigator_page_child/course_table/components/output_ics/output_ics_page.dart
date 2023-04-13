@@ -123,13 +123,13 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
             FlyText.miniTip30('小技巧：使用日历软件(如滴答清单)的url订阅功能，可以实现日历与服务器同步更新哦～(具体步骤请点击"课表还能这么玩？"）',maxLine: 3,),
           ],
         ));
-        Logger.sendInfo("OutputIcs", "导出至日历,成功",{});
+        Logger.log("OutputIcs", "导出至日历,成功",{});
         Future.delayed(Duration(seconds: 5),(){
           launchUrl(Uri.parse(Prefs.courseIcsUrl));
         });
       }else{
         showToast('导出失败${res.toString()}');
-        Logger.sendInfo("OutputIcs", "导出至日历,失败",{});
+        Logger.log("OutputIcs", "导出至日历,失败",{});
         return;
       }
     }on DioError catch(e){
@@ -150,10 +150,10 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
     if(data!=''){
       showToast('成功生成课表文件，分享出去吧～');
       Share.shareFiles(['$data'],);
-      Logger.sendInfo("OutputIcs", "以文件分享,成功",{});
+      Logger.log("OutputIcs", "以文件分享,成功",{});
     }else{
       showToast('文件生成失败');
-      Logger.sendInfo("OutputIcs", "以文件分享,失败",{});
+      Logger.log("OutputIcs", "以文件分享,失败",{});
     }
   }
   @override

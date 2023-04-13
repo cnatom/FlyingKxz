@@ -14,7 +14,7 @@ import 'bus_model.dart';
 void toSchoolBusPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => SchoolBusPage()));
-  Logger.sendInfo('SchoolBus', '进入', {});
+  Logger.log('SchoolBus', '进入', {});
 }
 
 class SchoolBusPage extends StatefulWidget {

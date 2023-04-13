@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/util.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
+import 'package:synchronized/extension.dart';
+
+import '../../../../../util/logger/log.dart';
 
 enum StateTextAnimationDirection {
   up,
@@ -70,6 +73,12 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
     }
     refreshText("正在登录校园网...");
     var res = await CumtLogin.autoLogin(account: account);
+    Logger.log("CumtLogin", "自动登录", {
+      "username": account.username,
+      "method": account.cumtLoginMethod.name,
+      "location": account.cumtLoginLocation.name,
+      "result":res
+    });
     await Future.delayed(Duration(milliseconds: 600));
     refreshText(res);
     await Future.delayed(Duration(milliseconds: 600));
@@ -80,7 +89,6 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
   void dispose() {
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
-    _controller.dispose();
   }
 
   /// 生命周期回调

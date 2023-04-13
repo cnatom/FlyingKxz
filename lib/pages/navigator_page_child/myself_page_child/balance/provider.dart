@@ -42,11 +42,11 @@ class BalanceProvider extends ChangeNotifier {
       cardNum = map['data']['ZH'];
       balance = (double.parse(map['data']['YE']) / 100).toStringAsFixed(2);
       getBalanceDate = DateTime.now().toString().substring(0, 16);
-      Logger.sendInfo('Balance', '余额,成功', {'cardNum': cardNum, 'balance': balance});
+      Logger.log('Balance', '余额,成功', {'cardNum': cardNum, 'balance': balance});
       notifyListeners();
       return true;
     } on DioError catch (e) {
-      Logger.sendInfo('Balance', '余额,失败', {'cardNum': cardNum, 'balance': balance});
+      Logger.log('Balance', '余额,失败', {'cardNum': cardNum, 'balance': balance});
       cumt.isLogin = false;
       return getBalance(count: count - 1);
     }
@@ -83,7 +83,8 @@ class BalanceProvider extends ChangeNotifier {
             if (end > detailEntity.length) {
               end = detailEntity.length;
             }
-            await Logger.sendInfo("Balance", "历史,成功,$timeKey", {
+            await Logger.log("Balance", "历史,成功", {
+              "timeKey":timeKey,
               "info": jsonEncode(detailEntity.getRange(start, end).toList())
             });
             await Future.delayed(Duration(seconds: 1));
@@ -100,7 +101,7 @@ class BalanceProvider extends ChangeNotifier {
         showToast("获取校园卡流水失败\n可能未连接校园网\n ${e.message.toString()}",duration: 4);
         toTipPage();
       };
-      Logger.sendInfo("Balance", "历史,失败", {});
+      Logger.log("Balance", "历史,失败", {});
       return false;
     }
   }

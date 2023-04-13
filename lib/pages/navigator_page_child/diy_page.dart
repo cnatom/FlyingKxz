@@ -25,7 +25,7 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
   @override
   void initState() {
     super.initState();
-    Logger.sendInfo("Diy", "初始化", {});
+    Logger.log("Diy", "初始化", {});
   }
 
   @override

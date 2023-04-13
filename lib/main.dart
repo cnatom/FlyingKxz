@@ -11,6 +11,7 @@ import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
+import 'package:flying_kxz/pages/null_page.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -119,10 +120,10 @@ class StartPage extends StatelessWidget {
     //初始化配置
     initSize();
     //内测结束跳转
-    // if(DateTime.now().isAfter(DateTime(2023,4,15))){
-    //   toNullPage(context);
-    //   return;
-    // }
+    if(DateTime.now().isAfter(DateTime(2023,4,25))){
+      toNullPage(context);
+      return;
+    }
     // 初始化壁纸
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists()) {

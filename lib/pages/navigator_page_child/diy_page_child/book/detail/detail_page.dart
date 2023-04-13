@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/model/global.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 
 import '../../../../../util/logger/log.dart';
@@ -14,7 +13,7 @@ import 'entity.dart';
 void toBookDetailPage(BuildContext context,String url,String bookName) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BookDetailPage(url: url,bookName: bookName,)));
-  Logger.sendInfo('BookDetail', '查看图书,$bookName',{});
+  Logger.log('Book', '查看图书详情',{"bookName":bookName});
 
 }
 class BookDetailPage extends StatefulWidget {

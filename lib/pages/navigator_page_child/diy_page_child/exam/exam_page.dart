@@ -53,7 +53,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
     examCurList = _parseToCurList(Global.examList);
     setState(() {});
     showToast('导入成功');
-    Logger.sendInfo('Exam', '导入,成功',{'info':importList});
+    Logger.log('Exam', '导入,成功',{'info':importList});
   }
   List<ExamData> _parseToCurList(List<ExamData> examList,){
     List<ExamData> result = [];
@@ -380,7 +380,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
             //存储
             Global.examList = examCurList+examOutList;
             Prefs.examData = ExamData.examJsonEncode(Global.examList);
-            Logger.sendInfo('Exam', '删除考试,${item.courseName}',{});
+            Logger.log('Exam', '删除考试',{'courseName':item.courseName});
           }
     },
         child: examCard(item.courseName, item.location, item.dateTime, item.year, item.month, item.day,outView: outView),

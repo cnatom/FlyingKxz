@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.5.01
+version: 1.5.02
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -75,7 +75,7 @@ dependencies:
   ical: ^0.1.4 # 课表导出到日历
   flutter_intro: ^3.0.2 #引导页
   connectivity_plus: ^3.0.3 #检测wifi或者流量，用于校园网自动登录
-  animations: ^2.0.7 # Navigator跳转动画
+  synchronized: ^3.0.0 # 加锁防止校园网自动登录多次执行
 dev_dependencies:
   flutter_test:
     sdk: flutter

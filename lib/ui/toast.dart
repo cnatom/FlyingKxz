@@ -8,8 +8,6 @@ import 'text.dart';
 
 void showToast(String text,
     {String subTitle,int duration = 3,bool bottom = false}) {
-  // Toast.show(text, context,
-  //     backgroundRadius: 5, gravity: gravity, duration: duration);
   BotToast.showSimpleNotification(
     title: text,
     subTitle: subTitle,

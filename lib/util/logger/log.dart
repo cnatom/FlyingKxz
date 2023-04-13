@@ -9,7 +9,7 @@ import 'data.dart';
 export 'data.dart';
 
 class Logger {
-  static Future<void> sendInfo(
+  static Future<void> log(
       String page, String action, Map<String, dynamic> data,) async {
     LoggerData info = LoggerData(
       username: Prefs.username ?? '',

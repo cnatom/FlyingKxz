@@ -11,7 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 void toBalancePage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BalancePage()));
-  Logger.sendInfo('Balance', '进入', {});
+  Logger.log('Balance', '进入', {});
 }
 
 class BalancePage extends StatefulWidget {

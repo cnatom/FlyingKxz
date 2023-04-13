@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/tabviews/loan/entity/loan_entity.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/tabviews/loan/entity/renew_entity.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 
 import '../../../../cumt/cumt.dart';
 
@@ -56,6 +57,7 @@ class BookSpider {
             options: Options(headers: {"jwtOpacAuth": jwtOpacAuth}));
         LoanEntity loanEntity =
             LoanEntity.fromJson(res.data as Map<String, dynamic>);
+        Logger.log("Book", loanType==LoanType.loanCur?"当前借阅":"历史借阅", {"info":loanEntity.data.searchResult});
         return loanEntity;
       } else {
         return null;
@@ -71,6 +73,7 @@ class BookSpider {
       var res = await _cumt.dio.post("https://findcumt.libsp.com/find/lendbook/reNew",data: {"loanIds":loanIds},
           options: Options(headers: {"jwtOpacAuth": _jwtOpacAuth}));
       RenewEntity entity = RenewEntity.fromJson(res.data as Map<String, dynamic>);
+      Logger.log("Book", "一键续借", {"info":res.data as Map<String, dynamic>});
       return entity;
     }catch(e){
       print(e);

@@ -13,7 +13,7 @@ import 'components/circular_view.dart';
 void toPowerPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => PowerPage()));
-  Logger.sendInfo("Power", "进入", {});
+  Logger.log("Power", "进入", {});
 }
 
 class PowerPage extends StatefulWidget {

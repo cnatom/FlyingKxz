@@ -45,12 +45,12 @@ class _MyselfPageState extends State<MyselfPage>
   void initState() {
     super.initState();
     cumt = Cumt.getInstance();
-    Logger.sendInfo("Myself", "初始化", {});
+    Logger.log("Myself", "初始化", {});
   }
 
   // 退出登录
   void _signOut() async {
-    Logger.sendInfo("Myself", "退出登录", {});
+    Logger.log("Myself", "退出登录", {});
     backImgFile = null;
     BookSpider.dispose();
     await Future.wait([cumt.clearCookie(),Prefs.prefs.clear(),cumt.init()]);
@@ -70,7 +70,7 @@ class _MyselfPageState extends State<MyselfPage>
           .post("https://user.kxz.atcumt.com/admin/version_new", data: {
         'data': text,
       });
-      Logger.sendInfo('Myself', '反馈', {"feedback": text});
+      Logger.log('Myself', '反馈', {"feedback": text});
     }
   }
 
@@ -249,7 +249,6 @@ class _MyselfPageState extends State<MyselfPage>
         title: '校园网自动登录',
         secondChild: CumtLoginView(),
         onStart: (context) {
-          print('hello');
           if (CumtLoginPrefs.cumtLoginUsername == "") {
             toCumtLoginHelpPage(context);
           }

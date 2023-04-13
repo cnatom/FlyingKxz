@@ -49,6 +49,7 @@ class CumtLoginAccount{
     CumtLoginPrefs.cumtLoginAccountList = jsonEncode(list);
   }
 
+  /// 删除历史列表项
   static removeList(CumtLoginAccount valueOld){
     CumtLoginAccount value = valueOld.clone();
     if(list.remove(value)){
@@ -83,6 +84,14 @@ class CumtLoginAccount{
   /// 判断用户名和密码是否为空，为空则返回false
   bool get isEmpty{
     return username==""&&password=="";
+  }
+
+  // 刷新当前账号的本地存储数据
+  void refreshAccountPrefs(){
+    username = _username;
+    password = _password;
+    cumtLoginLocation = _cumtLoginLocation;
+    cumtLoginMethod = _cumtLoginMethod;
   }
 
   @override
