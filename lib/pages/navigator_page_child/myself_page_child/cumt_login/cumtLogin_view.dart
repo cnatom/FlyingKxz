@@ -245,8 +245,10 @@ class _CumtLoginViewState extends State<CumtLoginView> {
       setState(() {
         if (value == CumtLoginResult.SUCCESS) {
           showToast("$value\n（已开启自动登录）");
-        } else {
-          showToast(value);
+        } else if(value==CumtLoginResult.LOGIN_LIMIT_EXCEEDED){
+          showToast('$value\n请在"用户自助服务系统"下线终端。');
+        }else if(value==CumtLoginResult.NETWORK_ERROR){
+          showToast('$value，确保您已经连接校园网(CUMT_Stu或CUMT_tec)');
         }
       });
       Logger.log("CumtLogin", "登录", {
