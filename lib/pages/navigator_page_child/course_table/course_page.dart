@@ -92,7 +92,7 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
     super.build(context);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: CourseProvider()),
+        ChangeNotifierProvider(create:(_)=> CourseProvider()),
       ],
       builder: (context, _) {
         courseProvider = Provider.of<CourseProvider>(context);

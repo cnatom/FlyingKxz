@@ -10,11 +10,14 @@ import 'package:flying_kxz/ui/tabbar.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../util/logger/log.dart';
+
 
 toNewBookPage(BuildContext context) {
   Navigator.of(context).push(CupertinoPageRoute(builder: (context) {
     return NewBookPage();
   }));
+  Logger.log('Book', '进入', {});
 }
 
 class NewBookPage extends StatefulWidget {
