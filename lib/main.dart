@@ -120,10 +120,10 @@ class StartPage extends StatelessWidget {
     //初始化配置
     initSize();
     //内测结束跳转
-    // if(DateTime.now().isAfter(DateTime(2023,4,25))){
-    //   toNullPage(context);
-    //   return;
-    // }
+    if(DateTime.now().isAfter(DateTime(2023,5,5))){
+      toNullPage(context);
+      return;
+    }
     // 初始化壁纸
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists()) {

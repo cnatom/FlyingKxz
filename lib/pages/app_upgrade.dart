@@ -12,6 +12,7 @@ import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void checkUpgrade(BuildContext context,{bool auto = true})async{
+  return;
   if(UniversalPlatform.isIOS){
     return;
   }

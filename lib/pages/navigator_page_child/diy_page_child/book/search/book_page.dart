@@ -34,7 +34,6 @@ class BookSearchData {
 void toBookSearchPage(BuildContext context, {@required String bookName}) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BookSearchPage(bookName: bookName,)));
-  Logger.log('Book', "进入", {});
 }
 
 
