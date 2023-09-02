@@ -1,6 +1,6 @@
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_color.dart';
 
-///{
+// /{
 // "title":"语文",
 // "location":"博五",
 // "teacher":"张三",

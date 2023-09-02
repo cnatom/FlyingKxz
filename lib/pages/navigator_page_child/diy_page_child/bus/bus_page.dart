@@ -137,7 +137,7 @@ class _SchoolBusPageState extends State<SchoolBusPage>
                       ),
                     ),
                   ),
-                  child: FlyText.mainTip40("生效日期：2023.2.16 - 2023.7.10")),
+                  child: FlyText.mainTip40("生效日期：2023.8.27 - 2024.1.14")),
               SizedBox(height: ScreenUtil.bottomBarHeight,)
             ],
           ),
@@ -223,24 +223,19 @@ class _BusTimeListViewState extends State<BusTimeListView> {
   Widget _buildColumn(List<String> timeList) {
     bool temp = false;
     //检查是否即将到该时间点
-    bool checkTime(String timeStr) {
-      DateTime now = DateTime.now();
-      List timeSpl = timeStr.split(":");
-      DateTime dateTime = DateTime(
-          now.year,
-          now.month,
-          now.day,
-          int.parse(timeSpl[0]),
-          int.parse(timeSpl[1]),
-          now.second,
-          now.millisecond,
-          now.microsecond);
-      if (now.isAfter(dateTime.add(Duration(hours: -1))) &&
-          now.isBefore(dateTime)) {
-        return true;
-      } else
-        return false;
-    }
+bool checkTime(String timeStr) {
+  // 当前时间
+  DateTime now = DateTime.now();
+  // 格式化校车到达时间
+  List timeSpl = timeStr.split(":");
+  DateTime dateTime = DateTime(now.year, now.month, now.day, int.parse(timeSpl[0]), int.parse(timeSpl[1]), now.second, now.millisecond, now.microsecond);
+  // 判断是否是一个小时内即将到达的班车
+  if (now.isAfter(dateTime.add(Duration(hours: -1))) &&
+      now.isBefore(dateTime)) {
+    return true;
+  } else
+    return false;
+}
 
     return Column(
       children: timeList.map((item) {

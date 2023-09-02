@@ -87,20 +87,21 @@ class Cumt{
     return await login(this.username,this.password);
   }
 
+  // 登录融合门户
   Future<bool> login(String username,String password)async{
     if(isLogin){
       return true;
     }
     try{
       String service = "http%3A%2F%2Fportal.cumt.edu.cn%2Fcasservice";
-      var res = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=$service',options: Options(followRedirects:true,));
+      var res = await dio.get('https://authserver.cumt.edu.cn/authserver/login?service=$service',options: Options(followRedirects:true,));
       if(res.toString().length>35000){
         //解析并登录
         var document = parser.parse(res.data);
         var pwdSalt = document.body.querySelector("#pwdEncryptSalt").attributes['value']??'';
         var execution = document.body.querySelectorAll('#execution')[2].attributes['value']??'';
         var newPassword = await _pwdAes(password??Prefs.password, pwdSalt);
-        var loginResponse = await dio.post('http://authserver.cumt.edu.cn/authserver/login?service=$service',data: FormData.fromMap({
+        var loginResponse = await dio.post('https://authserver.cumt.edu.cn/authserver/login?service=$service',data: FormData.fromMap({
           'username': username??Prefs.username,
           'password': newPassword,
           '_eventId': 'submit',
@@ -142,7 +143,7 @@ class Cumt{
   Future<bool> loginFWDT(String username,String password)async{
     try{
   String service = "http://ykt.cumt.edu.cn:8088/ias/prelogin?sysid=FWDT";
-      var res = await dio.get('http://authserver.cumt.edu.cn/authserver/login?service=$service',options: Options(followRedirects:true,));
+      var res = await dio.get('https://authserver.cumt.edu.cn/authserver/login?service=$service',options: Options(followRedirects:true,));
       var document2 = parser.parse(res.data);
       var ssoticketid = document2.body.querySelector("input[id='ssoticketid']").attributes['value']??'';
       var res6 = await dio.post("http://ykt.cumt.edu.cn/cassyno/index",data: FormData.fromMap({
@@ -157,6 +158,7 @@ class Cumt{
 
   }
 
+  // 检查是否连接到内网
   static Future<bool> checkConnect({bool showToasts = true})async{
     try{
       showToasts?showToast('正在检测内网环境……',duration: 4):null;
@@ -171,10 +173,13 @@ class Cumt{
       return false;
     }
   }
+
+  // 注销
   Future<void> logout()async{
     var res = await dio.get('http://portal.cumt.edu.cn/portal/sso/logout');
     print(res.toString());
   }
+
   //获取姓名手机号
   Future<Map<String,dynamic>> getNamePhone()async{
     var res = await dio.get('http://portal.cumt.edu.cn/portal/api/v1/api/http/8',);
@@ -187,7 +192,6 @@ class Cumt{
     };
     return result;
   }
-
 
   /// 2020-2021 -> 2020   全部学年 -> ''
   /// 第1学期 -> 1   全部学期 -> ''

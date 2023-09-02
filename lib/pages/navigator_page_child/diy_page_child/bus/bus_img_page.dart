@@ -12,7 +12,6 @@ void toBusImagePage(BuildContext context) {
 }
 
 class SchoolCalendarPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return FlyWebView(title: "校车时刻",initialUrl: "https://www.cumt.edu.cn/ggfw/list.htm",);

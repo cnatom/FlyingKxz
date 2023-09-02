@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 /// name : "张三",
 /// platform : "Android",
 /// version : "1.0.0",
-/// phone : "2017210000",
 
 class LoggerData {
   LoggerData({
@@ -17,8 +16,7 @@ class LoggerData {
     @required String page,
     @required String name,
     @required String platform,
-    @required String version,
-    @required String phone,}){
+    @required String version,}){
     _username = username;
     _action = action;
     _data = data;
@@ -26,7 +24,6 @@ class LoggerData {
     _name = name;
     _platform = platform;
     _version = version;
-    _phone = phone;
   }
 
   LoggerData.fromJson(dynamic json) {
@@ -37,7 +34,6 @@ class LoggerData {
     _name = json['name'];
     _platform = json['platform'];
     _version = json['version'];
-    _phone = json['phone'];
   }
   String _username;
   String _action;
@@ -46,7 +42,6 @@ class LoggerData {
   String _name;
   String _platform;
   String _version;
-  String _phone;
   LoggerData copyWith({  String username,
     String action,
     String data,
@@ -54,7 +49,6 @@ class LoggerData {
     String name,
     String platform,
     String version,
-    String phone,
   }) => LoggerData(  username: username ?? _username,
     action: action ?? _action,
     data: data ?? _data,
@@ -62,7 +56,6 @@ class LoggerData {
     name: name ?? _name,
     platform: platform ?? _platform,
     version: version ?? _version,
-    phone: phone ?? _phone,
   );
   String get username => _username;
   String get action => _action;
@@ -71,7 +64,6 @@ class LoggerData {
   String get name => _name;
   String get platform => _platform;
   String get version => _version;
-  String get phone => _phone;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -82,7 +74,6 @@ class LoggerData {
     map['name'] = _name;
     map['platform'] = _platform;
     map['version'] = _version;
-    map['phone'] = _phone;
     return map;
   }
 

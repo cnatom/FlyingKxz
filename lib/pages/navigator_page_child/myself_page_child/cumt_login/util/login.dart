@@ -17,7 +17,6 @@ class CumtLoginResult {
   static const String NETWORK_ERROR = '登录失败';
   static const String MOBILE_ERROR = '正在通过流量连接';
   static const String NOT_OPEN_NETWORK = '未打开网络';
-
 }
 
 class CumtLogin {
@@ -96,10 +95,7 @@ class CumtLogin {
       String url = account.cumtLoginLocation.loginUrl(
           account.username, account.password, account.cumtLoginMethod);
       Response res = await dio.get(url);
-      Map<String, dynamic> map =
-      jsonDecode(res.toString().substring(1, res
-          .toString()
-          .length - 1));
+      Map<String, dynamic> map = jsonDecode(res.toString().substring(1, res.toString().length - 1));
       var result = _handleLoginResult(map);
       if (result == CumtLoginResult.SUCCESS ||
           result == CumtLoginResult.LOGGED_IN) {

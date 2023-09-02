@@ -25,7 +25,7 @@ class BookSpider {
       try {
         await Cumt.getInstance().loginDefault();
         var res1 = await _cumt.dio.get(
-            "http://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2F121.248.104.188%3A8080%2FCASSSO%2Flogin.jsp",
+            "https://authserver.cumt.edu.cn/authserver/login?service=http%3A%2F%2F121.248.104.188%3A8080%2FCASSSO%2Flogin.jsp",
             options: Options(followRedirects: false));
         var res2 = await _cumt.dio.get(res1.headers.value("Location"),
             options: Options(followRedirects: false));

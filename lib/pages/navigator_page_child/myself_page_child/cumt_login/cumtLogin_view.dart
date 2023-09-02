@@ -228,37 +228,32 @@ class _CumtLoginViewState extends State<CumtLoginView> {
     });
   }
 
-  void _handleLogin(BuildContext context) {
-    if (_usernameController.text
-        .trim()
-        .isEmpty ||
-        _passwordController.text
-            .trim()
-            .isEmpty) {
-      showToast('账号或密码不能为空');
-      return;
-    }
-    cumtLoginAccount.username = _usernameController.text.trim();
-    cumtLoginAccount.password = _passwordController.text.trim();
-
-    CumtLogin.login(account: cumtLoginAccount).then((value) {
-      setState(() {
-        if (value == CumtLoginResult.SUCCESS) {
-          showToast("$value\n（已开启自动登录）");
-        } else if(value==CumtLoginResult.LOGIN_LIMIT_EXCEEDED){
-          showToast('$value\n请在"用户自助服务系统"下线终端。');
-        }else if(value==CumtLoginResult.NETWORK_ERROR){
-          showToast('$value，确保您已经连接校园网(CUMT_Stu或CUMT_tec)');
-        }
-      });
-      Logger.log("CumtLogin", "登录", {
-        "username": cumtLoginAccount.username,
-        "method": cumtLoginAccount.cumtLoginMethod.name,
-        "location": cumtLoginAccount.cumtLoginLocation.name,
-        "result":value
-      });
-    });
+void _handleLogin(BuildContext context) {
+  if (_usernameController.text.trim().isEmpty
+      || _passwordController.text.trim().isEmpty) {
+    showToast('账号或密码不能为空');
+    return;
   }
+  cumtLoginAccount.username = _usernameController.text.trim();
+  cumtLoginAccount.password = _passwordController.text.trim();
+  CumtLogin.login(account: cumtLoginAccount).then((value) {
+    setState(() {
+      if (value == CumtLoginResult.SUCCESS) {
+        showToast("$value\n（已开启自动登录）");
+      } else if(value==CumtLoginResult.LOGIN_LIMIT_EXCEEDED){
+        showToast('$value\n请在"用户自助服务系统"下线终端。');
+      }else if(value==CumtLoginResult.NETWORK_ERROR){
+        showToast('$value，确保您已经连接校园网(CUMT_Stu或CUMT_tec)');
+      }
+    });
+    Logger.log("CumtLogin", "登录", {
+      "username": cumtLoginAccount.username,
+      "method": cumtLoginAccount.cumtLoginMethod.name,
+      "location": cumtLoginAccount.cumtLoginLocation.name,
+      "result":value
+    });
+  });
+}
 
   //登录按钮
   Widget cumtLoginButton(int type, String title,

@@ -24,7 +24,7 @@ class Network {
   }
   static Future<Response> post(url, {Map<String, dynamic> params}) async {
     try {
-      Response response = await dio.post(url, data: params);
+      Response response = await _dio.post(url, data: params);
       return response;
     } on DioError catch (e) {
       return null;

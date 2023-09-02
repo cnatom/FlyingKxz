@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 
 class BusModel extends ChangeNotifier{
-  bool showRest = false;
-  List<List> listRest = [];
-  List<List> listWork = [];
-  List<List> finalList = [];
+  bool showRest = false; // 是否显示休息日时间表
+  List<List> listRest = []; // 休息日时间表
+  List<List> listWork = []; // 工作日时间表
+  List<List> finalList = []; // 最终展示的时间表
 
   //南湖 北线 工作日
   final List<String> nNorthWork = [
