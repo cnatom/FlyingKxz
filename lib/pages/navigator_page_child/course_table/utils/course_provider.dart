@@ -75,7 +75,7 @@ class CourseProvider extends ChangeNotifier{
     }
     _savePrefs();
     notifyListeners();
-    Logger.sendInfo("Course", "导入,成功", {"info":SecurityUtil.base64Encode(loggerInfo.toString())});
+    Logger.log("Course", "导入,成功", {"info":SecurityUtil.base64Encode(loggerInfo.toString())});
   }
   /// 修改当前周
   /// CourseProvider().changeWeek(5);
@@ -187,42 +187,6 @@ class CourseProvider extends ChangeNotifier{
     if(curWeek<=0||curWeek>22) curWeek = 1;
     initialWeek = curWeek;
     curMondayDate = admissionDate.add(Duration(days: 7*(curWeek-1)));
-  }
-  _handleCourseBean(CourseBean courseBean){
-    _initData();
-    // var nameMap = new Map();
-    for(var course in courseBean.kbList){
-      // //防止添加重复课程
-      // if(nameMap.containsKey(course.kcmc)){
-      //   continue;
-      // }else{
-      //   nameMap[course.kcmc] = true;
-      // }
-      //"4-6周,8-13周"->["4-6周","8-13周"]
-      var courseWeek = course.zcd.split(',');
-      // ["4-6周","8-13周"] -> [4,5,6,8,9,10,11,12,13]
-      List<int> weekList = [];
-      for(var week in courseWeek){
-        weekList.addAll(_strWeekToList(week));
-      }
-      int duration = int.parse(course.jcs.split('-')[1]) - int.parse(course.jcs.split('-')[0]) + 1;
-
-      CourseData newCourseData = new CourseData(
-        weekList: weekList,
-        weekNum: int.parse(course.xqj),
-        lessonNum: int.parse(course.jcs.split('-')[0]),
-        title: course.kcmc,
-        location: course.cdmc,
-        teacher: course.xm,
-        credit: course.xf,
-        durationNum: duration,);
-      infoByCourse.add(newCourseData);
-      for(int week in weekList){
-        info[week].add(newCourseData);
-        pointArray[week][newCourseData.lessonNum~/2+1][newCourseData.weekNum]++;
-      }
-
-    }
   }
   _initData(){
     infoByCourse = [];

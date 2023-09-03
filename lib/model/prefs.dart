@@ -14,7 +14,7 @@ class Prefs{
   static SharedPreferences prefs;
   static String _backImg = 'backImg';//背景图
   static String _username = 'username';//用户名
-  static String _password = 'password2';//密码
+  static String _password = 'password4';//密码
   static String _phone = 'phone';//电话号码
   static String _name = 'name';//姓名
   static String _token = 'NewToken1.2.0';//token信息

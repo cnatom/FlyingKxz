@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:universal_platform/universal_platform.dart';
 import 'locations.dart';
 import 'package:dio/dio.dart';
 import 'account.dart';
@@ -12,13 +11,12 @@ class CumtLoginResult {
   static const String LOGGED_IN = '您已登录校园网';
   static const String WRONG_ACCOUNT_OR_PASSWORD = '账号或密码错误';
   static const String ACCOUNT_NOT_EXIST = '账号不存在，请切换运营商再尝试';
-  static const String LOGIN_LIMIT_EXCEEDED = '您的登陆超限\n请在"用户自助服务系统"下线终端。';
+  static const String LOGIN_LIMIT_EXCEEDED = '您的登陆超限';
   static const String WRONG_USERNAME_OR_PASSWORD = '用户名或密码错误';
   static const String UNKNOWN_ERROR = '未知错误';
-  static const String NETWORK_ERROR = '登录失败，确保您已经连接校园网(CUMT_Stu或CUMT_tec)';
+  static const String NETWORK_ERROR = '登录失败';
   static const String MOBILE_ERROR = '正在通过流量连接';
   static const String NOT_OPEN_NETWORK = '未打开网络';
-
 }
 
 class CumtLogin {
@@ -49,12 +47,10 @@ class CumtLogin {
     if (connectivityResult == ConnectivityResult.wifi) {
       if (!account.isEmpty) {
         var res = await login(account: account);
-        if (res == CumtLoginResult.SUCCESS ||
-            res == CumtLoginResult.LOGGED_IN) {
-          return res;
-        }
+        return res;
+      }else{
+        return "账号为空";
       }
-      return "账号为空";
     } else if (connectivityResult == ConnectivityResult.mobile) {
       return CumtLoginResult.MOBILE_ERROR;
     } else {
@@ -99,14 +95,12 @@ class CumtLogin {
       String url = account.cumtLoginLocation.loginUrl(
           account.username, account.password, account.cumtLoginMethod);
       Response res = await dio.get(url);
-      Map<String, dynamic> map =
-      jsonDecode(res.toString().substring(1, res
-          .toString()
-          .length - 1));
+      Map<String, dynamic> map = jsonDecode(res.toString().substring(1, res.toString().length - 1));
       var result = _handleLoginResult(map);
       if (result == CumtLoginResult.SUCCESS ||
           result == CumtLoginResult.LOGGED_IN) {
         CumtLoginAccount.addList(account);
+        account.refreshAccountPrefs();
       }
       return result;
     } catch (e) {

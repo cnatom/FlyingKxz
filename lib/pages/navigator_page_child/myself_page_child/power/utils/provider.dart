@@ -105,7 +105,7 @@ class PowerProvider extends ChangeNotifier{
         _savePrefs(this.power, building, roomid);
         notifyListeners();
         if(show) showToast("获取电量成功!");
-        Logger.sendInfo("宿舍电量", "获取,成功,$powerBuilding,$powerRoomid",{"power":power});
+        Logger.log("Power", "获取,成功",{"building":powerBuilding,"roomid":powerRoomid,"power":power});
         return true;
       }else{
         if(show) showToast("$power\n大寝号是6位，区别于小寝号！",duration: 5);
@@ -116,7 +116,7 @@ class PowerProvider extends ChangeNotifier{
         showToast("请求失败:"+e.message+"\n可能未连接校内网",duration: 4);
         toTipPage();
       }
-      Logger.sendInfo("Power", "获取,失败,$powerBuilding,$powerRoomid",{});
+      Logger.log("Power", "获取,失败",{"building":powerBuilding,"roomid":powerRoomid});
       return false;
     }
   }

@@ -11,7 +11,7 @@ import '../../../../util/logger/log.dart';
 void toCumtLoginHelpPage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => CumtLoginHelpPage()));
-  Logger.sendInfo('CumtLoginHelp', '进入', {});
+  Logger.log('CumtLoginHelp', '进入', {});
 }
 
 class CumtLoginHelpPage extends StatefulWidget {

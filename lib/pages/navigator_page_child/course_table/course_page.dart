@@ -72,7 +72,7 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
       courseProvider.add(newCourseData);
     }
     setState(() {});
-    Logger.sendInfo("Course", "添加,成功",
+    Logger.log("Course", "添加,成功",
         {'info': newCourseDataList.map((e) => e.toJson()).toList()});
   }
 
@@ -92,7 +92,7 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
     super.build(context);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: CourseProvider()),
+        ChangeNotifierProvider(create:(_)=> CourseProvider()),
       ],
       builder: (context, _) {
         courseProvider = Provider.of<CourseProvider>(context);

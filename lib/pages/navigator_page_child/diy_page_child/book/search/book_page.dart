@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/search/model.dart';
-import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +32,6 @@ class BookSearchData {
 void toBookSearchPage(BuildContext context, {@required String bookName}) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BookSearchPage(bookName: bookName,)));
-  Logger.sendInfo('Book', "进入", {});
 }
 
 
@@ -70,7 +67,6 @@ class _BookSearchPageState extends State<BookSearchPage> with AutomaticKeepAlive
       curPage = page;
     }
     setState(() {loading = false;});
-    Logger.sendInfo('Book', "搜索", {});
   }
   switchPage({@required int page})async{
     setState(() {

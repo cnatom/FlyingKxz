@@ -29,9 +29,13 @@ class BottomNavigationBarModel {
   BottomNavigationBarModel(this.title, this.iconData);
 }
 
+
 //底部导航栏页面,位于子页面的顶端
 class FlyNavigatorPage extends StatefulWidget {
-  FlyNavigatorPageState createState() => FlyNavigatorPageState();
+  const FlyNavigatorPage({Key key}) : super(key: key);
+
+  @override
+  State<FlyNavigatorPage> createState() => FlyNavigatorPageState();
 }
 
 var navigatorPageController = PageController(initialPage: 0);
@@ -48,7 +52,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     checkUpgrade(context); //检查软件更新
-    Logger.sendInfo("Navigator", "打开",{});
+    Logger.log("Navigator", "打开",{});
   }
   @override
   void dispose() {
@@ -74,7 +78,6 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     themeProvider = Provider.of<ThemeProvider>(context);
     return Intro(
       padding: const EdgeInsets.all(0),

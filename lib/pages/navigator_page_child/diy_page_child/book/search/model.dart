@@ -20,6 +20,7 @@ class BookSearchModel {
       );
       //Json解码为Map
       entity = BookSearchEntity.fromJson(res.data as Map<String, dynamic>);
+      Logger.log("Book", "查询", {"book":book,"page":page,"result":res.data as Map<String, dynamic>});
       return entity;
     } catch (e) {
       print(e.toString());

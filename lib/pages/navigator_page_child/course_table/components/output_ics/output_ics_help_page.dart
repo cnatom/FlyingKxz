@@ -125,6 +125,6 @@ class _IcsHelpPageState extends State<IcsHelpPage> {
   @override
   void initState() {
     super.initState();
-    Logger.sendInfo("OutputIcsHelp", "进入", {});
+    Logger.log("OutputIcsHelp", "进入", {});
   }
 }

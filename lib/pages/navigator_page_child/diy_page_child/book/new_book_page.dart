@@ -10,11 +10,14 @@ import 'package:flying_kxz/ui/tabbar.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../util/logger/log.dart';
+
 
 toNewBookPage(BuildContext context) {
   Navigator.of(context).push(CupertinoPageRoute(builder: (context) {
     return NewBookPage();
   }));
+  Logger.log('Book', '进入', {});
 }
 
 class NewBookPage extends StatefulWidget {
@@ -33,28 +36,22 @@ class _NewBookPageState extends State<NewBookPage> with SingleTickerProviderStat
   }
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Scaffold(
-        appBar: FlyAppBar(context, "图书馆",
-            titleWidget: buildSearchBar(context, onSubmitted: (value) {
-              toBookSearchPage(context,bookName: value);
-            }),
-            bottom: FlyTabBar(tabController: tabController, tabs: [
-              Tab(text: "当前借阅"),
-              Tab(text: "借阅历史"),
-            ]),
-        ),
-        body: TabBarView(
-          controller: tabController,
-          children: [
-            LoanPage(loanType: LoanType.loanCur,),
-            LoanPage(loanType: LoanType.loanHis,),
-          ],
-        ),
+    return Scaffold(
+      appBar: FlyAppBar(context, "图书馆",
+          titleWidget: buildSearchBar(context, onSubmitted: (value) {
+            toBookSearchPage(context,bookName: value);
+          }),
+          bottom: FlyTabBar(tabController: tabController, tabs: [
+            Tab(text: "当前借阅"),
+            Tab(text: "借阅历史"),
+          ]),
+      ),
+      body: TabBarView(
+        controller: tabController,
+        children: [
+          LoanPage(loanType: LoanType.loanCur,),
+          LoanPage(loanType: LoanType.loanHis,),
+        ],
       ),
     );
   }

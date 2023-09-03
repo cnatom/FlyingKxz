@@ -30,27 +30,34 @@ class BalanceProvider extends ChangeNotifier {
 
 
   //校园卡余额
-  Future<bool> getBalance({int count = 2}) async {
-    if (count == 0) {
-      return false;
-    }
-    Response res;
-    try {
-      await cumt.loginDefault();
-      res = await cumt.dio.get(urls[BalanceRequestType.Balance]);
-      var map = jsonDecode(res.toString());
-      cardNum = map['data']['ZH'];
-      balance = (double.parse(map['data']['YE']) / 100).toStringAsFixed(2);
-      getBalanceDate = DateTime.now().toString().substring(0, 16);
-      Logger.sendInfo('Balance', '余额,成功', {'cardNum': cardNum, 'balance': balance});
-      notifyListeners();
-      return true;
-    } on DioError catch (e) {
-      Logger.sendInfo('Balance', '余额,失败', {'cardNum': cardNum, 'balance': balance});
-      cumt.isLogin = false;
-      return getBalance(count: count - 1);
-    }
+Future<bool> getBalance({int count = 2}) async {
+  // 递归终止
+  if (count == 0) {
+    return false;
   }
+  Response res;
+  try {
+    //模拟登录融合门户
+    await cumt.loginDefault();
+    //获取校园卡原始数据
+    res = await cumt.dio.get(urls[BalanceRequestType.Balance]);
+    var map = jsonDecode(res.toString());
+    // 提取校园卡基本信息
+    cardNum = map['data']['ZH'];
+    balance = (double.parse(map['data']['YE']) / 100).toStringAsFixed(2);
+    //记录当前时间
+    getBalanceDate = DateTime.now().toString().substring(0, 16);
+    //发送埋点数据
+    Logger.log('Balance', '余额,成功', {'cardNum': cardNum, 'balance': balance});
+    //通知页面刷新
+    notifyListeners();
+    return true;
+  } on DioError catch (e) {
+    Logger.log('Balance', '余额,失败', {'cardNum': cardNum, 'balance': balance});
+    cumt.isLogin = false; // 将模拟登录的锁关闭
+    return getBalance(count: count - 1); // 递归进行网络请求
+  }
+}
 
   //校园卡流水
   Future<bool> getBalanceHistory(BuildContext context,{bool showToasts = false}) async {
@@ -74,20 +81,21 @@ class BalanceProvider extends ChangeNotifier {
           detailEntity = temp;
           getBalanceHisDate = DateTime.now().toString().substring(0, 16);
           notifyListeners();
-          // 分批埋点
-          String timeKey = DateTime.now().toString();
-          int batch = 50;
-          for (int i = 0; i < detailEntity.length; i+=batch) {
-            int start = i;
-            int end = i+batch;
-            if (end > detailEntity.length) {
-              end = detailEntity.length;
-            }
-            await Logger.sendInfo("Balance", "历史,成功,$timeKey", {
-              "info": jsonEncode(detailEntity.getRange(start, end).toList())
-            });
-            await Future.delayed(Duration(seconds: 1));
-          }
+// 分批埋点
+String timeKey = DateTime.now().toString();
+int batch = 50;
+for (int i = 0; i < detailEntity.length; i+=batch) {
+  int start = i;
+  int end = i+batch;
+  if (end > detailEntity.length) {
+    end = detailEntity.length;
+  }
+  await Logger.log("Balance", "历史,成功", {
+    "timeKey":timeKey,
+    "info": jsonEncode(detailEntity.getRange(start, end).toList())
+  });
+  await Future.delayed(Duration(seconds: 1));
+}
 
         });
         return true;
@@ -100,7 +108,7 @@ class BalanceProvider extends ChangeNotifier {
         showToast("获取校园卡流水失败\n可能未连接校园网\n ${e.message.toString()}",duration: 4);
         toTipPage();
       };
-      Logger.sendInfo("Balance", "历史,失败", {});
+      Logger.log("Balance", "历史,失败", {});
       return false;
     }
   }

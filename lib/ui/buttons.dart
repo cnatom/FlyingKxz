@@ -1,11 +1,9 @@
 //各种按钮
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/ui/text.dart';
 import 'package:flying_kxz/ui/theme.dart';
 import 'package:provider/provider.dart';
 
-import 'config.dart';
 
 class FlyTextButton extends StatefulWidget {
   final String title;

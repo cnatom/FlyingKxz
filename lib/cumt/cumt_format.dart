@@ -81,16 +81,6 @@ class CumtFormat{
                       map[key]+=' '+title;
                     }
                   }
-                  // print({
-                  //   "title":title,
-                  //   "location":location,
-                  //   "teacher":teacher,
-                  //   "credit":credit,
-                  //   "durationNum":durationNum,
-                  //   "weekList":weekList,
-                  //   "weekNum":weekNum,
-                  //   "lessonNum":lessonNum,
-                  // });
                   result.add({
                     "title":title,
                     "location":location,

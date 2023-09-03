@@ -99,7 +99,6 @@ class MyApp extends StatelessWidget {
 
 class StartPage extends StatelessWidget {
   StartPage({Key key}) : super(key: key);
-  static bool lock = false;
 
   Future<void> initFunc(BuildContext context) async {
     // 获取当前App版本
@@ -119,11 +118,6 @@ class StartPage extends StatelessWidget {
     ScreenUtil.init(context, height: deviceHeight, width: deviceWidth);
     //初始化配置
     initSize();
-    //内测结束跳转
-    // if(DateTime.now().isAfter(DateTime(2023,4,15))){
-    //   toNullPage(context);
-    //   return;
-    // }
     // 初始化壁纸
     if (Prefs.backImg != null) {
       if (await File(Prefs.backImg).exists()) {
@@ -145,13 +139,14 @@ class StartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (lock == false) {
-      lock = true;
-      initFunc(context);
-    }
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(),
+    return FutureBuilder(
+      future: initFunc(context),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: Container(),
+        );
+      }
     );
   }
 }

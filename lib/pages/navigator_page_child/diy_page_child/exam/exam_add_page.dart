@@ -120,7 +120,7 @@ class _ExamAddViewState extends State<ExamAddView> {
     );
     Global.examList.add(newCountDownInfo);
     Prefs.examData = ExamData.examJsonEncode(Global.examList);
-    Logger.sendInfo('Exam', '添加',newCountDownInfo.toJson());
+    Logger.log('Exam', '添加',{"info":newCountDownInfo.toJson()});
     Navigator.pop(context);
   }
 

@@ -9,7 +9,7 @@ import 'data.dart';
 export 'data.dart';
 
 class Logger {
-  static Future<void> sendInfo(
+  static Future<void> log(
       String page, String action, Map<String, dynamic> data,) async {
     LoggerData info = LoggerData(
       username: Prefs.username ?? '',
@@ -19,7 +19,6 @@ class Logger {
       name: Prefs.name??"",
       platform: Platform.operatingSystem??"",
       version: Global.curVersion??"",
-      phone: Prefs.phone??"",
     );
     print(info.toJson());
     Network.post("http://118.195.147.37:5000/admin/action_new",

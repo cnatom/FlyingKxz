@@ -8,11 +8,10 @@ import '../../../../util/logger/log.dart';
 void toBusImagePage(BuildContext context) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => SchoolCalendarPage()));
-  Logger.sendInfo('SchoolBus', '查看校车图片',{});
+  Logger.log('SchoolBus', '查看校车图片',{});
 }
 
 class SchoolCalendarPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return FlyWebView(title: "校车时刻",initialUrl: "https://www.cumt.edu.cn/ggfw/list.htm",);

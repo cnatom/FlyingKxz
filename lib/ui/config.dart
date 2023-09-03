@@ -54,15 +54,15 @@ double deviceHeight;
 File backImgFile;
 Image backImg;
 //色彩管理
-Color colorMain = Color(0xff00c5a8);
-Color colorSecond = Color(0xFF33CC99).withAlpha(255);
-Color colorMainText = Color.fromARGB(255, 0, 0, 0);
-Color colorMainTextWhite = Colors.white;
-Color colorIconBackground = Color.fromARGB(255, 244,245,249);
-Color colorShadow = Color(0XFFCCCCCC);
-Color scaffoldBackgroundColor = Color.fromARGB(255, 255,255,255);
-Color colorPageBackground = Color.fromARGB(255, 247,247,247);
-Color colorLoginPageMain = Color.fromARGB(255, 40,216,161);
+Color colorMain;
+Color colorSecond;
+Color colorMainText;
+Color colorMainTextWhite;
+Color colorIconBackground;
+Color colorShadow;
+Color scaffoldBackgroundColor;
+Color colorPageBackground;
+Color colorLoginPageMain;
 
 List<Color> colorLessonCard;
 List<Color> colorFuncButton;
