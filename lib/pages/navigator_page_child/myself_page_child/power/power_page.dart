@@ -49,11 +49,11 @@ class _PowerPageState extends State<PowerPage> {
     FlyDialogDIYShow(context, content: Wrap(
       runSpacing: spaceCardPaddingTB,
       children: [
-        FlyText.title45('请在充值页面点击"缴公寓电费"。\n充值需要内网或VPN！',maxLine: 10,),
-        Image.asset("images/powerRechargeHelp.png"),
+        FlyText.title45('请在充值页面点击"缴电费"。',maxLine: 10,),
+        // Image.asset("images/powerRechargeHelp.png"),
         _buildButton("知道啦，前往充值页面↗",onTap: (){
           launchUrl(
-              Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"),mode: LaunchMode.externalApplication);
+              Uri.parse("https://yktm.cumt.edu.cn/plat/dating"),mode: LaunchMode.externalApplication);
         }),
       ],
     ));

@@ -31,12 +31,12 @@ class _BalancePageState extends State<BalancePage> {
           runSpacing: spaceCardPaddingTB,
           children: [
             FlyText.title45(
-              '请在充值页面点击"卡片充值"。\n充值需要内网或VPN！',
+              '请在充值页面点击"充值"。',
               maxLine: 10,
             ),
-            Image.asset("images/balanceRechargeHelp.png"),
+            // Image.asset("images/balanceRechargeHelp.png"),
             _buildButton("知道啦，前往充值页面↗", onTap: () {
-              launchUrl(Uri.parse("http://ykt.cumt.edu.cn/Phone/Index"),mode: LaunchMode.externalApplication);
+              launchUrl(Uri.parse("https://yktm.cumt.edu.cn/plat/dating"),mode: LaunchMode.externalApplication);
             }),
           ],
         ));
