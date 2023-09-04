@@ -60,7 +60,7 @@ class _ImportPageState extends State<ImportPage> {
     try{
       Locale myLocale = Localizations.localeOf(context);
       DateTime date = await showDatePicker(
-        helpText: "选择开学时间",
+        helpText: "选择开学日期（第一周第一天的日期）",
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2010,1,1),
