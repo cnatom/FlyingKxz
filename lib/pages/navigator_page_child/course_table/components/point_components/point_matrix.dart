@@ -47,7 +47,6 @@ class PointMatrixState extends State<PointMatrix> {
   void changeWeekOffset(int week){
     var aimPosition = gridHeight*(week-1);
     var mMaxScrollExtent = gridHeight*22;
-    debugPrint("$aimPosition  $mMaxScrollExtent ${scrollController.position.extentInside}");
     if (aimPosition > mMaxScrollExtent) {
       scrollController.jumpTo(mMaxScrollExtent);
       return;

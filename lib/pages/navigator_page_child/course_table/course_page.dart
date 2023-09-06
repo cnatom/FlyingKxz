@@ -3,16 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
-import 'package:flutter_intro/flutter_intro.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_course/import_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_course/import_selector.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/components/state_text.dart';
-import 'package:flying_kxz/util/logger/log.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 import '../../../Model/prefs.dart';
-import 'components/add_components/course_add_view.dart';
 import 'components/back_curWeek.dart';
 import 'components/course_table_child.dart';
 import 'components/output_ics/output_ics_page.dart';
@@ -30,62 +27,93 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
   GlobalKey<PointMainState> _rightGlobalKey = new GlobalKey<PointMainState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   static PageController coursePageController;
+  int _maxLesson;
+  int get maxLesson{
+    if(_maxLesson==null){
+      if(Prefs.prefs.getInt("maxLessonNum")!=null){
+        _maxLesson = Prefs.prefs.getInt("maxLessonNum");
+      }else{
+        _maxLesson = 10;
+      }
+    }
+    return _maxLesson;
+  }
+  set maxLesson(int value) {
+    _maxLesson = value;
+    Prefs.prefs.setInt("maxLessonNum", value);
+  }
 
+  var lessonTimes = [
+    ["08:00", "08:50",],
+    ["08:55", "09:45"],
+    ["10:15", "11:05"],
+    ["11:10", "12:00"],
+    ["14:00", "14:50"],
+    ["14:55", "15:45"],
+    ["16:15", "17:05"],
+    ["17:10", "18:00"],
+    ["19:00", "19:50"],
+    ["19:55", "20:45"],
+    ["20:50", "21:40"],
+    ["21:45", "22:35"],
+  ];
   //导出ICS课表文件
   _outputIcs() {
     Navigator.of(context).push(CupertinoPageRoute(
         builder: (context) => OutputIcsPage(courseProvider.infoByCourse)));
   }
 
+
   // 导入课表
-  _importCourse() async {
-    List<dynamic> list = await Navigator.of(context)
-        .push(CupertinoPageRoute(builder: (context) => ImportPage()));
-    courseProvider.handleCourseList(list);
+  _setCourse() async {
+    List result = await FlyDialogDIYShow(context, content: ImportSelector(courseProvider: courseProvider,));
+    if(result[0]=="import" && result[2]==true){
+      if(result[1] == ImportCourseType.YJS){
+        maxLesson = 12;
+      }
+      if(result[1] == ImportCourseType.BK){
+        maxLesson = 10;
+      }
+      Future.delayed(Duration(seconds: 1),(){
+        _changePageWithAnimation(0);
+      });
+    }
+    if(result[0]=="date"){
+      Future.delayed(Duration(seconds: 1),(){
+        _changePageWithAnimation(0);
+      });
+    }
+
   }
 
-  // 回到本周
-  _backToCurWeek() {
+  _changePageWithAnimation(int page){
     coursePageController.animateToPage(
-      courseProvider.initialWeek - 1,
+      page,
       curve: Curves.easeOutQuint,
       duration: Duration(seconds: 1),
     );
   }
-
-
-  // 添加课程
-  _addCourse() async {
-    List<CourseData> newCourseDataList;
-    newCourseDataList = await showFlyModalBottomSheet(
-      context: context,
-      isScrollControlled: false,
-      backgroundColor: Theme.of(context).cardColor.withOpacity(1),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadiusValue)),
-      builder: (BuildContext context) {
-        return CourseAddView();
-      },
-    );
-    if (newCourseDataList == null) return;
-    for (var newCourseData in newCourseDataList) {
-      courseProvider.add(newCourseData);
-    }
-    setState(() {});
-    Logger.log("Course", "添加,成功",
-        {'info': newCourseDataList.map((e) => e.toJson()).toList()});
+  // 回到本周
+  _backToCurWeek() {
+    _changePageWithAnimation(courseProvider.initialWeek - 1);
   }
 
-  // 第一次使用时显示引导页
-  void _introduce(BuildContext context) {
-    String prefsTag = "course_page_introduce";
-    if (Prefs.prefs.getBool(prefsTag) == null) {
-      Future.delayed(const Duration(seconds: 1), () {
-        Intro.of(context).start();
-        Prefs.prefs.setBool(prefsTag, true);
-      });
+  _introduce(){
+    String prefsTag = "course_page_init";
+    if(Prefs.prefs.getBool(prefsTag)==null){
+      _setCourse();
+      Prefs.prefs.setBool(prefsTag,true);
     }
   }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _introduce();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +128,7 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
         coursePageController = PageController(
           initialPage: courseProvider.curWeek - 1,
         );
+
         return Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.transparent,
@@ -155,7 +184,7 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
           : SystemUiOverlayStyle.light,
       backgroundColor: Colors.transparent,
       title: CumtLoginStateText(
-        defaultText: '第${courseProvider.curWeek}周',
+        defaultText: '第${courseProvider.curWeek}周 (内测1)',
         onDirection: (String oldText) {
           String week = RegExp(r'\d+').stringMatch(oldText);
           if (week != null && int.parse(week) > courseProvider.curWeek) {
@@ -164,53 +193,17 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
           return StateTextAnimationDirection.down;
         },
       ),
-      leading: IntroStepBuilder(
-        order: 1,
-        text: "从教务系统导入课表",
-        onWidgetLoad: () {
-          _introduce(context);
-        },
-        builder: (context, key) {
-          return _buildAction(key, Icons.cloud_download_outlined,
-              onPressed: () => _importCourse());
-        },
-      ),
       actions: [
-        IntroStepBuilder(
-          order: 2,
-          text: "添加自定义课表",
-          builder: (context, key) {
-            return _buildAction(key, Icons.add, onPressed: () => _addCourse());
-          },
-        ),
-        IntroStepBuilder(
-          order: 3,
-          text: "将课表导出到系统日历",
-          builder: (context, key) {
-            return IconButton(
-                key: key,
-                icon: Icon(
-                  Boxicons.bx_share_alt,
-                  color: themeProvider.colorNavText,
-                ),
-                onPressed: () => _outputIcs());
-          },
-        ),
-        IntroStepBuilder(
-          order: 4,
-          text: "查看课程预览",
-          builder: (context, key) {
-            return _buildAction(key, Boxicons.bx_menu_alt_right,
-                onPressed: () => _rightGlobalKey.currentState.show());
-          },
-        )
+        _buildAction(Icons.add,
+            onPressed: () => _setCourse()),
+        _buildAction(Boxicons.bx_share_alt,onPressed: ()=>_outputIcs()),
+        _buildAction(Boxicons.bx_menu_alt_right, onPressed: () => _rightGlobalKey.currentState.show())
       ],
     );
   }
 
-  Widget _buildAction(Key key, IconData iconData, {VoidCallback onPressed}) {
+  Widget _buildAction( IconData iconData, {VoidCallback onPressed}) {
     return IconButton(
-      key: key,
       icon: Icon(
         iconData,
         color: themeProvider.colorNavText,
@@ -294,21 +287,6 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
 
   //左侧 节次+时间段
   Widget _buildLeft() {
-    var lessonTimes = [
-      [
-        "08:00",
-        "08:50",
-      ],
-      ["08:55", "09:45"],
-      ["10:15", "11:05"],
-      ["11:10", "12:00"],
-      ["14:00", "14:50"],
-      ["14:55", "15:45"],
-      ["16:15", "17:05"],
-      ["17:10", "18:00"],
-      ["19:00", "19:50"],
-      ["19:55", "20:45"],
-    ];
     DateTime _formatTime(String timeStr) {
       //"08:00" -> DateTime
       DateTime result;
@@ -330,7 +308,7 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (int i = 0; i < lessonTimes.length; i++)
+        for (int i = 0; i < maxLesson; i++)
           Expanded(
             child: FlyWidgetBuilder(
               whenFirst: _isNow(lessonTimes[i]),
@@ -344,7 +322,6 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
 
   Widget _buildLeftItem(String num, List<String> subTimeList) {
     return LayoutBuilder(builder: (context, parSize) {
-      double height = parSize.maxHeight;
       return Container(
         width: parSize.maxWidth,
         decoration: BoxDecoration(
@@ -363,7 +340,7 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
               height: 3,
             ),
             for (int i = 0; i < subTimeList.length; i++)
-              FlyText.mini25(subTimeList[i] + (i != 0 ? '\n' : ''),
+              FlyText.mini20(subTimeList[i] + (i != 0 ? '\n' : ''),
                   color: themeProvider.colorNavText)
           ],
         ),
@@ -373,7 +350,6 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
 
   Widget _buildLeftNowItem(String num, List subTimeList) {
     return LayoutBuilder(builder: (context, parSize) {
-      double height = parSize.maxHeight;
       return Container(
         width: parSize.maxWidth,
         decoration: BoxDecoration(
@@ -393,7 +369,7 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
               height: 3,
             ),
             for (int i = 0; i < subTimeList.length; i++)
-              FlyText.mini25(subTimeList[i] + (i != 0 ? '\n' : ''),
+              FlyText.mini20(subTimeList[i] + (i != 0 ? '\n' : ''),
                   color: themeProvider.colorNavText)
           ],
         ),
@@ -409,7 +385,7 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
         double width = parSize.maxWidth;
         for (int i = 1; i <= 22; i++) {
           children
-              .add(new CourseTableChild(courseProvider.info[i], width, height));
+              .add(new CourseTableChild(courseProvider.info[i], width, height,maxLesson*1.0));
         }
 
         return PageView(

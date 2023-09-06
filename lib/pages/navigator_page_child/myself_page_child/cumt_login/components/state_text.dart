@@ -114,18 +114,14 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
               offset: Offset(0.0, (-_animation.value * 10)*(direction.index*2-1)),
               child: Opacity(
                 opacity: 1 - _animation.value,
-                child: FlyText.title45(oldResult,
-                    fontWeight: FontWeight.w600,
-                    color: themeProvider.colorNavText),
+                child: Text(oldResult,style: TextStyle(color: themeProvider.colorNavText,fontWeight: FontWeight.bold),),
               ),
             ),
             Transform.translate(
               offset: Offset(0.0, (1 - _animation.value) * 10*(direction.index*2-1)),
               child: Opacity(
                 opacity: _animation.value,
-                child: FlyText.title45(result,
-                    fontWeight: FontWeight.w600,
-                    color: themeProvider.colorNavText),
+                child: Text(result,style: TextStyle(color: themeProvider.colorNavText,fontWeight: FontWeight.bold),),
               ),
             )
           ],

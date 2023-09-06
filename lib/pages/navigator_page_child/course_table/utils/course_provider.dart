@@ -33,12 +33,12 @@ class CourseProvider extends ChangeNotifier{
   }
   init(){
     if(Prefs.courseData!=null){
-      _initDateTime();
+      initDateTime();
       _initData();
       _handlePrefs();
       notifyListeners();
     }else{
-      _initDateTime();
+      initDateTime();
       _initData();
       notifyListeners();
     }
@@ -46,7 +46,7 @@ class CourseProvider extends ChangeNotifier{
   handleCourseList(List<dynamic> list) {
     if(list==null)return;
     _initData();
-    _initDateTime();
+    initDateTime();
     List loggerInfo = []; // 用于记录日志
     for(var item in list){
       CourseData courseData = new CourseData(
@@ -122,11 +122,15 @@ class CourseProvider extends ChangeNotifier{
     admissionDate = DateTime.parse(newDateTimeStr);
     var difference = DateTime.now().difference(admissionDate);
     curWeek = difference.inDays~/7 + 1;
-    if(curWeek<=0||curWeek>22) curWeek = 1;
+    if(curWeek<=0||curWeek>22){
+      curWeek = 1;
+      curMondayDate = admissionDate;
+    }else{
+      curMondayDate = admissionDate.add(Duration(days: 7*(curWeek-1)));
+    }
     initialWeek = curWeek;
     CoursePageState.coursePageController.dispose();
     CoursePageState.coursePageController = new PageController(initialPage: curWeek-1,);
-    curMondayDate = admissionDate.add(Duration(days: 7*(curWeek-1)));
     notifyListeners();
   }
   bool _equal(CourseData courseData1,CourseData courseData2){
@@ -159,7 +163,8 @@ class CourseProvider extends ChangeNotifier{
       }
     }
   }
-  _initDateTime(){
+
+  initDateTime(){
     String admissionDateStr;
     if(Prefs.admissionDate==null){
       DateTime nowDate = DateTime.now();

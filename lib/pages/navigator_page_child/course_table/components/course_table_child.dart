@@ -10,7 +10,8 @@ class CourseTableChild extends StatefulWidget {
   final List<CourseData> courseList;//本周的课程数据
   final double height;
   final double width;
-  CourseTableChild(this.courseList,this.width,this.height);
+  final double maxHeight;
+  CourseTableChild(this.courseList,this.width,this.height,this.maxHeight);
   @override
   _CourseTableChildState createState() => _CourseTableChildState();
 }
@@ -28,7 +29,7 @@ class _CourseTableChildState extends State<CourseTableChild> {
   }
   void _init(){
     cards.clear();
-    this.unitHeight = widget.height/10.0;
+    this.unitHeight = widget.height/widget.maxHeight;
     this.unitWidth = widget.width/7.0;
     for(var course in widget.courseList){
       List<CourseData> cardsData = [];

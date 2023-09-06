@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +13,40 @@ class InvitePage extends StatefulWidget {
 }
 
 class _InvitePageState extends State<InvitePage> {
+  Widget button(String title,
+      {GestureTapCallback onTap, String imageAsset, Color color,IconData iconData}) {
+    Widget leadingIcon = Icon(Icons.ac_unit, color: Colors.white);
+    if(imageAsset!=null){
+      leadingIcon = Image.asset(
+        imageAsset,
+        height: fontSizeMain40 * 1.2,
+      );
+    }
+    if(iconData!=null){
+      leadingIcon = Icon(iconData, color: Colors.white);
+    }
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: fontSizeMain40 * 3,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadiusValue),
+            color: color),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            leadingIcon,
+            SizedBox(
+              width: 5,
+            ),
+            FlyText.main35(title, color: Colors.white),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -24,18 +56,22 @@ class _InvitePageState extends State<InvitePage> {
           runSpacing: spaceCardMarginBigTB,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: <Widget>[
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
                     Container(
-                      width: fontSizeMini38/4,
+                      width: fontSizeMini38 / 4,
                       height: fontSizeTitle45,
-                      decoration: BoxDecoration(color: colorMain,borderRadius: BorderRadius.circular(borderRadiusValue)),
+                      decoration: BoxDecoration(
+                          color: colorMain,
+                          borderRadius:
+                              BorderRadius.circular(borderRadiusValue)),
                     ),
-                    SizedBox(width: ScreenUtil().setSp(35),),
+                    SizedBox(
+                      width: ScreenUtil().setSp(35),
+                    ),
                     Text(
                       "分享App",
                       style: TextStyle(
@@ -46,57 +82,21 @@ class _InvitePageState extends State<InvitePage> {
                   ],
                 ),
                 FlyText.miniTip30("点击分享"),
-
               ],
             ),
-            Container(),Container(),
+            Container(), Container(),
             //分享矿小助官网
-            InkWell(
-              onTap: (){
-                Clipboard.setData(ClipboardData(text: "http://kxz.atcumt.com/"));
-                showToast("已复制到粘贴板，快分享给好友吧~");
-                Logger.log("Invite", "分享", {"type":"官网"});
-              },
-              child: Container(
-                height: fontSizeMain40*3,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(borderRadiusValue),
-                  color: colorMain
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset("images/logoWhite.png",height: fontSizeMain40*1.2,),
-                    SizedBox(width: 5,),
-                    FlyText.main35("矿小助官网",color: Colors.white),
-                  ],
-                ),
-              ),
-            ),
+            button("矿小助官网", imageAsset: "images/logoWhite.png",color: colorMain, onTap: () {
+              Clipboard.setData(ClipboardData(text: "http://kxz.atcumt.com/"));
+              showToast("已复制到粘贴板，快分享给好友吧~");
+              Logger.log("Invite", "分享", {"type": "官网"});
+            }),
             //分享群号
-            InkWell(
-              onTap: (){
-                Clipboard.setData(ClipboardData(text: "957634136"));
-                showToast( "已复制到粘贴板，快分享给好友吧~");
-                Logger.log("Invite", "分享", {"type":"QQ群"});
-              },
-              child: Container(
-                height: fontSizeMain40*3,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(borderRadiusValue),
-                    color: Colors.blue
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(MdiIcons.qqchat,color: Colors.white),
-                    FlyText.main35("QQ群号",color: Colors.white),
-                  ],
-                ),
-              ),
-            ),
+            button("QQ群号",color: Colors.blue,iconData: MdiIcons.qqchat,onTap: (){
+              Clipboard.setData(ClipboardData(text: "957634136"));
+              showToast("已复制到粘贴板，快分享给好友吧~");
+              Logger.log("Invite", "分享", {"type": "QQ群"});
+            }),
             Container()
           ],
         ),
