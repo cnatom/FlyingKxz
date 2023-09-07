@@ -184,7 +184,7 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
           : SystemUiOverlayStyle.light,
       backgroundColor: Colors.transparent,
       title: CumtLoginStateText(
-        defaultText: '第${courseProvider.curWeek}周 (内测3)',
+        defaultText: '第${courseProvider.curWeek}周',
         onDirection: (String oldText) {
           String week = RegExp(r'\d+').stringMatch(oldText);
           if (week != null && int.parse(week) > courseProvider.curWeek) {
