@@ -87,8 +87,9 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
 
   @override
   void dispose() {
-    super.dispose();
     WidgetsBinding.instance.removeObserver(this);
+    _controller.dispose();
+    super.dispose();
   }
 
   /// 生命周期回调
@@ -114,14 +115,14 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
               offset: Offset(0.0, (-_animation.value * 10)*(direction.index*2-1)),
               child: Opacity(
                 opacity: 1 - _animation.value,
-                child: Text(oldResult,style: TextStyle(color: themeProvider.colorNavText,fontWeight: FontWeight.bold),),
+                child: Text(oldResult,style: TextStyle(color: themeProvider.colorNavText),),
               ),
             ),
             Transform.translate(
               offset: Offset(0.0, (1 - _animation.value) * 10*(direction.index*2-1)),
               child: Opacity(
                 opacity: _animation.value,
-                child: Text(result,style: TextStyle(color: themeProvider.colorNavText,fontWeight: FontWeight.bold),),
+                child: Text(result,style: TextStyle(color: themeProvider.colorNavText),),
               ),
             )
           ],

@@ -244,6 +244,8 @@ void _handleLogin(BuildContext context) {
         showToast('$value\n请在"用户自助服务系统"下线终端。');
       }else if(value==CumtLoginResult.NETWORK_ERROR){
         showToast('$value，确保您已经连接校园网(CUMT_Stu或CUMT_tec)');
+      }else{
+        showToast(value);
       }
     });
     Logger.log("CumtLogin", "登录", {

@@ -136,6 +136,18 @@ class CumtFormat{
       var tableLineList = table.children.toList();
       tableLineList = tableLineList.where((element) => element.text!='\n').skip(1).toList();
 
+      var lessonWeekMatrix = List<List<int>>.generate(13, (_) => List<int>.generate(8, (_) => 0));
+
+      bool canAdd(int lessonNu, int weekNu) {
+        return lessonWeekMatrix[lessonNu][weekNu] == lessonNu || lessonWeekMatrix[lessonNu][weekNu] == 0;
+      }
+
+      void fillMatrix(int lessonNumStart, int lessonNumEnd, int weekNu, int num) {
+        for (var i = lessonNumStart; i <= lessonNumEnd; i++) {
+          lessonWeekMatrix[i][weekNu] = num;
+        }
+      }
+
       lessonNum = 1;
       for (var tableLine in tableLineList){
         if(tableLine.text == '\n'){
@@ -158,6 +170,18 @@ class CumtFormat{
               }
               location = RegExp(r'地点:(.*?)\]').firstMatch(ce).group(1).trim();
               durationNum = int.parse(cell.attributes['rowspan']);
+              // 判断是否跨行
+              if (canAdd(lessonNum, weekNum)) {
+                fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNum, lessonNum);
+              } else {
+                for (var weekNumTemp = weekNum + 1; weekNumTemp <= 7; weekNumTemp++) {
+                  if (canAdd(lessonNum, weekNumTemp)) {
+                    fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNumTemp, lessonNum);
+                    weekNum = weekNumTemp;
+                    break;
+                  }
+                }
+              }
               result.add({
                 "title":title,
                 "location":location,
