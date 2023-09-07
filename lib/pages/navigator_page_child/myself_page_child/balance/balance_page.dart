@@ -121,7 +121,7 @@ class _BalancePageState extends State<BalancePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FlyText.main40("校园卡流水（需内网或VPN）",
+            FlyText.main40("校园卡流水",
                 color: Theme.of(context).primaryColor.withOpacity(0.5)),
           ],
         ),

@@ -10,7 +10,8 @@ class CourseTableChild extends StatefulWidget {
   final List<CourseData> courseList;//本周的课程数据
   final double height;
   final double width;
-  CourseTableChild(this.courseList,this.width,this.height);
+  final double maxLessonNum;
+  CourseTableChild(this.courseList,this.width,this.height,this.maxLessonNum);
   @override
   _CourseTableChildState createState() => _CourseTableChildState();
 }
@@ -28,7 +29,7 @@ class _CourseTableChildState extends State<CourseTableChild> {
   }
   void _init(){
     cards.clear();
-    this.unitHeight = widget.height/10.0;
+    this.unitHeight = widget.height/widget.maxLessonNum;
     this.unitWidth = widget.width/7.0;
     for(var course in widget.courseList){
       List<CourseData> cardsData = [];
@@ -128,7 +129,7 @@ class _CourseCardState extends State<CourseCard> {
       children: [
         _buildCardText(isRepeat?"重叠课":widget.courseData.title, fontSizeTip33),
         SizedBox(height: ScreenUtil().setSp(10),),
-        _buildCardText(isRepeat?"点击查看":widget.courseData.location, fontSizeTipMini25),
+        _buildCardText(isRepeat?"点击查看":widget.courseData.location, fontSizeTipMini25)
       ],
     );
   }
@@ -235,7 +236,7 @@ class _CourseCardState extends State<CourseCard> {
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10))),
-        content: FlyText.main40('确定删除此课程?'),
+        content: FlyText.main40('课程「${widget.courseData.title}」的第${CourseData.weekListToString(courseData.weekList)}周的卡片会被删除。\n\n确定删除此课程?',maxLine: 100,),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -251,6 +252,7 @@ class _CourseCardState extends State<CourseCard> {
     return result;
   }
   Widget _buildCardText(String text,double sp){
+    int maxLines = widget.courseData.durationNum==1?1:3;
     return Text(
       text,
       style: TextStyle(
@@ -258,8 +260,7 @@ class _CourseCardState extends State<CourseCard> {
           sp,
           color: Colors.white,),
       textAlign: TextAlign.center,
-      maxLines: 3,
-
+      maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
     );
   }

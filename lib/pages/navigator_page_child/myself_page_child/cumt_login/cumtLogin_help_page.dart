@@ -3,7 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../ui/ui.dart';
 import '../../../../util/logger/log.dart';
@@ -20,6 +22,7 @@ class CumtLoginHelpPage extends StatefulWidget {
 }
 
 class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
+  ThemeProvider themeProvider;
   Widget helpItem(
     String imageResource,
     String text,
@@ -82,6 +85,7 @@ class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
 
   @override
   Widget build(BuildContext context) {
+    themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: FlyAppBar(context, "用！ 前！ 必！ 看！ 求求了！QAQ"),
       body: SingleChildScrollView(
@@ -91,6 +95,10 @@ class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
               child: Wrap(
                 runSpacing: 20,
                 children: [
+                  _buildButton("自动登录 视频演示 ↗",onTap: (){
+                    launchUrl(Uri.parse(
+                        "https://www.bilibili.com/video/BV13u4y1k7sN"),mode: LaunchMode.externalApplication);
+                  }),
                   buildText(title: '矿小助校园网登录本质', textList: [
                     '相当于在校园网登录网站http://10.2.5.251/上登录，矿小助只是帮你自动填写账号密码，然后自动登录。',
                   ]),
@@ -120,6 +128,31 @@ class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
                       : Container(),
                 ],
               ))),
+    );
+  }
+
+  InkWell _buildButton(String title, {GestureTapCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(spaceCardMarginRL),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadiusValue),
+            color: themeProvider.colorMain),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.videocam,color: Colors.white,),
+            SizedBox(width: 5,),
+            FlyText.title45(
+              title,
+              color: Colors.white,
+              textAlign: TextAlign.center,
+              fontWeight: FontWeight.bold,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

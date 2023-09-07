@@ -11,7 +11,6 @@ import 'package:html/parser.dart' as parser;
 import 'package:url_launcher/url_launcher.dart';
 
 import 'cumt_interceptors.dart';
-
 class Cumt{
   static Cumt _instance; //单例
   bool isLogin = false; //是否登录
@@ -151,6 +150,7 @@ class Cumt{
         "continueurl":"",
         "ssoticketid": ssoticketid
       }),options: Options(followRedirects: false));
+
       return true;
     }on DioError catch(e){
       return false;

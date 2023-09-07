@@ -1,3 +1,4 @@
+import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_course/import_page.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
@@ -31,11 +32,10 @@ class CumtFormat{
       return '';
     }
   }
-  //课表HTML->List<CourseData>
-  static List<dynamic> courseHtmlToList(String html){
+
+  static List<dynamic> _htmlToListBK(String html){
     try{
       var result = [];
-
       String title;//语文
       String location;//博五
       String teacher;//张三
@@ -105,69 +105,147 @@ class CumtFormat{
       print(e.toString());
       return null;
     }
-    // try{
-    //   var result = [];
-    //
-    //   String title;//语文
-    //   String location;//博五
-    //   String teacher;//张三
-    //   String credit;//学分
-    //   List<int> weekList;//几周有这些课
-    //   int weekNum;//星期几
-    //   int lessonNum;//第几节课
-    //   int durationNum;//持续节次，默认为2小节
-    //
-    //   var document = parser.parse(html);
-    //   var table = document.body.querySelector("#kbgrid_table_0");
-    //   Element temp1;
-    //   List<Element> temp2;
-    //   for(int r = 1;r<=12;r++){
-    //     for(int c = 1;c<=7;c++){
-    //       temp1 = table.querySelector('td[id="$c-$r"]');
-    //       if(temp1!=null&&temp1.text!=''){
-    //         temp2 = temp1.children;
-    //         for(var temp3 in temp2){
-    //
-    //           title = temp3.querySelector(".title").text;
-    //           location = temp3.querySelector('span[title="上课地点"]').nextElementSibling.text;
-    //           teacher = temp3.querySelector('span[title="教师"]').nextElementSibling.text;
-    //           credit = temp3.querySelector('span[title="学分"]').nextElementSibling.text;
-    //           String lessonWeek = temp3.querySelector('span[title="节/周"]').nextElementSibling.text;
-    //           //durationNum = _getDuration(lessonWeek);
-    //           weekList = _getWeekList(lessonWeek);
-    //           weekNum = c;
-    //           // lessonNum = _getLessonNum(lessonWeek);
-    //           print({
-    //             "title":title,
-    //             "location":location,
-    //             "teacher":teacher,
-    //             "credit":credit,
-    //             "durationNum":durationNum,
-    //             "weekList":weekList,
-    //             "weekNum":weekNum,
-    //             "lessonNum":lessonNum,
-    //           }.toString());
-    //           result.add({
-    //             "title":title,
-    //             "location":location,
-    //             "teacher":teacher,
-    //             "credit":credit,
-    //             "durationNum":durationNum,
-    //             "weekList":weekList,
-    //             "weekNum":weekNum,
-    //             "lessonNum":lessonNum,
-    //           });
-    //         }
-    //       }
-    //     }
-    //   }
-    //   return result;
-    // }catch(e){
-    //   print(e.toString());
-    //
-    //   return null;
-    // }
   }
+  int countMultipleNewlines(String text) {
+    List<String> lines = text.split('\n');
+    int count = 0;
+
+    for (int i = 0; i < lines.length; i++) {
+      if (lines[i].isEmpty) {
+        count++;
+      }
+    }
+
+    return count;
+  }
+  static List<dynamic> _htmlToListYJS(String html){
+    try{
+      var result = [];
+      String title;//语文
+      String location;//博五
+      String teacher;//张三
+      List<int> weekList = [];//几周有这些课
+      int weekNum;//星期几
+      int lessonNum;//第几节课
+      int durationNum;//持续节次，默认为2小节
+      List<int> duration = [];
+      List<int> lesson = [];
+      Map<String,String> map = new Map<String,String>();
+      var document = parser.parse(html);
+      var table = document.body.querySelector("table[class='Grid_Line']").querySelector("tbody");
+      var tableLineList = table.children.toList();
+      tableLineList = tableLineList.where((element) => element.text!='\n').skip(1).toList();
+
+      var lessonWeekMatrix = List<List<int>>.generate(13, (_) => List<int>.generate(8, (_) => 0));
+
+      bool canAdd(int lessonNu, int weekNu) {
+        return lessonWeekMatrix[lessonNu][weekNu] == lessonNu || lessonWeekMatrix[lessonNu][weekNu] == 0;
+      }
+
+      void fillMatrix(int lessonNumStart, int lessonNumEnd, int weekNu, int num) {
+        for (var i = lessonNumStart; i <= lessonNumEnd; i++) {
+          lessonWeekMatrix[i][weekNu] = num;
+        }
+      }
+
+      lessonNum = 1;
+      for (var tableLine in tableLineList){
+        if(tableLine.text == '\n'){
+          continue;
+        }
+        var tableCells = tableLine.children.toList();
+        tableCells = tableCells.where((element) => element.text!='\n').toList();
+        tableCells = tableCells.where((element) => element.attributes['style']==null).toList();
+        weekNum = 1;
+        for(var cell in tableCells){
+          if(cell.text.trim().isNotEmpty){
+            var cel = cell.text.split('；');
+            for (var ce in cel){
+              title = RegExp(r'(.*?)\s*｛').firstMatch(ce).group(1).trim();
+              weekList = _convertWeeksToList(RegExp(r'｛(.*?)\[').firstMatch(ce).group(1).trim());
+              try {
+                teacher = RegExp(r'教师:(.*?),').firstMatch(ce).group(1).trim();
+              } catch (e) {
+                teacher = null;
+              }
+              try{
+                location = RegExp(r'地点:(.*?)\]').firstMatch(ce).group(1).trim();
+              }catch(e){
+                location = null;
+              }
+              durationNum = int.parse(cell.attributes['rowspan']);
+              // 判断是否跨行
+              if (canAdd(lessonNum, weekNum)) {
+                fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNum, lessonNum);
+              } else {
+                for (var weekNumTemp = weekNum + 1; weekNumTemp <= 7; weekNumTemp++) {
+                  if (canAdd(lessonNum, weekNumTemp)) {
+                    fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNumTemp, lessonNum);
+                    weekNum = weekNumTemp;
+                    break;
+                  }
+                }
+              }
+              result.add({
+                "title":title,
+                "location":location,
+                "teacher":teacher,
+                "durationNum":durationNum,
+                "weekList":weekList,
+                "weekNum":weekNum,
+                "lessonNum":lessonNum,
+              });
+            }
+
+          }
+          weekNum++;
+        }
+        lessonNum++;
+      }
+      return result;
+    }catch (e){
+      print(e.toString());
+      return null;
+    }
+  }
+  //课表HTML->List<CourseData>
+  static List<dynamic> courseHtmlToList(String html,ImportCourseType type){
+    switch(type){
+      case ImportCourseType.BK: {
+        return _htmlToListBK(html);
+      }
+      case ImportCourseType.YJS:
+        return _htmlToListYJS(html);
+    }
+    return null;
+  }
+
+  // "10-13周"->[10, 11, 12, 13] "2-5、7-10周"->[2, 3, 4, 5, 7, 8, 9, 10]
+  static List<int> _convertWeeksToList(String weeksString) {
+    List<int> weeksList = [];
+    List<String> weekRanges = weeksString.split('、');
+    // 遍历周数区间
+    for (String range in weekRanges) {
+      // 检查是否存在连续周数的区间
+      if (range.contains('-')) {
+        // 将区间分割为起始周和结束周
+        List<String> rangeParts = range.split('-');
+        int startWeek = int.parse(rangeParts[0]);
+        int endWeek = int.parse(rangeParts[1].replaceAll("周",""));
+        // 将连续周数添加到列表中
+        for (int i = startWeek; i <= endWeek; i++) {
+          weeksList.add(i);
+        }
+      } else {
+        // 处理单个周数
+        int week = int.parse(range.replaceAll('周', ''));
+        weeksList.add(week);
+      }
+    }
+
+    return weeksList;
+  }
+
   //(1-3节,5-6节)1-5周,7-9周 -> lessonNum:[1,5]
   static List<int> _getLesson(String s){
     // RegExp expWeek = new RegExp(r"[(](.*?)[)]");

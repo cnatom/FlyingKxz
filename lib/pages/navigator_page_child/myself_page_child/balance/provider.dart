@@ -25,93 +25,129 @@ class BalanceProvider extends ChangeNotifier {
 
   Map<BalanceRequestType, dynamic> urls = {
     BalanceRequestType.Balance: 'http://portal.cumt.edu.cn/ykt/balance',
-    BalanceRequestType.BalanceHis: 'http://ykt.cumt.edu.cn/Report/GetPersonTrjn'
+    BalanceRequestType.BalanceHis:
+        'http://portal.cumt.edu.cn/ykt/flow?flow_num=20'
   };
 
-
   //校园卡余额
-Future<bool> getBalance({int count = 2}) async {
-  // 递归终止
-  if (count == 0) {
-    return false;
-  }
-  Response res;
-  try {
-    //模拟登录融合门户
-    await cumt.loginDefault();
-    //获取校园卡原始数据
-    res = await cumt.dio.get(urls[BalanceRequestType.Balance]);
-    var map = jsonDecode(res.toString());
-    // 提取校园卡基本信息
-    cardNum = map['data']['ZH'];
-    balance = (double.parse(map['data']['YE']) / 100).toStringAsFixed(2);
-    //记录当前时间
-    getBalanceDate = DateTime.now().toString().substring(0, 16);
-    //发送埋点数据
-    Logger.log('Balance', '余额,成功', {'cardNum': cardNum, 'balance': balance});
-    //通知页面刷新
-    notifyListeners();
-    return true;
-  } on DioError catch (e) {
-    Logger.log('Balance', '余额,失败', {'cardNum': cardNum, 'balance': balance});
-    cumt.isLogin = false; // 将模拟登录的锁关闭
-    return getBalance(count: count - 1); // 递归进行网络请求
-  }
-}
-
-  //校园卡流水
-  Future<bool> getBalanceHistory(BuildContext context,{bool showToasts = false}) async {
-    try {
-      if(await Cumt.checkConnect(showToasts: showToasts)){
-        await cumt.loginFWDT(Prefs.username, Prefs.password).then((value) async {
-          var res = await cumt.dio.post(urls[BalanceRequestType.BalanceHis],
-              data: FormData.fromMap(
-                  {'account': cardNum, 'page': "1", 'rows': '100'}),
-              options: Options(followRedirects: false));
-          var map = jsonDecode(res.toString());
-          List<Map<String, dynamic>> temp = [];
-          for (Map<String, dynamic> m in map['rows']) {
-            temp.add({
-              "title": m['MERCNAME']==""?m["TRANNAME"]:m['MERCNAME'].toString().trim(),
-              "time": m['OCCTIME'].toString().trim(),
-              "change": m['TRANAMT'].toString(),
-              "balance": m['ZMONEY'].toString()
-            });
-          }
-          detailEntity = temp;
-          getBalanceHisDate = DateTime.now().toString().substring(0, 16);
-          notifyListeners();
-// 分批埋点
-String timeKey = DateTime.now().toString();
-int batch = 50;
-for (int i = 0; i < detailEntity.length; i+=batch) {
-  int start = i;
-  int end = i+batch;
-  if (end > detailEntity.length) {
-    end = detailEntity.length;
-  }
-  await Logger.log("Balance", "历史,成功", {
-    "timeKey":timeKey,
-    "info": jsonEncode(detailEntity.getRange(start, end).toList())
-  });
-  await Future.delayed(Duration(seconds: 1));
-}
-
-        });
-        return true;
-      }else{
-        toTipPage();
-        return false;
-      }
-    } on DioError catch (e) {
-      if (showToasts){
-        showToast("获取校园卡流水失败\n可能未连接校园网\n ${e.message.toString()}",duration: 4);
-        toTipPage();
-      };
-      Logger.log("Balance", "历史,失败", {});
+  Future<bool> getBalance({int count = 2}) async {
+    // 递归终止
+    if (count == 0) {
       return false;
     }
+    Response res;
+    try {
+      //模拟登录融合门户
+      await cumt.loginDefault();
+      //获取校园卡原始数据
+      res = await cumt.dio.get(urls[BalanceRequestType.Balance]);
+      var map = jsonDecode(res.toString());
+      // 提取校园卡基本信息
+      cardNum = map['data']['ZH'];
+      balance = (double.parse(map['data']['YE']) / 100).toStringAsFixed(2);
+      //记录当前时间
+      getBalanceDate = DateTime.now().toString().substring(0, 16);
+      //发送埋点数据
+      Logger.log('Balance', '余额,成功', {'cardNum': cardNum, 'balance': balance});
+      //通知页面刷新
+      notifyListeners();
+      return true;
+    } on DioError catch (e) {
+      Logger.log('Balance', '余额,失败', {'cardNum': cardNum, 'balance': balance});
+      cumt.isLogin = false; // 将模拟登录的锁关闭
+      return getBalance(count: count - 1); // 递归进行网络请求
+    }
   }
+
+  //校园卡流水
+  Future<bool> getBalanceHistory(BuildContext context,
+      {bool showToasts = false}) async {
+    var res = await cumt.dio.get(urls[BalanceRequestType.BalanceHis]);
+    var map = jsonDecode(res.toString());
+    try {
+      var l1 = [];
+      try{
+        for (var a in map['data']) {
+          l1.add({
+            "title": a['ZDMC'],
+            "change": (double.parse(a['JYE']) / 100).toStringAsFixed(2),
+            "balance": (double.parse(a['YE']) / 100).toStringAsFixed(2),
+            "time": a['JYSJ']
+          });
+        }
+      }catch (e){
+        print(e.toString());
+        l1 = [];
+        if(showToasts) showToast("解析Response失败，可能消费记录为空\n${e.toString()}");
+      }
+      detailEntity = l1;
+      getBalanceHisDate = DateTime.now().toString().substring(0, 16);
+      notifyListeners();
+      await Logger.log("Balance", "历史,成功", {
+        "timeKey": DateTime.now().toString(),
+        "info": jsonEncode(detailEntity.toList())
+      });
+      return true;
+    } on DioError catch (e) {
+      if (showToasts) showToast("获取校园卡流水失败\n ${e.message.toString()}");
+      return false;
+    }
+    // try {
+    //   if (await Cumt.checkConnect(showToasts: showToasts)) {
+    //     await cumt
+    //         .loginFWDT(Prefs.username, Prefs.password)
+    //         .then((value) async {
+    //       Response res = await cumt.dio.post(urls[BalanceRequestType.BalanceHis],
+    //           data: FormData.fromMap(
+    //               {'account': cardNum, 'page': "1", 'rows': '100'}),
+    //           options: Options(followRedirects: false));
+    //       var map = jsonDecode(res.toString());
+    //       List<Map<String, dynamic>> temp = [];
+    //       for (Map<String, dynamic> m in map['rows']) {
+    //         temp.add({
+    //           "title": m['MERCNAME'] == ""
+    //               ? m["TRANNAME"]
+    //               : m['MERCNAME'].toString().trim(),
+    //           "time": m['OCCTIME'].toString().trim(),
+    //           "change": m['TRANAMT'].toString(),
+    //           "balance": m['ZMONEY'].toString()
+    //         });
+    //       }
+    //       detailEntity = temp;
+    //       getBalanceHisDate = DateTime.now().toString().substring(0, 16);
+    //       notifyListeners();
+    //       // 分批埋点
+    //       // String timeKey = DateTime.now().toString();
+    //       // int batch = 50;
+    //       // for (int i = 0; i < detailEntity.length; i += batch) {
+    //       //   int start = i;
+    //       //   int end = i + batch;
+    //       //   if (end > detailEntity.length) {
+    //       //     end = detailEntity.length;
+    //       //   }
+    //       //   await Logger.log("Balance", "历史,成功", {
+    //       //     "timeKey": timeKey,
+    //       //     "info": jsonEncode(detailEntity.getRange(start, end).toList())
+    //       //   });
+    //       //   await Future.delayed(Duration(seconds: 1));
+    //       // }
+    //     });
+    //     return true;
+    //   } else {
+    //     toTipPage();
+    //     return false;
+    //   }
+    // } on DioError catch (e) {
+    //   if (showToasts) {
+    //     showToast("获取校园卡流水失败\n可能未连接校园网\n ${e.message.toString()}", duration: 4);
+    //     toTipPage();
+    //   }
+    //   ;
+    //   Logger.log("Balance", "历史,失败", {});
+    //   return false;
+    // }
+  }
+
   /// Setter
 
   set cardNum(String value) {

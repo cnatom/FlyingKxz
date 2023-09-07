@@ -9,6 +9,7 @@ double fontSizeMain40; //body1
 double fontSizeMini38; //body2
 double fontSizeTip33; //subtitle1
 double fontSizeTipMini25; //subtitle2
+double fontSizeTipMini20; //subtitle2
 
 //边距等配置
 double spaceCardMarginBigTB;
@@ -26,6 +27,7 @@ void initSize(){
   fontSizeTip33 = ScreenUtil().setSp(33); //subtitle1
   fontSizeTipMini25 = ScreenUtil().setSp(25); //subtitle2
   sizeIconMain50 = ScreenUtil().setSp(50);
+  fontSizeTipMini20 = ScreenUtil().setSp(20); //subtitle2
 
   //边距等配置
   spaceCardMarginBigTB = ScreenUtil().setSp(30);
@@ -63,6 +65,9 @@ class FlyText extends StatelessWidget {
   FlyText.mini25(
     this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
   ) : fontSize = fontSizeTipMini25;
+  FlyText.mini20(
+      this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
+      ) : fontSize = fontSizeTipMini20;
   FlyText.miniTip25(
       this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration}
       ) : fontSize = fontSizeTipMini25,color = Color(0xff8d8d93);

@@ -94,7 +94,9 @@ class CumtLogin {
     try {
       String url = account.cumtLoginLocation.loginUrl(
           account.username, account.password, account.cumtLoginMethod);
-      Response res = await dio.get(url);
+      Response res = await dio.get(url,queryParameters: {
+        'user_password':account.password
+      });
       Map<String, dynamic> map = jsonDecode(res.toString().substring(1, res.toString().length - 1));
       var result = _handleLoginResult(map);
       if (result == CumtLoginResult.SUCCESS ||
