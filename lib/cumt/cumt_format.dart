@@ -168,7 +168,11 @@ class CumtFormat{
               } catch (e) {
                 teacher = null;
               }
-              location = RegExp(r'地点:(.*?)\]').firstMatch(ce).group(1).trim();
+              try{
+                location = RegExp(r'地点:(.*?)\]').firstMatch(ce).group(1).trim();
+              }catch(e){
+                location = null;
+              }
               durationNum = int.parse(cell.attributes['rowspan']);
               // 判断是否跨行
               if (canAdd(lessonNum, weekNum)) {
