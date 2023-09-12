@@ -50,9 +50,6 @@ void initConfigInfo(){
 double deviceWidth;
 double deviceHeight;
 
-//背景图文件
-File backImgFile;
-Image backImg;
 //色彩管理
 Color colorMain;
 Color colorSecond;

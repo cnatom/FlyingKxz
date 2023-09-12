@@ -12,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Prefs{
 
   static SharedPreferences prefs;
-  static String _backImg = 'backImg';//背景图
   static String _username = 'username';//用户名
   static String _password = 'password4';//密码
   static String _phone = 'phone';//电话号码
@@ -46,7 +45,6 @@ class Prefs{
 
 
   static String get examDataDiy => prefs.getString(_examDataDiy);
-  static String get backImg => prefs.getString(_backImg);
   static String get username => prefs.getString(_username);
   static String get password => prefs.getString(_password);
   static String get phone => prefs.getString(_phone);
@@ -78,7 +76,6 @@ class Prefs{
   static String get courseIcsDate => prefs.getString(_courseIcsDate);
 
   static set examDataDiy(String value) =>prefs.setString(_examDataDiy, value);
-  static set backImg(String value) =>prefs.setString(_backImg, value);
   static set username(String value) =>prefs.setString(_username, value);
   static set password(String value) =>prefs.setString(_password, value);
   static set phone(String value) =>prefs.setString(_phone, value);

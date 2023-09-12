@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
+import 'package:flying_kxz/pages/background/background_provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/spider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/prefs.dart';
 import 'package:flying_kxz/util/logger/log.dart';
@@ -40,6 +41,7 @@ class MyselfPage extends StatefulWidget {
 class _MyselfPageState extends State<MyselfPage>
     with AutomaticKeepAliveClientMixin {
   ThemeProvider themeProvider;
+  BackgroundProvider backgroundProvider;
   Cumt cumt; // 用于网络请求
   @override
   void initState() {
@@ -51,7 +53,6 @@ class _MyselfPageState extends State<MyselfPage>
   // 退出登录
   void _signOut() async {
     Logger.log("Myself", "退出登录", {});
-    backImgFile = null;
     BookSpider.dispose();
     await Future.wait([cumt.clearCookie(),Prefs.prefs.clear(),cumt.init()]);
     toLoginPage(context);
@@ -78,6 +79,7 @@ class _MyselfPageState extends State<MyselfPage>
   Widget build(BuildContext context) {
     super.build(context);
     themeProvider = Provider.of<ThemeProvider>(context);
+    backgroundProvider = Provider.of<BackgroundProvider>(context);
     final powerProvider = Provider.of<PowerProvider>(context);
     final balanceProvider = Provider.of<BalanceProvider>(context);
     return RefreshIndicator(
@@ -317,7 +319,7 @@ class _MyselfPageState extends State<MyselfPage>
               ? Wrap(
                   children: [
                     _buildDiyButton("更换背景",
-                        onTap: () => _changeBackgroundImage(),
+                        onTap: () => backgroundProvider.setBackgroundImage(),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -457,29 +459,7 @@ class _MyselfPageState extends State<MyselfPage>
       onChanged: onChanged,
     );
   }
-
-  void _changeBackgroundImage() async {
-    PickedFile pickedFile =
-        await ImagePicker().getImage(source: ImageSource.gallery);
-    if (pickedFile == null) return;
-    final File tempImgFile = File(pickedFile.path);
-    String imageFileName = tempImgFile.path.substring(
-        tempImgFile.path.lastIndexOf('/') + 1, tempImgFile.path.length);
-    Directory tempDir = await getApplicationDocumentsDirectory();
-    Directory directory = new Directory('${tempDir.path}/images');
-    if (!directory.existsSync()) {
-      directory.createSync();
-    }
-    backImgFile = await tempImgFile.copy('${directory.path}/$imageFileName');
-    backImg = new Image.file(
-      backImgFile,
-      fit: BoxFit.cover,
-      gaplessPlayback: true,
-    );
-    await precacheImage(new FileImage(backImgFile), context);
-    Prefs.backImg = backImgFile.path;
-    navigatorPageController.jumpToPage(0);
-  }
+  
 
   //确定退出
   Future<bool> _willSignOut(context) async {
