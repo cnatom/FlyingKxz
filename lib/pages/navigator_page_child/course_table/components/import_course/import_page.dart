@@ -152,6 +152,7 @@ class _ImportPageState extends State<ImportPage> {
               // 融合门户自动登录
               if (url.toString().contains(
                   "https://authserver.cumt.edu.cn/authserver/login")) {
+                showToast("正在自动填充账号密码并登录……");
                 await _controller.evaluateJavascript(
                     source:
                         'document.getElementById("username").value = "${Prefs.username}";');
