@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/pages/background/background_provider.dart';
 import 'package:flying_kxz/pages/login_page.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/provider.dart';
@@ -28,7 +29,6 @@ void main() {
   ]).whenComplete(() {
     if (Prefs.password == null) {
       Global.clearPrefsData();
-      backImgFile = null;
     }
     ThemeProvider.init(); // 初始化主题
     CumtLoginPrefs.init(); //初始化校园网登录模块
@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: ThemeProvider()),
         ChangeNotifierProvider.value(value: PowerProvider()),
         ChangeNotifierProvider.value(value: BalanceProvider()),
+        ChangeNotifierProvider.value(value: BackgroundProvider()),
       ],
       builder: (context, _) {
         ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
@@ -118,21 +119,17 @@ class StartPage extends StatelessWidget {
     ScreenUtil.init(context, height: deviceHeight, width: deviceWidth);
     //初始化配置
     initSize();
-    // 初始化壁纸
-    if (Prefs.backImg != null) {
-      if (await File(Prefs.backImg).exists()) {
-        backImgFile = File(Prefs.backImg);
-        await precacheImage(new FileImage(backImgFile), context);
-      }
-    } else {
-      await precacheImage(new AssetImage("images/background.png"), context);
-    }
+    // 缓存壁纸
+    // if(BackgroundProvider.backgroundPath!=null){
+    //   await precacheImage(new FileImage(File(BackgroundProvider.backgroundPath)), context);
+    // }else{
+    //   await precacheImage(new AssetImage("images/background.png"), context);
+    // }
     // 选择跳转
     if (Prefs.password != null) {
       toNavigatorPage(context);
     } else {
       Global.clearPrefsData();
-      backImgFile = null;
       toLoginPage(context);
     }
   }

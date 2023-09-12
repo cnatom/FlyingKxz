@@ -46,7 +46,7 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   init() async {
-    if (!await Cumt.checkConnect()) {
+    if (widget.importType==ImportCourseType.BK && !await Cumt.checkConnect()) {
       toTipPage();
     }
   }
@@ -80,6 +80,12 @@ class _ImportPageState extends State<ImportPage> {
       return;
     }
     Navigator.of(context).pop(list);
+  }
+
+  @override
+  void dispose() {
+    _controller.clearCache();
+    super.dispose();
   }
 
   @override
@@ -146,6 +152,7 @@ class _ImportPageState extends State<ImportPage> {
               // 融合门户自动登录
               if (url.toString().contains(
                   "https://authserver.cumt.edu.cn/authserver/login")) {
+                showToast("正在自动填充账号密码并登录……");
                 await _controller.evaluateJavascript(
                     source:
                         'document.getElementById("username").value = "${Prefs.username}";');

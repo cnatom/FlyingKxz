@@ -67,6 +67,9 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
   // 导入课表
   _setCourse() async {
     List result = await FlyDialogDIYShow(context, content: ImportSelector(courseProvider: courseProvider,));
+    if(result==null){
+      return;
+    }
     if(result[0]=="import" && result[2]==true){
       if(result[1] == ImportCourseType.YJS){
         maxLesson = 12;
@@ -184,7 +187,7 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
           : SystemUiOverlayStyle.light,
       backgroundColor: Colors.transparent,
       title: CumtLoginStateText(
-        defaultText: '第${courseProvider.curWeek}周',
+        defaultText: '第${courseProvider.curWeek}周（1.5.53 Beta）',
         onDirection: (String oldText) {
           String week = RegExp(r'\d+').stringMatch(oldText);
           if (week != null && int.parse(week) > courseProvider.curWeek) {

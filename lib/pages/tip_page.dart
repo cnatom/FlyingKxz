@@ -76,11 +76,9 @@ class _TipPageState extends State<TipPage> {
                   children: [
                     _buildTitle('使用矿大VPN'),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildButton('苹果VPN',MdiIcons.apple ,'iOS VPN指引','https://nic.cumt.edu.cn/info/1013/1759.htm'),
-                        _buildButton('安卓VPN',MdiIcons.android ,'安卓 VPN指引','https://nic.cumt.edu.cn/info/1013/1758.htm')
-
+                        _buildButton('矿大VPN',MdiIcons.network ,'VPN指引','https://www.cumt.edu.cn/a8/b4/c19686a567476/page.htm'),
                       ],
                     )
                   ],

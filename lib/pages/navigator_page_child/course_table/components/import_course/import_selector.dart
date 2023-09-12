@@ -12,7 +12,7 @@ import '../add_components/course_add_view.dart';
 import 'import_page.dart';
 
 class ImportSelector extends StatefulWidget {
-  CourseProvider courseProvider;
+  final CourseProvider courseProvider;
   ImportSelector({Key key,@required this.courseProvider}) : super(key: key);
 
   @override
@@ -100,7 +100,6 @@ class _ImportSelectorState extends State<ImportSelector> {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: fontSizeMain40 * 3,
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           border: solid?null:Border.all(color: color,width: 1.5),
@@ -108,6 +107,7 @@ class _ImportSelectorState extends State<ImportSelector> {
             color: solid?color:Colors.transparent),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(iconData, color: solid?Colors.white:color),
             SizedBox(

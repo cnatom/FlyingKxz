@@ -30,9 +30,9 @@ class PowerProvider extends ChangeNotifier{
   };
 
   Map<PowerRequestType, String> _urls = {
-    PowerRequestType.account: 'http://ykt.cumt.edu.cn:8988/web/Common/Tsm.html',
-    PowerRequestType.aid: 'http://ykt.cumt.edu.cn:8988/web/NetWork/AppList.html',
-    PowerRequestType.power: 'http://ykt.cumt.edu.cn:8988/web/Common/Tsm.html'
+    PowerRequestType.account: 'https://yktm.cumt.edu.cn/web/Common/Tsm.html',
+    PowerRequestType.aid: 'https://yktm.cumt.edu.cn/web/NetWork/AppList.html',
+    PowerRequestType.power: 'https://yktm.cumt.edu.cn/web/Common/Tsm.html'
   };
 
   Map<String,String> headers = {

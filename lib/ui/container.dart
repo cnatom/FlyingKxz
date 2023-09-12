@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flying_kxz/pages/backImage_view.dart';
+import 'package:flying_kxz/pages/background/background_view.dart';
 import 'package:flying_kxz/ui/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -61,7 +61,7 @@ class _FlyNavBackgroundState extends State<FlyNavBackground> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Stack(
       children: [
-        BackImgView(),
+        BackgroundView(),
         Positioned.fill(
           child: FlyWidgetBuilder(
             whenFirst: themeProvider.simpleMode,
