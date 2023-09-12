@@ -162,39 +162,43 @@ class CumtFormat{
             var cel = cell.text.split('；');
             for (var ce in cel){
               title = RegExp(r'(.*?)\s*｛').firstMatch(ce).group(1).trim();
-              weekList = _convertWeeksToList(RegExp(r'｛(.*?)\[').firstMatch(ce).group(1).trim());
-              try {
-                teacher = RegExp(r'教师:(.*?),').firstMatch(ce).group(1).trim();
-              } catch (e) {
-                teacher = null;
-              }
-              try{
-                location = RegExp(r'地点:(.*?)\]').firstMatch(ce).group(1).trim();
-              }catch(e){
-                location = null;
-              }
               durationNum = int.parse(cell.attributes['rowspan']);
-              // 判断是否跨行
-              if (canAdd(lessonNum, weekNum)) {
-                fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNum, lessonNum);
-              } else {
-                for (var weekNumTemp = weekNum + 1; weekNumTemp <= 7; weekNumTemp++) {
-                  if (canAdd(lessonNum, weekNumTemp)) {
-                    fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNumTemp, lessonNum);
-                    weekNum = weekNumTemp;
-                    break;
+              var ce_temp = RegExp(r'｛(.*?)｝').firstMatch(ce).group(1).trim();
+              for(var c in ce_temp.split(']、')){
+                c = c+']';
+                weekList = _convertWeeksToList(RegExp(r'(.*?)\[').firstMatch(c).group(1).trim());
+                try {
+                  teacher = RegExp(r'教师:(.*?)(?=,|])').firstMatch(c).group(1).trim();
+                } catch (e) {
+                  teacher = null;
+                }
+                try{
+                  location = RegExp(r'地点:(.*?)\]').firstMatch(ce).group(1).trim();
+                }catch(e){
+                  location = null;
+                }
+                // 判断是否跨行
+                if (canAdd(lessonNum, weekNum)) {
+                  fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNum, lessonNum);
+                } else {
+                  for (var weekNumTemp = weekNum + 1; weekNumTemp <= 7; weekNumTemp++) {
+                    if (canAdd(lessonNum, weekNumTemp)) {
+                      fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNumTemp, lessonNum);
+                      weekNum = weekNumTemp;
+                      break;
+                    }
                   }
                 }
+                result.add({
+                  "title":title,
+                  "location":location,
+                  "teacher":teacher,
+                  "durationNum":durationNum,
+                  "weekList":weekList,
+                  "weekNum":weekNum,
+                  "lessonNum":lessonNum,
+                });
               }
-              result.add({
-                "title":title,
-                "location":location,
-                "teacher":teacher,
-                "durationNum":durationNum,
-                "weekList":weekList,
-                "weekNum":weekNum,
-                "lessonNum":lessonNum,
-              });
             }
 
           }
@@ -220,7 +224,7 @@ class CumtFormat{
     return null;
   }
 
-  // "10-13周"->[10, 11, 12, 13] "2-5、7-10周"->[2, 3, 4, 5, 7, 8, 9, 10]
+  // "10-13周"->[10, 11, 12, 13] "2-5、7-10周"->[2, 3, 4, 5, 7, 8, 9, 10] "4-6双周"->[4,6]
   static List<int> _convertWeeksToList(String weeksString) {
     List<int> weeksList = [];
     List<String> weekRanges = weeksString.split('、');
@@ -231,10 +235,31 @@ class CumtFormat{
         // 将区间分割为起始周和结束周
         List<String> rangeParts = range.split('-');
         int startWeek = int.parse(rangeParts[0]);
-        int endWeek = int.parse(rangeParts[1].replaceAll("周",""));
-        // 将连续周数添加到列表中
-        for (int i = startWeek; i <= endWeek; i++) {
-          weeksList.add(i);
+        int endWeek;
+        try{
+          endWeek = int.parse(rangeParts[1].replaceAll("周",""));
+          // 将连续周数添加到列表中
+          for (int i = startWeek; i <= endWeek; i++) {
+            weeksList.add(i);
+          }
+        }catch(e){
+          // 检查是否为双周或单周
+          bool isEven = true;
+          if (rangeParts[1].contains('双')) {
+            endWeek = int.parse(rangeParts[1].replaceAll("双周",""));
+            isEven = true;
+          } else if (rangeParts[1].contains('单')) {
+            endWeek = int.parse(rangeParts[1].replaceAll("单周",""));
+            isEven = false;
+          }
+          // 将连续周数添加到列表中
+          for (int i = startWeek; i <= endWeek; i++) {
+            if (isEven && i % 2 == 0) {
+              weeksList.add(i);
+            } else if (!isEven && i % 2 == 1) {
+              weeksList.add(i);
+            }
+          }
         }
       } else {
         // 处理单个周数

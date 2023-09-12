@@ -67,6 +67,9 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
   // 导入课表
   _setCourse() async {
     List result = await FlyDialogDIYShow(context, content: ImportSelector(courseProvider: courseProvider,));
+    if(result==null){
+      return;
+    }
     if(result[0]=="import" && result[2]==true){
       if(result[1] == ImportCourseType.YJS){
         maxLesson = 12;

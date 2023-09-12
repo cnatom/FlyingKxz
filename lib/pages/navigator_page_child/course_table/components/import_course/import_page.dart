@@ -46,7 +46,7 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   init() async {
-    if (!await Cumt.checkConnect()) {
+    if (widget.importType==ImportCourseType.BK && !await Cumt.checkConnect()) {
       toTipPage();
     }
   }
@@ -80,6 +80,12 @@ class _ImportPageState extends State<ImportPage> {
       return;
     }
     Navigator.of(context).pop(list);
+  }
+
+  @override
+  void dispose() {
+    _controller.clearCache();
+    super.dispose();
   }
 
   @override
