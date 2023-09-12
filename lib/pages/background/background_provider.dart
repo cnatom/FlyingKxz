@@ -7,32 +7,41 @@ import 'package:flying_kxz/ui/toast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 // 设置背景
-//
 
-class BackgroundProvider extends ChangeNotifier{
-  String _backgroundImagePrefsStr = "background_image2";
+class BackgroundProvider extends ChangeNotifier {
+  static String _backgroundImagePrefsStr = "background_image2";
 
-  Image _backgroundImage;
+  static String backgroundPath;
 
-  Image get backgroundImage{
-    if(_backgroundImage==null){
-      if(Prefs.prefs.getString(_backgroundImagePrefsStr)!=null){
-        _backgroundImage = Image.file(File(Prefs.prefs.getString(_backgroundImagePrefsStr)),fit: BoxFit.cover,gaplessPlayback: true,);
-      }else{
-        _backgroundImage =Image.asset("images/background.png",fit: BoxFit.cover,gaplessPlayback: true,);
+  String documentDirectory;
+
+  String get getBackgroundPath {
+    if (backgroundPath == null) {
+      String prefsPath = Prefs.prefs.getString(_backgroundImagePrefsStr);
+      if (prefsPath != null) {
+        backgroundPath =
+            "${documentDirectory}/background/${RegExp(r"(?<=background\/)[^\/]+\.jpg$").firstMatch(prefsPath).group(0)}";
+      } else {
+        backgroundPath = "images/background.png";
       }
     }
-    return _backgroundImage;
+    return backgroundPath;
   }
 
+  init() async {
+    documentDirectory = (await getApplicationDocumentsDirectory()).path;
+  }
 
-  void setBackgroundImage() async{
+  BackgroundProvider() {
+    init();
+  }
+
+  void setBackgroundImage() async {
     XFile pickedImage = await _pickImage();
-    if(pickedImage!=null){
+    if (pickedImage != null) {
       String imagePath = await _copyImageToStorage(pickedImage.path);
-      _backgroundImage = Image.file(File(imagePath),fit: BoxFit.cover,gaplessPlayback: true,);
+      backgroundPath = imagePath;
       Prefs.prefs.setString(_backgroundImagePrefsStr, imagePath);
-      print(imagePath);
     }
     notifyListeners();
   }
@@ -51,7 +60,8 @@ class BackgroundProvider extends ChangeNotifier{
     await _createFolderIfNotExists(directoryPath);
     await _deleteFolderContents(directoryPath);
     String fileExtension = imagePath.split('.').last; // 获取原始文件的扩展名
-    String newImagePath = '${directoryPath}/background_image${DateTime.now().toString()}.$fileExtension'; // 使用统一的文件名和原始扩展名
+    String newImagePath =
+        '$directoryPath/background_image${DateTime.now().toString()}.$fileExtension'; // 使用统一的文件名和原始扩展名
     // 删除上一个背景图片
     File previousImageFile = File(newImagePath);
     if (await previousImageFile.exists()) {
@@ -80,14 +90,13 @@ class BackgroundProvider extends ChangeNotifier{
 
   Future<XFile> _pickImage() async {
     final imagePicker = ImagePicker();
-    try{
-      final pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+    try {
+      final pickedImage =
+          await imagePicker.pickImage(source: ImageSource.gallery);
       return pickedImage;
-    }catch(e){
+    } catch (e) {
       showToast("不支持该图片格式\n${e.toString()}");
       return null;
     }
   }
-
-
 }

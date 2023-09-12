@@ -119,6 +119,12 @@ class StartPage extends StatelessWidget {
     ScreenUtil.init(context, height: deviceHeight, width: deviceWidth);
     //初始化配置
     initSize();
+    // 缓存壁纸
+    // if(BackgroundProvider.backgroundPath!=null){
+    //   await precacheImage(new FileImage(File(BackgroundProvider.backgroundPath)), context);
+    // }else{
+    //   await precacheImage(new AssetImage("images/background.png"), context);
+    // }
     // 选择跳转
     if (Prefs.password != null) {
       toNavigatorPage(context);

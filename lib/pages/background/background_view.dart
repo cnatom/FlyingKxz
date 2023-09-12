@@ -15,11 +15,9 @@ class _BackgroundViewState extends State<BackgroundView> {
   @override
   Widget build(BuildContext context) {
     final backgroundProvider = Provider.of<BackgroundProvider>(context);
-    return Positioned.fill(child: backgroundProvider.backgroundImage);
+    return Positioned.fill(
+        child: backgroundProvider.getBackgroundPath == "images/background.png"
+            ? Image.asset(backgroundProvider.getBackgroundPath,fit: BoxFit.cover,gaplessPlayback: true,)
+            : Image.file(File(backgroundProvider.getBackgroundPath),fit: BoxFit.cover,gaplessPlayback: true,));
   }
 }
-// return backImgFile==null?Positioned.fill(
-//   child: Image.asset("images/background.png",fit: BoxFit.cover,),
-// ):Positioned.fill(
-//   child: Image.file(backImgFile,fit: BoxFit.cover,),
-// );
