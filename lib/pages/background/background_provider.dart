@@ -53,7 +53,7 @@ class BackgroundProvider extends ChangeNotifier {
         String imagePath = await _copyImageToStorage(pickedImage.path);
         backgroundPath = imagePath;
         Prefs.prefs.setString(_backgroundImagePrefsStr, imagePath);
-        showToast("🎉更换成功！\n(选一张小一点的图片App启动更快哦)",duration: 5);
+        showToast("🎉更换成功！\n(最好用jpg格式的图片，否则可能会出现黑屏、加载慢等问题)",duration: 6);
         notifyListeners();
       }
     }catch(e){

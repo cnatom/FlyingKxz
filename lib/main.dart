@@ -121,7 +121,7 @@ class StartPage extends StatelessWidget {
     //初始化配置
     initSize();
     // 缓存壁纸
-    await backgroundProvider.precacheBackground(context);
+    backgroundProvider.precacheBackground(context);
     // 选择跳转
     if (Prefs.password != null) {
       toNavigatorPage(context);
