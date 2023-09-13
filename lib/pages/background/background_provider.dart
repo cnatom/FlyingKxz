@@ -28,6 +28,16 @@ class BackgroundProvider extends ChangeNotifier {
     return backgroundPath;
   }
 
+  Future<void> precacheBackground(BuildContext context)async{
+    if (getBackgroundPath != "images/background.png") {
+      if (await File(getBackgroundPath).exists()) {
+        await precacheImage(new FileImage(File(getBackgroundPath)), context);
+      }
+    } else {
+      await precacheImage(new AssetImage("images/background.png"), context);
+    }
+  }
+
   init() async {
     documentDirectory = (await getApplicationDocumentsDirectory()).path;
   }
@@ -37,13 +47,18 @@ class BackgroundProvider extends ChangeNotifier {
   }
 
   void setBackgroundImage() async {
-    XFile pickedImage = await _pickImage();
-    if (pickedImage != null) {
-      String imagePath = await _copyImageToStorage(pickedImage.path);
-      backgroundPath = imagePath;
-      Prefs.prefs.setString(_backgroundImagePrefsStr, imagePath);
+    try{
+      XFile pickedImage = await _pickImage();
+      if (pickedImage != null) {
+        String imagePath = await _copyImageToStorage(pickedImage.path);
+        backgroundPath = imagePath;
+        Prefs.prefs.setString(_backgroundImagePrefsStr, imagePath);
+        showToast("🎉更换成功！\n(选一张小一点的图片App启动更快哦)",duration: 5);
+        notifyListeners();
+      }
+    }catch(e){
+      showToast("😭更换失败～\n${e.toString()}");
     }
-    notifyListeners();
   }
 
   Future<void> _createFolderIfNotExists(String folderPath) async {

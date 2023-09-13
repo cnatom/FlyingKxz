@@ -181,13 +181,15 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
   }
 
   PreferredSizeWidget _buildAppBar() {
+    // String defaultText = '第${courseProvider.curWeek}周（1.5.53 Beta）';
+    String defaultText = '第${courseProvider.curWeek}周';
     return AppBar(
       systemOverlayStyle: themeProvider.simpleMode
           ? SystemUiOverlayStyle.dark
           : SystemUiOverlayStyle.light,
       backgroundColor: Colors.transparent,
       title: CumtLoginStateText(
-        defaultText: '第${courseProvider.curWeek}周（1.5.53 Beta）',
+        defaultText: defaultText,
         onDirection: (String oldText) {
           String week = RegExp(r'\d+').stringMatch(oldText);
           if (week != null && int.parse(week) > courseProvider.curWeek) {

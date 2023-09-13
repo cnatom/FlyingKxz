@@ -47,7 +47,6 @@ void _ifAndroidSetStatusBarTransparent() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -101,6 +100,8 @@ class MyApp extends StatelessWidget {
 class StartPage extends StatelessWidget {
   StartPage({Key key}) : super(key: key);
 
+  BackgroundProvider backgroundProvider;
+
   Future<void> initFunc(BuildContext context) async {
     // 获取当前App版本
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -120,11 +121,7 @@ class StartPage extends StatelessWidget {
     //初始化配置
     initSize();
     // 缓存壁纸
-    // if(BackgroundProvider.backgroundPath!=null){
-    //   await precacheImage(new FileImage(File(BackgroundProvider.backgroundPath)), context);
-    // }else{
-    //   await precacheImage(new AssetImage("images/background.png"), context);
-    // }
+    await backgroundProvider.precacheBackground(context);
     // 选择跳转
     if (Prefs.password != null) {
       toNavigatorPage(context);
@@ -136,6 +133,7 @@ class StartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    backgroundProvider = Provider.of<BackgroundProvider>(context);
     return FutureBuilder(
       future: initFunc(context),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
