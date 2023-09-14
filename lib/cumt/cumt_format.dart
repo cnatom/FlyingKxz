@@ -148,6 +148,16 @@ class CumtFormat{
         }
       }
 
+      int calcIncreaseWeek(int lessonNu, int weekNu) {
+        int increaseWeekNu = 0;
+        for (int i = 1; i <= weekNu; i++) {
+          if (lessonWeekMatrix[lessonNu][i] != lessonNu && lessonWeekMatrix[lessonNu][i] != 0) {
+            increaseWeekNu += 1;
+          }
+        }
+        return increaseWeekNu;
+      }
+
       lessonNum = 1;
       for (var tableLine in tableLineList){
         if(tableLine.text == '\n'){
@@ -178,24 +188,27 @@ class CumtFormat{
                   location = null;
                 }
                 // 判断是否跨行
-                if (canAdd(lessonNum, weekNum)) {
-                  fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNum, lessonNum);
-                } else {
-                  for (var weekNumTemp = weekNum + 1; weekNumTemp <= 7; weekNumTemp++) {
-                    if (canAdd(lessonNum, weekNumTemp)) {
-                      fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNumTemp, lessonNum);
-                      weekNum = weekNumTemp;
-                      break;
-                    }
-                  }
-                }
+                int newWeekNum = weekNum;
+                newWeekNum += calcIncreaseWeek(lessonNum, weekNum);
+                fillMatrix(lessonNum, lessonNum + durationNum - 1, newWeekNum, lessonNum);
+                // if (canAdd(lessonNum, weekNum)) {
+                //   fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNum, lessonNum);
+                // } else {
+                //   for (var weekNumTemp = weekNum + 1; weekNumTemp <= 7; weekNumTemp++) {
+                //     if (canAdd(lessonNum, weekNumTemp)) {
+                //       fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNumTemp, lessonNum);
+                //       weekNum = weekNumTemp;
+                //       break;
+                //     }
+                //   }
+                // }
                 result.add({
                   "title":title,
                   "location":location,
                   "teacher":teacher,
                   "durationNum":durationNum,
                   "weekList":weekList,
-                  "weekNum":weekNum,
+                  "weekNum":newWeekNum,
                   "lessonNum":lessonNum,
                 });
               }
