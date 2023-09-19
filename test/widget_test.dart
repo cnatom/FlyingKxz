@@ -1,6 +1,9 @@
 
 
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:path_provider/path_provider.dart';
 
 List<int> convertWeeksToList(String weeksString) {
   List<int> weeksList = [];
@@ -34,14 +37,14 @@ List<int> convertWeeksToList(String weeksString) {
 
 void main() {
   test("logger", () async {
-    String weeksString1 = "10-13周";
-    String weeksString2 = "2-5、7-10周";
-
-    List<int> weeksList1 = convertWeeksToList(weeksString1);
-    List<int> weeksList2 = convertWeeksToList(weeksString2);
-
-    print(weeksList1); // 输出: [10, 11, 12, 13]
-    print(weeksList2); // 输出: [2, 3, 4, 5, 7, 8, 9, 10]
+    // String weeksString1 = "10-13周";
+    // String weeksString2 = "2-5、7-10周";
+    //
+    // List<int> weeksList1 = convertWeeksToList(weeksString1);
+    // List<int> weeksList2 = convertWeeksToList(weeksString2);
+    //
+    // print(weeksList1); // 输出: [10, 11, 12, 13]
+    // print(weeksList2); // 输出: [2, 3, 4, 5, 7, 8, 9, 10]
 
   });
 }

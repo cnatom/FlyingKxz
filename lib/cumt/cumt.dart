@@ -131,8 +131,9 @@ class Cumt{
         Prefs.password = password;
         debugPrint("登录融合门户成功");
         return true;
+      }else{
+        return false;
       }
-      return true;
     }on DioError catch(e){
       return false;
     }

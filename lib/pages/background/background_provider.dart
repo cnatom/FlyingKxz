@@ -9,18 +9,29 @@ import 'package:path_provider/path_provider.dart';
 // 设置背景
 
 class BackgroundProvider extends ChangeNotifier {
-  static String _backgroundImagePrefsStr = "background_image2";
+  // static String _backgroundImagePrefsStr = "background_image2";
+  static String _backgroundImagePrefsStr = "background_image3";
 
   static String backgroundPath;
 
-  String documentDirectory;
+  Directory documentDirectory;
 
   String get getBackgroundPath {
     if (backgroundPath == null) {
       String prefsPath = Prefs.prefs.getString(_backgroundImagePrefsStr);
       if (prefsPath != null) {
-        backgroundPath =
-            "${documentDirectory}/background/${RegExp(r"(?<=background\/)[^\/]+\.jpg$").firstMatch(prefsPath).group(0)}";
+        documentDirectory = Directory("${documentDirectory.path}/background/");
+        if(documentDirectory.existsSync()){
+          List<FileSystemEntity> entities = documentDirectory.listSync();
+          for(var entity in entities){
+            if(entity.path.contains("background_image")){
+              backgroundPath = entity.path;
+              break;
+            }
+          }
+        }else{
+          backgroundPath = "images/background.png";
+        }
       } else {
         backgroundPath = "images/background.png";
       }
@@ -39,7 +50,7 @@ class BackgroundProvider extends ChangeNotifier {
   }
 
   init() async {
-    documentDirectory = (await getApplicationDocumentsDirectory()).path;
+    documentDirectory = (await getApplicationDocumentsDirectory());
   }
 
   BackgroundProvider() {
@@ -53,7 +64,7 @@ class BackgroundProvider extends ChangeNotifier {
         String imagePath = await _copyImageToStorage(pickedImage.path);
         backgroundPath = imagePath;
         Prefs.prefs.setString(_backgroundImagePrefsStr, imagePath);
-        showToast("🎉更换成功！\n(最好用jpg格式的图片，否则可能会出现黑屏、加载慢等问题)",duration: 6);
+        showToast("🎉更换成功！");
         notifyListeners();
       }
     }catch(e){
