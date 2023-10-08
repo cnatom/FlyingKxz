@@ -58,17 +58,20 @@ class CumtFormat{
             temp2 = temp1.children;
             try{
               for(var temp3 in temp2){
-                title = temp3.querySelector(".title").text;
-                location = temp3.querySelector('span[title="上课地点"]').nextElementSibling.text;
-                teacher = temp3.querySelector('span[title="教师"]').nextElementSibling.text;
-                credit = temp3.querySelector('span[title="学分"]').nextElementSibling.text;
-                String lessonWeek = temp3.querySelector('span[title="节/周"]').nextElementSibling.text;
+                try{
+                  title = temp3.querySelector('span[class="title"]').text;
+                }catch(e){
+                  title = temp3.querySelector('u[class="title showJxbtkjl"]').text;
+                }
+                location = temp3.querySelector('span[title="上课地点"]').parent.text;
+                teacher = temp3.querySelector('span[title="教师 "]').parent.text;
+                credit = temp3.querySelector('span[title="学分"]').parent.text;
+                String lessonWeek = temp3.querySelector('span[title="节/周"]').parent.text;
                 duration = _getDuration(lessonWeek);
                 lesson = _getLesson(lessonWeek);
                 weekList = _getWeekList(lessonWeek);
                 weekNum = c;
                 for(int i = 0;i<duration.length;i++){
-
                   durationNum = duration[i];
                   lessonNum = lesson[i];
                   if(duration.length>1){

@@ -77,7 +77,7 @@ class _PowerPageState extends State<PowerPage> {
     return Scaffold(
 
       key: _scaffoldKey,
-      appBar: FlyAppBar(context, "宿舍电量（需内网或VPN）"),
+      appBar: FlyAppBar(context, "宿舍电量"),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics()
