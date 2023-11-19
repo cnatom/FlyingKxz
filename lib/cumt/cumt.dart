@@ -183,14 +183,22 @@ class Cumt{
 
   //获取姓名手机号
   Future<Map<String,dynamic>> getNamePhone()async{
-    var res = await dio.get('http://portal.cumt.edu.cn/portal/api/v1/api/http/8',);
-    debugPrint(res.toString());
-    var map = jsonDecode(res.toString());
-    map = map['entities'][0];
-    var result = {
-      'name':map['name']??'',
-      'phone':map['phone']??''
-    };
+    Map<String,dynamic> result = {};
+    try{
+      var res = await dio.get('http://portal.cumt.edu.cn/portal/api/v2/infoplus/me/profile');
+      // res = await dio.get('http://portal.cumt.edu.cn/portal/api/v1/api/http/8',);
+      var map = jsonDecode(res.toString());
+      map = map['results']['entities'][0];
+      result = {
+        'name':map['name']??'',
+        'phone':map['phone']??''
+      };
+    }catch(e){
+      result = {
+        'name':'',
+        'phone':''
+      };
+    }
     return result;
   }
 
