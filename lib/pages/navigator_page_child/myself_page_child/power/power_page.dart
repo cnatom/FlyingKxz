@@ -78,53 +78,61 @@ class _PowerPageState extends State<PowerPage> {
 
       key: _scaffoldKey,
       appBar: FlyAppBar(context, "宿舍电量"),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics()
-        ),
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            // 触摸收起键盘
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: Container(
-            width: double.infinity,
-            padding: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB,
-                spaceCardMarginRL, spaceCardMarginTB),
-            child: Column(
-              children: [
-                PowerCircularView(
-                    powerPercent: powerPercent, themeProvider: themeProvider),
-                SizedBox(
-                  height: spaceCardMarginTB * 2,
-                ),
-                FlyText.title50(
-                  powerPreviewText,
-                  color: themeProvider.colorMain,
-                  fontWeight: FontWeight.bold,
-                ),
-                SizedBox(
-                  height: spaceCardMarginTB * 3,
-                ),
-                _buildPower(powerBuilding),
-                SizedBox(
-                  height: spaceCardMarginTB,
-                ),
-                _container(
-                    title: "充值",
-                    child: Wrap(
-                      runSpacing: spaceCardPaddingTB,
-                      children: [
-                        _buildButton("前往充值", primer:false,onTap: () => _charge()),
-                      ],
-                    )),
-                SizedBox(
-                  height: spaceCardMarginTB,
-                ),
-                Center(child: FlyText.miniTip30("更新时间:"+powerProvider.requestDateTime),),
-                SizedBox(height: 200,)
-              ],
+      body: RefreshIndicator(
+        color: themeProvider.colorMain,
+        onRefresh: ()async{
+          if(await Provider.of<PowerProvider>(context, listen: false).getPreview()){
+            showToast("刷新成功：宿舍电量");
+          }
+        },
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics()
+          ),
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              // 触摸收起键盘
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB,
+                  spaceCardMarginRL, spaceCardMarginTB),
+              child: Column(
+                children: [
+                  PowerCircularView(
+                      powerPercent: powerPercent, themeProvider: themeProvider),
+                  SizedBox(
+                    height: spaceCardMarginTB * 2,
+                  ),
+                  FlyText.title50(
+                    powerPreviewText,
+                    color: themeProvider.colorMain,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  SizedBox(
+                    height: spaceCardMarginTB * 3,
+                  ),
+                  _buildPower(powerBuilding),
+                  SizedBox(
+                    height: spaceCardMarginTB,
+                  ),
+                  _container(
+                      title: "充值",
+                      child: Wrap(
+                        runSpacing: spaceCardPaddingTB,
+                        children: [
+                          _buildButton("前往充值", primer:false,onTap: () => _charge()),
+                        ],
+                      )),
+                  SizedBox(
+                    height: spaceCardMarginTB,
+                  ),
+                  Center(child: FlyText.miniTip30("更新时间:"+powerProvider.requestDateTime),),
+                  SizedBox(height: 200,)
+                ],
+              ),
             ),
           ),
         ),
