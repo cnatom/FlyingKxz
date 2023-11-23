@@ -22,11 +22,14 @@ class BalanceProvider extends ChangeNotifier {
   List _detailEntity; // 校园卡流水
   String _getBalanceDate; // 上次成功获取校园卡余额的时间
   String _getBalanceHisDate; //上次成功获取校园卡流水的时间
+  String _auth;
 
   Map<BalanceRequestType, dynamic> urls = {
-    BalanceRequestType.Balance: 'http://portal.cumt.edu.cn/ykt/balance',
-    BalanceRequestType.BalanceHis:
-        'http://portal.cumt.edu.cn/ykt/flow?flow_num=20'
+    BalanceRequestType.Balance:'https://yktm.cumt.edu.cn/berserker-app/ykt/tsm/getCampusCards?synAccessSource=pc',
+    BalanceRequestType.BalanceHis:'https://yktm.cumt.edu.cn/berserker-search/search/personal/turnover?size=20&current=1&synAccessSource=pc'
+    // BalanceRequestType.Balance: 'http://portal.cumt.edu.cn/ykt/balance',
+    // BalanceRequestType.BalanceHis:
+    //     'http://portal.cumt.edu.cn/ykt/flow?flow_num=20'
   };
 
   //校园卡余额
@@ -38,13 +41,23 @@ class BalanceProvider extends ChangeNotifier {
     Response res;
     try {
       //模拟登录融合门户
-      await cumt.loginDefault();
+      this._auth = await cumt.loginYkt();
       //获取校园卡原始数据
+      cumt.dio.options.headers['Synjones-Auth'] = this._auth;
       res = await cumt.dio.get(urls[BalanceRequestType.Balance]);
+      cumt.dio.options.headers.remove("Synjones-Auth");
       var map = jsonDecode(res.toString());
       // 提取校园卡基本信息
-      cardNum = map['data']['ZH'];
-      balance = (double.parse(map['data']['YE']) / 100).toStringAsFixed(2);
+      try{
+        cardNum = map['data']['card'][0]['account'];
+      }catch(e){
+        cardNum = "000000_Error";
+      }
+      try{
+        balance = (map['data']['card'][0]['elec_accamt'] / 100.0).toStringAsFixed(2);
+      }catch(e){
+        balance = "0";
+      }
       //记录当前时间
       getBalanceDate = DateTime.now().toString().substring(0, 16);
       //发送埋点数据
@@ -62,17 +75,22 @@ class BalanceProvider extends ChangeNotifier {
   //校园卡流水
   Future<bool> getBalanceHistory(BuildContext context,
       {bool showToasts = false}) async {
+    cumt.dio.options.headers['Synjones-Auth'] = this._auth;
     var res = await cumt.dio.get(urls[BalanceRequestType.BalanceHis]);
+    cumt.dio.options.headers.remove("Synjones-Auth");
     var map = jsonDecode(res.toString());
     try {
       var l1 = [];
       try{
-        for (var a in map['data']) {
+        for (var a in map['data']['records']) {
+          if(a['icon']=='consume'){
+            a['tranamt'] = -a['tranamt'];
+          }
           l1.add({
-            "title": a['ZDMC'],
-            "change": (double.parse(a['JYE']) / 100).toStringAsFixed(2),
-            "balance": (double.parse(a['YE']) / 100).toStringAsFixed(2),
-            "time": a['JYSJ']
+            "title": a['resume'],
+            "change": (a['tranamt']/100.0).toStringAsFixed(2),
+            "balance": (a['cardBalance']/100.0).toStringAsFixed(2),
+            "time": a['jndatetimeStr']
           });
         }
       }catch (e){

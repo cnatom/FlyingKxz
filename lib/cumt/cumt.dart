@@ -86,6 +86,35 @@ class Cumt{
     return await login(this.username,this.password);
   }
 
+  // 登录一卡通服务中心，需要在获取校园卡余额以及消费记录前调用一次
+  Future<String> loginYkt()async{
+    try{
+      await loginDefault();
+      var url = "https://yktm.cumt.edu.cn/berserker-auth/cas/login/wisedu?targetUrl=https%3A//yktm.cumt.edu.cn/plat-pc/%3Fname%3DloginTransit";
+      Response res;
+      // 循环重定向
+      while (true) {
+        res = await dio.get(url, options: Options(followRedirects: false));
+        var redirectUrl = res.headers.value('location');
+        if (redirectUrl == null) {
+          break;  // 无重定向时跳出循环
+        }
+        url = redirectUrl;
+      }
+      // 提取出url中的synjones-auth字段,并返回
+      String auth = extractSynjonesAuth(url,'synjones-auth');
+      return auth.isEmpty?"":"bearer ${auth}";
+    }catch(e){
+      print("模拟登录一卡通服务中心失败\n${e.toString()}");
+      return "";
+    }
+  }
+
+  String extractSynjonesAuth(String url,String aim) {
+    Uri uri = Uri.parse(url);
+    return uri.queryParameters[aim] ?? '';
+  }
+
   // 登录融合门户
   Future<bool> login(String username,String password)async{
     if(isLogin){
@@ -142,7 +171,7 @@ class Cumt{
   // 登录服务大厅
   Future<bool> loginFWDT(String username,String password)async{
     try{
-  String service = "http://ykt.cumt.edu.cn:8088/ias/prelogin?sysid=FWDT";
+      String service = "http://ykt.cumt.edu.cn:8088/ias/prelogin?sysid=FWDT";
       var res = await dio.get('https://authserver.cumt.edu.cn/authserver/login?service=$service',options: Options(followRedirects:true,));
       var document2 = parser.parse(res.data);
       var ssoticketid = document2.body.querySelector("input[id='ssoticketid']").attributes['value']??'';
@@ -223,6 +252,7 @@ class Cumt{
     try {
       Response response;
       var queryParameters = {'pwd': password, 'salt': salt};
+      // 旧接口：https://service-0gxixtbh-1300058565.sh.apigw.tencentcs.com/release/password
       response = await Dio().get('https://service-0gxixtbh-1300058565.sh.apigw.tencentcs.com/release/password', queryParameters: queryParameters);
       if (response.statusCode == 200) {
         return response.data;

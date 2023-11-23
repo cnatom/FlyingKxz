@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flying_kxz/cumt/cumt.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/provider.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -145,7 +146,7 @@ class _BalancePageState extends State<BalancePage> {
     ));
   }
 
-  Row _buildDetailItem(
+  Widget _buildDetailItem(
       String title, String time, String change, String balance) {
     //修改余额改变的正负号 并添加色彩
     double changeInt = double.parse(change);
@@ -158,11 +159,12 @@ class _BalancePageState extends State<BalancePage> {
     }
     //19283->192.83
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
           height: fontSizeMain40 * 3,
           width: 5,
-          margin: EdgeInsets.fromLTRB(0, spaceCardPaddingTB*1.5, 0, 0),
+          margin: EdgeInsets.fromLTRB(0, spaceCardPaddingTB, 0, spaceCardPaddingTB),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
             color: colorItem,
@@ -177,6 +179,7 @@ class _BalancePageState extends State<BalancePage> {
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FlyText.title45(title),
                   SizedBox(
