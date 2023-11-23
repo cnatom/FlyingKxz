@@ -559,34 +559,10 @@ class _MyselfPageState extends State<MyselfPage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    "$title，" + name,
-                    style: TextStyle(
-                        color: themeProvider.colorNavText,
-                        fontWeight: FontWeight.bold,
-                        fontSize: ScreenUtil().setSp(60)),
-                  ),
-                  // Row(
-                  //   children: [
-                  //     Container(
-                  //       padding: EdgeInsets.fromLTRB(
-                  //           fontSizeMini38 / 2, 0, fontSizeMini38 / 2, 0),
-                  //       decoration: BoxDecoration(
-                  //           color: colorMain.withAlpha(200),
-                  //           borderRadius: BorderRadius.circular(2)),
-                  //       child: (Prefs.rank!=null&&int.parse(Prefs.rank)<=2000)?Row(
-                  //         children: [
-                  //           FlyText.mini30("内测会员",
-                  //               color: Colors.white,
-                  //               textAlign: TextAlign.center),
-                  //           FlyText.mini30(
-                  //               " No.${Prefs.rank}",
-                  //               color: Colors.white)
-                  //         ],
-                  //       ):Container(),
-                  //     ),
-                  //   ],
-                  // ),
+                  HeaderWelcomeText(title: title, name: Prefs.name??'', style: TextStyle(
+                      color: themeProvider.colorNavText,
+                      fontWeight: FontWeight.bold,
+                      fontSize: ScreenUtil().setSp(60)),),
                   SizedBox(
                     height: 5,
                   ),
@@ -607,6 +583,52 @@ class _MyselfPageState extends State<MyselfPage>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class HeaderWelcomeText extends StatefulWidget {
+  final String title;
+  final String name;
+  final TextStyle style;
+  HeaderWelcomeText({
+    Key key,this.title,@required this.name,this.style
+  }) : super(key: key);
+
+
+  @override
+  State<HeaderWelcomeText> createState() => _HeaderWelcomeTextState();
+}
+
+class _HeaderWelcomeTextState extends State<HeaderWelcomeText> {
+  String name;
+
+  @override
+  void initState() {
+    super.initState();
+    this.name = widget.name;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      refreshIfNone();
+    });
+  }
+
+  refreshIfNone()async{
+    if(this.name==''){
+      await Cumt.getInstance().loginDefault();
+      var res = await Cumt.getInstance().getNamePhone();
+      setState(() {
+        this.name = res['name'];
+      });
+      Prefs.name = this.name;
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "${widget.title}，" + name,
+      style: widget.style,
+    );
+  }
 }
 
 class FlyFlexibleButton extends StatefulWidget {
