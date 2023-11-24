@@ -253,7 +253,7 @@ class Cumt{
       Response response;
       var queryParameters = {'pwd': password, 'salt': salt};
       // 旧接口：https://service-0gxixtbh-1300058565.sh.apigw.tencentcs.com/release/password
-      response = await Dio().get('https://service-0gxixtbh-1300058565.sh.apigw.tencentcs.com/release/password', queryParameters: queryParameters);
+      response = await Dio().get('https://aes.atcumt.com/password', queryParameters: queryParameters);
       if (response.statusCode == 200) {
         return response.data;
       }

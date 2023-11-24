@@ -64,7 +64,11 @@ class CumtFormat{
                   title = temp3.querySelector('u[class="title showJxbtkjl"]').text;
                 }
                 location = temp3.querySelector('span[title="上课地点"]').parent.text;
-                teacher = temp3.querySelector('span[title="教师 "]').parent.text;
+                try{
+                  teacher = temp3.querySelector('span[title="教师 "]').parent.text;
+                }catch(e){
+                  teacher = temp3.querySelector('span[title="教师"]').parent.text;
+                }
                 credit = temp3.querySelector('span[title="学分"]').parent.text;
                 String lessonWeek = temp3.querySelector('span[title="节/周"]').parent.text;
                 duration = _getDuration(lessonWeek);
