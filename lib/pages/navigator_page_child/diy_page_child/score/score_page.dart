@@ -324,7 +324,7 @@ class _ScorePageState extends State<ScorePage>
       );
     }
 
-    Widget filterChip({Key,key}) {
+    Widget filterChip({Key key}) {
       return InkWell(
         key: key,
         onTap: () {
@@ -455,7 +455,7 @@ class _ScorePageState extends State<ScorePage>
     if (s == null) {
       return false;
     }
-    return double.parse(s, (e) => null) != null;
+    return double.parse(s) != null;
   }
 
   //成绩卡片

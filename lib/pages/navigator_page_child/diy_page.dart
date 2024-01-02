@@ -13,6 +13,7 @@ import 'diy_page_child/bus/bus_img_page.dart';
 import 'diy_page_child/bus/bus_page.dart';
 import 'diy_page_child/calendar/school_calendar_page.dart';
 import 'diy_page_child/exam/exam_page.dart';
+import 'diy_page_child/score/new/score_new_page.dart';
 import 'diy_page_child/score/score_page.dart';
 class DiyPage extends StatefulWidget {
   @override
@@ -58,6 +59,8 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
                           funcButton(imageResource: 'images/chengji.png',title: '成绩',color:colorFuncButton[5],subTitle: '自动计算、自由筛选',onTap: ()=>toScorePage(context)),
                           funcButton(imageResource: 'images/xiaoche.png',title: '校车',color:colorFuncButton[1],subTitle: '通勤班车时间表',onTap: ()=>toSchoolBusPage(context)),
                           funcButton(imageResource: 'images/xiaoli.png',title: '校历↗',color:colorFuncButton[2],subTitle: '本学年校历',onTap: ()=>toSchoolCalendarPage(context)),
+                          funcButton(imageResource: 'images/chengji.png',title: '新成绩',color:colorFuncButton[5],subTitle: '自动计算、自由筛选',onTap: ()=>toScoreNewPage(context)),
+
                         ],
                       )
                     ],
