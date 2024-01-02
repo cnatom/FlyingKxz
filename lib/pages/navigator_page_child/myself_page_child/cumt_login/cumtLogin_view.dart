@@ -144,9 +144,9 @@ class _CumtLoginViewState extends State<CumtLoginView> {
                 Icons.arrow_drop_down_outlined,
                 color: themeProvider.colorNavText,
               ),
-              onOpened: () {
-                FocusScope.of(context).unfocus();
-              },
+              // onOpened: () {
+              //   FocusScope.of(context).unfocus();
+              // },
               onSelected: (account) {
                 setState(() {
                   cumtLoginAccount = account.clone();
