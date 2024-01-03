@@ -17,7 +17,11 @@ class ScoreProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  scoreListFromJsonList(List<Map<String,dynamic>> list){
+  bool isNull(){
+    return _scoreList==null||_scoreList.isEmpty;
+  }
+
+  assignmentConversionAndCalculation(List<Map<String,dynamic>> list){
     scoreList = list.map((scoreJson) => ScoreItem.fromJson(scoreJson)).toList();
   }
 
@@ -35,7 +39,5 @@ class ScoreProvider extends ChangeNotifier {
     _jidianTotal = (xfjdSum / xfSum);
   }
 
-  bool isNull(){
-    return _scoreList==null||_scoreList.isEmpty;
-  }
+
 }

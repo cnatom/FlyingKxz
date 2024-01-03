@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/import_score_new_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/import_button.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_card.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/top_area.dart';
 import 'package:flying_kxz/ui/theme.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -37,7 +38,7 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
 
   // TODO: 记得补全
   void _showHelp() {
-    print("showHelp");
+
   }
 
   // TODO: 记得补全
@@ -45,7 +46,7 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
     List<Map<String,dynamic>> result = await Navigator.push(
         context, CupertinoPageRoute(builder: (context) => ImportScoreNewPage()));
     if (result == null || result.isEmpty) return;
-    scoreProvider.scoreListFromJsonList(result);
+    scoreProvider.assignmentConversionAndCalculation(result);
     Logger.log("Score", "提取,成功", {"info": SecurityUtil.base64Encode(result.toString())});
   }
 
@@ -63,35 +64,43 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
             _buildActionIconButton(Icons.help_outline,
                 onPressed: () => _showHelp())
           ]),
-          body: Column(
-            children: [
-              // 顶部区域
-              FlyContainer(
-                margin: EdgeInsets.fromLTRB(
-                    spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.circular(borderRadiusValue),
-                    boxShadow: [boxShadowMain]),
-                child: Column(
-                  children: [
-                    ScoreProfile(
-                      showFilter: false,
-                      jiaquan: "100.0",
-                      jidian: "5.00",
-                    ),
-                  ],
+          body: Padding(
+            padding: EdgeInsets.fromLTRB(
+              spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+            child: Column(
+              children: [
+                // 顶部区域
+                FlyContainer(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(borderRadiusValue),
+                      boxShadow: [boxShadowMain]),
+                  child: Column(
+                    children: [
+                      ScoreProfile(
+                        showFilter: false,
+                        jiaquan: "100.0",
+                        jidian: "5.00",
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              // 下面
-              Expanded(
-                child: Column(
-                  children: [
-                    ScoreImportButton(context: context, onTap: () => _import())
-                  ],
-                ),
-              )
-            ],
+                // 下面
+                Expanded(
+                  child: Wrap(
+                    runSpacing: spaceCardMarginTB,
+                    children: [
+                      Container(),
+                      ScoreCard(scoreItem: ScoreItem.stubNormal()),
+                      ScoreCard(scoreItem: ScoreItem.stubNormal()),
+                      ScoreCard(scoreItem: ScoreItem.stubSpecial()),
+
+                      ScoreImportButton(context: context, onTap: () => _import())
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },
@@ -100,26 +109,26 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
 
   // Widget scoreCard(ScoreItem scoreItem) {
   //   //卡片主题色
-  //   Color colorCard;
-  //   int zongpingInt;
-  //   if (isNumeric(zongping)) {
-  //     zongpingInt = int.parse(zongping);
-  //     if (zongpingInt >= 90) {
-  //       colorCard = Colors.deepOrangeAccent;
-  //     } else if (zongpingInt >= 80) {
-  //       colorCard = Colors.blue;
-  //     } else if (zongpingInt >= 60) {
-  //       colorCard = Colors.green;
-  //     } else {
-  //       colorCard = Colors.grey;
-  //     }
-  //   } else {
-  //     zongpingInt = 100;
-  //     colorCard = Colors.deepOrangeAccent;
-  //     zongping = zongping.substring(0);
-  //   }
+  //   // Color colorCard;
+  //   // int zongpingInt;
+  //   // if (isNumeric(zongping)) {
+  //   //   zongpingInt = int.parse(zongping);
+  //   //   if (zongpingInt >= 90) {
+  //   //     colorCard = Colors.deepOrangeAccent;
+  //   //   } else if (zongpingInt >= 80) {
+  //   //     colorCard = Colors.blue;
+  //   //   } else if (zongpingInt >= 60) {
+  //   //     colorCard = Colors.green;
+  //   //   } else {
+  //   //     colorCard = Colors.grey;
+  //   //   }
+  //   // } else {
+  //   //   zongpingInt = 100;
+  //   //   colorCard = Colors.deepOrangeAccent;
+  //   //   zongping = zongping.substring(0);
+  //   // }
   //   //圆形进度指示器
-  //   Widget progressIndicator({Color color = Colors.grey}) => Container(
+  //   Widget progressIndicator({@required dynamic value,Color color = Colors.grey}) => Container(
   //     child: Container(
   //       margin: EdgeInsets.fromLTRB(0, 0, spaceCardPaddingRL * 0.8, 0),
   //       child: CircularPercentIndicator(
@@ -127,9 +136,9 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
   //         lineWidth: 3.0,
   //         animation: false,
   //         animationDuration: 800,
-  //         percent: zongpingInt / 100.0,
-  //         center: FlyText.main40(scoreItem.zongping.toString(),
-  //             color: colorCard, fontWeight: FontWeight.bold),
+  //         percent: value / 100.0,
+  //         center: FlyText.main40(value.toString(),
+  //             color: color, fontWeight: FontWeight.bold),
   //         circularStrokeCap: CircularStrokeCap.round,
   //         progressColor: color,
   //         backgroundColor: Theme.of(context).disabledColor,
@@ -137,20 +146,20 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
   //     ),
   //   );
   //   //水平内容
-  //   Widget _rowContent(String title, String content) {
+  //   Widget _rowContent(String title, String content,Color color) {
   //     return Row(
   //       crossAxisAlignment: CrossAxisAlignment.end,
   //       children: <Widget>[
   //         FlyText.miniTip30(
   //           "$title：",
   //         ),
-  //         FlyText.main35(content, color: colorCard)
+  //         FlyText.main35(content, color: color)
   //       ],
   //     );
   //   }
   //
   //   //垂直内容
-  //   Widget _columnContent(String title, String content) {
+  //   Widget _columnContent(String title, String content,Color color) {
   //     return Column(
   //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
   //       crossAxisAlignment: CrossAxisAlignment.center,
@@ -161,7 +170,7 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
   //         ),
   //         Text(
   //           content,
-  //           style: TextStyle(fontSize: fontSizeMini38, color: colorCard),
+  //           style: TextStyle(fontSize: fontSizeMini38, color: color),
   //         )
   //       ],
   //     );
@@ -185,7 +194,7 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
   //           Row(
   //             crossAxisAlignment: CrossAxisAlignment.center,
   //             children: <Widget>[
-  //               progressIndicator(color: colorCard),
+  //               progressIndicator(value: 100.0,color: Colors.grey),
   //               //进度圈右侧信息区域
   //               Expanded(
   //                 flex: 3,
@@ -211,10 +220,10 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
   //                       mainAxisAlignment: MainAxisAlignment.start,
   //                       children: <Widget>[
   //                         Expanded(
-  //                           child: _rowContent('学分', xuefen),
+  //                           child: _rowContent('学分', scoreItem.xuefen.toString(),Colors.grey),
   //                         ),
   //                         Expanded(
-  //                           child: _rowContent('绩点', jidian),
+  //                           child: _rowContent('绩点', scoreItem.jidian.toString(),Colors.grey),
   //                         ),
   //                       ],
   //                     )
@@ -235,27 +244,27 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
   //                   height: fontSizeMini38 * 3,
   //                   child: CupertinoSwitch(
   //                       activeColor: themeProvider.colorMain.withAlpha(200),
-  //                       value: scoreFilter[curIndex],
+  //                       value: scoreItem.filtered,
   //                       onChanged: (v) {
-  //                         setState(() {
-  //                           if (isNumeric(zongping)) {
-  //                             scoreFilter[curIndex] = !scoreFilter[curIndex];
-  //                             _calcuTotalScore();
-  //                           } else {
-  //                             if (ScoreMap.data[zongping] == null) {
-  //                               showToast(
-  //                                   '特殊成绩"$zongping"的绩点和总评未定义\n请点击右上角小齿轮添加定义',
-  //                                   duration: 5);
-  //                             } else {
-  //                               scoreFilter[curIndex] = !scoreFilter[curIndex];
-  //                               _calcuTotalScore();
-  //                             }
-  //                           }
-  //                         });
+  //                         // setState(() {
+  //                         //   if (isNumeric(zongping)) {
+  //                         //     scoreFilter[curIndex] = !scoreFilter[curIndex];
+  //                         //     _calcuTotalScore();
+  //                         //   } else {
+  //                         //     if (ScoreMap.data[zongping] == null) {
+  //                         //       showToast(
+  //                         //           '特殊成绩"$zongping"的绩点和总评未定义\n请点击右上角小齿轮添加定义',
+  //                         //           duration: 5);
+  //                         //     } else {
+  //                         //       scoreFilter[curIndex] = !scoreFilter[curIndex];
+  //                         //       _calcuTotalScore();
+  //                         //     }
+  //                         //   }
+  //                         // });
   //                       }),
   //                 ),
   //                 duration: Duration(milliseconds: 200),
-  //                 crossFadeState: showFilter
+  //                 crossFadeState: scoreItem.filtered
   //                     ? CrossFadeState.showSecond
   //                     : CrossFadeState.showFirst,
   //               )
