@@ -5,7 +5,7 @@ class ScoreItem {
   double _jidian; // 绩点
   dynamic _zongping; // 总评
   String _type; // 考试类型
-  bool _filtered = false; // 是否不计入加权，ture为不计入
+  bool _includeWeighting = true; // 是否计入加权，ture为计入
 
   ScoreItem(
       {String courseName,
@@ -31,15 +31,14 @@ class ScoreItem {
     this._courseName = '课程名';
     this._xuefen = 3.0;
     this._jidian = 4.0;
-    this.zongping = "补考";
-    this._type = '考试类型';
-    this._filtered = true;
+    this.zongping = " 优秀";
+    this._type = '补考';
   }
 
   factory ScoreItem.fromJson(Map<String, dynamic> json)=>ScoreItem(
     courseName: json["courseName"],
-    xuefen: json["xuefen"],
-    jidian: json["jidian"],
+    xuefen: _stringToDouble(json["xuefen"]),
+    jidian: _stringToDouble(json["jidian"]),
     zongping: json["zongping"],
     type: json["type"],
   );
@@ -52,10 +51,13 @@ class ScoreItem {
     "type": type,
   };
 
+  static double _stringToDouble(dynamic value){
+    return double.tryParse(value.toString())??0.0;
+  }
+
   // MARK: Getter & Setter
 
   dynamic get zongping => _zongping;
-
   set zongping(dynamic value) {
     dynamic result = double.tryParse("$value");
     if(result == null){
@@ -66,20 +68,17 @@ class ScoreItem {
   }
 
 
-  bool get filtered => _filtered;
-
-  set filtered(bool value) {
-    _filtered = value;
+  bool get includeWeighting => _includeWeighting;
+  set includeWeighting(bool value) {
+    _includeWeighting = value;
   }
 
   String get type => _type;
 
-
   double get jidian => _jidian;
-
 
   double get xuefen => _xuefen;
 
-
   String get courseName => _courseName;
+
 }

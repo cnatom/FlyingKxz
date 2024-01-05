@@ -455,7 +455,7 @@ class _ScorePageState extends State<ScorePage>
     if (s == null) {
       return false;
     }
-    return double.parse(s) != null;
+    return double.tryParse(s) != null;
   }
 
   //成绩卡片

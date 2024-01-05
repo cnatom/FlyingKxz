@@ -1,13 +1,13 @@
-
 import 'dart:convert';
-
 import 'package:flying_kxz/Model/prefs.dart';
 
-class ScoreMap{
-  static Map<String,dynamic> data;
-  static Map<String,dynamic> _default;
-  static init(){
-    _default = {
+// ScoreNewMap.
+class ScoreNewMap{
+  // 单例
+  static ScoreNewMap _instance;
+  ScoreNewMap._internal() {
+    _instance = this;
+    _defaultData = {
       "免修":{"jidian":"5.0", "zongping":"100"},
       "优秀": {"jidian":"4.5", "zongping":"90"},
       "良好":{"jidian":"3.5", "zongping":"85"},
@@ -23,17 +23,29 @@ class ScoreMap{
     if(Prefs.scoreMap!=null){
       data = jsonDecode(Prefs.scoreMap);
     }else{
-      data = _default;
-      saveFromMap(data);
+      data = _defaultData;
+      _saveFromMap(data);
     }
   }
+  factory ScoreNewMap() => _instance ?? ScoreNewMap._internal();
 
-  static saveFromMap(Map<String,dynamic> data){
+  Map<String,dynamic> data;
+  Map<String,dynamic> _defaultData;
+
+  _saveFromMap(Map<String,dynamic> data){
     Prefs.scoreMap = jsonEncode(data);
   }
 
-  static refresh(){
-    data = _default;
-    saveFromMap(data);
+  getZonping(String key){
+    return data[key]["zongping"];
+  }
+
+  getJidian(String key){
+    return data[key]["jidian"];
+  }
+
+  refresh(){
+    data = _defaultData;
+    _saveFromMap(data);
   }
 }

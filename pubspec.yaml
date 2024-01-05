@@ -76,6 +76,7 @@ dependencies:
   flutter_intro: ^3.0.2 #引导页
   connectivity_plus: ^3.0.6 #检测wifi或者流量，用于校园网自动登录
   synchronized: ^3.0.0 # 加锁防止校园网自动登录多次执行
+  auto_size_text: ^3.0.0 # 自动调整字体大小
 
 dev_dependencies:
   flutter_test:
