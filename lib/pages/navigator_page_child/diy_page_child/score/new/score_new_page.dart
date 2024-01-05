@@ -44,7 +44,7 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
     List<Map<String, dynamic>> result = await Navigator.push(context,
         CupertinoPageRoute(builder: (context) => ImportScoreNewPage()));
     if (result == null || result.isEmpty) return;
-    scoreProvider.assignmentConversionAndCalculation(result);
+    scoreProvider.setAndCalScoreList(result);
     Logger.log("Score", "提取,成功",
         {"info": SecurityUtil.base64Encode(result.toString())});
   }
@@ -72,12 +72,12 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
                 // 下面
                 Expanded(
                   child: ListView.builder(
-                      itemCount: scoreProvider.scoreList.length,
+                      itemCount: scoreProvider.scoreListLength,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.fromLTRB(0, spaceCardPaddingTB, 0, 0),
                           child: ScoreCard(
-                            scoreItem: scoreProvider.scoreList[index],
+                            scoreItem: scoreProvider.getScoreItem(index),
                           ),
                         );
                       }),
