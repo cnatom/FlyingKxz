@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/ui/animated.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../ui/ui.dart';
-import '../model/score_provider.dart';
+import '../../../../../../../ui/ui.dart';
+import '../../model/score_provider.dart';
 
 typedef FilterCallback = bool Function(bool value);
 
 class ScoreProfile extends StatefulWidget {
-  final String jiaquan;
-  final String jidian;
+  final double jiaquan;
+  final double jidian;
 
   const ScoreProfile({Key key, this.jiaquan, this.jidian});
 
@@ -23,7 +24,7 @@ class _ScoreProfileState extends State<ScoreProfile> {
   ThemeProvider themeProvider;
   ScoreProvider scoreProvider;
 
-  clickFilterChip() => scoreProvider.toggleShowFilterView();
+  clickFilterChip() => scoreProvider.toggleShowConsole();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,8 @@ class _ScoreProfileState extends State<ScoreProfile> {
     scoreProvider = Provider.of<ScoreProvider>(context);
     return Container(
       padding: EdgeInsets.symmetric(
-          vertical: spaceCardPaddingTB*2, horizontal: spaceCardPaddingRL*1.5),
+          vertical: spaceCardPaddingTB * 2,
+          horizontal: spaceCardPaddingRL * 1.5),
       decoration: BoxDecoration(
         color: themeProvider.colorMain,
         borderRadius: BorderRadius.circular(borderRadiusValue),
@@ -39,49 +41,63 @@ class _ScoreProfileState extends State<ScoreProfile> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Expanded(child: buildRowContent("加权", widget.jiaquan ?? "00.00")),
-          Expanded(child: buildRowContent("绩点", widget.jidian ?? "00.00")),
+          Expanded(child: buildRowContent("加权", widget.jiaquan.toStringAsFixed(2)??'0.00',)),
+          Expanded(child: buildRowContent("绩点", widget.jidian.toStringAsFixed(2)??'0.00',)),
           Expanded(
               child: Container(
             alignment: Alignment.centerRight,
-            // ? Icons.keyboard_arrow_down
-            //     : Icons.keyboard_arrow_right,
-            child: InkWell(
-              child: Container(
-                padding: EdgeInsets.all(ScreenUtil().setSp(20)),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: Colors.white.withOpacity(0.3)
-                ),
-                child: Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Colors.white,
-                  size: 30,
-                ),
-              ),
-            ),
+            child: buildSwitchButton(),
           )),
         ],
       ),
     );
   }
 
+  Widget buildSwitchButton() => InkWell(
+    onTap: clickFilterChip,
+    child: FlyAnimatedCrossFade(
+      firstChild: buildButton(isClick: false),
+      secondChild: buildButton(isClick: true),
+      showSecond: scoreProvider.showConsole,
+    ),
+  );
+
+  Widget buildButton({bool isClick = false}){
+    Color backColor = isClick?Colors.white.withOpacity(0.9):Colors.white.withOpacity(0.2);
+    Color iconColor = isClick?themeProvider.colorMain:Colors.white;
+    IconData iconData = isClick?Icons.keyboard_arrow_up:Icons.keyboard_arrow_down;
+    return Container(
+      padding: EdgeInsets.all(ScreenUtil().setSp(20)),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          color: backColor),
+      child: Icon(
+        iconData,
+        color: iconColor,
+        size: 30,
+      ),
+    );
+  }
+
   Widget buildRowContent(String title, String content) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        FlyText.mini30(
-          "$title：",
-          color: Colors.white,
-        ),
-        Text(
-          content,
-          style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: ScreenUtil().setSp(90)),
-        )
-      ],
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          FlyText.mini30(
+            "$title：",
+            color: Colors.white,
+          ),
+          Text(
+            content,
+            key: Key(content),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: ScreenUtil().setSp(90)),
+          )
+        ],
+      ),
     );
   }
 

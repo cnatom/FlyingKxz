@@ -12,6 +12,7 @@ class ScoreContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlyContainer(
+      key: key,
       padding: padding,
       decoration: BoxDecoration(
           color: Theme.of(context).cardColor,

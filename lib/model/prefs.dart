@@ -39,7 +39,7 @@ class Prefs{
   static String _themeData = "themeData";
   static String _visitor = "visitor";//游客模式
   static String _timesMap = "timesMap";
-  static String _scoreMap = "scoreMap";//针对特殊成绩的处理
+  static String _scoreMap = "scoreMap2";//针对特殊成绩的处理
   static String _courseIcsUrl = "courseIcsUrl";//订阅日历url
   static String _courseIcsDate = "courseIcsDate";//订阅日历url
 

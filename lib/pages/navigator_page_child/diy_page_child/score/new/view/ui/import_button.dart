@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../ui/ui.dart';
+import '../../../../../../../ui/ui.dart';
 
 class ScoreImportButton extends StatelessWidget {
   ScoreImportButton({
@@ -37,7 +37,7 @@ class ScoreImportButton extends StatelessWidget {
 
   Widget buildContainer({Widget child}) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).padding.bottom,horizontal: spaceCardMarginRL*3),
+      margin: EdgeInsets.fromLTRB(spaceCardMarginRL*3, spaceCardMarginTB, spaceCardMarginRL*3, MediaQuery.of(context).padding.bottom),
       padding: EdgeInsets.symmetric(vertical: spaceCardPaddingTB*1.5),
       decoration: BoxDecoration(
           color: themeProvider.colorMain,

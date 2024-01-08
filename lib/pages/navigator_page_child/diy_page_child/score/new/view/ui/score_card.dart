@@ -1,18 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_container.dart';
+import 'package:flying_kxz/ui/animated.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../ui/ui.dart';
-import '../model/score_item.dart';
+import '../../../../../../../ui/ui.dart';
+import '../../model/score_item.dart';
+
+typedef void ScoreCardFilterChange(bool value);
 
 class ScoreCard extends StatefulWidget {
   final ScoreItem scoreItem;
   final bool showFilterView;
+  final ScoreCardFilterChange onFilterChange;
 
   const ScoreCard(
-      {Key key, @required this.scoreItem, this.showFilterView = true})
+      {Key key, @required this.scoreItem, this.showFilterView = true,this.onFilterChange})
       : super(key: key);
 
   @override
@@ -21,59 +26,51 @@ class ScoreCard extends StatefulWidget {
 
 class _ScoreCardState extends State<ScoreCard> {
   ThemeProvider themeProvider;
-  ScoreItem scoreItem;
   Color colorCard;
   double zongpingDouble = 0.0;
 
   @override
   void initState() {
     super.initState();
-    scoreItem = widget.scoreItem;
-    colorCard = getCardColor(scoreItem);
   }
 
   // 辅助函数，根据总评分数决定卡片颜色
-  Color getCardColor(ScoreItem scoreItem) {
-    if (scoreItem.zongping is num) {
-      double zongpingInt = double.parse(scoreItem.zongping.toString());
-      if (zongpingInt >= 90) {
-        return Colors.deepOrangeAccent;
-      } else if (zongpingInt >= 80) {
-        return Colors.blue;
-      } else if (zongpingInt >= 60) {
-        return Colors.green;
-      } else {
-        return Colors.grey;
-      }
+  Color getCardColor(double score) {
+    if (score >= 90) {
+      return Colors.deepOrangeAccent;
+    } else if (score >= 80) {
+      return Colors.blue;
+    } else if (score >= 60) {
+      return Colors.green;
     } else {
-      return Colors.deepOrangeAccent; // 默认颜色，如果无法解析成数字
+      return Colors.grey;
+    }
+  }
+
+  void setFilter(bool value) {
+    if(widget.onFilterChange!=null){
+      widget.onFilterChange(value);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
-    return Container(
+    colorCard = getCardColor(widget.scoreItem.zongpingDouble);
+    return ScoreContainer(
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB,
           spaceCardPaddingRL, spaceCardPaddingTB),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadiusValue),
-          color: Theme.of(context).cardColor,
-          boxShadow: [boxShadowMain]),
-      child: InkWell(
-        onTap: () {},
-        child: Row(
-          children: <Widget>[
-            progressIndicator(value: scoreItem.zongping, color: colorCard),
-            //进度圈右侧信息区域
-            Expanded(
-              flex: 3,
-              child: buildInfoArea(),
-            ),
-            //筛选切换
-            buildFilterView()
-          ],
-        ),
+      child: Row(
+        children: <Widget>[
+          progressIndicator(value: widget.scoreItem.zongping, color: colorCard),
+          //进度圈右侧信息区域
+          Expanded(
+            flex: 3,
+            child: buildInfoArea(),
+          ),
+          //筛选切换
+          buildFilterNewView()
+        ],
       ),
     );
   }
@@ -120,12 +117,9 @@ class _ScoreCardState extends State<ScoreCard> {
   Widget buildCourseName(String text) =>
       FlyText.main35(text, fontWeight: FontWeight.bold);
 
-  Widget buildFilterView() => AnimatedCrossFade(
-    alignment: Alignment.topCenter,
-    firstCurve: Curves.easeOutCubic,
-    secondCurve: Curves.easeOutCubic,
-    sizeCurve: Curves.easeOutCubic,
-    firstChild: Container(
+  Widget buildFilterNewView()=>FlyAnimatedCrossFade(
+    showSecond: widget.showFilterView,
+    firstChild: SizedBox(
       height: fontSizeMini38 * 3,
     ),
     secondChild: Container(
@@ -134,29 +128,8 @@ class _ScoreCardState extends State<ScoreCard> {
       child: CupertinoSwitch(
           activeColor: themeProvider.colorMain.withAlpha(200),
           value: widget.scoreItem.includeWeighting,
-          onChanged: (v) {
-
-            // setState(() {
-            //   if (isNumeric(zongping)) {
-            //     scoreFilter[curIndex] = !scoreFilter[curIndex];
-            //     _calcuTotalScore();
-            //   } else {
-            //     if (ScoreMap.data[zongping] == null) {
-            //       showToast(
-            //           '特殊成绩"$zongping"的绩点和总评未定义\n请点击右上角小齿轮添加定义',
-            //           duration: 5);
-            //     } else {
-            //       scoreFilter[curIndex] = !scoreFilter[curIndex];
-            //       _calcuTotalScore();
-            //     }
-            //   }
-            // });
-          }),
+          onChanged: setFilter),
     ),
-    duration: Duration(milliseconds: 200),
-    crossFadeState: widget.showFilterView
-        ? CrossFadeState.showSecond
-        : CrossFadeState.showFirst,
   );
 
   //圆形进度指示器

@@ -6,8 +6,6 @@ import '../../../../../../../ui/ui.dart';
 
 typedef ScoreChipTapCallback = void Function(bool value);
 
-
-
 class ScoreChip extends StatefulWidget {
   final String title;
   final bool clicked;
@@ -20,37 +18,29 @@ class ScoreChip extends StatefulWidget {
 
 class _ScoreChipState extends State<ScoreChip> {
   ThemeProvider themeProvider;
-  bool _isSelect;
 
-  onTap(){
-    setState(() {
-      _isSelect = !_isSelect;
-    });
-    widget.onTap(_isSelect);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _isSelect = widget.clicked;
-  }
+  onTap()=> widget.onTap(widget.clicked);
 
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
-    Color titleColor = _isSelect ? Colors.white : themeProvider.colorMain;
-    Color backgroundColor = _isSelect ? themeProvider.colorMain : themeProvider.colorMain.withOpacity(0.10);
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-            vertical: spaceCardPaddingTB, horizontal: spaceCardPaddingRL),
-        decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(100)),
-        child: FlyText.main40(
-          widget.title,
-          color: titleColor,
+    Color titleColor = widget.clicked ? Colors.white : themeProvider.colorMain;
+    Color backgroundColor = widget.clicked ? themeProvider.colorMain : themeProvider.colorMain.withOpacity(0.10);
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 100),
+      child: InkWell(
+        key: Key(widget.clicked.toString()),
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.symmetric(
+              vertical: spaceCardPaddingTB, horizontal: spaceCardPaddingRL),
+          decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(100)),
+          child: FlyText.main40(
+            widget.title,
+            color: titleColor,
+          ),
         ),
       ),
     );

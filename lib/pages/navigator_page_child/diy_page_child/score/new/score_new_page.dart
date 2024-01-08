@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/import_score_new_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/import_button.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_card.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_filter_console.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_help_dialog.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_profile.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/import_button.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_card.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_filter_console.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_help_dialog.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_profile.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_container.dart';
+import 'package:flying_kxz/ui/animated.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../ui/ui.dart';
@@ -33,12 +34,10 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
 
   // TODO: 记得补全
   void _toSetPage() {
-    print("toSetPage");
+
   }
 
   void showFilter() => scoreProvider.toggleShowFilterView();
-
-  void _showHelp() => FlyDialogDIYShow(context, content: ScoreHelpDialog());
 
   _import() async {
     List<Map<String, dynamic>> result = await Navigator.push(context,
@@ -61,28 +60,28 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
           body: Padding(
             padding:
                 EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-            child: Column(
+            child: Stack(
+              alignment: Alignment.bottomCenter,
               children: [
-                // 顶部区域
-                buildTopArea(context),
-                SizedBox(
-                  height: spaceCardPaddingTB,
+                Column(
+                  children: [
+                    // 顶部区域
+                    buildTopArea(context),
+                    SizedBox(
+                      height: spaceCardMarginTB,
+                    ),
+                    buildConsoleArea(context),
+                    Expanded(
+                      child: buildScoreListArea(),
+                    ),
+                  ],
                 ),
-                ScoreFilterConsole(),
-                // 下面
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: scoreProvider.scoreListLength,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.fromLTRB(0, spaceCardPaddingTB, 0, 0),
-                          child: ScoreCard(
-                            scoreItem: scoreProvider.getScoreItem(index),
-                          ),
-                        );
-                      }),
-                ),
-                ScoreImportButton(context: context, onTap: () => _import())
+                FlyAnimatedCrossFade(
+                  alignment: Alignment.bottomCenter,
+                  firstChild: ScoreImportButton(context: context, onTap: () => _import()),
+                  secondChild: Container(),
+                  showSecond: scoreProvider.showConsole,
+                )
               ],
             ),
           ),
@@ -91,17 +90,41 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
     );
   }
 
+  Widget buildScoreListArea() {
+    return ListView.builder(
+                    itemCount: scoreProvider.scoreListLength,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            0, 0, 0, spaceCardPaddingTB),
+                        child: ScoreCard(
+                          scoreItem: scoreProvider.getScoreItem(index),
+                          showFilterView: scoreProvider.showFilterView,
+                          onFilterChange: (value) {
+                            scoreProvider.toggleFilter(index);
+                          },
+                        ),
+                      );
+                    });
+  }
+
+  Widget buildConsoleArea(BuildContext context) => FlyAnimatedCrossFade(
+    showSecond: scoreProvider.showConsole,
+    firstChild: Container(),
+    secondChild: Padding(
+      padding: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginTB),
+      child: ScoreFilterConsole(),
+    ),
+  );
+
   Widget buildAppBar(BuildContext context) {
-    return FlyAppBar(context, '成绩（需内网或VPN）', actions: [
-      _buildActionIconButton(Icons.settings, onPressed: () => _toSetPage()),
-      _buildActionIconButton(Icons.help_outline, onPressed: () => _showHelp())
-    ]);
+    return FlyAppBar(context, '成绩（需内网或VPN）');
   }
 
   Widget buildTopArea(BuildContext context) => ScoreProfile(
-    jiaquan: scoreProvider.jiaquanTotal.toStringAsFixed(2),
-    jidian: scoreProvider.jidianTotal.toStringAsFixed(2),
-  );
+        jiaquan: scoreProvider.jiaquanTotal,
+        jidian: scoreProvider.jidianTotal,
+      );
 
   Widget _buildActionIconButton(IconData iconData,
       {Key key, VoidCallback onPressed}) {

@@ -1,3 +1,4 @@
+import 'score_new_map.dart';
 
 class ScoreItem {
   String _courseName; // 课程名
@@ -20,55 +21,58 @@ class ScoreItem {
     this._type = type;
   }
 
-  ScoreItem.stubNormal(){
-    this._courseName = '课程名';
-    this._xuefen = 2;
-    this._jidian = 4.0;
-    this.zongping = 80;
-    this._type = '正常考试';
-  }
-  ScoreItem.stubSpecial(){
-    this._courseName = '课程名';
-    this._xuefen = 3.0;
-    this._jidian = 4.0;
-    this.zongping = " 优秀";
-    this._type = '补考';
-  }
-
-  factory ScoreItem.fromJson(Map<String, dynamic> json)=>ScoreItem(
-    courseName: json["courseName"],
-    xuefen: _stringToDouble(json["xuefen"]),
-    jidian: _stringToDouble(json["jidian"]),
-    zongping: json["zongping"],
-    type: json["type"],
-  );
+  factory ScoreItem.fromJson(Map<String, dynamic> json) => ScoreItem(
+        courseName: json["courseName"],
+        xuefen: _stringToDouble(json["xuefen"]),
+        jidian: _stringToDouble(json["jidian"]),
+        zongping: json["zongping"],
+        type: json["type"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "courseName": courseName,
-    "xuefen": xuefen,
-    "jidian": jidian,
-    "zongping": zongping,
-    "type": type,
-  };
+        "courseName": courseName,
+        "xuefen": xuefen,
+        "jidian": jidian,
+        "zongping": zongping,
+        "type": type,
+      };
 
-  static double _stringToDouble(dynamic value){
-    return double.tryParse(value.toString())??0.0;
+  static double _stringToDouble(dynamic value) {
+    return double.tryParse(value.toString()) ?? 0.0;
   }
 
+
+  @override
+  int get hashCode {
+    return courseName.hashCode ^
+        xuefen.hashCode ^
+        jidian.hashCode ^
+        zongping.hashCode ^
+        type.hashCode;
+  }
   // MARK: Getter & Setter
 
   dynamic get zongping => _zongping;
+
   set zongping(dynamic value) {
     dynamic result = double.tryParse("$value");
-    if(result == null){
+    if (result == null) {
       _zongping = value;
-    }else{
+    } else {
       _zongping = result;
     }
   }
 
+  get zongpingDouble {
+    if (zongping is num) {
+      return zongping;
+    } else {
+      return ScoreNewMap().getZonping(zongping.toString());
+    }
+  }
 
   bool get includeWeighting => _includeWeighting;
+
   set includeWeighting(bool value) {
     _includeWeighting = value;
   }
@@ -80,5 +84,4 @@ class ScoreItem {
   double get xuefen => _xuefen;
 
   String get courseName => _courseName;
-
 }

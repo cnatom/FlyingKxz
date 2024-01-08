@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../../../../../../ui/text.dart';
+import '../../../../../../../ui/text.dart';
 
 
 class ScoreHelpDialog extends StatelessWidget {
