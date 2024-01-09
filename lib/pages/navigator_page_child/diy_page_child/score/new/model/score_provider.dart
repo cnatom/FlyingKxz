@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/model/score_model.dart';
-
 import '../utils/score_sort.dart';
 import 'score_item.dart';
 

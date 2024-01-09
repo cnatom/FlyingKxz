@@ -14,7 +14,7 @@ import 'diy_page_child/bus/bus_page.dart';
 import 'diy_page_child/calendar/school_calendar_page.dart';
 import 'diy_page_child/exam/exam_page.dart';
 import 'diy_page_child/score/new/score_new_page.dart';
-import 'diy_page_child/score/score_page.dart';
+import 'diy_page_child/score/old/score_page.dart';
 class DiyPage extends StatefulWidget {
   @override
   _DiyPageState createState() => _DiyPageState();

@@ -63,11 +63,11 @@ class ScoreItem {
     }
   }
 
-  get zongpingDouble {
+  double get zongpingDouble {
     if (zongping is num) {
       return zongping;
     } else {
-      return ScoreNewMap().getZonping(zongping.toString());
+      return ScoreNewMap.getZonping(zongping.toString());
     }
   }
 
@@ -79,7 +79,12 @@ class ScoreItem {
 
   String get type => _type;
 
-  double get jidian => _jidian;
+  double get jidian{
+    if(ScoreNewMap.data.containsKey(zongping.toString())){
+      return ScoreNewMap.data[zongping.toString()]['jidian'];
+    }
+    return _jidian;
+  }
 
   double get xuefen => _xuefen;
 

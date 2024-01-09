@@ -5,11 +5,10 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
 import 'package:flying_kxz/cumt/cumt_format.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_temp_list_view.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../tip_page.dart';
+import 'view/score_temp_list_new_view.dart';
 
 
 class ImportScoreNewPage extends StatefulWidget {
@@ -50,7 +49,7 @@ class _ImportScoreNewPageState extends State<ImportScoreNewPage> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10)),
       builder: (BuildContext context) {
-        return ScoreTempListView(list:result);
+        return ScoreTempListNewView(list:result);
       },
     );
     if(temp==null) return;

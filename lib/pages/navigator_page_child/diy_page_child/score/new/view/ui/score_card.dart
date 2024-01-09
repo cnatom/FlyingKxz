@@ -5,7 +5,6 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/v
 import 'package:flying_kxz/ui/animated.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../../../../ui/ui.dart';
 import '../../model/score_item.dart';
 

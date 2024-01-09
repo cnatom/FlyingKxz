@@ -1,26 +1,21 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+// ScorePrefs.scoreList = {"sss":"sss"}
+// ScorePrefs.scoreList
 class ScorePrefs{
-  // 单例
-  static ScorePrefs _instance;
 
-  ScorePrefs._internal(){
-    _init();
-  }
+  static SharedPreferences _prefs;
 
-  Future<void> _init() async => _prefs = await SharedPreferences.getInstance();
+  // 初始化，只能调用一次，且在使用前调用
+  static Future<void> init() async => _prefs = await SharedPreferences.getInstance();
 
-  factory ScorePrefs() => _instance ?? ScorePrefs._internal();
+  static final String _scoreListKey = 'newScoreList';
+  static final String _scoreMapKey = 'newScoreMap2';
 
-  SharedPreferences _prefs;
+  static String get scoreList => _prefs.getString(_scoreListKey);
+  static String get scoreMap => _prefs.getString(_scoreMapKey);
 
-  final String _scoreListKey = 'newScoreList';
-  final String _scoreMapKey = 'newScoreMap';
-
-  String get scoreList => _prefs.getString(_scoreListKey);
-  String get scoreMap => _prefs.getString(_scoreMapKey);
-
-  set scoreList(String value) =>_prefs.setString(_scoreListKey, value);
-  set scoreMap(String value) =>_prefs.setString(_scoreMapKey, value);
+  static set scoreList(String value) =>_prefs.setString(_scoreListKey, value);
+  static set scoreMap(String value) =>_prefs.setString(_scoreMapKey, value);
 
 }

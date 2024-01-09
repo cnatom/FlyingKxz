@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/cumt/cumt_format.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/model/score_new_map.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_map.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -20,11 +19,12 @@ class ScoreSetNewPage extends StatefulWidget {
 class _ScoreSetNewPageState extends State<ScoreSetNewPage> {
   ThemeProvider themeProvider;
   Map<String,dynamic> data;
+
+
   @override
   void initState() {
     super.initState();
-    ScoreNewMap scoreMap = ScoreNewMap();
-    data = scoreMap.data;
+    data = ScoreNewMap.data;
   }
 
   set(String key)async{
@@ -33,7 +33,7 @@ class _ScoreSetNewPageState extends State<ScoreSetNewPage> {
     setState(() {
       data = temp;
     });
-    ScoreMap.saveFromMap(data);
+    ScoreNewMap.saveFromMap(data);
   }
 
   add()async{
@@ -42,13 +42,13 @@ class _ScoreSetNewPageState extends State<ScoreSetNewPage> {
     setState(() {
       data = temp;
     });
-    ScoreMap.saveFromMap(data);
+    ScoreNewMap.saveFromMap(data);
   }
 
   refresh(){
-    ScoreMap.refresh();
+    ScoreNewMap.refresh();
     showToast('已恢复默认设置');
-    data = ScoreMap.data;
+    data = ScoreNewMap.data;
     setState(() {});
   }
   @override
@@ -116,8 +116,8 @@ class _ScoreSetViewState extends State<ScoreSetView> {
     String zongping = controller1.text;
     String jidian = controller2.text;
     if(check(zongping,100)&&check(jidian,5.0)){
-      data[widget.k]["zongping"] = zongping;
-      data[widget.k]["jidian"] = jidian;
+      data[widget.k]["zongping"] = double.parse(zongping);
+      data[widget.k]["jidian"] = double.parse(jidian);
       Navigator.of(context).pop(data);
     }
   }

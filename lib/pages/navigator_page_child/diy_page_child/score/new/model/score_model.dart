@@ -1,5 +1,4 @@
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/utils/score_sort.dart';
-
 import 'score_item.dart';
 
 class ScoreModel{

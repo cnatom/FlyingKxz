@@ -5,13 +5,13 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
 import 'package:flying_kxz/cumt/cumt_format.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_temp_list_view.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/old/score_temp_list_view.dart';
+import 'package:flying_kxz/pages/tip_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../ui/sheet.dart';
-import '../../../tip_page.dart';
 import 'import_help_page.dart';
+
 
 class ImportScorePage extends StatefulWidget {
   @override

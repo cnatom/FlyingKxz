@@ -4,9 +4,8 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/ui/animated.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../../../../ui/ui.dart';
-import '../../model/score_provider.dart';
+import '../../../../../../ui/ui.dart';
+import '../model/score_provider.dart';
 
 typedef FilterCallback = bool Function(bool value);
 

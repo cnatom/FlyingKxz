@@ -7,8 +7,8 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/v
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_container.dart';
 import 'package:flying_kxz/ui/animated.dart';
 import 'package:provider/provider.dart';
-import '../../../../../../../ui/ui.dart';
-import 'score_help_dialog.dart';
+import '../../../../../../ui/ui.dart';
+import 'ui/score_help_dialog.dart';
 
 
 

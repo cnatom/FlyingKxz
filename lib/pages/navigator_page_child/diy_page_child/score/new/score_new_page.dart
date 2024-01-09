@@ -1,19 +1,18 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/import_score_new_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/import_button.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_card.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_filter_console.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_help_dialog.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_profile.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_container.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_filter_console.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_profile.dart';
 import 'package:flying_kxz/ui/animated.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../../ui/ui.dart';
 import '../../../../../util/logger/log.dart';
 import '../../../../../util/security/security.dart';
 import 'model/score_provider.dart';
+import 'utils/score_prefs.dart';
 
 void toScoreNewPage(BuildContext context) {
   Navigator.of(context)
@@ -30,20 +29,40 @@ class ScoreNewPage extends StatefulWidget {
 class _ScoreNewPageState extends State<ScoreNewPage> {
   ThemeProvider themeProvider;
   ScoreProvider scoreProvider;
-  final GlobalKey topSizeKey = GlobalKey();
-
-  // TODO: 记得补全
-  void _toSetPage() {
-
-  }
 
   void showFilter() => scoreProvider.toggleShowFilterView();
 
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      await ScorePrefs.init();
+      _initScoreFromLocal();
+    });
+  }
+
+  // 存储数据到本地
+  _saveScoreToLocal(List<Map<String,dynamic>> list){
+    ScorePrefs.scoreList = jsonEncode(list);
+  }
+
+  // 从本地初始化数据
+  _initScoreFromLocal(){
+    String scoreList = ScorePrefs.scoreList;
+    if(scoreList == null) return;
+    List<dynamic> list = jsonDecode(scoreList);
+    list = list.map((e) => e as Map<String,dynamic>).toList();
+    scoreProvider.setAndCalScoreList(list);
+  }
+
+  // 导入成绩
   _import() async {
     List<Map<String, dynamic>> result = await Navigator.push(context,
         CupertinoPageRoute(builder: (context) => ImportScoreNewPage()));
     if (result == null || result.isEmpty) return;
     scoreProvider.setAndCalScoreList(result);
+    _saveScoreToLocal(result);
     Logger.log("Score", "提取,成功",
         {"info": SecurityUtil.base64Encode(result.toString())});
   }
