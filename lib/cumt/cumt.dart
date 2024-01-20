@@ -189,10 +189,13 @@ class Cumt{
   }
 
   // 检查是否连接到内网
-  static Future<bool> checkConnect({bool showToasts = true})async{
+  static Future<bool> checkConnect({bool showToasts = true,int timeout = 4})async{
     try{
-      showToasts?showToast('正在检测内网环境……',duration: 4):null;
-      var res = await Dio(BaseOptions(connectTimeout: 4000,receiveTimeout: 4000,sendTimeout: 4000)).get('http://jwxt.cumt.edu.cn/jwglxt');
+      showToasts?showToast('正在检测内网环境……',duration: timeout):null;
+      var res = await Dio(BaseOptions(
+          connectTimeout: timeout * 1000,
+          receiveTimeout: timeout * 1000,
+          sendTimeout: timeout * 1000)).get('http://jwxt.cumt.edu.cn/jwglxt/xtgl/login_slogin.html');
       if(res!=null){
         showToasts?showToast('已连接内网！'):null;
       }
