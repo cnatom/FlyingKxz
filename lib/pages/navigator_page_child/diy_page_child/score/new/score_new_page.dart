@@ -108,23 +108,30 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
       },
     );
   }
-
   Widget buildScoreListArea() {
     return ListView.builder(
-                    itemCount: scoreProvider.scoreListLength,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.fromLTRB(
-                            0, 0, 0, spaceCardPaddingTB),
-                        child: ScoreCard(
-                          scoreItem: scoreProvider.getScoreItem(index),
-                          showFilterView: scoreProvider.showFilterView,
-                          onFilterChange: (value) {
-                            scoreProvider.toggleFilter(index);
-                          },
-                        ),
-                      );
-                    });
+      itemCount: scoreProvider.scoreListLength,
+      itemBuilder: (context, index) {
+        Widget cardWidget = ScoreCard(
+          scoreItem: scoreProvider.getScoreItem(index),
+          showFilterView: scoreProvider.showFilterView,
+          onFilterChange: (value) {
+            scoreProvider.toggleFilter(index);
+          },
+        );
+        return buildPaddedChild(cardWidget, index);
+      },
+    );
+  }
+
+  Widget buildPaddedChild(Widget child, int index) {
+    double bottomPadding = (index == scoreProvider.scoreListLength - 1)
+        ? spaceCardPaddingTB + 200
+        : spaceCardPaddingTB;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 0, 0, bottomPadding),
+      child: child,
+    );
   }
 
   Widget buildConsoleArea(BuildContext context) => FlyAnimatedCrossFade(
