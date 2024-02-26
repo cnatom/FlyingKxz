@@ -36,15 +36,11 @@ class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
       children: [
         Container(),
         buildFilterArea(),
-        buildChooseAllArea(),
+        buildSwitchArea(),
         buildButtonArea()
       ],
     );
   }
-
-  Widget buildSearchBarArea()=>ScoreSearchBar(onChanged: (value){
-    scoreProvider.search(value);
-  },);
 
   Widget buildButtonArea() => Row(
     children: [
@@ -62,9 +58,10 @@ class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
     ],
   );
 
-  Widget buildChooseAllArea() => buildConsole(
+  Widget buildSwitchArea() => buildConsole(
       children: [
-        buildConsoleRow(title: "筛选",children: [
+        // 筛选
+        buildConsoleRow(title: "加权筛选",children: [
           CupertinoSwitch(
             value: scoreProvider.showFilterView,
             onChanged: (value) {
@@ -78,7 +75,7 @@ class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
           firstChild: Container(),
           secondChild: Column(
             children: [
-              Divider(),
+              Divider(color: Colors.transparent,),
               buildConsoleRow(title: "全选",children: [
                 CupertinoSwitch(
                   value: scoreProvider.chooseAll,
@@ -90,7 +87,17 @@ class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
               ])
             ],
           )
-        )
+        ),
+        Divider(),
+        buildConsoleRow(title: "加权倍率",children: [
+          CupertinoSwitch(
+            value: scoreProvider.showRateView,
+            onChanged: (value) {
+              scoreProvider.toggleShowRateView(value);
+            },
+            activeColor: themeProvider.colorMain,
+          )
+        ]),
       ]
   );
 

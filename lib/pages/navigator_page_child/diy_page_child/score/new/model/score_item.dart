@@ -7,6 +7,7 @@ class ScoreItem {
   dynamic _zongping; // 总评
   String _type; // 考试类型
   bool _includeWeighting = true; // 是否计入加权，ture为计入
+  double _rate = 1.0; // 加权倍率
 
   ScoreItem(
       {String courseName,
@@ -75,6 +76,12 @@ class ScoreItem {
 
   set includeWeighting(bool value) {
     _includeWeighting = value;
+  }
+
+  double get rate => _rate;
+
+  set rate(double value) {
+    _rate = value;
   }
 
   String get type => _type;

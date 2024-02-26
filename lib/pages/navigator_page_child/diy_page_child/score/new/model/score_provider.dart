@@ -13,8 +13,6 @@ class ScoreProvider extends ChangeNotifier {
 
   int get scoreListLength => _scoreModel.scoreListLength;
 
-  bool get showFilterView => _showFilterView;
-
   ScoreItem getScoreItem(int index) => _scoreModel.scoreList[index];
 
   setAndCalScoreList(List<Map<String, dynamic>> list) {
@@ -77,6 +75,8 @@ class ScoreProvider extends ChangeNotifier {
   // 显示筛选视图
   bool _showFilterView = false;
 
+  bool get showFilterView => _showFilterView;
+
   toggleShowFilterView({bool value}){
     if(value != null){
       _showFilterView = value;
@@ -86,7 +86,7 @@ class ScoreProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // 筛选
+  // 筛选调整
   bool _chooseAll = true;
 
   bool get chooseAll => _chooseAll;
@@ -102,4 +102,21 @@ class ScoreProvider extends ChangeNotifier {
     _chooseAll = value;
     notifyListeners();
   }
+
+  // 加权倍率显示
+  bool _showRateView = false;
+
+  bool get showRateView => _showRateView;
+
+  toggleShowRateView(bool value){
+    _showRateView = value;
+    notifyListeners();
+  }
+
+  // 加权倍率调整
+  setRate(int index, double rate){
+    _scoreModel.setRate(index,rate);
+    notifyListeners();
+  }
+
 }

@@ -25,7 +25,7 @@ class _ScoreChipState extends State<ScoreChip> {
     Color titleColor = widget.clicked ? Colors.white : themeProvider.colorMain;
     Color backgroundColor = widget.clicked ? themeProvider.colorMain : themeProvider.colorMain.withOpacity(0.10);
     return AnimatedSwitcher(
-      duration: Duration(milliseconds: 100),
+      duration: Duration(milliseconds: 200),
       child: InkWell(
         key: Key(widget.clicked.toString()),
         onTap: onTap,

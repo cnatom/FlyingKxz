@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/import_score_new_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/import_button.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_card.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_card/score_card.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_filter_console.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_profile.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/search_bar.dart';
@@ -95,7 +95,9 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
                             controller: scoreProvider.scrollController,
                             child: Column(
                               children: [
-                                ScoreSearchBar(),
+                                ScoreSearchBar(onChanged: (value){
+                                  scoreProvider.search(value);
+                                }),
                                 buildConsoleArea(context),
                                 buildScoreList(),
                               ],
@@ -133,6 +135,10 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
             onFilterChange: (value) {
               scoreProvider.toggleFilter(index);
             },
+            showRateView: scoreProvider.showRateView,
+            onRateChange: (rate) {
+              scoreProvider.setRate(index, rate);
+            }
           );
           return buildPaddedChild(cardWidget, index);
         }else{
@@ -170,15 +176,4 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
         jiaquan: scoreProvider.jiaquanTotal,
         jidian: scoreProvider.jidianTotal,
       );
-
-  Widget _buildActionIconButton(IconData iconData,
-      {Key key, VoidCallback onPressed}) {
-    return IconButton(
-        key: key,
-        icon: Icon(
-          iconData,
-          color: Theme.of(context).primaryColor,
-        ),
-        onPressed: onPressed);
-  }
 }

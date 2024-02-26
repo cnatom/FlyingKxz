@@ -1,22 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_card/score_rate.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_container.dart';
 import 'package:flying_kxz/ui/animated.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import '../../../../../../../ui/ui.dart';
-import '../../model/score_item.dart';
+import '../../../../../../../../ui/ui.dart';
+import '../../../model/score_item.dart';
 
 typedef void ScoreCardFilterChange(bool value);
+typedef void ScoreCardRateChange(double rate);
 
 class ScoreCard extends StatefulWidget {
   final ScoreItem scoreItem;
   final bool showFilterView;
   final ScoreCardFilterChange onFilterChange;
+  final bool showRateView;
+  final ScoreCardRateChange onRateChange;
 
   const ScoreCard(
-      {Key key, @required this.scoreItem, this.showFilterView = true,this.onFilterChange})
+      {Key key, @required this.scoreItem, this.showFilterView = false,this.showRateView = false,this.onRateChange,this.onFilterChange})
       : super(key: key);
 
   @override
@@ -52,6 +56,12 @@ class _ScoreCardState extends State<ScoreCard> {
     }
   }
 
+  void setRate(double rate){
+    if(widget.onRateChange!=null){
+      widget.onRateChange(rate);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
@@ -59,16 +69,32 @@ class _ScoreCardState extends State<ScoreCard> {
     return ScoreContainer(
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB,
           spaceCardPaddingRL, spaceCardPaddingTB),
-      child: Row(
-        children: <Widget>[
-          progressIndicator(value: widget.scoreItem.zongping, color: colorCard),
-          //进度圈右侧信息区域
-          Expanded(
-            flex: 3,
-            child: buildInfoArea(),
+      child: Column(
+        children: [
+          Row(
+            children: <Widget>[
+              progressIndicator(value: widget.scoreItem.zongping, color: colorCard),
+              //进度圈右侧信息区域
+              Expanded(
+                flex: 3,
+                child: buildInfoArea(),
+              ),
+              //筛选切换
+              buildFilterNewView()
+            ],
           ),
-          //筛选切换
-          buildFilterNewView()
+          FlyAnimatedCrossFade(
+            showSecond: widget.showRateView,
+            firstChild: Container(),
+            secondChild: Column(
+              children: [
+                Divider(),
+                ScoreRateView(
+                  onRateChange: setRate,
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -93,7 +119,7 @@ class _ScoreCardState extends State<ScoreCard> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              child: buildXuefen(widget.scoreItem.xuefen.toString()),
+              child: buildXuefen('${(widget.scoreItem.xuefen * widget.scoreItem.rate).toStringAsFixed(1)}')
             ),
             Expanded(
               child: buildJidian(widget.scoreItem.jidian.toString()),

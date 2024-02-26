@@ -27,15 +27,23 @@ class ScoreModel{
     _scoreSort.sort(_scoreList);
   }
 
+  // 单个筛选
   toggleFilter(int index){
     _scoreList[index].includeWeighting = !_scoreList[index].includeWeighting;
     _calculate(_scoreList);
   }
 
+  // 全选筛选
   toggleAllFilter(bool value){
     for (var item in _scoreList) {
       item.includeWeighting = value;
     }
+    _calculate(_scoreList);
+  }
+
+  // 设置加权倍率
+  setRate(int index,double rate){
+    _scoreList[index].rate = rate;
     _calculate(_scoreList);
   }
 
@@ -56,9 +64,9 @@ class ScoreModel{
     double xfSum = 0; //学分的和
     for (var item in list) {
       if (!item.includeWeighting) continue;
-      xfjdSum += item.zongpingDouble * item.xuefen;
-      xfcjSum += item.jidian * item.xuefen;
-      xfSum += item.xuefen;
+      xfjdSum += item.zongpingDouble * item.xuefen * item.rate;
+      xfcjSum += item.jidian * item.xuefen * item.rate;
+      xfSum += item.xuefen * item.rate;
     }
     _jiaquanTotal = (xfcjSum / xfSum);
     _jidianTotal = (xfjdSum / xfSum);
