@@ -17,9 +17,9 @@ class _FlyAnimatedCrossFadeState extends State<FlyAnimatedCrossFade> {
   Widget build(BuildContext context) {
     return  AnimatedCrossFade(
       alignment: widget.alignment,
-      firstCurve: Curves.easeOutCubic,
-      secondCurve: Curves.easeOutCubic,
-      sizeCurve: Curves.easeOutCubic,
+      firstCurve: Curves.easeInOut,
+      secondCurve: Curves.easeInOut,
+      sizeCurve: Curves.easeInOut,
       firstChild: widget.firstChild,
       secondChild: widget.secondChild,
       duration: widget.duration??Duration(milliseconds: 300),

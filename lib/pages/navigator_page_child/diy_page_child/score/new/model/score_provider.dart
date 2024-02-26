@@ -20,6 +20,16 @@ class ScoreProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // 导入时间
+  String _importTime;
+
+  String get importTime => _importTime;
+
+  set importTime(String value) {
+    _importTime = value;
+    notifyListeners();
+  }
+
   // 搜索
   String _searchResult = '';
 

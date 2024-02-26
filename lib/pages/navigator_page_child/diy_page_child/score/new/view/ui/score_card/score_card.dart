@@ -108,7 +108,7 @@ class _ScoreCardState extends State<ScoreCard> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            buildCourseName(widget.scoreItem.courseName),
+            Expanded(child: buildCourseName(widget.scoreItem.courseName)),
             buildExamType(widget.scoreItem.type)
           ],
         ),
@@ -140,7 +140,7 @@ class _ScoreCardState extends State<ScoreCard> {
       );
 
   Widget buildCourseName(String text) =>
-      FlyText.main35(text, fontWeight: FontWeight.bold);
+      FlyText.main35(text, fontWeight: FontWeight.bold,maxLine: 2,);
 
   Widget buildFilterNewView()=>FlyAnimatedCrossFade(
     showSecond: widget.showFilterView,

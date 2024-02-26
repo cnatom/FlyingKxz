@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/import_score_new_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/utils/score_sort.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/import_button.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_card/score_card.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_filter_console.dart';
@@ -47,13 +48,24 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
     ScorePrefs.scoreList = jsonEncode(list);
   }
 
+  // 存储导入时间
+  _saveImportTime(){
+    ScorePrefs.scoreImportTime = DateTime.now().toString().substring(0, 16);
+    scoreProvider.importTime = ScorePrefs.scoreImportTime;
+  }
+
   // 从本地初始化数据
   _initScoreFromLocal(){
+    // 初始化成绩数据
     String scoreList = ScorePrefs.scoreList;
     if(scoreList == null) return;
     List<dynamic> list = jsonDecode(scoreList);
     list = list.map((e) => e as Map<String,dynamic>).toList();
     scoreProvider.setAndCalScoreList(list);
+    // 初始化导入时间
+    if(ScorePrefs.scoreImportTime != null){
+      scoreProvider.importTime = ScorePrefs.scoreImportTime;
+    }
   }
 
   // 导入成绩
@@ -62,7 +74,12 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
         CupertinoPageRoute(builder: (context) => ImportScoreNewPage()));
     if (result == null || result.isEmpty) return;
     scoreProvider.setAndCalScoreList(result);
-    _saveScoreToLocal(result);
+    Future.delayed(Duration(milliseconds: 500), () {
+      scoreProvider.toggleShowConsole();
+    });
+    showToast("🎉导入成功！");
+    _saveScoreToLocal(result); // 存储成绩数据到本地
+    _saveImportTime(); // 存储导入时间到本地
     Logger.log("Score", "提取,成功",
         {"info": SecurityUtil.base64Encode(result.toString())});
   }
@@ -99,6 +116,7 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
                                   scoreProvider.search(value);
                                 }),
                                 buildConsoleArea(context),
+                                buildImportTime(),
                                 buildScoreList(),
                               ],
                             ),
@@ -120,6 +138,15 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
         );
       },
     );
+  }
+
+  Widget buildImportTime(){
+    return scoreProvider.importTime == null
+        ? Container()
+        : Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginTB),
+            child: FlyText.miniTip30("导入时间：" + scoreProvider.importTime),
+          );
   }
 
   Widget buildScoreList(){
