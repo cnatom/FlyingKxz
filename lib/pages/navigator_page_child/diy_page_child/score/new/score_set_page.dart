@@ -2,47 +2,54 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/cumt/cumt_format.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_map.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/model/score_new_map.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
-class ScoreSetPage extends StatefulWidget {
-  @override
-  _ScoreSetPageState createState() => _ScoreSetPageState();
+toScoreSetNewPage(BuildContext context) {
+  Navigator.of(context)
+      .push(CupertinoPageRoute(builder: (context) => ScoreSetNewPage()));
 }
 
-class _ScoreSetPageState extends State<ScoreSetPage> {
+class ScoreSetNewPage extends StatefulWidget {
+  @override
+  _ScoreSetNewPageState createState() => _ScoreSetNewPageState();
+}
+
+class _ScoreSetNewPageState extends State<ScoreSetNewPage> {
   ThemeProvider themeProvider;
   Map<String,dynamic> data;
+
+
   @override
   void initState() {
     super.initState();
-    ScoreMap.init();
-    data = ScoreMap.data;
+    data = ScoreNewMap.data;
   }
+
   set(String key)async{
     var temp = await FlyDialogDIYShow(context,content: ScoreSetView(k: key,data: data,));
     if(temp==null) return;
     setState(() {
       data = temp;
     });
-    ScoreMap.saveFromMap(data);
+    ScoreNewMap.saveFromMap(data);
   }
+
   add()async{
     var temp = await FlyDialogDIYShow(context,content: ScoreSetView(data: data,));
     if(temp==null) return;
     setState(() {
       data = temp;
     });
-    ScoreMap.saveFromMap(data);
+    ScoreNewMap.saveFromMap(data);
   }
-  refresh(){
-    ScoreMap.refresh();
-    showToast('已恢复默认设置');
-    data = ScoreMap.data;
-    setState(() {
 
-    });
+  refresh(){
+    ScoreNewMap.refresh();
+    showToast('已恢复默认设置');
+    data = ScoreNewMap.data;
+    setState(() {});
   }
   @override
   Widget build(BuildContext context) {
@@ -65,9 +72,9 @@ class _ScoreSetPageState extends State<ScoreSetPage> {
                     Expanded(
                       child: FlyText.title45(key),),
                     Expanded(
-                      child: _buildRow("总评", data[key]['zongping']),),
+                      child: _buildRow("总评", data[key]['zongping'].toString()),),
                     Expanded(
-                      child: _buildRow("绩点", data[key]['jidian']),),
+                      child: _buildRow("绩点", data[key]['jidian'].toString()),),
                     IconButton(icon: Icon(Icons.edit,color: themeProvider.colorMain,), onPressed: ()=>set(key),)
                   ],
                 ),
@@ -109,8 +116,8 @@ class _ScoreSetViewState extends State<ScoreSetView> {
     String zongping = controller1.text;
     String jidian = controller2.text;
     if(check(zongping,100)&&check(jidian,5.0)){
-      data[widget.k]["zongping"] = zongping;
-      data[widget.k]["jidian"] = jidian;
+      data[widget.k]["zongping"] = double.parse(zongping);
+      data[widget.k]["jidian"] = double.parse(jidian);
       Navigator.of(context).pop(data);
     }
   }

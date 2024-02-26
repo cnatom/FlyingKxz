@@ -58,17 +58,24 @@ class CumtFormat{
             temp2 = temp1.children;
             try{
               for(var temp3 in temp2){
-                title = temp3.querySelector(".title").text;
-                location = temp3.querySelector('span[title="上课地点"]').nextElementSibling.text;
-                teacher = temp3.querySelector('span[title="教师"]').nextElementSibling.text;
-                credit = temp3.querySelector('span[title="学分"]').nextElementSibling.text;
-                String lessonWeek = temp3.querySelector('span[title="节/周"]').nextElementSibling.text;
+                try{
+                  title = temp3.querySelector('span[class="title"]').text;
+                }catch(e){
+                  title = temp3.querySelector('u[class="title showJxbtkjl"]').text;
+                }
+                location = temp3.querySelector('span[title="上课地点"]').parent.text;
+                try{
+                  teacher = temp3.querySelector('span[title="教师 "]').parent.text;
+                }catch(e){
+                  teacher = temp3.querySelector('span[title="教师"]').parent.text;
+                }
+                credit = temp3.querySelector('span[title="学分"]').parent.text;
+                String lessonWeek = temp3.querySelector('span[title="节/周"]').parent.text;
                 duration = _getDuration(lessonWeek);
                 lesson = _getLesson(lessonWeek);
                 weekList = _getWeekList(lessonWeek);
                 weekNum = c;
                 for(int i = 0;i<duration.length;i++){
-
                   durationNum = duration[i];
                   lessonNum = lesson[i];
                   if(duration.length>1){
@@ -148,6 +155,16 @@ class CumtFormat{
         }
       }
 
+      int calcIncreaseWeek(int lessonNu, int weekNu) {
+        int increaseWeekNu = 0;
+        for (int i = 1; i <= weekNu; i++) {
+          if (lessonWeekMatrix[lessonNu][i] != lessonNu && lessonWeekMatrix[lessonNu][i] != 0) {
+            increaseWeekNu += 1;
+          }
+        }
+        return increaseWeekNu;
+      }
+
       lessonNum = 1;
       for (var tableLine in tableLineList){
         if(tableLine.text == '\n'){
@@ -178,24 +195,27 @@ class CumtFormat{
                   location = null;
                 }
                 // 判断是否跨行
-                if (canAdd(lessonNum, weekNum)) {
-                  fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNum, lessonNum);
-                } else {
-                  for (var weekNumTemp = weekNum + 1; weekNumTemp <= 7; weekNumTemp++) {
-                    if (canAdd(lessonNum, weekNumTemp)) {
-                      fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNumTemp, lessonNum);
-                      weekNum = weekNumTemp;
-                      break;
-                    }
-                  }
-                }
+                int newWeekNum = weekNum;
+                newWeekNum += calcIncreaseWeek(lessonNum, weekNum);
+                fillMatrix(lessonNum, lessonNum + durationNum - 1, newWeekNum, lessonNum);
+                // if (canAdd(lessonNum, weekNum)) {
+                //   fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNum, lessonNum);
+                // } else {
+                //   for (var weekNumTemp = weekNum + 1; weekNumTemp <= 7; weekNumTemp++) {
+                //     if (canAdd(lessonNum, weekNumTemp)) {
+                //       fillMatrix(lessonNum, lessonNum + durationNum - 1, weekNumTemp, lessonNum);
+                //       weekNum = weekNumTemp;
+                //       break;
+                //     }
+                //   }
+                // }
                 result.add({
                   "title":title,
                   "location":location,
                   "teacher":teacher,
                   "durationNum":durationNum,
                   "weekList":weekList,
-                  "weekNum":weekNum,
+                  "weekNum":newWeekNum,
                   "lessonNum":lessonNum,
                 });
               }

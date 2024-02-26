@@ -1,4 +1,5 @@
 //一般字体
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 
@@ -39,37 +40,37 @@ void initSize(){
 
 class FlyText extends StatelessWidget {
   FlyText.title50(
-    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
+    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
   ) : fontSize = fontSizeTitle50;
   FlyText.title45(
-    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
+    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
   ) : fontSize = fontSizeTitle45;
   FlyText.main40(
-    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
+    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
   ) : fontSize = fontSizeMain40;
   FlyText.mainTip40(
-      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration}
+      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
       ) : fontSize = fontSizeMain40,color = Color(0xff8d8d93);
   FlyText.main35(
-    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
+    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
   ) : fontSize = fontSizeMini38;
   FlyText.mainTip35(
-      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration}
+      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
       ) : fontSize = fontSizeMini38,color = Color(0xff8d8d93);
   FlyText.mini30(
-      this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
+      this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
   ) : fontSize = fontSizeTip33;
   FlyText.miniTip30(
-      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration}
+      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
       ) : fontSize = fontSizeTip33,color = Color(0xff8d8d93);
   FlyText.mini25(
-    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
+    this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
   ) : fontSize = fontSizeTipMini25;
   FlyText.mini20(
-      this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration}
+      this.text,{this.letterSpacing,this.fontWeight,this.color,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
       ) : fontSize = fontSizeTipMini20;
   FlyText.miniTip25(
-      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration}
+      this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
       ) : fontSize = fontSizeTipMini25,color = Color(0xff8d8d93);
   final TextAlign textAlign;
   final String text;
@@ -79,19 +80,32 @@ class FlyText extends StatelessWidget {
   final int letterSpacing;
   final FontWeight fontWeight;
   final TextDecoration textDecoration;
+  final bool autoscaling;
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(
+    var textStyle = TextStyle(
         decoration: textDecoration??TextDecoration.none,
         color: color==null?null:color,
         fontSize: fontSize,
         fontWeight: fontWeight==null?null:fontWeight
-      ),
-      overflow: TextOverflow.ellipsis,
-      textAlign: textAlign,
-      maxLines: maxLine,
     );
+    if(autoscaling){
+      return AutoSizeText(
+        text,
+        style: textStyle,
+        overflow: TextOverflow.ellipsis,
+        textAlign: textAlign,
+        minFontSize: 1,
+        maxLines: maxLine,
+      );
+    }else{
+      return Text(
+        text,
+        style: textStyle,
+        overflow: TextOverflow.ellipsis,
+        textAlign: textAlign,
+        maxLines: maxLine,
+      );
+    }
   }
 }
 

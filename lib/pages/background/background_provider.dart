@@ -9,18 +9,29 @@ import 'package:path_provider/path_provider.dart';
 // 设置背景
 
 class BackgroundProvider extends ChangeNotifier {
-  static String _backgroundImagePrefsStr = "background_image2";
+  // static String _backgroundImagePrefsStr = "background_image2";
+  static String _backgroundImagePrefsStr = "background_image3";
 
   static String backgroundPath;
 
-  String documentDirectory;
+  Directory documentDirectory;
 
   String get getBackgroundPath {
     if (backgroundPath == null) {
       String prefsPath = Prefs.prefs.getString(_backgroundImagePrefsStr);
       if (prefsPath != null) {
-        backgroundPath =
-            "${documentDirectory}/background/${RegExp(r"(?<=background\/)[^\/]+\.jpg$").firstMatch(prefsPath).group(0)}";
+        documentDirectory = Directory("${documentDirectory.path}/background/");
+        if(documentDirectory.existsSync()){
+          List<FileSystemEntity> entities = documentDirectory.listSync();
+          for(var entity in entities){
+            if(entity.path.contains("background_image")){
+              backgroundPath = entity.path;
+              break;
+            }
+          }
+        }else{
+          backgroundPath = "images/background.png";
+        }
       } else {
         backgroundPath = "images/background.png";
       }
@@ -28,8 +39,18 @@ class BackgroundProvider extends ChangeNotifier {
     return backgroundPath;
   }
 
+  Future<void> precacheBackground(BuildContext context)async{
+    if (getBackgroundPath != "images/background.png") {
+      if (await File(getBackgroundPath).exists()) {
+        await precacheImage(new FileImage(File(getBackgroundPath)), context);
+      }
+    } else {
+      await precacheImage(new AssetImage("images/background.png"), context);
+    }
+  }
+
   init() async {
-    documentDirectory = (await getApplicationDocumentsDirectory()).path;
+    documentDirectory = (await getApplicationDocumentsDirectory());
   }
 
   BackgroundProvider() {
@@ -37,13 +58,18 @@ class BackgroundProvider extends ChangeNotifier {
   }
 
   void setBackgroundImage() async {
-    XFile pickedImage = await _pickImage();
-    if (pickedImage != null) {
-      String imagePath = await _copyImageToStorage(pickedImage.path);
-      backgroundPath = imagePath;
-      Prefs.prefs.setString(_backgroundImagePrefsStr, imagePath);
+    try{
+      XFile pickedImage = await _pickImage();
+      if (pickedImage != null) {
+        String imagePath = await _copyImageToStorage(pickedImage.path);
+        backgroundPath = imagePath;
+        Prefs.prefs.setString(_backgroundImagePrefsStr, imagePath);
+        showToast("🎉更换成功！");
+        notifyListeners();
+      }
+    }catch(e){
+      showToast("😭更换失败～\n${e.toString()}");
     }
-    notifyListeners();
   }
 
   Future<void> _createFolderIfNotExists(String folderPath) async {

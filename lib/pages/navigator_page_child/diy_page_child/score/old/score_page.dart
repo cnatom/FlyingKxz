@@ -5,18 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/Model/global.dart';
+import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/util/logger/log.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/import_score_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_info.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_map.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_set_page.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/old/score_info.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/old/score_map.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:flying_kxz/util/util.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../Model/prefs.dart';
+import 'import_score_page.dart';
+import 'score_set_page.dart';
+
 
 //跳转到当前页面
 void toScorePage(BuildContext context) {
@@ -324,7 +325,7 @@ class _ScorePageState extends State<ScorePage>
       );
     }
 
-    Widget filterChip({Key,key}) {
+    Widget filterChip({Key key}) {
       return InkWell(
         key: key,
         onTap: () {
@@ -455,7 +456,7 @@ class _ScorePageState extends State<ScorePage>
     if (s == null) {
       return false;
     }
-    return double.parse(s, (e) => null) != null;
+    return double.tryParse(s) != null;
   }
 
   //成绩卡片

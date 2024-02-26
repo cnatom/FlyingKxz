@@ -13,7 +13,8 @@ import 'diy_page_child/bus/bus_img_page.dart';
 import 'diy_page_child/bus/bus_page.dart';
 import 'diy_page_child/calendar/school_calendar_page.dart';
 import 'diy_page_child/exam/exam_page.dart';
-import 'diy_page_child/score/score_page.dart';
+import 'diy_page_child/score/new/score_new_page.dart';
+import 'diy_page_child/score/old/score_page.dart';
 class DiyPage extends StatefulWidget {
   @override
   _DiyPageState createState() => _DiyPageState();
@@ -55,9 +56,11 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
                       Wrap(
                         children: [
                           funcButton(imageResource: 'images/tushuguan.png',title: '图书馆',color:colorFuncButton[0],subTitle: '馆藏查询、图书推荐',onTap: ()=>toNewBookPage(context)),
-                          funcButton(imageResource: 'images/chengji.png',title: '成绩',color:colorFuncButton[5],subTitle: '自动计算、自由筛选',onTap: ()=>toScorePage(context)),
+                          // funcButton(imageResource: 'images/chengji.png',title: '成绩',color:colorFuncButton[5],subTitle: '自动计算、自由筛选',onTap: ()=>toScorePage(context)),
+                          funcButton(imageResource: 'images/chengji.png',title: '成绩',color:colorFuncButton[5],subTitle: '自动计算、自由筛选',onTap: ()=>toScoreNewPage(context)),
                           funcButton(imageResource: 'images/xiaoche.png',title: '校车',color:colorFuncButton[1],subTitle: '通勤班车时间表',onTap: ()=>toSchoolBusPage(context)),
                           funcButton(imageResource: 'images/xiaoli.png',title: '校历↗',color:colorFuncButton[2],subTitle: '本学年校历',onTap: ()=>toSchoolCalendarPage(context)),
+
                         ],
                       )
                     ],

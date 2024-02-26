@@ -24,14 +24,16 @@ class ScoreMap{
       data = jsonDecode(Prefs.scoreMap);
     }else{
       data = _default;
-      Prefs.scoreMap = jsonEncode(data);
+      saveFromMap(data);
     }
   }
+
   static saveFromMap(Map<String,dynamic> data){
     Prefs.scoreMap = jsonEncode(data);
   }
+
   static refresh(){
     data = _default;
-    Prefs.scoreMap = jsonEncode(data);
+    saveFromMap(data);
   }
 }

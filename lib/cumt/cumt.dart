@@ -86,6 +86,35 @@ class Cumt{
     return await login(this.username,this.password);
   }
 
+  // 登录一卡通服务中心，需要在获取校园卡余额以及消费记录前调用一次
+  Future<String> loginYkt()async{
+    try{
+      await loginDefault();
+      var url = "https://yktm.cumt.edu.cn/berserker-auth/cas/login/wisedu?targetUrl=https%3A//yktm.cumt.edu.cn/plat-pc/%3Fname%3DloginTransit";
+      Response res;
+      // 循环重定向
+      while (true) {
+        res = await dio.get(url, options: Options(followRedirects: false));
+        var redirectUrl = res.headers.value('location');
+        if (redirectUrl == null) {
+          break;  // 无重定向时跳出循环
+        }
+        url = redirectUrl;
+      }
+      // 提取出url中的synjones-auth字段,并返回
+      String auth = extractSynjonesAuth(url,'synjones-auth');
+      return auth.isEmpty?"":"bearer ${auth}";
+    }catch(e){
+      print("模拟登录一卡通服务中心失败\n${e.toString()}");
+      return "";
+    }
+  }
+
+  String extractSynjonesAuth(String url,String aim) {
+    Uri uri = Uri.parse(url);
+    return uri.queryParameters[aim] ?? '';
+  }
+
   // 登录融合门户
   Future<bool> login(String username,String password)async{
     if(isLogin){
@@ -131,8 +160,9 @@ class Cumt{
         Prefs.password = password;
         debugPrint("登录融合门户成功");
         return true;
+      }else{
+        return false;
       }
-      return true;
     }on DioError catch(e){
       return false;
     }
@@ -141,7 +171,7 @@ class Cumt{
   // 登录服务大厅
   Future<bool> loginFWDT(String username,String password)async{
     try{
-  String service = "http://ykt.cumt.edu.cn:8088/ias/prelogin?sysid=FWDT";
+      String service = "http://ykt.cumt.edu.cn:8088/ias/prelogin?sysid=FWDT";
       var res = await dio.get('https://authserver.cumt.edu.cn/authserver/login?service=$service',options: Options(followRedirects:true,));
       var document2 = parser.parse(res.data);
       var ssoticketid = document2.body.querySelector("input[id='ssoticketid']").attributes['value']??'';
@@ -159,10 +189,13 @@ class Cumt{
   }
 
   // 检查是否连接到内网
-  static Future<bool> checkConnect({bool showToasts = true})async{
+  static Future<bool> checkConnect({bool showToasts = true,int timeout = 4})async{
     try{
-      showToasts?showToast('正在检测内网环境……',duration: 4):null;
-      var res = await Dio(BaseOptions(connectTimeout: 4000,receiveTimeout: 4000,sendTimeout: 4000)).get('http://jwxt.cumt.edu.cn/jwglxt');
+      showToasts?showToast('正在检测内网环境……',duration: timeout):null;
+      var res = await Dio(BaseOptions(
+          connectTimeout: timeout * 1000,
+          receiveTimeout: timeout * 1000,
+          sendTimeout: timeout * 1000)).get('http://jwxt.cumt.edu.cn/jwglxt/xtgl/login_slogin.html');
       if(res!=null){
         showToasts?showToast('已连接内网！'):null;
       }
@@ -182,14 +215,22 @@ class Cumt{
 
   //获取姓名手机号
   Future<Map<String,dynamic>> getNamePhone()async{
-    var res = await dio.get('http://portal.cumt.edu.cn/portal/api/v1/api/http/8',);
-    debugPrint(res.toString());
-    var map = jsonDecode(res.toString());
-    map = map['entities'][0];
-    var result = {
-      'name':map['name']??'',
-      'phone':map['phone']??''
-    };
+    Map<String,dynamic> result = {};
+    try{
+      var res = await dio.get('http://portal.cumt.edu.cn/portal/api/v2/infoplus/me/profile');
+      // res = await dio.get('http://portal.cumt.edu.cn/portal/api/v1/api/http/8',);
+      var map = jsonDecode(res.toString());
+      map = map['results']['entities'][0];
+      result = {
+        'name':map['name']??'',
+        'phone':map['phone']??''
+      };
+    }catch(e){
+      result = {
+        'name':'',
+        'phone':''
+      };
+    }
     return result;
   }
 
@@ -214,7 +255,8 @@ class Cumt{
     try {
       Response response;
       var queryParameters = {'pwd': password, 'salt': salt};
-      response = await Dio().get('https://service-0gxixtbh-1300058565.sh.apigw.tencentcs.com/release/password', queryParameters: queryParameters);
+      // 旧接口：https://service-0gxixtbh-1300058565.sh.apigw.tencentcs.com/release/password
+      response = await Dio().get('https://aes.atcumt.com/password', queryParameters: queryParameters);
       if (response.statusCode == 200) {
         return response.data;
       }

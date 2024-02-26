@@ -5,20 +5,18 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flying_kxz/cumt/cumt.dart';
 import 'package:flying_kxz/cumt/cumt_format.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/score_temp_list_view.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
+import '../../../../tip_page.dart';
+import 'view/score_temp_list_new_view.dart';
 
-import '../../../../ui/sheet.dart';
-import '../../../tip_page.dart';
-import 'import_help_page.dart';
 
-class ImportScorePage extends StatefulWidget {
+class ImportScoreNewPage extends StatefulWidget {
   @override
-  _ImportScorePageState createState() => _ImportScorePageState();
+  _ImportScoreNewPageState createState() => _ImportScoreNewPageState();
 }
 
-class _ImportScorePageState extends State<ImportScorePage> {
+class _ImportScoreNewPageState extends State<ImportScoreNewPage> {
   InAppWebViewController _controller;
   ThemeProvider themeProvider;
   double progress = 0.0;
@@ -51,7 +49,7 @@ class _ImportScorePageState extends State<ImportScorePage> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10)),
       builder: (BuildContext context) {
-        return ScoreTempListView(list:result);
+        return ScoreTempListNewView(list:result);
       },
     );
     if(temp==null) return;
@@ -84,7 +82,7 @@ class _ImportScorePageState extends State<ImportScorePage> {
       appBar: FlyAppBar(context,loadingWeb?"从教务获取成绩(加载中……)":"矿大教务",
           actions: [
             IconButton(icon: Icon(Boxicons.bx_help_circle,color: Theme.of(context).primaryColor,), onPressed: (){
-              Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ImportHelpPage()));
+              Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ImportScoreNewPage()));
             })
           ],
           bottom: PreferredSize(

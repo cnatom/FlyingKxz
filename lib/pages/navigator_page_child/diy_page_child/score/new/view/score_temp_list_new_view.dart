@@ -1,18 +1,16 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
-class ScoreTempListView extends StatefulWidget {
+class ScoreTempListNewView extends StatefulWidget {
   List<Map<String, dynamic>> list;
-  ScoreTempListView({this.list});
+  ScoreTempListNewView({this.list});
   @override
-  _ScoreTempListViewState createState() => _ScoreTempListViewState();
+  _ScoreTempListNewViewState createState() => _ScoreTempListNewViewState();
 }
 
-class _ScoreTempListViewState extends State<ScoreTempListView> {
+class _ScoreTempListNewViewState extends State<ScoreTempListNewView> {
   List<Map<String, dynamic>> pre = [];
   List<Map<String, dynamic>> cur = [];
   ThemeProvider themeProvider;
