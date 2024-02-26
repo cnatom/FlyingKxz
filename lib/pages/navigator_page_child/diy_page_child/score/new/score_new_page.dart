@@ -8,6 +8,7 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/v
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_profile.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/search_bar.dart';
 import 'package:flying_kxz/ui/animated.dart';
+import 'package:flying_kxz/ui/focus.dart';
 import 'package:flying_kxz/ui/scroll.dart';
 import 'package:provider/provider.dart';
 import '../../../../../ui/ui.dart';
@@ -75,40 +76,43 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
         scoreProvider = Provider.of<ScoreProvider>(context);
         return Scaffold(
           appBar: buildAppBar(context),
-          body: Padding(
-            padding:
-                EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Column(
-                  children: [
-                    buildTop(context),
-                    SizedBox(height: spaceCardMarginTB,),
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(borderRadiusValue),
-                        child: FlyScrollView(
-                          controller: scoreProvider.scrollController,
-                          child: Column(
-                            children: [
-                              ScoreSearchBar(),
-                              buildConsoleArea(context),
-                              buildScoreList(),
-                            ],
+          body: FlyUnfocus(
+            context,
+            child: Padding(
+              padding:
+                  EdgeInsets.fromLTRB(spaceCardMarginRL, 0, spaceCardMarginRL, 0),
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Column(
+                    children: [
+                      buildTop(context),
+                      SizedBox(height: spaceCardMarginTB,),
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(borderRadiusValue),
+                          child: FlyScrollView(
+                            controller: scoreProvider.scrollController,
+                            child: Column(
+                              children: [
+                                ScoreSearchBar(),
+                                buildConsoleArea(context),
+                                buildScoreList(),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                FlyAnimatedCrossFade(
-                  alignment: Alignment.bottomCenter,
-                  firstChild: ScoreImportButton(context: context, onTap: () => _import()),
-                  secondChild: Container(),
-                  showSecond: scoreProvider.showConsole,
-                )
-              ],
+                    ],
+                  ),
+                  FlyAnimatedCrossFade(
+                    alignment: Alignment.bottomCenter,
+                    firstChild: ScoreImportButton(context: context, onTap: () => _import()),
+                    secondChild: Container(),
+                    showSecond: scoreProvider.showConsole,
+                  )
+                ],
+              ),
             ),
           ),
         );
