@@ -6,6 +6,7 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/v
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_card.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_filter_console.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_profile.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/search_bar.dart';
 import 'package:flying_kxz/ui/animated.dart';
 import 'package:flying_kxz/ui/scroll.dart';
 import 'package:provider/provider.dart';
@@ -85,13 +86,17 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
                     buildTop(context),
                     SizedBox(height: spaceCardMarginTB,),
                     Expanded(
-                      child: FlyScrollView(
-                        controller: scoreProvider.scrollController,
-                        child: Column(
-                          children: [
-                            buildConsoleArea(context),
-                            buildScoreList(),
-                          ],
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(borderRadiusValue),
+                        child: FlyScrollView(
+                          controller: scoreProvider.scrollController,
+                          child: Column(
+                            children: [
+                              ScoreSearchBar(),
+                              buildConsoleArea(context),
+                              buildScoreList(),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -117,14 +122,18 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
       physics: NeverScrollableScrollPhysics(),
       itemCount: scoreProvider.scoreListLength,
       itemBuilder: (context, index) {
-        Widget cardWidget = ScoreCard(
-          scoreItem: scoreProvider.getScoreItem(index),
-          showFilterView: scoreProvider.showFilterView,
-          onFilterChange: (value) {
-            scoreProvider.toggleFilter(index);
-          },
-        );
-        return buildPaddedChild(cardWidget, index);
+        if(scoreProvider.inSearchResult(index)){
+          Widget cardWidget = ScoreCard(
+            scoreItem: scoreProvider.getScoreItem(index),
+            showFilterView: scoreProvider.showFilterView,
+            onFilterChange: (value) {
+              scoreProvider.toggleFilter(index);
+            },
+          );
+          return buildPaddedChild(cardWidget, index);
+        }else{
+          return Container();
+        }
       },
     );
   }
@@ -139,13 +148,13 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
     );
   }
 
-  Widget buildConsoleArea(BuildContext context) => FlyAnimatedCrossFade(
-    duration: Duration(milliseconds: 300),
-    showSecond: scoreProvider.showConsole,
-    firstChild: Container(),
-    secondChild: Padding(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginTB),
-      child: ScoreFilterConsole(),
+  Widget buildConsoleArea(BuildContext context) => Padding(
+    padding: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginTB),
+    child: FlyAnimatedCrossFade(
+      duration: Duration(milliseconds: 300),
+      showSecond: scoreProvider.showConsole,
+      firstChild: Container(),
+      secondChild: ScoreFilterConsole(),
     ),
   );
 

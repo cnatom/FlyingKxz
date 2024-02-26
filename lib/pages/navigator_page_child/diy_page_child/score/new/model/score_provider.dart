@@ -22,6 +22,17 @@ class ScoreProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // 搜索
+  String _searchResult = '';
+
+  String get searchResult => _searchResult;
+
+  bool inSearchResult(int index) => _searchResult!=null && _scoreModel.scoreList[index].courseName.contains(_searchResult);
+
+  search(String name){
+    _searchResult = name;
+    notifyListeners();
+  }
   // 排序方式
   ScoreSortWay _sortWay = ScoreSortWay.name;
 

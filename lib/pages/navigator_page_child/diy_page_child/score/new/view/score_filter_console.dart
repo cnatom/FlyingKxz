@@ -5,6 +5,7 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/s
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/utils/score_sort.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_chip.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_container.dart';
+import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/search_bar.dart';
 import 'package:flying_kxz/ui/animated.dart';
 import 'package:provider/provider.dart';
 import '../../../../../../ui/ui.dart';
@@ -33,7 +34,7 @@ class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
     return Wrap(
       runSpacing: spaceCardMarginTB,
       children: [
-        // buildSearchBarArea(),
+        Container(),
         buildFilterArea(),
         buildChooseAllArea(),
         buildButtonArea()
@@ -41,7 +42,9 @@ class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
     );
   }
 
-  Widget buildSearchBarArea()=>Container();
+  Widget buildSearchBarArea()=>ScoreSearchBar(onChanged: (value){
+    scoreProvider.search(value);
+  },);
 
   Widget buildButtonArea() => Row(
     children: [
