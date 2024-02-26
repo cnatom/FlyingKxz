@@ -7,6 +7,7 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/v
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_filter_console.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_profile.dart';
 import 'package:flying_kxz/ui/animated.dart';
+import 'package:flying_kxz/ui/scroll.dart';
 import 'package:provider/provider.dart';
 import '../../../../../ui/ui.dart';
 import '../../../../../util/logger/log.dart';
@@ -29,9 +30,6 @@ class ScoreNewPage extends StatefulWidget {
 class _ScoreNewPageState extends State<ScoreNewPage> {
   ThemeProvider themeProvider;
   ScoreProvider scoreProvider;
-
-  void showFilter() => scoreProvider.toggleShowFilterView();
-
 
   @override
   void initState() {
@@ -84,14 +82,18 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
               children: [
                 Column(
                   children: [
-                    // 顶部区域
-                    buildTopArea(context),
-                    SizedBox(
-                      height: spaceCardMarginTB,
-                    ),
-                    buildConsoleArea(context),
+                    buildTop(context),
+                    SizedBox(height: spaceCardMarginTB,),
                     Expanded(
-                      child: buildScoreListArea(),
+                      child: FlyScrollView(
+                        controller: scoreProvider.scrollController,
+                        child: Column(
+                          children: [
+                            buildConsoleArea(context),
+                            buildScoreList(),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -108,8 +110,11 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
       },
     );
   }
-  Widget buildScoreListArea() {
+
+  Widget buildScoreList(){
     return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       itemCount: scoreProvider.scoreListLength,
       itemBuilder: (context, index) {
         Widget cardWidget = ScoreCard(
@@ -135,6 +140,7 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
   }
 
   Widget buildConsoleArea(BuildContext context) => FlyAnimatedCrossFade(
+    duration: Duration(milliseconds: 300),
     showSecond: scoreProvider.showConsole,
     firstChild: Container(),
     secondChild: Padding(
@@ -147,7 +153,7 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
     return FlyAppBar(context, '成绩（需内网或VPN）');
   }
 
-  Widget buildTopArea(BuildContext context) => ScoreProfile(
+  Widget buildTop(BuildContext context) => ScoreProfile(
         jiaquan: scoreProvider.jiaquanTotal,
         jidian: scoreProvider.jidianTotal,
       );

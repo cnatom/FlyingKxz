@@ -49,12 +49,17 @@ class ScoreProvider extends ChangeNotifier {
   }
 
   // 显示操作面板
+  ScrollController _scrollController = ScrollController();
+
+  ScrollController get scrollController => _scrollController;
+
   bool _showConsole = false;
 
   bool get showConsole => _showConsole;
 
   toggleShowConsole(){
     _showConsole = !_showConsole;
+    _scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeOutCubic);
     notifyListeners();
   }
 

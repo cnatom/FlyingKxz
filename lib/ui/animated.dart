@@ -5,7 +5,8 @@ class FlyAnimatedCrossFade extends StatefulWidget {
   final Widget secondChild;
   final bool showSecond;
   final Alignment alignment;
-  const FlyAnimatedCrossFade({Key key, this.firstChild, this.secondChild, this.showSecond = false,this.alignment = Alignment.topCenter});
+  final Duration duration;
+  const FlyAnimatedCrossFade({Key key, this.duration,this.firstChild, this.secondChild, this.showSecond = false,this.alignment = Alignment.topCenter});
 
   @override
   State<FlyAnimatedCrossFade> createState() => _FlyAnimatedCrossFadeState();
@@ -21,7 +22,7 @@ class _FlyAnimatedCrossFadeState extends State<FlyAnimatedCrossFade> {
       sizeCurve: Curves.easeOutCubic,
       firstChild: widget.firstChild,
       secondChild: widget.secondChild,
-      duration: Duration(milliseconds: 300),
+      duration: widget.duration??Duration(milliseconds: 300),
       crossFadeState: widget.showSecond
           ? CrossFadeState.showSecond
           : CrossFadeState.showFirst,

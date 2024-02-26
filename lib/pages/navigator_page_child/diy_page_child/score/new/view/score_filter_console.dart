@@ -33,12 +33,15 @@ class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
     return Wrap(
       runSpacing: spaceCardMarginTB,
       children: [
+        // buildSearchBarArea(),
         buildFilterArea(),
         buildChooseAllArea(),
         buildButtonArea()
       ],
     );
   }
+
+  Widget buildSearchBarArea()=>Container();
 
   Widget buildButtonArea() => Row(
     children: [
