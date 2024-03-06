@@ -122,7 +122,7 @@ class _ScoreCardState extends State<ScoreCard> {
               child: buildXuefen(widget.scoreItem.xuefen.toString())
             ),
             Expanded(
-              child: buildJidian(widget.scoreItem.jidian.toString()),
+              child: buildJidian('${(widget.scoreItem.jidian * widget.scoreItem.rate).toStringAsFixed(1)}'),
             ),
           ],
         )
@@ -160,12 +160,15 @@ class _ScoreCardState extends State<ScoreCard> {
   //圆形进度指示器
   Widget progressIndicator(
       {@required ScoreItem item, Color color = Colors.grey}) {
-    String text = item.zongping.toString();
+    String text;
+    int maxLine;
     if(item.zongping is! num){
       // 如果是合格类的
-      text = "${item.zongping}\n${item.zongpingDouble}";
+      text = "${item.zongping}\n${(item.zongpingDouble * item.rate).toStringAsFixed(1)}";
+      maxLine = 2;
     }else{
-      text = "${item.zongping}";
+      text = "${((item.zongping as num) * item.rate).toStringAsFixed(1)}";
+      maxLine = 1;
     }
 
     Widget buildText(String value){
@@ -173,7 +176,7 @@ class _ScoreCardState extends State<ScoreCard> {
         padding: EdgeInsets.all(fontSizeMain40/3),
         child: FlyText.main40(
           value.toString().trim(),
-          maxLine: 2,
+          maxLine: maxLine,
           textAlign: TextAlign.center,
           color: color,
           fontWeight: FontWeight.bold,
