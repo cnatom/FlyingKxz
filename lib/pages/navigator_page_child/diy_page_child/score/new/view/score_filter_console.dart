@@ -35,7 +35,7 @@ class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
       runSpacing: spaceCardMarginTB,
       children: [
         Container(),
-        buildFilterArea(),
+        buildSortArea(),
         buildSwitchArea(),
         buildButtonArea()
       ],
@@ -102,7 +102,7 @@ class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
   );
 
 
-  Widget buildFilterArea() => buildConsole(
+  Widget buildSortArea() => buildConsole(
       children: [
         buildConsoleRow(title: "排序",children: [
           ScoreChip(title: "顺序",clicked: !scoreProvider.isOrder, onTap: (value){

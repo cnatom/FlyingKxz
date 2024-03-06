@@ -188,7 +188,6 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
   Widget buildConsoleArea(BuildContext context) => Padding(
     padding: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginTB),
     child: FlyAnimatedCrossFade(
-      duration: Duration(milliseconds: 300),
       showSecond: scoreProvider.showConsole,
       firstChild: Container(),
       secondChild: ScoreFilterConsole(),

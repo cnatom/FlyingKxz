@@ -22,7 +22,7 @@ class _FlyAnimatedCrossFadeState extends State<FlyAnimatedCrossFade> {
       sizeCurve: Curves.easeInOut,
       firstChild: widget.firstChild,
       secondChild: widget.secondChild,
-      duration: widget.duration??Duration(milliseconds: 300),
+      duration: widget.duration??Duration(milliseconds: 250),
       crossFadeState: widget.showSecond
           ? CrossFadeState.showSecond
           : CrossFadeState.showFirst,
