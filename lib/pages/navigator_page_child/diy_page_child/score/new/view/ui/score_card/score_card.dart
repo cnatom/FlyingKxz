@@ -37,7 +37,6 @@ class _ScoreCardState extends State<ScoreCard> {
     super.initState();
   }
 
-  // 辅助函数，根据总评分数决定卡片颜色
   Color getCardColor(double score) {
     if (score >= 90) {
       return Colors.deepOrangeAccent;
@@ -73,7 +72,7 @@ class _ScoreCardState extends State<ScoreCard> {
         children: [
           Row(
             children: <Widget>[
-              progressIndicator(value: widget.scoreItem.zongping, color: colorCard),
+              progressIndicator(item: widget.scoreItem, color: colorCard),
               //进度圈右侧信息区域
               Expanded(
                 flex: 3,
@@ -90,6 +89,7 @@ class _ScoreCardState extends State<ScoreCard> {
               children: [
                 Divider(),
                 ScoreRateView(
+                  initRate: widget.scoreItem.rate,
                   onRateChange: setRate,
                 )
               ],
@@ -119,7 +119,7 @@ class _ScoreCardState extends State<ScoreCard> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              child: buildXuefen('${(widget.scoreItem.xuefen * widget.scoreItem.rate).toStringAsFixed(1)}')
+              child: buildXuefen(widget.scoreItem.xuefen.toString())
             ),
             Expanded(
               child: buildJidian(widget.scoreItem.jidian.toString()),
@@ -159,31 +159,45 @@ class _ScoreCardState extends State<ScoreCard> {
 
   //圆形进度指示器
   Widget progressIndicator(
-      {@required dynamic value, Color color = Colors.grey}) {
-    double valueDouble = double.tryParse(value.toString()) ?? 100.0;
+      {@required ScoreItem item, Color color = Colors.grey}) {
+    String text = item.zongping.toString();
+    if(item.zongping is! num){
+      // 如果是合格类的
+      text = "${item.zongping}\n${item.zongpingDouble}";
+    }else{
+      text = "${item.zongping}";
+    }
+
+    Widget buildText(String value){
+      return Container(
+        padding: EdgeInsets.all(5),
+        child: FlyText.main40(
+          value.toString().trim(),
+          maxLine: 2,
+          textAlign: TextAlign.center,
+          color: color,
+          fontWeight: FontWeight.bold,
+          autoscaling: true,
+        ),
+      );
+    }
     return Container(
       child: Container(
         margin: EdgeInsets.fromLTRB(0, 0, spaceCardPaddingRL * 0.8, 0),
         child: CircularPercentIndicator(
           radius: fontSizeMain40 * 1.5,
-          lineWidth: 3.0,
+          lineWidth: 2.5,
           animation: false,
           animationDuration: 800,
-          percent: valueDouble / 100.0,
-          center: FlyText.main40(
-            // 删除前后的空格
-            value.toString().trim(),
-            maxLine: 1,
-            color: color,
-            fontWeight: FontWeight.bold,
-            autoscaling: true,
-          ),
+          percent: item.zongpingDouble / 100.0,
+          center: buildText(text),
           circularStrokeCap: CircularStrokeCap.round,
           progressColor: color,
           backgroundColor: Theme.of(context).disabledColor,
         ),
       ),
     );
+
   }
 
   //水平内容
