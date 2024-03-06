@@ -170,7 +170,7 @@ class _ScoreCardState extends State<ScoreCard> {
 
     Widget buildText(String value){
       return Container(
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.all(fontSizeMain40/3),
         child: FlyText.main40(
           value.toString().trim(),
           maxLine: 2,
@@ -211,19 +211,4 @@ class _ScoreCardState extends State<ScoreCard> {
     ],
   );
 
-  //垂直内容
-  Widget _columnContent(String title, String content, Color color) => Column(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: <Widget>[
-      FlyText.miniTip30(title),
-      SizedBox(
-        height: ScreenUtil().setWidth(10),
-      ),
-      Text(
-        content,
-        style: TextStyle(fontSize: fontSizeMini38, color: color),
-      )
-    ],
-  );
 }
