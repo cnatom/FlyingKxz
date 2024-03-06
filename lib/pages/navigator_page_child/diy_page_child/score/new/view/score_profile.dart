@@ -40,8 +40,8 @@ class _ScoreProfileState extends State<ScoreProfile> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Expanded(child: buildRowContent("加权", widget.jiaquan.toStringAsFixed(2)??'0.00',)),
-          Expanded(child: buildRowContent("绩点", widget.jidian.toStringAsFixed(2)??'0.00',)),
+          Expanded(child: buildRowContent("加权绩点", widget.jiaquan.toStringAsFixed(2)??'0.00',)),
+          Expanded(child: buildRowContent("加权成绩", widget.jidian.toStringAsFixed(2)??'0.00',)),
           Expanded(
               child: Container(
             alignment: Alignment.centerRight,
