@@ -71,6 +71,7 @@ class CumtFormat{
                 }
                 credit = temp3.querySelector('span[title="学分"]').parent.text;
                 String lessonWeek = temp3.querySelector('span[title="节/周"]').parent.text;
+                lessonWeek = lessonWeek.replaceAll("？", "");
                 duration = _getDuration(lessonWeek);
                 lesson = _getLesson(lessonWeek);
                 weekList = _getWeekList(lessonWeek);
@@ -367,7 +368,7 @@ class CumtFormat{
     var list = week.split(',');
     for(var week in list){
       if (week.contains("单")) {
-        week = week.replaceAll("周(单)", "");
+        week = week.replaceAll("(单)", "").replaceAll("周", "");
         List temp = week.split('-');
         int i = int.parse(temp[0]).isOdd
             ? int.parse(temp[0])
@@ -375,7 +376,7 @@ class CumtFormat{
         int j = int.parse(temp[1]);
         for (; i <= j; i += 2) weekList.add(i);
       } else if (week.contains("双")) {
-        week = week.replaceAll("周(双)", "");
+        week = week.replaceAll("(双)", "").replaceAll("周", "");
         List temp = week.split('-');
         int i = int.parse(temp[0]).isEven
             ? int.parse(temp[0])
