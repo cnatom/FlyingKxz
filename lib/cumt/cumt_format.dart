@@ -63,13 +63,21 @@ class CumtFormat{
                 }catch(e){
                   title = temp3.querySelector('u[class="title showJxbtkjl"]').text;
                 }
-                location = temp3.querySelector('span[title="上课地点"]').parent.text;
+                try{
+                  location = temp3.querySelector('span[title="上课地点"]').parent.text;
+                }catch(e){
+                  location = '';
+                }
                 try{
                   teacher = temp3.querySelector('span[title="教师 "]').parent.text;
                 }catch(e){
                   teacher = temp3.querySelector('span[title="教师"]').parent.text;
                 }
-                credit = temp3.querySelector('span[title="学分"]').parent.text;
+                try{
+                  credit = temp3.querySelector('span[title="学分"]').parent.text;
+                }catch(e){
+                  credit = '';
+                }
                 String lessonWeek = temp3.querySelector('span[title="节/周"]').parent.text;
                 lessonWeek = lessonWeek.replaceAll("？", "");
                 duration = _getDuration(lessonWeek);
@@ -103,7 +111,7 @@ class CumtFormat{
 
               }
             }catch(e){
-              print(e);
+              print(e.toString());
             }
           }
         }
