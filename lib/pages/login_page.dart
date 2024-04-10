@@ -242,12 +242,13 @@ class _LoginPageState extends State<LoginPage> {
                       title: "隐私政策",
                       initialUrl: "https://kxz.atcumt.com/privacy.html",
                     )));
-                  })
+                  }),
                 ],
               ),
             ),
             Container(
               height: ScreenUtil().setWidth(35),
+              margin: EdgeInsets.symmetric(horizontal:10),
               width: 1,
               color: Colors.white.withOpacity(0.5),
             ),
@@ -293,7 +294,17 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
         SizedBox(
-          height: fontSizeMini38,
+          height: spaceCardMarginTB,
+        ),
+        _buildFlatButton("ICP备案号：苏ICP备2023008273号-2A", onPressed: () {
+          Navigator.push(
+              context, CupertinoPageRoute(builder: (context) => FlyWebView(
+            title: "ICP备案号：苏ICP备2023008273号-2A",
+            initialUrl: "https://beian.miit.gov.cn",
+          )));
+        }),
+        SizedBox(
+          height: spaceCardMarginTB*2,
         ),
       ],
     );
@@ -302,10 +313,8 @@ class _LoginPageState extends State<LoginPage> {
   //小按钮
   Widget _buildFlatButton(String text,
           {VoidCallback onPressed}) =>
-      TextButton(
-        onPressed: onPressed,
-        // highlightColor: Colors.transparent, //点击后的颜色为透明
-        // splashColor: Colors.transparent, //点击波纹的颜色为透明
+      InkWell(
+        onTap: onPressed,
         child: FlyText.main35(
           text,
           color: Colors.white.withOpacity(0.6),
