@@ -634,7 +634,7 @@
 		5F89124A99907AE487392CF1B94F38C4 /* Flutter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Flutter.release.xcconfig; sourceTree = "<group>"; };
 		5FD4CDD20B38B2CC8DEAD53C66765E01 /* flutter_inappwebview.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = flutter_inappwebview.debug.xcconfig; sourceTree = "<group>"; };
 		5FFD8B8AE68815C92B7D362CD8AB7DFF /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = "../../../../../../../Environment/Flutter/.pub-cache/hosted/pub.flutter-io.cn/share_plus-2.2.0/LICENSE"; sourceTree = "<group>"; };
-		60E8C9E19751405B57238651D372C6EE /* flutter_inappwebview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = flutter_inappwebview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		60E8C9E19751405B57238651D372C6EE /* flutter_inappwebview */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = flutter_inappwebview; path = flutter_inappwebview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		640F4FB1A5E159441E2F01A3285C3845 /* sqflite.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = sqflite.modulemap; sourceTree = "<group>"; };
 		6455451313E244A893C98BE3FF23F39C /* PluginScriptsUtil.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PluginScriptsUtil.swift; path = "../../../../../../../../../Environment/Flutter/.pub-cache/hosted/pub.flutter-io.cn/flutter_inappwebview-5.7.2+3/ios/Classes/PluginScriptsJS/PluginScriptsUtil.swift"; sourceTree = "<group>"; };
 		64C52BCFD2CD59D6DFECB0722B7A2DB7 /* Reachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Reachability.swift; path = Sources/Reachability.swift; sourceTree = "<group>"; };
@@ -741,7 +741,7 @@
 		AB3AE0B38E791C76EF85DA6F65EC964F /* Flutter.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = Flutter.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		AC8142FC8147AE2E734CBCA161DD5E21 /* WebMessage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WebMessage.swift; path = "../../../../../../../../../Environment/Flutter/.pub-cache/hosted/pub.flutter-io.cn/flutter_inappwebview-5.7.2+3/ios/Classes/Types/WebMessage.swift"; sourceTree = "<group>"; };
 		ADE3294424B9A49C71B38BE0194A3C90 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = src/fmdb/FMDatabaseAdditions.h; sourceTree = "<group>"; };
-		AE157A33FEF959A214796BFF348717F6 /* path_provider_foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = path_provider_foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE157A33FEF959A214796BFF348717F6 /* path_provider_foundation */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = path_provider_foundation; path = path_provider_foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0FC8B4097BB04A70944A0EE3FADB6FC /* SslError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SslError.swift; path = "../../../../../../../../../Environment/Flutter/.pub-cache/hosted/pub.flutter-io.cn/flutter_inappwebview-5.7.2+3/ios/Classes/Types/SslError.swift"; sourceTree = "<group>"; };
 		B1727FF6067EDC79239C3CE51089EA2E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = "../../../../../../../Environment/Flutter/.pub-cache/hosted/pub.flutter-io.cn/package_info_plus-1.4.2/LICENSE"; sourceTree = "<group>"; };
 		B1F8FC0A0E6C5F6C5232B1B735EE4FA0 /* WKNavigationResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WKNavigationResponse.swift; path = "../../../../../../../../../Environment/Flutter/.pub-cache/hosted/pub.flutter-io.cn/flutter_inappwebview-5.7.2+3/ios/Classes/Types/WKNavigationResponse.swift"; sourceTree = "<group>"; };
@@ -3533,7 +3533,7 @@
 			isa = PBXGroup;
 			children = (
 				6D3FD4746C5C4B5292B7C4C862F01EF9 /* connectivity_plus.framework */,
-				60E8C9E19751405B57238651D372C6EE /* flutter_inappwebview.framework */,
+				60E8C9E19751405B57238651D372C6EE /* flutter_inappwebview */,
 				570758359ECA629D22B6A8420F28158A /* flutter_native_splash */,
 				A3A80BA70CFB7F75C5391BEBBBA8C9DA /* FMDB.framework */,
 				AB32A200CB5D60EE6F05AFDCD7F2D9D8 /* image_crop */,
@@ -3542,7 +3542,7 @@
 				D6EBE65F84049F9760E6EE01E900D99F /* OrderedSet.framework */,
 				6E45859F778E298A6DDE318300ACC4C5 /* package_info */,
 				C39BE06027F24EB0328A76E7507FA463 /* package_info_plus */,
-				AE157A33FEF959A214796BFF348717F6 /* path_provider_foundation.framework */,
+				AE157A33FEF959A214796BFF348717F6 /* path_provider_foundation */,
 				669E8F25E1897672BDB80B7EB784DA24 /* Pods-Runner */,
 				21B03CA622E690725A6626C088E1D09F /* Reachability.framework */,
 				670C8E8BC3F615901CAE735C0CBBE8CA /* share_plus */,
@@ -3975,7 +3975,7 @@
 			);
 			name = flutter_inappwebview;
 			productName = flutter_inappwebview;
-			productReference = 60E8C9E19751405B57238651D372C6EE /* flutter_inappwebview.framework */;
+			productReference = 60E8C9E19751405B57238651D372C6EE /* flutter_inappwebview */;
 			productType = "com.apple.product-type.framework";
 		};
 		2F8410D3DA69756D81B1FE8C64A8ED4B /* OrderedSet */ = {
@@ -4107,7 +4107,7 @@
 			);
 			name = path_provider_foundation;
 			productName = path_provider_foundation;
-			productReference = AE157A33FEF959A214796BFF348717F6 /* path_provider_foundation.framework */;
+			productReference = AE157A33FEF959A214796BFF348717F6 /* path_provider_foundation */;
 			productType = "com.apple.product-type.framework";
 		};
 		755457F3785F4D2E55FCAFA408242FD5 /* webview_flutter_wkwebview */ = {
@@ -5007,7 +5007,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/path_provider_foundation/path_provider_foundation-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/path_provider_foundation/path_provider_foundation-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MODULEMAP_FILE = "Target Support Files/path_provider_foundation/path_provider_foundation.modulemap";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -5185,7 +5185,6 @@
 				GCC_PREFIX_HEADER = "Target Support Files/flutter_inappwebview/flutter_inappwebview-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/flutter_inappwebview/flutter_inappwebview-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5718,7 +5717,6 @@
 				GCC_PREFIX_HEADER = "Target Support Files/flutter_inappwebview/flutter_inappwebview-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/flutter_inappwebview/flutter_inappwebview-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5768,7 +5766,6 @@
 				GCC_PREFIX_HEADER = "Target Support Files/flutter_inappwebview/flutter_inappwebview-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/flutter_inappwebview/flutter_inappwebview-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6033,7 +6030,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/path_provider_foundation/path_provider_foundation-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/path_provider_foundation/path_provider_foundation-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MODULEMAP_FILE = "Target Support Files/path_provider_foundation/path_provider_foundation.modulemap";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
@@ -6438,7 +6435,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6822,7 +6819,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/path_provider_foundation/path_provider_foundation-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/path_provider_foundation/path_provider_foundation-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MODULEMAP_FILE = "Target Support Files/path_provider_foundation/path_provider_foundation.modulemap";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -6946,7 +6943,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -7542,7 +7539,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
