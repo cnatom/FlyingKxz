@@ -63,14 +63,28 @@ class CumtFormat{
                 }catch(e){
                   title = temp3.querySelector('u[class="title showJxbtkjl"]').text;
                 }
-                location = temp3.querySelector('span[title="上课地点"]').parent.text;
+                try{
+                  location = temp3.querySelector('span[title="上课地点"]').parent.text;
+                }catch(e){
+                  location = '';
+                }
                 try{
                   teacher = temp3.querySelector('span[title="教师 "]').parent.text;
                 }catch(e){
-                  teacher = temp3.querySelector('span[title="教师"]').parent.text;
+                  try{
+                    teacher = temp3.querySelector('span[title="教师"]').parent.text;
+                  }
+                  catch(e){
+                    teacher = '';
+                  }
                 }
-                credit = temp3.querySelector('span[title="学分"]').parent.text;
+                try{
+                  credit = temp3.querySelector('span[title="学分"]').parent.text;
+                }catch(e){
+                  credit = '';
+                }
                 String lessonWeek = temp3.querySelector('span[title="节/周"]').parent.text;
+                lessonWeek = lessonWeek.replaceAll("？", "");
                 duration = _getDuration(lessonWeek);
                 lesson = _getLesson(lessonWeek);
                 weekList = _getWeekList(lessonWeek);
@@ -102,7 +116,7 @@ class CumtFormat{
 
               }
             }catch(e){
-              print(e);
+              print(e.toString());
             }
           }
         }
@@ -367,7 +381,7 @@ class CumtFormat{
     var list = week.split(',');
     for(var week in list){
       if (week.contains("单")) {
-        week = week.replaceAll("周(单)", "");
+        week = week.replaceAll("(单)", "").replaceAll("周", "");
         List temp = week.split('-');
         int i = int.parse(temp[0]).isOdd
             ? int.parse(temp[0])
@@ -375,7 +389,7 @@ class CumtFormat{
         int j = int.parse(temp[1]);
         for (; i <= j; i += 2) weekList.add(i);
       } else if (week.contains("双")) {
-        week = week.replaceAll("周(双)", "");
+        week = week.replaceAll("(双)", "").replaceAll("周", "");
         List temp = week.split('-');
         int i = int.parse(temp[0]).isEven
             ? int.parse(temp[0])

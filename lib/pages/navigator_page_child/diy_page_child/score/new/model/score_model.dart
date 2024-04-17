@@ -64,9 +64,9 @@ class ScoreModel{
     double xfSum = 0; //学分的和
     for (var item in list) {
       if (!item.includeWeighting) continue;
-      xfjdSum += item.zongpingDouble * item.xuefen * item.rate;
-      xfcjSum += item.jidian * item.xuefen * item.rate;
-      xfSum += item.xuefen * item.rate;
+      xfjdSum += item.zongpingDouble * item.rate * item.xuefen;
+      xfcjSum += item.jidian * item.rate * item.xuefen;
+      xfSum += item.xuefen;
     }
     _jiaquanTotal = (xfcjSum / xfSum);
     _jidianTotal = (xfjdSum / xfSum);

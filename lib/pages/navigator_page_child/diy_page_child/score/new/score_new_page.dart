@@ -156,18 +156,23 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
       itemCount: scoreProvider.scoreListLength,
       itemBuilder: (context, index) {
         if(scoreProvider.inSearchResult(index)){
-          Widget cardWidget = ScoreCard(
-            scoreItem: scoreProvider.getScoreItem(index),
-            showFilterView: scoreProvider.showFilterView,
-            onFilterChange: (value) {
-              scoreProvider.toggleFilter(index);
-            },
-            showRateView: scoreProvider.showRateView,
-            onRateChange: (rate) {
-              scoreProvider.setRate(index, rate);
-            }
+          double bottomPadding = (index == scoreProvider.scoreListLength - 1)
+              ? spaceCardPaddingTB + 200
+              : spaceCardPaddingTB;
+          return Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, bottomPadding),
+            child: ScoreCard(
+                scoreItem: scoreProvider.getScoreItem(index),
+                showFilterView: scoreProvider.showFilterView,
+                onFilterChange: (value) {
+                  scoreProvider.toggleFilter(index);
+                },
+                showRateView: scoreProvider.showRateView,
+                onRateChange: (rate) {
+                  scoreProvider.setRate(index, rate);
+                }
+            ),
           );
-          return buildPaddedChild(cardWidget, index);
         }else{
           return Container();
         }
@@ -175,20 +180,10 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
     );
   }
 
-  Widget buildPaddedChild(Widget child, int index) {
-    double bottomPadding = (index == scoreProvider.scoreListLength - 1)
-        ? spaceCardPaddingTB + 200
-        : spaceCardPaddingTB;
-    return Padding(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, bottomPadding),
-      child: child,
-    );
-  }
 
   Widget buildConsoleArea(BuildContext context) => Padding(
     padding: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginTB),
     child: FlyAnimatedCrossFade(
-      duration: Duration(milliseconds: 300),
       showSecond: scoreProvider.showConsole,
       firstChild: Container(),
       secondChild: ScoreFilterConsole(),

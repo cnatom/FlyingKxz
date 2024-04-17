@@ -115,10 +115,22 @@ class _MyselfPageState extends State<MyselfPage>
             _container3() // 退出登录、、
           ],
         ),
-        SizedBox(
-          height: 10,
+        Wrap(
+          direction: Axis.vertical,
+          spacing: spaceCardMarginTB,
+          crossAxisAlignment:WrapCrossAlignment.center,
+          children: [
+            Container(),
+            _miniTextButton(title: "ICP备案号：苏ICP备2023008273号-2A",url: "https://beian.miit.gov.cn"),
+            _miniTextButton(title: "隐私政策",url: "https://kxz.atcumt.com/privacy.html"),
+          ],
         ),
-        _privacyTextButton()
+        SizedBox(
+          height: spaceCardMarginTB,
+        ),
+        SizedBox(
+          height: spaceCardMarginTB,
+        ),
       ]),
     );
   }
@@ -226,19 +238,19 @@ class _MyselfPageState extends State<MyselfPage>
     );
   }
 
-  Widget _privacyTextButton() {
-    return TextButton(
-      onPressed: () {
+  Widget _miniTextButton({@required String title,@required String url}) {
+    return InkWell(
+      onTap: () {
         Navigator.push(
             context,
             CupertinoPageRoute(
                 builder: (context) => FlyWebView(
-                      title: "隐私政策",
-                      initialUrl: "https://kxz.atcumt.com/privacy.html",
+                      title: title,
+                      initialUrl: url,
                     )));
       },
       child: FlyText.main35(
-        "隐私政策",
+        title,
         color: themeProvider.colorNavText.withOpacity(0.5),
       ),
     );

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flying_kxz/ui/config.dart';
@@ -14,8 +13,9 @@ enum ScoreRateChipType{
 }
 
 class ScoreRateView extends StatefulWidget {
-  const ScoreRateView({Key key,this.onRateChange});
+  const ScoreRateView({Key key,this.onRateChange,this.initRate = 1.0}) : super(key: key);
   final ScoreCardRateChange onRateChange;
+  final double initRate;
 
   @override
   State<ScoreRateView> createState() => _ScoreRateViewState();
@@ -25,11 +25,24 @@ class _ScoreRateViewState extends State<ScoreRateView> {
   ThemeProvider themeProvider;
   TextEditingController rateController = TextEditingController();
   FocusNode rateFocusNode = FocusNode();
-  double rateResult = 1.0;
+  double rateResult;
   int curIndex = 0;
+
+  // 确保在排序过程中倍率界面能够相应地调整
+  initRateResult(){
+    rateResult = widget.initRate;
+    if(rateResult != 1.0 && rateResult != 1.2){
+      curIndex = 2;
+      rateController.text = rateResult.toString();
+    }else{
+      curIndex = rateResult == 1.0 ? 0 : 1;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
+    initRateResult();
     return Container(
       padding: EdgeInsets.all(1),
       decoration: BoxDecoration(

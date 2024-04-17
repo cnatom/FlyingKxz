@@ -96,7 +96,7 @@ class BalanceProvider extends ChangeNotifier {
       }catch (e){
         print(e.toString());
         l1 = [];
-        if(showToasts) showToast("解析Response失败，可能消费记录为空\n${e.toString()}");
+        if(showToasts) showToast("解析Response失败，请尝试下滑刷新\n${e.toString()}");
       }
       detailEntity = l1;
       getBalanceHisDate = DateTime.now().toString().substring(0, 16);

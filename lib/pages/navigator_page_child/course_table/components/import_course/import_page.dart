@@ -76,7 +76,7 @@ class _ImportPageState extends State<ImportPage> {
       loading = false;
     });
     if (list == null) {
-      showToast('解析网页HTML失败，请确保当前为课表页');
+      showToast('解析网页HTML失败，请确保当前为课表页，且更新至最新版本');
       return;
     }
     Navigator.of(context).pop(list);

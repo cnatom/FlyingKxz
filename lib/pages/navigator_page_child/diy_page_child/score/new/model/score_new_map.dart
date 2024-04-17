@@ -15,6 +15,7 @@ class ScoreNewMap{
     "未评价":{"jidian":0.0, "zongping":0.0},
     "旷考":{"jidian":0.0, "zongping":0.0},
     "缓考":{"jidian":0.0, "zongping":0.0},
+    "免测":{"jidian":0.0, "zongping":0.0},
   };
 
   static Map<String, dynamic> get data{
@@ -30,6 +31,7 @@ class ScoreNewMap{
   }
 
   static double getZonping(String key){
+    if(!data.containsKey(key)) return 0.0;
     return double.parse(data[key]['zongping'].toString());
   }
 

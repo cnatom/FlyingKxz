@@ -137,7 +137,7 @@ class _SchoolBusPageState extends State<SchoolBusPage>
                       ),
                     ),
                   ),
-                  child: FlyText.mainTip40("生效日期：2023.8.27 - 2024.1.14")),
+                  child: FlyText.mainTip40("生效日期：2024.2.26 - 2024.7.14")),
               SizedBox(height: ScreenUtil.bottomBarHeight,)
             ],
           ),
@@ -193,6 +193,20 @@ class BusTimeListView extends StatefulWidget {
 class _BusTimeListViewState extends State<BusTimeListView> {
   ThemeProvider themeProvider;
 
+  bool checkTime(String timeStr) {
+    // 当前时间
+    DateTime now = DateTime.now();
+    // 格式化校车到达时间
+    List timeSpl = timeStr.split(":");
+    DateTime dateTime = DateTime(now.year, now.month, now.day, int.parse(timeSpl[0]), int.parse(timeSpl[1]), now.second, now.millisecond, now.microsecond);
+    // 判断是否是一个小时内即将到达的班车
+    if (now.isAfter(dateTime.add(Duration(hours: -1))) &&
+        now.isBefore(dateTime)) {
+      return true;
+    } else
+      return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     this.themeProvider = Provider.of<ThemeProvider>(context);
@@ -220,28 +234,14 @@ class _BusTimeListViewState extends State<BusTimeListView> {
     );
   }
 
+
   Widget _buildColumn(List<String> timeList) {
     bool temp = false;
     //检查是否即将到该时间点
-bool checkTime(String timeStr) {
-  // 当前时间
-  DateTime now = DateTime.now();
-  // 格式化校车到达时间
-  List timeSpl = timeStr.split(":");
-  DateTime dateTime = DateTime(now.year, now.month, now.day, int.parse(timeSpl[0]), int.parse(timeSpl[1]), now.second, now.millisecond, now.microsecond);
-  // 判断是否是一个小时内即将到达的班车
-  if (now.isAfter(dateTime.add(Duration(hours: -1))) &&
-      now.isBefore(dateTime)) {
-    return true;
-  } else
-    return false;
-}
-
     return Column(
       children: timeList.map((item) {
         temp = !temp;
-        bool comingSoon = false;
-        if (checkTime(item)) comingSoon = true;
+        bool comingSoon = checkTime(item);
         return Container(
           width: double.infinity,
           alignment: Alignment.center,
