@@ -9,7 +9,7 @@ class ChineseCupertinoLocalizations implements CupertinoLocalizations {
   final widgetsDelegate = GlobalWidgetsLocalizations.delegate;
   final local = const Locale('zh');
 
-  MaterialLocalizations ml;
+  late MaterialLocalizations ml;
 
   Future init() async {
     ml = await materialDelegate.load(local);

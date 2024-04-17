@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
-import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -20,7 +19,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
   final TextEditingController _usernameController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   CumtLoginAccount cumtLoginAccount = CumtLoginAccount();
   CumtLogin cumtLogin = CumtLogin();
 
@@ -73,7 +72,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
     );
   }
 
-  InkWell buildIconButton({GestureTapCallback onTap}) {
+  InkWell buildIconButton({GestureTapCallback? onTap}) {
     return InkWell(
       onTap: onTap,
       child: Icon(
@@ -83,7 +82,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
     );
   }
 
-  Widget buildLinkButton({GestureTapCallback onTap}) {
+  Widget buildLinkButton({GestureTapCallback? onTap}) {
     return InkWell(
       onTap: onTap,
       child: Text("用户自助服务系统", style: TextStyle(fontSize: fontSizeMain40,
@@ -92,7 +91,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
     );
   }
 
-  InkWell buildPickerButton({GestureTapCallback onTap}) {
+  InkWell buildPickerButton({GestureTapCallback? onTap}) {
     return InkWell(
         onTap: onTap,
         child: Row(
@@ -189,7 +188,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
 
   //输入框组件
   Widget inputBar(String hintText, TextEditingController controller,
-      {FormFieldSetter<String> onSaved, bool obscureText = false}) =>
+      {FormFieldSetter<String>? onSaved, bool obscureText = false}) =>
       Container(
         decoration: BoxDecoration(
             color: Theme
@@ -259,7 +258,7 @@ void _handleLogin(BuildContext context) {
 
   //登录按钮
   Widget cumtLoginButton(int type, String title,
-      {@required GestureTapCallback onTap}) {
+      {required GestureTapCallback onTap}) {
     return Expanded(
       child: Material(
         borderRadius: BorderRadius.circular(5),

@@ -6,11 +6,11 @@ import 'prefs.dart';
 
 
 class CumtLoginAccount{
-  String _username;
-  String _password;
-  CumtLoginLocation _cumtLoginLocation;
-  CumtLoginMethod _cumtLoginMethod;
-  static List<CumtLoginAccount> _list; /// 账号列表
+  String? _username;
+  String? _password;
+  CumtLoginLocation? _cumtLoginLocation;
+  CumtLoginMethod? _cumtLoginMethod;
+  static List<CumtLoginAccount>? _list; /// 账号列表
 
   CumtLoginAccount(){
     _username = "";
@@ -28,11 +28,11 @@ class CumtLoginAccount{
       _list = [];
       if(CumtLoginPrefs.cumtLoginAccountList!=""){
         jsonDecode(CumtLoginPrefs.cumtLoginAccountList).forEach((v) {
-          _list.add(CumtLoginAccount.fromJson(v));
+          _list?.add(CumtLoginAccount.fromJson(v));
         });
       }
     }
-    return _list;
+    return _list??[];
   }
 
   /// 保存账号到历史列表中
@@ -88,10 +88,10 @@ class CumtLoginAccount{
 
   // 刷新当前账号的本地存储数据
   void refreshAccountPrefs(){
-    username = _username;
-    password = _password;
-    cumtLoginLocation = _cumtLoginLocation;
-    cumtLoginMethod = _cumtLoginMethod;
+    username = _username!;
+    password = _password!;
+    cumtLoginLocation = _cumtLoginLocation!;
+    cumtLoginMethod = _cumtLoginMethod!;
   }
 
   @override
@@ -104,13 +104,13 @@ class CumtLoginAccount{
     if(_username==""&&CumtLoginPrefs.cumtLoginUsername!=""){
       _username = CumtLoginPrefs.cumtLoginUsername;
     }
-    return _username;
+    return _username??'';
   }
   String get password{
     if(_password==""&&CumtLoginPrefs.cumtLoginPassword!=""){
       _password = CumtLoginPrefs.cumtLoginPassword;
     }
-    return _password;
+    return _password??'';
   }
   CumtLoginLocation get cumtLoginLocation{
     if(_cumtLoginLocation==null){
@@ -120,7 +120,7 @@ class CumtLoginAccount{
         _cumtLoginLocation = CumtLoginLocation.nh;
       }
     }
-    return _cumtLoginLocation;
+    return _cumtLoginLocation!;
   }
   CumtLoginMethod get cumtLoginMethod{
     if(_cumtLoginMethod==null){
@@ -130,7 +130,7 @@ class CumtLoginAccount{
         _cumtLoginMethod = CumtLoginMethod.cumt;
       }
     }
-    return _cumtLoginMethod;
+    return _cumtLoginMethod!;
   }
 
 

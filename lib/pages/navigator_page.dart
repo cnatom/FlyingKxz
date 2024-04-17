@@ -32,7 +32,7 @@ class BottomNavigationBarModel {
 
 //底部导航栏页面,位于子页面的顶端
 class FlyNavigatorPage extends StatefulWidget {
-  const FlyNavigatorPage({Key key}) : super(key: key);
+  const FlyNavigatorPage({Key? key}) : super(key: key);
 
   @override
   State<FlyNavigatorPage> createState() => FlyNavigatorPageState();
@@ -44,7 +44,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
     with AutomaticKeepAliveClientMixin,WidgetsBindingObserver{
   int _currentIndex = 0; //数组索引，通过改变索引值改变视图
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
 
 
   @override
@@ -78,6 +78,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     themeProvider = Provider.of<ThemeProvider>(context);
     return Intro(
       padding: const EdgeInsets.all(0),
@@ -128,7 +129,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
   }
 
   BottomNavigationBarItem _buildBottomNavigationItem(String title, IconData iconData,
-      {double size}){
+      {double? size}){
     return BottomNavigationBarItem(
         label: title,
         icon: Icon(

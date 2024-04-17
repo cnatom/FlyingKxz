@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/background/background_provider.dart';
 import 'package:flying_kxz/pages/login_page.dart';
@@ -46,7 +46,7 @@ void _ifAndroidSetStatusBarTransparent() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -87,7 +87,7 @@ class MyApp extends StatelessWidget {
                 FocusScopeNode currentFocus = FocusScope.of(context);
                 if (!currentFocus.hasPrimaryFocus &&
                     currentFocus.focusedChild != null) {
-                  FocusManager.instance.primaryFocus.unfocus();
+                  FocusManager.instance.primaryFocus?.unfocus();
                 }
               },
               child: StartPage()),
@@ -98,9 +98,9 @@ class MyApp extends StatelessWidget {
 }
 
 class StartPage extends StatelessWidget {
-  StartPage({Key key}) : super(key: key);
+  StartPage({Key? key}) : super(key: key);
 
-  BackgroundProvider backgroundProvider;
+  late BackgroundProvider backgroundProvider;
 
   Future<void> initFunc(BuildContext context) async {
     // 获取当前App版本
@@ -117,7 +117,7 @@ class StartPage extends StatelessWidget {
       deviceWidth = 1920;
     }
     //初始化参考屏幕信息
-    ScreenUtil.init(context, height: deviceHeight, width: deviceWidth);
+    ScreenUtil.init(context, designSize: Size(deviceWidth, deviceHeight));
     //初始化配置
     initSize();
     // 缓存壁纸

@@ -25,9 +25,9 @@ class CumtLogin {
   );
 
   /// 注销
-  static Future<String> logout({@required CumtLoginAccount account}) async {
+  static Future<String> logout({required CumtLoginAccount account}) async {
     try {
-      String url = account.cumtLoginLocation?.logoutUrl;
+      String? url = account.cumtLoginLocation.logoutUrl;
       //配置dio信息
       Response res = await dio.get(url);
       //Json解码为Map
@@ -42,7 +42,7 @@ class CumtLogin {
   }
 
   //自动登录
-  static Future<String> autoLogin({@required CumtLoginAccount account}) async {
+  static Future<String> autoLogin({required CumtLoginAccount account}) async {
     final connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.wifi) {
       if (!account.isEmpty) {
@@ -90,7 +90,7 @@ class CumtLogin {
   }
 
   /// 登录
-  static Future<String> login({@required CumtLoginAccount account}) async {
+  static Future<String> login({required CumtLoginAccount account}) async {
     try {
       String url = account.cumtLoginLocation.loginUrl(
           account.username, account.password, account.cumtLoginMethod);

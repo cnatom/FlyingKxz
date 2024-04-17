@@ -7,8 +7,8 @@ import 'custom_shape.dart';
 class SentMessageScreen extends StatelessWidget {
   final String message;
   const SentMessageScreen({
-    Key key,
-    @required this.message,
+    Key? key,
+    required this.message,
   }) : super(key: key);
 
   @override
@@ -32,7 +32,7 @@ class SentMessageScreen extends StatelessWidget {
                 child: FlyText.title45(message,color: Colors.white,maxLine: 10,),
               ),
             ),
-            CustomPaint(painter: CustomShape(Colors.cyan[900])),
+            CustomPaint(painter: CustomShape(Colors.cyan[900]!)),
             // 头像
             Center(
               child: Container(

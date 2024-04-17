@@ -2,7 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,7 +22,7 @@ class CumtLoginHelpPage extends StatefulWidget {
 }
 
 class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   Widget helpItem(
     String imageResource,
     String text,
@@ -49,9 +49,9 @@ class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
       );
 
   Widget buildText(
-      {@required String title,
-      List<String> textList,
-      List<String> littleTextList}) {
+      {required String title,
+      required List<String> textList,
+      List<String>? littleTextList}) {
     return Wrap(
       runSpacing: 10,
       children: [
@@ -131,7 +131,7 @@ class _CumtLoginHelpPageState extends State<CumtLoginHelpPage> {
     );
   }
 
-  InkWell _buildButton(String title, {GestureTapCallback onTap}) {
+  InkWell _buildButton(String title, {GestureTapCallback? onTap}) {
     return InkWell(
       onTap: onTap,
       child: Container(

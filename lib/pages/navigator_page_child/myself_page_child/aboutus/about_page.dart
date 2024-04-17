@@ -197,11 +197,11 @@ class _AboutPageState extends State<AboutPage> {
 
   Widget _buildButton(
       {int type = 0,
-        @required String title,
-        String imageResource,
-        @required subTitle,
-        String qqNumber,
-        GestureTapCallback onTap}) {
+        required String title,
+        String? imageResource,
+        required subTitle,
+        String? qqNumber,
+        GestureTapCallback? onTap}) {
     return Container(
       width: ScreenUtil().setWidth(deviceWidth / 2) - spaceCardPaddingTB / 2,
       padding: EdgeInsets.fromLTRB(spaceCardPaddingTB / 2, spaceCardPaddingTB,
@@ -209,7 +209,7 @@ class _AboutPageState extends State<AboutPage> {
       child: InkWell(
         onTap: onTap == null
             ? () {
-          Clipboard.setData(ClipboardData(text: qqNumber));
+          Clipboard.setData(ClipboardData(text: qqNumber!));
           showToast("已复制QQ号至剪切板", duration: 1);
         }
             : onTap,
@@ -231,7 +231,7 @@ class _AboutPageState extends State<AboutPage> {
                         : "http://p.qlogo.cn/gh/$qqNumber/$qqNumber/640/",
                     fit: BoxFit.cover,
                   )
-                      : Image.asset(imageResource),
+                      : Image.asset(imageResource!),
                 ),
               ),
               SizedBox(
@@ -252,7 +252,7 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
   Widget _buildUnit(String title, String subTitle,
-      {@required List<Widget> children}) {
+      {required List<Widget> children}) {
     return Column(
       children: [
         Padding(

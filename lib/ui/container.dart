@@ -9,14 +9,14 @@ import 'theme.dart';
 import 'config.dart';
 
 class FlyContainer extends StatefulWidget {
-  final Widget child;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
-  final Decoration decoration;
-  final double width;
-  final Key key;
-  final Color backgroundColor;
-  final double transValue;
+  final Widget? child;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
+  final Decoration? decoration;
+  final double? width;
+  final Key? key;
+  final Color? backgroundColor;
+  final double? transValue;
   FlyContainer(
       {@required this.child, this.margin, this.padding, this.decoration, this.key, this.width, this.transValue,this.backgroundColor});
   @override
@@ -49,7 +49,7 @@ class _FlyContainerState extends State<FlyContainer> {
 class FlyNavBackground extends StatefulWidget {
   final Widget child;
 
-  const FlyNavBackground({Key key, @required this.child}) : super(key: key);
+  const FlyNavBackground({Key? key, required this.child}) : super(key: key);
 
   @override
   _FlyNavBackgroundState createState() => _FlyNavBackgroundState();

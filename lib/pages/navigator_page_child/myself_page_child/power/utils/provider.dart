@@ -16,7 +16,7 @@ enum PowerRequestType{
 typedef PowerPostCallback = String Function(Map<String,dynamic> map);
 
 class PowerProvider extends ChangeNotifier{
-  double power = Prefs.power;
+  double? power = Prefs.power;
 
   bool powerLoading = false;
 
@@ -43,30 +43,30 @@ class PowerProvider extends ChangeNotifier{
   // 预览信息
   String get previewTextAtDetailPage => power==null?"未绑定":power.toString();
   double get percentAtDetailPage {
-    if(power!=null&&power>0.0&&power<=Prefs.power){
-      return double.tryParse((power/Prefs.powerMax).toStringAsFixed(2))??0.0;
+    if(power!=null&&power!>0.0&&power!<=Prefs.power!){
+      return double.tryParse((power!/Prefs.powerMax!).toStringAsFixed(2))??0.0;
     }
     return 0.0;
   }
 
   //宿舍楼、宿舍号码
-  String _powerRoomid;
-  String _powerBuilding;
-  String get powerRoomid => _powerRoomid??Prefs.powerRoomid;
-  String get powerBuilding => _powerBuilding??Prefs.powerBuilding;
-  set powerRoomid(String value) => _powerRoomid = value;
-  set powerBuilding(String powerBuilding){
-    this._powerBuilding = powerBuilding;
+  late String _powerRoomid;
+  late String _powerBuilding;
+  String? get powerRoomid => _powerRoomid??Prefs.powerRoomid;
+  String? get powerBuilding => _powerBuilding??Prefs.powerBuilding;
+  set powerRoomid(String? value) => this._powerRoomid = value??"";
+  set powerBuilding(String? powerBuilding){
+    this._powerBuilding = powerBuilding??"";
     notifyListeners();
   }
 
   //更新时间
-  String _requestDateTime;
+  String? _requestDateTime;
 
   Future<bool> getPreview()async{
     try{
       if(Prefs.powerBuilding!=null){
-        bool ok = await _get(Prefs.powerBuilding, Prefs.powerRoomid);
+        bool ok = await _get(Prefs.powerBuilding!, Prefs.powerRoomid!);
         if(ok) return true;
       }
       return false;
@@ -81,8 +81,8 @@ class PowerProvider extends ChangeNotifier{
     FocusScope.of(context).requestFocus(FocusNode());
     powerLoading = true;
     notifyListeners();
-    if(powerBuilding!=null&&powerRoomid!=null&&powerRoomid.isNotEmpty){
-      await _get(powerBuilding, powerRoomid,show: true);
+    if(powerBuilding!=null&&powerRoomid!=null&&powerRoomid!.isNotEmpty){
+      await _get(powerBuilding!, powerRoomid!,show: true);
     }else{
       showToast( "请输入完整");
     }
@@ -95,14 +95,14 @@ class PowerProvider extends ChangeNotifier{
     String power;
     try{
       await Cumt.getInstance().loginDefault();
-      String account = await _getAccount(Prefs.username);
+      String account = await _getAccount(Prefs.username!);
       String aid = await _getAid();
-      power = await _getPower(account, aid, Prefs.username, building, roomid);
+      power = await _getPower(account, aid, Prefs.username!, building, roomid);
       RegExp regExp = new RegExp(r'([0-9]\d*\.?\d*)$');
       if(regExp.hasMatch(power)){
-        this.power = double.tryParse(regExp.firstMatch(power).group(0));
+        this.power = double.tryParse(regExp.firstMatch(power)!.group(0)!);
         requestDateTime = DateTime.now().toString().substring(0,16);
-        _savePrefs(this.power, building, roomid);
+        _savePrefs(this.power!, building, roomid);
         notifyListeners();
         if(show) showToast("获取电量成功!");
         Logger.log("Power", "获取,成功",{"building":powerBuilding,"roomid":powerRoomid,"power":power});
@@ -132,7 +132,7 @@ class PowerProvider extends ChangeNotifier{
     var url = _urls[PowerRequestType.account];
     var data = 'jsondata={"query_card":{"idtype":"sno","id":"' + username +
         '"}}&funname=synjones.onecard.query.card&json=true';
-    return await _postStepFunc(url, data, (map){
+    return await _postStepFunc(url!, data, (map){
       return map['query_card']['card'][0]['account'];
     });
   }
@@ -140,7 +140,7 @@ class PowerProvider extends ChangeNotifier{
   Future<String> _getAid() async{
     var url = _urls[PowerRequestType.aid];
     var data = 'jsondata={"query_applist":{ "apptype": "elec" }}&funname=synjones.onecard.query.applist&json=true';
-    return await _postStepFunc(url, data, (map){
+    return await _postStepFunc(url!, data, (map){
       return map['query_applist']['applist'][0]["aid"];
     });
   }
@@ -152,7 +152,7 @@ class PowerProvider extends ChangeNotifier{
       'funname': 'synjones.onecard.query.elec.roominfo',
       'json': 'true'
     };
-    return await _postStepFunc(url, data, (map){
+    return await _postStepFunc(url!, data, (map){
       return map['query_elec_roominfo']['errmsg'];
     });
   }
@@ -162,7 +162,7 @@ class PowerProvider extends ChangeNotifier{
     if(Prefs.powerMax==null) Prefs.powerMax = power;
     if(Prefs.power==null) Prefs.power = 0.0;
     //当电量比上次多时，保存最大电量
-    if(power>Prefs.power){
+    if(power>Prefs.power!){
       Prefs.powerMax = power;
     }
     //如果更换了绑定信息，则重新统计
@@ -190,6 +190,6 @@ class PowerProvider extends ChangeNotifier{
         _requestDateTime = "……";
       }
     }
-    return _requestDateTime;
+    return _requestDateTime!;
   }
 }

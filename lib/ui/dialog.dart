@@ -7,10 +7,9 @@ import 'config.dart';
 
 Future<String> FlyDialogInputShow(BuildContext context,
     {String hintText = '请在此填写',
-    VoidCallback onPressedYes,
+    VoidCallback? onPressedYes,
     int maxLines = 12,
     String confirmText = "确定"}) async {
-  TextEditingController controller;
   FocusNode focusNode = FocusNode();
   FocusScope.of(context).requestFocus(focusNode);
   String result = '';
@@ -35,7 +34,6 @@ Future<String> FlyDialogInputShow(BuildContext context,
           onChanged: (text) {
             result = text;
           },
-          controller: controller,
           decoration: InputDecoration(
             hintStyle: TextStyle(
               fontSize: fontSizeMain40,
@@ -68,7 +66,7 @@ Future<String> FlyDialogInputShow(BuildContext context,
 }
 
 Future<dynamic> FlyDialogDIYShow(BuildContext context,
-    {@required Widget content,List<Widget> actions}) async {
+    {required Widget content,List<Widget>? actions}) async {
   return await showDialog(
     context: context,
     builder: (context) => AlertDialog(

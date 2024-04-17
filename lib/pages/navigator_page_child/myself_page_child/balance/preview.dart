@@ -7,7 +7,7 @@ import 'balance_page.dart';
 import 'provider.dart';
 
 class BalancePreviewView extends StatefulWidget {
-  const BalancePreviewView({Key key}) : super(key: key);
+  const BalancePreviewView({Key? key}) : super(key: key);
 
   @override
   State<BalancePreviewView> createState() => _BalancePreviewViewState();

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/util.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
-import 'package:synchronized/extension.dart';
-
 import '../../../../../util/logger/log.dart';
 
 enum StateTextAnimationDirection {
@@ -16,7 +14,7 @@ class CumtLoginStateText extends StatefulWidget {
   final String defaultText;
   final StateTextAnimationDirection Function(String oldText) onDirection;
 
-  CumtLoginStateText({@required this.defaultText, this.onDirection});
+  CumtLoginStateText({required this.defaultText, required this.onDirection});
 
   @override
   CumtLoginStateTextState createState() => CumtLoginStateTextState();
@@ -27,12 +25,12 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
         WidgetsBindingObserver,
         AutomaticKeepAliveClientMixin,
         SingleTickerProviderStateMixin {
-  String result;
+  late String result;
   String oldResult = "";
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   CumtLoginAccount account = CumtLoginAccount();
-  AnimationController _controller;
-  Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
   StateTextAnimationDirection direction = StateTextAnimationDirection.down;
   @override
   void didUpdateWidget(covariant CumtLoginStateText oldWidget) {
@@ -55,7 +53,7 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
     );
 
     _animation = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(_controller);
+        .animate(_controller.view);
     autoLogin();
   }
 
@@ -108,7 +106,7 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
     themeProvider = Provider.of<ThemeProvider>(context);
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return Stack(
           children: [
             Transform.translate(

@@ -5,7 +5,7 @@ class CumtLoginPrefs {
   static Future<void> init() async{
     prefs = await SharedPreferences.getInstance();
   }
-  static SharedPreferences prefs;
+  static late SharedPreferences prefs;
   static clear(){
     prefs.remove(_cumtLoginUsername);
     prefs.remove(_cumtLoginPassword);

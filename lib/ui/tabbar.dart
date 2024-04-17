@@ -3,8 +3,8 @@ import 'package:flying_kxz/ui/text.dart';
 
 class FlyTabBar extends StatelessWidget implements PreferredSizeWidget {
   const FlyTabBar({
-    Key key,
-    @required TabController tabController,@required this.tabs,
+    Key? key,
+    required TabController tabController,required this.tabs,
   }) : _tabController = tabController, super(key: key);
   final List<Widget> tabs;
   final TabController _tabController;

@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/new_book_page.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -21,7 +21,7 @@ class DiyPage extends StatefulWidget {
 }
 
 class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,SingleTickerProviderStateMixin {
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
               backgroundColor: Colors.transparent,
               title: FlyText.title45('发现',color:themeProvider.colorNavText,fontWeight: FontWeight.w600,),
             ),
-            SizedBox(height: ScreenUtil().setHeight(ScreenUtil.statusBarHeight)/2,),
+            SizedBox(height: ScreenUtil().setHeight(ScreenUtil().statusBarHeight)/2,),
             Wrap(
               runSpacing: spaceCardMarginBigTB,
               children: [
@@ -74,7 +74,7 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
       ),
     );
   }
-  Widget funcButton({@required String imageResource,@required String title,@required subTitle,GestureTapCallback onTap,Color color = Colors.grey}){
+  Widget funcButton({required String imageResource,required String title,required subTitle,GestureTapCallback? onTap,Color color = Colors.grey}){
     return Container(
       width: ScreenUtil().setWidth(deviceWidth/2)-spaceCardMarginRL/2,
       padding: EdgeInsets.fromLTRB(0,0, spaceCardPaddingTB, spaceCardPaddingTB),

@@ -7,12 +7,12 @@ import 'package:provider/provider.dart';
 
 class FlyTextButton extends StatefulWidget {
   final String title;
-  final GestureTapCallback onTap;
-  final Color color;
-  final int maxLine;
+  final GestureTapCallback? onTap;
+  final Color? color;
+  final int? maxLine;
 
   const FlyTextButton(this.title,
-      {Key key, this.onTap, this.color, this.maxLine})
+      {Key? key, this.onTap, this.color, this.maxLine})
       : super(key: key);
 
   @override
@@ -20,7 +20,7 @@ class FlyTextButton extends StatefulWidget {
 }
 
 class _FlyTextButtonState extends State<FlyTextButton> {
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
 
   @override
   Widget build(BuildContext context) {

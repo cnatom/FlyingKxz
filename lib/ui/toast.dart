@@ -7,7 +7,7 @@ import 'package:flying_kxz/ui/config.dart';
 import 'text.dart';
 
 void showToast(String text,
-    {String subTitle,int duration = 3,bool bottom = false}) {
+    {String? subTitle,int duration = 3,bool bottom = false}) {
   BotToast.showSimpleNotification(
     title: text,
     subTitle: subTitle,
@@ -19,7 +19,7 @@ void showToast(String text,
   );
 }
 
-void showFlyDialog(BuildContext context, {@required Widget child}) {
+void showFlyDialog(BuildContext context, {required Widget child}) {
   showAnimatedDialog(
       context: context,
       barrierDismissible: true,
@@ -46,10 +46,10 @@ class Toast {
       Color backgroundColor = const Color(0xAA000000),
       Color textColor = Colors.white,
       double backgroundRadius = 20,
-      Border border}) {
+      Border? border}) {
     ToastView.dismiss();
     ToastView.createView(msg, context, duration, gravity, backgroundColor,
-        textColor, backgroundRadius, border);
+        textColor, backgroundRadius, border?? Border.all(color: Colors.transparent));
   }
 }
 
@@ -62,8 +62,8 @@ class ToastView {
 
   ToastView._internal();
 
-  static OverlayState overlayState;
-  static OverlayEntry _overlayEntry;
+  static late OverlayState overlayState;
+  static late OverlayEntry _overlayEntry;
   static bool _isVisible = false;
 
   static void createView(
@@ -122,9 +122,9 @@ class ToastView {
 
 class ToastWidget extends StatelessWidget {
   ToastWidget({
-    Key key,
-    @required this.widget,
-    @required this.gravity,
+    Key? key,
+    required this.widget,
+    required this.gravity,
   }) : super(key: key);
 
   final Widget widget;

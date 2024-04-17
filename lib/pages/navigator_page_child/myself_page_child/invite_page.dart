@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/util/logger/log.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -14,7 +13,7 @@ class InvitePage extends StatefulWidget {
 
 class _InvitePageState extends State<InvitePage> {
   Widget button(String title,
-      {GestureTapCallback onTap, String imageAsset, Color color,IconData iconData}) {
+      {GestureTapCallback? onTap, String? imageAsset, Color? color,IconData? iconData}) {
     Widget leadingIcon = Icon(Icons.ac_unit, color: Colors.white);
     if(imageAsset!=null){
       leadingIcon = Image.asset(
