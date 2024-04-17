@@ -71,7 +71,12 @@ class CumtFormat{
                 try{
                   teacher = temp3.querySelector('span[title="教师 "]').parent.text;
                 }catch(e){
-                  teacher = temp3.querySelector('span[title="教师"]').parent.text;
+                  try{
+                    teacher = temp3.querySelector('span[title="教师"]').parent.text;
+                  }
+                  catch(e){
+                    teacher = '';
+                  }
                 }
                 try{
                   credit = temp3.querySelector('span[title="学分"]').parent.text;
