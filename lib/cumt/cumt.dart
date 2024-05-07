@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/cumt/aes_parser.dart';
 import 'package:flying_kxz/ui/toast.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:url_launcher/url_launcher.dart';
@@ -252,16 +253,21 @@ class Cumt{
     return result;
   }
   Future<String> _pwdAes(String password, String salt) async {
-    try {
-      Response response;
-      var queryParameters = {'pwd': password, 'salt': salt};
-      // 旧接口：https://service-0gxixtbh-1300058565.sh.apigw.tencentcs.com/release/password
-      response = await Dio().get('https://aes.atcumt.com/password', queryParameters: queryParameters);
-      if (response.statusCode == 200) {
-        return response.data;
+    try{
+      String result = pwdAes(password, salt);
+      return result;
+    }catch(e){
+      try {
+        Response response;
+        var queryParameters = {'pwd': password, 'salt': salt};
+        // 旧接口：https://service-0gxixtbh-1300058565.sh.apigw.tencentcs.com/release/password
+        response = await Dio().get('https://aes.atcumt.com/password', queryParameters: queryParameters);
+        if (response.statusCode == 200) {
+          return response.data;
+        }
+      } on DioError catch (e) {
+        print(e.response.toString());
       }
-    } on DioError catch (e) {
-      print(e.response.toString());
     }
     return '';
   }
