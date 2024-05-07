@@ -5,7 +5,6 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/s
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/utils/score_sort.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_chip.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_container.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/search_bar.dart';
 import 'package:flying_kxz/ui/animated.dart';
 import 'package:provider/provider.dart';
 import '../../../../../../ui/ui.dart';
@@ -14,15 +13,15 @@ import 'ui/score_help_dialog.dart';
 
 
 class ScoreFilterConsole extends StatefulWidget {
-  ScoreFilterConsole({Key key});
+  ScoreFilterConsole({Key? key});
 
   @override
   State<ScoreFilterConsole> createState() => _ScoreFilterConsoleState();
 }
 
 class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
-  ThemeProvider themeProvider;
-  ScoreProvider scoreProvider;
+  late ThemeProvider themeProvider;
+  late ScoreProvider scoreProvider;
 
   void _showHelp() => FlyDialogDIYShow(context, content: ScoreHelpDialog());
   void _toSetPage() => toScoreSetNewPage(context);
@@ -127,7 +126,7 @@ class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
       ]
   );
 
-  Widget buildConsoleSingleButton({String title,IconData iconData,GestureTapCallback onTap}) {
+  Widget buildConsoleSingleButton({required String title,IconData? iconData,GestureTapCallback? onTap}) {
     Color color = Theme.of(context).primaryColor.withOpacity(0.5);
     return InkWell(
             onTap: onTap,
@@ -147,7 +146,7 @@ class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
           );
   }
 
-  Widget buildConsole({List<Widget> children,EdgeInsetsGeometry padding}) => ScoreContainer(
+  Widget buildConsole({required List<Widget> children,EdgeInsetsGeometry? padding}) => ScoreContainer(
       padding: padding??EdgeInsets.symmetric(vertical: spaceCardPaddingTB,horizontal: spaceCardPaddingRL*1.5),
       child: Row(
         children: [
@@ -160,7 +159,7 @@ class _ScoreFilterConsoleState extends State<ScoreFilterConsole> {
       )
   );
 
-  Widget buildConsoleRow({@required String title, List<Widget> children}) {
+  Widget buildConsoleRow({required String title,required List<Widget> children}) {
     Color leadingTextColor = Theme.of(context).primaryColor.withOpacity(0.5);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

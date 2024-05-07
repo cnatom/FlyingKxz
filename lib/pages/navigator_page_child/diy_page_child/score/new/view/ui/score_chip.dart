@@ -8,14 +8,14 @@ class ScoreChip extends StatefulWidget {
   final String title;
   final bool clicked;
   final ScoreChipTapCallback onTap;
-  const ScoreChip({Key key, @required this.title, this.clicked = false,this.onTap}) : super(key: key);
+  const ScoreChip({Key? key, required this.title, this.clicked = false,required this.onTap}) : super(key: key);
 
   @override
   State<ScoreChip> createState() => _ScoreChipState();
 }
 
 class _ScoreChipState extends State<ScoreChip> {
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
 
   onTap()=> widget.onTap(widget.clicked);
 

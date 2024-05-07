@@ -13,7 +13,7 @@ enum ScoreRateChipType{
 }
 
 class ScoreRateView extends StatefulWidget {
-  const ScoreRateView({Key key,this.onRateChange,this.initRate = 1.0}) : super(key: key);
+  const ScoreRateView({Key? key,required this.onRateChange,this.initRate = 1.0}) : super(key: key);
   final ScoreCardRateChange onRateChange;
   final double initRate;
 
@@ -22,10 +22,10 @@ class ScoreRateView extends StatefulWidget {
 }
 
 class _ScoreRateViewState extends State<ScoreRateView> {
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   TextEditingController rateController = TextEditingController();
   FocusNode rateFocusNode = FocusNode();
-  double rateResult;
+  late double rateResult;
   int curIndex = 0;
 
   // 确保在排序过程中倍率界面能够相应地调整
@@ -60,14 +60,14 @@ class _ScoreRateViewState extends State<ScoreRateView> {
   }
 
   // 1.0倍 1.2倍 按钮
-  Widget buildRateButton({double rate, int index}) {
+  Widget buildRateButton({required double rate,required int index}) {
     return buildChip(
         child: FlyText.title45(rate.toString(), color: getTextColor(index)),
         onTap: () {
           setState(() {
             curIndex = index;
             rateResult = rate;
-            widget.onRateChange?.call(rateResult);
+            widget.onRateChange.call(rateResult);
           });
         },
         index: index
@@ -75,7 +75,7 @@ class _ScoreRateViewState extends State<ScoreRateView> {
   }
 
   // 自定义倍数输入按钮
-  Widget buildCustomRateInput({int index}) {
+  Widget buildCustomRateInput({required int index}) {
     return buildChip(
         child: TextField(
           controller: rateController,
@@ -116,7 +116,7 @@ class _ScoreRateViewState extends State<ScoreRateView> {
           },
           onChanged: (value) {
             rateResult = double.parse(value);
-            widget.onRateChange?.call(rateResult);
+            widget.onRateChange.call(rateResult);
           },
         ),
         index: index

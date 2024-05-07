@@ -19,13 +19,13 @@ class ImportScorePage extends StatefulWidget {
 }
 
 class _ImportScorePageState extends State<ImportScorePage> {
-  InAppWebViewController _controller;
-  ThemeProvider themeProvider;
+  late InAppWebViewController _controller;
+  late ThemeProvider themeProvider;
   double progress = 0.0;
   bool loadingWeb = true;
   bool loading = false;
 
-  List<Map<String,dynamic>> result = [];
+  List<Map<String,dynamic>>? result = [];
 
 
   @override
@@ -40,7 +40,7 @@ class _ImportScorePageState extends State<ImportScorePage> {
   }
 
   _showDetail()async{
-    if(result==null||result.isEmpty){
+    if(result==null||result!.isEmpty){
       showToast('列表为空');
       return;
     }
@@ -51,7 +51,7 @@ class _ImportScorePageState extends State<ImportScorePage> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10)),
       builder: (BuildContext context) {
-        return ScoreTempListView(list:result);
+        return ScoreTempListView(list:result!);
       },
     );
     if(temp==null) return;
@@ -62,19 +62,20 @@ class _ImportScorePageState extends State<ImportScorePage> {
   }
   _add()async{
     var html = await _controller.getHtml();
+    if(html==null) return;
     var res = CumtFormat.parseScoreAll(html);
     if(res==null) return;
-    result.addAll(res);
+    result?.addAll(res);
     setState(() {
 
     });
   }
   _ok(){
-    if(result==null||result.isEmpty){
+    if(result==null||result!.isEmpty){
       showToast('列表为空');
       return;
     }
-    result.sort((a, b) => a['courseName'].compareTo(b['courseName']));
+    result?.sort((a, b) => a['courseName'].compareTo(b['courseName']));
     Navigator.of(context).pop(result);
   }
   @override
@@ -168,7 +169,7 @@ class _ImportScorePageState extends State<ImportScorePage> {
             InkWell(
               onTap: ()=>_showDetail(),
               child: badges.Badge(
-                badgeContent: Text(result.length.toString(),style: TextStyle(color: Colors.white),),
+                badgeContent: Text(result!.length.toString(),style: TextStyle(color: Colors.white),),
                 child: Icon(Icons.list,size: 35,color: textColor,),
               ),
             ),

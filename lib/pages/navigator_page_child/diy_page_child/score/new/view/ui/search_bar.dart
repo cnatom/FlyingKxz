@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'score_container.dart';
 
 class ScoreSearchBar extends StatefulWidget {
-  const ScoreSearchBar({Key key,this.onChanged});
+  const ScoreSearchBar({Key? key,required this.onChanged});
   final ValueChanged<String> onChanged;
   @override
   State<ScoreSearchBar> createState() => _ScoreSearchBarState();
