@@ -1,0 +1,32 @@
+{
+  "name": "flutter_js",
+  "version": "0.1.0",
+  "summary": "A Javascript engine to use with flutter. It uses quickjs on Android and JavascriptCore on IOS",
+  "description": "A Javascript engine to use with flutter. It uses quickjs on Android and JavascriptCore on IOS",
+  "homepage": "http://example.com",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "Your Company": "email@example.com"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": "Classes/**/*",
+  "dependencies": {
+    "Flutter": [
+
+    ]
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "frameworks": "JavaScriptCore",
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES",
+    "VALID_ARCHS[sdk=iphonesimulator*]": "x86_64"
+  },
+  "swift_versions": "5.0",
+  "swift_version": "5.0"
+}
