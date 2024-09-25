@@ -1,25 +1,25 @@
 //一般字体
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'config.dart';
-double fontSizeTitle50; //headline1
-double fontSizeTitle45; //headline2
-double fontSizeMain40; //body1
-double fontSizeMini38; //body2
-double fontSizeTip33; //subtitle1
-double fontSizeTipMini25; //subtitle2
-double fontSizeTipMini20; //subtitle2
+late double fontSizeTitle50; //headline1
+late double fontSizeTitle45; //headline2
+late double fontSizeMain40; //body1
+late double fontSizeMini38; //body2
+late double fontSizeTip33; //subtitle1
+late double fontSizeTipMini25; //subtitle2
+late double fontSizeTipMini20; //subtitle2
 
 //边距等配置
-double spaceCardMarginBigTB;
-double spaceCardMarginTB;//上下外边距
-double spaceCardPaddingTB;//上下内边距
-double spaceCardMarginRL;//左右外边距
-double spaceCardPaddingRL;//左右内边距
+late double spaceCardMarginBigTB;
+late double spaceCardMarginTB;//上下外边距
+late double spaceCardPaddingTB;//上下内边距
+late double spaceCardMarginRL;//左右外边距
+late double spaceCardPaddingRL;//左右内边距
 //图标大小管理
-double sizeIconMain50;
+late double sizeIconMain50;
 void initSize(){
   fontSizeTitle50 = ScreenUtil().setSp(50); //headline1
   fontSizeTitle45 = ScreenUtil().setSp(45); //headline2
@@ -72,14 +72,14 @@ class FlyText extends StatelessWidget {
   FlyText.miniTip25(
       this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
       ) : fontSize = fontSizeTipMini25,color = Color(0xff8d8d93);
-  final TextAlign textAlign;
+  final TextAlign? textAlign;
   final String text;
-  final double fontSize;
-  final Color color;
-  final int maxLine;
-  final int letterSpacing;
-  final FontWeight fontWeight;
-  final TextDecoration textDecoration;
+  final double? fontSize;
+  final Color? color;
+  final int? maxLine;
+  final int? letterSpacing;
+  final FontWeight? fontWeight;
+  final TextDecoration? textDecoration;
   final bool autoscaling;
   Widget build(BuildContext context) {
     var textStyle = TextStyle(

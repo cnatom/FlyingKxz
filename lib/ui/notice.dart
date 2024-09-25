@@ -34,7 +34,7 @@ class NoticeCard extends StatefulWidget {
 }
 
 class NoticeCardState extends State<NoticeCard> {
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   static String info = '';
   static bool loading = false;
   void _getNoticeInfo()async{

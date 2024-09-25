@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 class ScoreTempListNewView extends StatefulWidget {
   List<Map<String, dynamic>> list;
-  ScoreTempListNewView({this.list});
+  ScoreTempListNewView({required this.list});
   @override
   _ScoreTempListNewViewState createState() => _ScoreTempListNewViewState();
 }
@@ -13,7 +13,7 @@ class ScoreTempListNewView extends StatefulWidget {
 class _ScoreTempListNewViewState extends State<ScoreTempListNewView> {
   List<Map<String, dynamic>> pre = [];
   List<Map<String, dynamic>> cur = [];
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   @override
   void initState() {
     super.initState();

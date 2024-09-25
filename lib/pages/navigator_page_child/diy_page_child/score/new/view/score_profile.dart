@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/ui/animated.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -13,15 +13,15 @@ class ScoreProfile extends StatefulWidget {
   final double jiaquan;
   final double jidian;
 
-  const ScoreProfile({Key key, this.jiaquan, this.jidian});
+  const ScoreProfile({Key? key,required this.jiaquan,required this.jidian});
 
   @override
   State<ScoreProfile> createState() => _ScoreProfileState();
 }
 
 class _ScoreProfileState extends State<ScoreProfile> {
-  ThemeProvider themeProvider;
-  ScoreProvider scoreProvider;
+  late ThemeProvider themeProvider;
+  late ScoreProvider scoreProvider;
 
   clickFilterChip() => scoreProvider.toggleShowConsole();
 
@@ -101,7 +101,7 @@ class _ScoreProfileState extends State<ScoreProfile> {
   }
 
   //展开闭合组件
-  Widget expandChip({Key key}) {
+  Widget expandChip({Key? key}) {
     return InkWell(
       key: key,
       onTap: () {
@@ -132,7 +132,7 @@ class _ScoreProfileState extends State<ScoreProfile> {
     );
   }
 
-  Widget filterChip({Key key, GestureTapCallback onTap}) {
+  Widget filterChip({Key? key, GestureTapCallback? onTap}) {
     return InkWell(
       key: key,
       onTap: onTap,
@@ -151,7 +151,7 @@ class _ScoreProfileState extends State<ScoreProfile> {
     );
   }
 
-  Widget selectAllChip({GestureTapCallback onTap, bool selectAll = false}) {
+  Widget selectAllChip({GestureTapCallback? onTap, bool selectAll = false}) {
     return InkWell(
       onTap: onTap,
       child: Container(

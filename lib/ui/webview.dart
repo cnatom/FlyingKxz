@@ -7,10 +7,10 @@ import 'appbar.dart';
 import 'config.dart';
 
 class FlyWebView extends StatefulWidget {
-  final String title;
-  final String initialUrl;
+  final String? title;
+  final String? initialUrl;
   final bool check;//是否检测内网连接
-  const FlyWebView({Key key, this.title, this.initialUrl, this.check = false}) : super(key: key);
+  const FlyWebView({Key? key, this.title, this.initialUrl, this.check = false}) : super(key: key);
   @override
   _FlyWebViewState createState() => _FlyWebViewState();
 }

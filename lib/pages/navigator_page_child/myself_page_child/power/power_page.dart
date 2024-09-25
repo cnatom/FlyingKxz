@@ -25,12 +25,12 @@ class _PowerPageState extends State<PowerPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _powerRoomidController =
       new TextEditingController(text: Prefs.powerRoomid ?? '');
-  ThemeProvider themeProvider;
-  PowerProvider powerProvider;
-  String powerPreviewText;
-  String powerBuilding;
-  double powerPercent;
-  bool powerLoading;
+  late ThemeProvider themeProvider;
+  late PowerProvider powerProvider;
+  late String powerPreviewText;
+  late String powerBuilding;
+  late double powerPercent;
+  late bool powerLoading;
 
   // 选择宿舍楼
   void _handlePowerPicker() async {
@@ -71,7 +71,7 @@ class _PowerPageState extends State<PowerPage> {
     powerProvider = Provider.of<PowerProvider>(context, listen: false);
     powerPreviewText =
         context.select((PowerProvider p) => p.previewTextAtDetailPage);
-    powerBuilding = context.select((PowerProvider p) => p.powerBuilding);
+    powerBuilding = context.select((PowerProvider p) => p.powerBuilding!);
     powerPercent = context.select((PowerProvider p) => p.percentAtDetailPage);
     powerLoading = context.select((PowerProvider p) => p.powerLoading);
     return Scaffold(
@@ -140,7 +140,7 @@ class _PowerPageState extends State<PowerPage> {
     );
   }
 
-  InkWell _buildButton(String title, {bool primer = true,GestureTapCallback onTap}) {
+  InkWell _buildButton(String title, {bool primer = true,GestureTapCallback? onTap}) {
     Color borderColor = primer?Colors.transparent:themeProvider.colorMain;
     Color textColor = primer?Colors.white:themeProvider.colorMain;
     Color backgroundColor = primer?themeProvider.colorMain:Colors.transparent;
@@ -164,7 +164,7 @@ class _PowerPageState extends State<PowerPage> {
   }
 
   Widget _buildDiyButton(String title,
-      {@required Widget child, GestureTapCallback onTap}) {
+      {required Widget child, GestureTapCallback? onTap}) {
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -190,7 +190,7 @@ class _PowerPageState extends State<PowerPage> {
   }
 
   Widget _buildPreviewButton(String title, String previewStr,
-      {GestureTapCallback onTap}) {
+      {GestureTapCallback? onTap}) {
     return _buildDiyButton(title,
         onTap: onTap,
         child: Row(
@@ -217,7 +217,7 @@ class _PowerPageState extends State<PowerPage> {
         child: _buildInputBar("输入大寝室号(如 M2B421 )", _powerRoomidController));
   }
 
-  Widget _container({@required String title, @required Widget child}) {
+  Widget _container({required String title, required Widget child}) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadiusValue),

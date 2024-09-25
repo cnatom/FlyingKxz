@@ -6,7 +6,7 @@ import '../../components/preview_view.dart';
 import '../power_page.dart';
 
 class PowerPreviewView extends StatefulWidget {
-  const PowerPreviewView({Key key}) : super(key: key);
+  const PowerPreviewView({Key? key}) : super(key: key);
 
   @override
   State<PowerPreviewView> createState() => _PowerPreviewViewState();

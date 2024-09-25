@@ -13,19 +13,21 @@
 // ];
 
 class ScoreInfo {
-  List<ScoreData> _data;
+  List<ScoreData>? _data = [];
 
-  List<ScoreData> get data => _data;
+  List<ScoreData>? get data => _data;
 
-  ScoreInfo({List<ScoreData> data}) {
-    _data = data;
+  ScoreInfo({List<ScoreData>? data}) {
+    if(data!=null){
+      _data = data;
+    }
   }
 
   ScoreInfo.fromJson(dynamic json) {
     if (json["data"] != null) {
       _data = [];
       json["data"].forEach((v) {
-        _data.add(ScoreData.fromJson(v));
+        _data?.add(ScoreData.fromJson(v));
       });
     }
   }
@@ -33,7 +35,7 @@ class ScoreInfo {
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     if (_data != null) {
-      map["data"] = _data.map((v) => v.toJson()).toList();
+      map["data"] = _data!.map((v) => v.toJson()).toList();
     }
     return map;
   }
@@ -47,27 +49,27 @@ class ScoreInfo {
 /// scoreDetail : [{"name":"期末(100%)","score":"中等"},{"name":"总评","score":"中等"}]
 
 class ScoreData {
-  String _courseName;
-  String _xuefen;
-  String _jidian;
-  String _zongping;
-  String _type;
-  List<ScoreDetail> _scoreDetail;
+  String? _courseName;
+  String? _xuefen;
+  String? _jidian;
+  String? _zongping;
+  String? _type;
+  List<ScoreDetail>? _scoreDetail;
 
-  String get courseName => _courseName;
-  String get xuefen => _xuefen;
-  String get jidian => _jidian;
-  String get zongping => _zongping;
-  String get type => _type;
-  List<ScoreDetail> get scoreDetail => _scoreDetail;
+  String? get courseName => _courseName;
+  String? get xuefen => _xuefen;
+  String? get jidian => _jidian;
+  String? get zongping => _zongping;
+  String? get type => _type;
+  List<ScoreDetail>? get scoreDetail => _scoreDetail;
 
   ScoreData(
-      {String courseName,
-      String xuefen,
-      String jidian,
-      String zongping,
-      String type,
-      List<ScoreDetail> scoreDetail}) {
+      {String? courseName,
+      String? xuefen,
+      String? jidian,
+      String? zongping,
+      String? type,
+      List<ScoreDetail>? scoreDetail}) {
     _courseName = courseName;
     _xuefen = xuefen;
     _jidian = jidian;
@@ -86,7 +88,7 @@ class ScoreData {
     if (json["scoreDetail"] != null) {
       _scoreDetail = [];
       json["scoreDetail"].forEach((v) {
-        _scoreDetail.add(ScoreDetail.fromJson(v));
+        _scoreDetail?.add(ScoreDetail.fromJson(v));
       });
     }
   }
@@ -99,7 +101,7 @@ class ScoreData {
     map["zongping"] = _zongping;
     map["type"] = _type;
     if (_scoreDetail != null) {
-      map["scoreDetail"] = _scoreDetail.map((v) => v.toJson()).toList();
+      map["scoreDetail"] = _scoreDetail!.map((v) => v.toJson()).toList();
     }
     return map;
   }
@@ -109,13 +111,13 @@ class ScoreData {
 /// score : "中等"
 
 class ScoreDetail {
-  String _name;
-  String _score;
+  String? _name;
+  String? _score;
 
-  String get name => _name;
-  String get score => _score;
+  String? get name => _name;
+  String? get score => _score;
 
-  ScoreDetail({String name, String score}) {
+  ScoreDetail({String? name, String? score}) {
     _name = name;
     _score = score;
   }

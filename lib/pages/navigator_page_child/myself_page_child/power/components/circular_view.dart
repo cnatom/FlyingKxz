@@ -5,9 +5,9 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../../ui/ui.dart';
 class PowerCircularView extends StatelessWidget {
   const PowerCircularView({
-    Key key,
-    @required this.powerPercent,
-    @required this.themeProvider,
+    Key? key,
+    required this.powerPercent,
+    required this.themeProvider,
   }) : super(key: key);
 
   final double powerPercent;

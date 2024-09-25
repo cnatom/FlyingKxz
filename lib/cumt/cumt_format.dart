@@ -433,7 +433,7 @@ class CumtFormat{
     return result;
   }
   //成绩（包括补考无明细）
-  static List<Map<String,dynamic>> parseScoreAll(String html){
+  static List<Map<String,dynamic>>? parseScoreAll(String html){
     List<Map<String,dynamic>> result = [];
 
     String courseName;//语文

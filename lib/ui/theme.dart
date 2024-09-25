@@ -7,14 +7,14 @@ import 'package:flying_kxz/ui/config.dart';
 
 class ThemeProvider extends ChangeNotifier {
   static ThemeMode _themeMode = ThemeMode.light;
-  static bool _darkMode; //夜间模式
-  static bool _simpleMode; //简洁模式
+  static late bool _darkMode; //夜间模式
+  static late bool _simpleMode; //简洁模式
 
-  static double _transBack; //背景透明度
-  static double _blurBack; //背景模糊度
-  static double _transCard; //卡片透明度 最大0.5
-  static Color _colorMain;
-  static Color _colorNavText;
+  static late double _transBack; //背景透明度
+  static late double _blurBack; //背景模糊度
+  static late double _transCard; //卡片透明度 最大0.5
+  static late Color _colorMain;
+  static late Color _colorNavText;
 
   ///卡片内的文字,过白时变黑;
 
@@ -68,7 +68,7 @@ class ThemeProvider extends ChangeNotifier {
       _themeMode = ThemeMode.light;
       _savePrefs();
     } else {
-      _initFromJson(jsonDecode(Prefs.themeData));
+      _initFromJson(jsonDecode(Prefs.themeData!));
     }
   }
 
@@ -194,8 +194,6 @@ class FlyThemes {
       highlightColor: Colors.transparent,
       //文字主色
       primaryColor: Colors.white,
-      //AppBar的文本色
-      accentColor: Colors.white,
       //子页面背景色
       scaffoldBackgroundColor: Colors.black,
       //主页面背景色
@@ -235,7 +233,7 @@ class FlyThemes {
         padding: EdgeInsets.all(4.0),
         shape: StadiumBorder(),
         backgroundColor: Colors.transparent,
-      ));
+      ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white));
   static final diyTheme =
       ThemeData(scaffoldBackgroundColor: Colors.transparent);
   static final lightTheme = ThemeData(
@@ -247,8 +245,6 @@ class FlyThemes {
       backgroundColor: Color(0xfff2f5f7).withOpacity(0),
       //文字主色
       primaryColor: Colors.black,
-      //AppBar文字
-      accentColor: Colors.white,
       //输入框色彩
       disabledColor: Color(0xffecedef),
       //未选中项色彩
@@ -267,7 +263,7 @@ class FlyThemes {
       //卡片背景
       cardColor: Colors.white,
       //指示器颜色
-      textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.black)
+      textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.black), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white)
       // //chip按钮主题
       // chipTheme: ChipThemeData(
       //   //选中项背景色彩，两个最好是一样

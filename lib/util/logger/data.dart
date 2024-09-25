@@ -10,13 +10,13 @@ import 'package:flutter/cupertino.dart';
 
 class LoggerData {
   LoggerData({
-    @required String username,
-    @required String action,
-    @required String data,
-    @required String page,
-    @required String name,
-    @required String platform,
-    @required String version,}){
+    required String username,
+    required String action,
+    required String data,
+    required String page,
+    required String name,
+    required String platform,
+    required String version,}){
     _username = username;
     _action = action;
     _data = data;
@@ -35,20 +35,20 @@ class LoggerData {
     _platform = json['platform'];
     _version = json['version'];
   }
-  String _username;
-  String _action;
-  String _data;
-  String _page;
-  String _name;
-  String _platform;
-  String _version;
-  LoggerData copyWith({  String username,
-    String action,
-    String data,
-    String page,
-    String name,
-    String platform,
-    String version,
+  late String _username;
+  late String _action;
+  late String _data;
+  late String _page;
+  late String _name;
+  late String _platform;
+  late String _version;
+  LoggerData copyWith({  required String username,
+    required String action,
+    required String data,
+    required String page,
+    required String name,
+    required String platform,
+    required String version,
   }) => LoggerData(  username: username ?? _username,
     action: action ?? _action,
     data: data ?? _data,

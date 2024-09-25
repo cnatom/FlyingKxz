@@ -17,12 +17,12 @@ enum BalanceRequestType { Balance, BalanceHis }
 
 class BalanceProvider extends ChangeNotifier {
   Cumt cumt = Cumt.getInstance();
-  String _cardNum; // 卡号
-  String _balance; // 余额
-  List _detailEntity; // 校园卡流水
-  String _getBalanceDate; // 上次成功获取校园卡余额的时间
-  String _getBalanceHisDate; //上次成功获取校园卡流水的时间
-  String _auth;
+  String? _cardNum; // 卡号
+  String? _balance; // 余额
+  List? _detailEntity; // 校园卡流水
+  String? _getBalanceDate; // 上次成功获取校园卡余额的时间
+  String? _getBalanceHisDate; //上次成功获取校园卡流水的时间
+  String? _auth;
 
   Map<BalanceRequestType, dynamic> urls = {
     BalanceRequestType.Balance:'https://yktm.cumt.edu.cn/berserker-app/ykt/tsm/getCampusCards?synAccessSource=pc',
@@ -203,7 +203,7 @@ class BalanceProvider extends ChangeNotifier {
         _cardNum = "000000";
       }
     }
-    return _cardNum;
+    return _cardNum!;
   }
 
   String get balance {
@@ -214,14 +214,14 @@ class BalanceProvider extends ChangeNotifier {
         _balance = "0.0";
       }
     }
-    return _balance;
+    return _balance!;
   }
 
   List get detailEntity {
     if (_detailEntity == null && Prefs.balanceHis != null) {
-      _detailEntity = jsonDecode(Prefs.balanceHis);
+      _detailEntity = jsonDecode(Prefs.balanceHis!);
     }
-    return _detailEntity;
+    return _detailEntity!;
   }
 
   String get getBalanceDate {
@@ -232,7 +232,7 @@ class BalanceProvider extends ChangeNotifier {
         _getBalanceDate = "……";
       }
     }
-    return _getBalanceDate;
+    return _getBalanceDate!;
   }
 
   String get getBalanceHisDate {
@@ -243,6 +243,6 @@ class BalanceProvider extends ChangeNotifier {
         _getBalanceHisDate = "……";
       }
     }
-    return _getBalanceHisDate;
+    return _getBalanceHisDate!;
   }
 }

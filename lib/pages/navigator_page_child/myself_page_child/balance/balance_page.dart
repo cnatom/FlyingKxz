@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flying_kxz/cumt/cumt.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/provider.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -21,8 +20,8 @@ class BalancePage extends StatefulWidget {
 }
 
 class _BalancePageState extends State<BalancePage> {
-  ThemeProvider themeProvider;
-  BalanceProvider balanceProvider;
+  late ThemeProvider themeProvider;
+  late BalanceProvider balanceProvider;
   bool loading = true;
 
   // 充值
@@ -214,7 +213,7 @@ class _BalancePageState extends State<BalancePage> {
     );
   }
 
-  Widget _container({@required Widget child}) {
+  Widget _container({required Widget child}) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadiusValue),
@@ -227,7 +226,7 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   InkWell _buildButton(String title,
-      {bool primer = true, GestureTapCallback onTap}) {
+      {bool primer = true, GestureTapCallback? onTap}) {
     Color borderColor = primer ? Colors.transparent : themeProvider.colorMain;
     Color textColor = primer ? Colors.white : themeProvider.colorMain;
     Color backgroundColor =

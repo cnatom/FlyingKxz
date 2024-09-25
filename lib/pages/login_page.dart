@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
@@ -30,8 +29,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController _userNameController = new TextEditingController();
   TextEditingController _passWordController = new TextEditingController();
-  String _username; //账号
-  String _password; //密码
+  late String _username; //账号
+  late String _password; //密码
   GlobalKey<FormState> _formKey = GlobalKey<FormState>(); //表单状态
   bool _loading = false;
   int loginCount = 1; //登陆次数,>=3则特别提示
@@ -42,14 +41,14 @@ class _LoginPageState extends State<LoginPage> {
   }
   //用户登录
   _loginHandler() async {
-    if(Prefs.prefs.getBool('privacy')!=true){
+    if(Prefs.prefs?.getBool('privacy')!=true){
       var ok = await FlyDialogDIYShow(context, content: Privacy());
       if(ok!=true) return;
     }
     FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
     setState(() {_loading = true;});
     var _form = _formKey.currentState;
-    _form.save();
+    _form?.save();
     //判空
     if (_password.isEmpty || _username.isEmpty) {
       showToast( "请填写学号密码");
@@ -178,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
           context,
           '输入学号',
           _userNameController,
-          onSaved: (String value) => _username = value,
+          onSaved: (String? value) => _username = value??'',
         ),
         SizedBox(
           height: fontSizeMini38 * 2,
@@ -187,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
           context,
           '融合门户密码(默认身份证后6位）',
           _passWordController,
-          onSaved: (String value) => _password = value,
+          onSaved: (String? value) => _password = value??'',
           obscureText: true,
         ),
         SizedBox(
@@ -202,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
     BuildContext context,
     String hintText,
     TextEditingController controller, {
-    FormFieldSetter<String> onSaved,
+    FormFieldSetter<String>? onSaved,
     bool obscureText = false,
   }) =>
       Container(
@@ -271,7 +270,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 InkWell(
                                   onTap: () => launchUrl(
-                                      Uri.tryParse("http://authserver.cumt.edu.cn/authserver/login")),
+                                      Uri.parse("http://authserver.cumt.edu.cn/authserver/login")),
                                   child: FlyText.main35("➡️点我跳转至融合门户验证或找回密码",
                                       maxLine: 10, color: Colors.blue),
                                 ),
@@ -312,7 +311,7 @@ class _LoginPageState extends State<LoginPage> {
 
   //小按钮
   Widget _buildFlatButton(String text,
-          {VoidCallback onPressed}) =>
+          {VoidCallback? onPressed}) =>
       InkWell(
         onTap: onPressed,
         child: FlyText.main35(

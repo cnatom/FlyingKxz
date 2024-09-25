@@ -17,8 +17,8 @@ class ImportScoreNewPage extends StatefulWidget {
 }
 
 class _ImportScoreNewPageState extends State<ImportScoreNewPage> {
-  InAppWebViewController _controller;
-  ThemeProvider themeProvider;
+  late InAppWebViewController _controller;
+  late ThemeProvider themeProvider;
   double progress = 0.0;
   bool loadingWeb = true;
   bool loading = false;
@@ -60,6 +60,7 @@ class _ImportScoreNewPageState extends State<ImportScoreNewPage> {
   }
   _add()async{
     var html = await _controller.getHtml();
+    if(html==null) return;
     var res = CumtFormat.parseScoreAll(html);
     if(res==null) return;
     result.addAll(res);
@@ -68,7 +69,7 @@ class _ImportScoreNewPageState extends State<ImportScoreNewPage> {
     });
   }
   _ok(){
-    if(result==null||result.isEmpty){
+    if(result.isEmpty){
       showToast('列表为空');
       return;
     }
