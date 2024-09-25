@@ -21,7 +21,7 @@ class CumtLoginResult {
 
 class CumtLogin {
   static Dio dio = Dio(
-    BaseOptions(connectTimeout: 1000, sendTimeout: 1000, receiveTimeout: 1000),
+    BaseOptions(connectTimeout: Duration(seconds: 1), sendTimeout: Duration(seconds: 1), receiveTimeout: Duration(seconds: 1)),
   );
 
   /// 注销

@@ -12,52 +12,61 @@ import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_
 // "remark":"备注"//没有就返回""
 // }
 class CourseData {
-  String _title;
-  String _location;
-  String _teacher;
-  String _credit;
-  List<int> _weekList;
-  int _weekNum;
-  int _lessonNum;
-  int _durationNum;
-  String _remark;
+  String? _title;
+  String? _location;
+  String? _teacher;
+  String? _credit;
+  List<int>? _weekList;
+  int? _weekNum;
+  int? _lessonNum;
+  int? _durationNum;
+  String? _remark;
 
-  set title(String value) {
+  set title(String? value) {
     _title = value;
-    CourseColor(_title);
+    CourseColor(_title ?? '');
   }
 
-  String get title => _title;
-  String get location => _location;
-  String get teacher => _teacher;
-  String get credit => _credit;
-  List<int> get weekList => _weekList;
-  int get weekNum => _weekNum;
-  int get lessonNum => _lessonNum;
-  int get durationNum => _durationNum;
-  String get remark => _remark;
+  String? get title => _title;
 
-  CourseData({
-      String title, 
-      String location, 
-      String teacher, 
-      String credit, 
-      List<int> weekList, 
-      int weekNum, 
-      int lessonNum, 
-      int durationNum, 
-      String remark}){
-    _title = title??'';
-    _location = location??'';
-    _teacher = teacher??'';
-    _credit = credit??'';
-    _weekList = weekList??[];
-    _weekNum = weekNum??-1;
-    _lessonNum = lessonNum??-1;
-    _durationNum = durationNum??-1;
-    _remark = remark??'';
-    CourseColor(_title);
-}
+  String? get location => _location;
+
+  String? get teacher => _teacher;
+
+  String? get credit => _credit;
+
+  List<int>? get weekList => _weekList;
+
+  int? get weekNum => _weekNum;
+
+  int? get lessonNum => _lessonNum;
+
+  int? get durationNum => _durationNum;
+
+  String? get remark => _remark;
+
+  CourseData(
+      {String? title,
+      String? location,
+      String? teacher,
+      String? credit,
+      List<int>? weekList,
+      int? weekNum,
+      int? lessonNum,
+      int? durationNum,
+      String? remark}) {
+    _title = title ?? '';
+    _location = location ?? '';
+    _teacher = teacher ?? '';
+    _credit = credit ?? '';
+    _weekList = weekList ?? [];
+    _weekNum = weekNum ?? -1;
+    _lessonNum = lessonNum ?? -1;
+    _durationNum = durationNum ?? -1;
+    _remark = remark ?? '';
+    CourseColor(_title??'');
+  }
+
   CourseData.fromJson(dynamic json) {
     _title = json["title"];
     _location = json["location"];
@@ -68,7 +77,7 @@ class CourseData {
     _lessonNum = json["lessonNum"];
     _durationNum = json["durationNum"];
     _remark = json["remark"];
-    CourseColor(_title);
+    CourseColor(_title??'');
   }
 
   Map<String, dynamic> toJson() {
@@ -84,61 +93,63 @@ class CourseData {
     map["remark"] = _remark;
     return map;
   }
+
   //[1,2,4,5,8]-> "1-2,4-5,8"
-  static String weekListToString(List list){
-    if(list==null||list.isEmpty)return '';
+  static String weekListToString(List? list) {
+    if (list == null || list.isEmpty) return '';
     String result = '';
     List<String> temp = [];
     String start = list[0].toString();
     String end = list[0].toString();
-    if(list.length==1)result += '$start、';
-    for(int i = 0;i<list.length-1;i++){
-      if(list[i]+1==list[i+1]){
-        end = list[i+1].toString();
-        if(i==list.length-2)result += '$start-$end、';
-      }else{
-        if(start==end){
+    if (list.length == 1) result += '$start、';
+    for (int i = 0; i < list.length - 1; i++) {
+      if (list[i] + 1 == list[i + 1]) {
+        end = list[i + 1].toString();
+        if (i == list.length - 2) result += '$start-$end、';
+      } else {
+        if (start == end) {
           result += '$start、';
-        }else{
+        } else {
           result += '$start-$end、';
         }
-        start = list[i+1].toString();
-        end = list[i+1].toString();
-        if(i==list.length-2)result += '$start、';
+        start = list[i + 1].toString();
+        end = list[i + 1].toString();
+        if (i == list.length - 2) result += '$start、';
       }
     }
-    result = result.substring(0,result.length-1);
+    result = result.substring(0, result.length - 1);
     return result;
   }
-  set location(String value) {
+
+  set location(String? value) {
     _location = value;
   }
 
-  set teacher(String value) {
+  set teacher(String? value) {
     _teacher = value;
   }
 
-  set credit(String value) {
+  set credit(String? value) {
     _credit = value;
   }
 
-  set weekList(List<int> value) {
+  set weekList(List<int>? value) {
     _weekList = value;
   }
 
-  set weekNum(int value) {
+  set weekNum(int? value) {
     _weekNum = value;
   }
 
-  set lessonNum(int value) {
+  set lessonNum(int? value) {
     _lessonNum = value;
   }
 
-  set durationNum(int value) {
+  set durationNum(int? value) {
     _durationNum = value;
   }
 
-  set remark(String value) {
+  set remark(String? value) {
     _remark = value;
   }
 }

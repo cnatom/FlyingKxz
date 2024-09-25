@@ -1,7 +1,6 @@
-import 'package:ical/src/utils.dart';
-
 import 'abstract.dart';
 import 'utils.dart' as utils;
+import 'utils.dart';
 
 class IAlarmType {
   final String _label;
@@ -15,11 +14,11 @@ class IAlarmType {
 }
 
 class IAlarm extends AbstractSerializer {
-  IAlarmType type;
-  Duration duration;
-  int repeat;
-  DateTime trigger;
-  String description, summary;
+  IAlarmType? type;
+  Duration? duration;
+  int? repeat;
+  DateTime? trigger;
+  String? description, summary;
 
   IAlarm.display({
     this.duration = const Duration(minutes: 15),
@@ -41,7 +40,7 @@ class IAlarm extends AbstractSerializer {
   //    this.summary})
   //s    : type = AlarmType.EMAIL;
 
-  String _serializeDescription() => 'DESCRIPTION:${escapeValue(description)}';
+  String _serializeDescription() => 'DESCRIPTION:${escapeValue(description!)}';
 
   @override
   String serialize() {
@@ -54,21 +53,21 @@ class IAlarm extends AbstractSerializer {
         break;
       case IAlarmType.EMAIL:
         out.write(_serializeDescription() + CLRF_LINE_DELIMITER);
-        out.write('SUMMARY:${escapeValue(summary)}$CLRF_LINE_DELIMITER');
+        out.write('SUMMARY:${escapeValue(summary!)}$CLRF_LINE_DELIMITER');
 
         // TODO ATTENDEE
         break;
     }
 
-    if (repeat > 1) {
+    if (repeat! > 1) {
       out.write('REPEAT:$repeat$CLRF_LINE_DELIMITER');
       out.write(
-          'DURATION:${utils.formatDuration(duration)}$CLRF_LINE_DELIMITER');
+          'DURATION:${utils.formatDuration(duration!)}$CLRF_LINE_DELIMITER');
     }
 
     if (trigger != null) {
       out.write(
-          'TRIGGER;VALUE=DATE-TIME:${utils.formatDateTime(trigger)}$CLRF_LINE_DELIMITER');
+          'TRIGGER;VALUE=DATE-TIME:${utils.formatDateTime(trigger!)}$CLRF_LINE_DELIMITER');
     }
 
     out.write('END:VALARM$CLRF_LINE_DELIMITER');

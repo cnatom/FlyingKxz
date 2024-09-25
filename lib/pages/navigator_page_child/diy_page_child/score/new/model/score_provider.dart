@@ -21,11 +21,11 @@ class ScoreProvider extends ChangeNotifier {
   }
 
   // 导入时间
-  String _importTime;
+  String? _importTime;
 
-  String get importTime => _importTime;
+  String? get importTime => _importTime;
 
-  set importTime(String value) {
+  set importTime(String? value) {
     _importTime = value;
     notifyListeners();
   }
@@ -87,7 +87,7 @@ class ScoreProvider extends ChangeNotifier {
 
   bool get showFilterView => _showFilterView;
 
-  toggleShowFilterView({bool value}){
+  toggleShowFilterView({bool? value}){
     if(value != null){
       _showFilterView = value;
     }else{

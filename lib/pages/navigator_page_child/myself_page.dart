@@ -57,7 +57,7 @@ class _MyselfPageState extends State<MyselfPage>
 
 
   Future<void> _feedback() async {
-    String text = await FlyDialogInputShow(context,
+    String? text = await FlyDialogInputShow(context,
         hintText:
             "感谢您提出宝贵的建议，这对我们非常重要！\n*｡٩(ˊᗜˋ*)و*｡\n\n(也可以留下您的联系方式，方便我们及时联络您)",
         confirmText: "发送",
@@ -280,14 +280,14 @@ class _MyselfPageState extends State<MyselfPage>
           title: '关于我们',
           onTap: () => toAboutPage(context)),
       //反馈与建议
-      _myselfIconTitleButton(
-          icon: Icons.feedback_outlined,
-          title: '反馈与建议',
-          onTap: () => _feedback()),
+      // _myselfIconTitleButton(
+      //     icon: Icons.feedback_outlined,
+      //     title: '反馈与建议',
+      //     onTap: () => _feedback()),
       //分享App
       _myselfIconTitleButton(
-          icon: Icons.share_outlined,
-          title: '分享App',
+          icon: Icons.feedback_outlined,
+          title: '联系我们',
           onTap: () => FlyDialogDIYShow(context, content: InvitePage())),
       UniversalPlatform.isIOS
           ? Container()
@@ -445,7 +445,7 @@ class _MyselfPageState extends State<MyselfPage>
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Switch(
+        Switch.adaptive(
           activeColor: themeProvider.colorMain,
           value: value,
           onChanged: onChanged,

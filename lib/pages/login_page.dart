@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/privacy.dart';
+import 'package:flying_kxz/ui/animated.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,7 +18,8 @@ import 'app_upgrade.dart';
 //跳转到当前页面
 void toLoginPage(BuildContext context) async {
   Navigator.of(context).pushAndRemoveUntil(
-      FadeTransitionRouter(LoginPage(), milliseconds: 1000), (route) => route == null);
+      FadeTransitionRouter(LoginPage(), milliseconds: 1000),
+      (route) => route == null);
 }
 
 //登录页面
@@ -39,19 +41,22 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     checkUpgrade(context);
   }
+
   //用户登录
   _loginHandler() async {
-    if(Prefs.prefs?.getBool('privacy')!=true){
+    if (Prefs.prefs?.getBool('privacy') != true) {
       var ok = await FlyDialogDIYShow(context, content: Privacy());
-      if(ok!=true) return;
+      if (ok != true) return;
     }
     FocusScope.of(context).requestFocus(FocusNode()); //收起键盘
-    setState(() {_loading = true;});
+    setState(() {
+      _loading = true;
+    });
     var _form = _formKey.currentState;
     _form?.save();
     //判空
     if (_password.isEmpty || _username.isEmpty) {
-      showToast( "请填写学号密码");
+      showToast("请填写学号密码");
       setState(() {
         _loading = false;
       });
@@ -61,19 +66,21 @@ class _LoginPageState extends State<LoginPage> {
     //检测是否激活&验证码
     if (await cumt.loginCheckGet(context, username: _username)) {
       //新登录
-      if(await cumt.login(_username, _password,)){
-
+      if (await cumt.login(
+        _username,
+        _password,
+      )) {
         Prefs.visitor = false;
         var namePhoneMap = await cumt.getNamePhone();
         Prefs.name = namePhoneMap['name'];
         Prefs.phone = namePhoneMap['phone'];
         toNavigatorPage(context);
-      }else{
+      } else {
         setState(() {
           _loading = false;
         });
       }
-    }else{
+    } else {
       setState(() {
         _loading = false;
       });
@@ -94,8 +101,10 @@ class _LoginPageState extends State<LoginPage> {
             _buildBackground(),
             Padding(
               padding: EdgeInsets.fromLTRB(
-                  ScreenUtil().setWidth(deviceWidth * 0.08), 0,
-                  ScreenUtil().setWidth(deviceWidth * 0.08), 0),
+                  ScreenUtil().setWidth(deviceWidth * 0.08),
+                  0,
+                  ScreenUtil().setWidth(deviceWidth * 0.08),
+                  0),
               child: Column(
                 children: <Widget>[
                   Expanded(
@@ -168,8 +177,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
-
   Widget _buildInputBody() {
     return Column(
       children: [
@@ -177,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
           context,
           '输入学号',
           _userNameController,
-          onSaved: (String? value) => _username = value??'',
+          onSaved: (String? value) => _username = value ?? '',
         ),
         SizedBox(
           height: fontSizeMini38 * 2,
@@ -186,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
           context,
           '融合门户密码(默认身份证后6位）',
           _passWordController,
-          onSaved: (String? value) => _password = value??'',
+          onSaved: (String? value) => _password = value ?? '',
           obscureText: true,
         ),
         SizedBox(
@@ -213,8 +220,10 @@ class _LoginPageState extends State<LoginPage> {
         child: TextFormField(
           textAlign: TextAlign.start,
           style: TextStyle(fontSize: fontSizeMain40, color: Colors.white),
-          obscureText: obscureText, //是否是密码
-          controller: controller, //控制正在编辑的文本。通过其可以拿到输入的文本值
+          obscureText: obscureText,
+          //是否是密码
+          controller: controller,
+          //控制正在编辑的文本。通过其可以拿到输入的文本值
           cursorColor: colorMain,
           decoration: InputDecoration(
             hintStyle: TextStyle(
@@ -225,6 +234,7 @@ class _LoginPageState extends State<LoginPage> {
           onSaved: onSaved,
         ),
       );
+
   Widget _buildBottom() {
     return Column(
       children: [
@@ -237,17 +247,20 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   _buildFlatButton("隐私政策", onPressed: () {
                     Navigator.push(
-                        context, CupertinoPageRoute(builder: (context) => FlyWebView(
-                      title: "隐私政策",
-                      initialUrl: "https://kxz.atcumt.com/privacy.html",
-                    )));
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => FlyWebView(
+                                  title: "隐私政策",
+                                  initialUrl:
+                                      "https://kxz.atcumt.com/privacy.html",
+                                )));
                   }),
                 ],
               ),
             ),
             Container(
               height: ScreenUtil().setWidth(35),
-              margin: EdgeInsets.symmetric(horizontal:10),
+              margin: EdgeInsets.symmetric(horizontal: 10),
               width: 1,
               color: Colors.white.withOpacity(0.5),
             ),
@@ -257,7 +270,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   _buildFlatButton("无法登录", onPressed: () async {
                     Clipboard.setData(ClipboardData(text: "839372371"));
-                    showToast( "已复制反馈QQ群号至剪切板");
+                    showToast("已复制反馈QQ群号至剪切板");
                     FlyDialogDIYShow(context,
                         content: Wrap(
                           children: [
@@ -269,8 +282,8 @@ class _LoginPageState extends State<LoginPage> {
                                   maxLine: 10,
                                 ),
                                 InkWell(
-                                  onTap: () => launchUrl(
-                                      Uri.parse("http://authserver.cumt.edu.cn/authserver/login")),
+                                  onTap: () => launchUrl(Uri.parse(
+                                      "http://authserver.cumt.edu.cn/authserver/login")),
                                   child: FlyText.main35("➡️点我跳转至融合门户验证或找回密码",
                                       maxLine: 10, color: Colors.blue),
                                 ),
@@ -278,7 +291,6 @@ class _LoginPageState extends State<LoginPage> {
                                   "\n挂VPN可能会无法登录，直接用流量或wifi登录即可",
                                   maxLine: 10,
                                 ),
-
                                 FlyText.mainTip35(
                                     "\n如果依然无法登录请进反馈群联系我们\n（已自动复制QQ群号）",
                                     maxLine: 10),
@@ -297,58 +309,56 @@ class _LoginPageState extends State<LoginPage> {
         ),
         _buildFlatButton("ICP备案号：苏ICP备2023008273号-2A", onPressed: () {
           Navigator.push(
-              context, CupertinoPageRoute(builder: (context) => FlyWebView(
-            title: "ICP备案号：苏ICP备2023008273号-2A",
-            initialUrl: "https://beian.miit.gov.cn",
-          )));
+              context,
+              CupertinoPageRoute(
+                  builder: (context) => FlyWebView(
+                        title: "ICP备案号：苏ICP备2023008273号-2A",
+                        initialUrl: "https://beian.miit.gov.cn",
+                      )));
         }),
         SizedBox(
-          height: spaceCardMarginTB*2,
+          height: spaceCardMarginTB * 2,
         ),
       ],
     );
   }
 
   //小按钮
-  Widget _buildFlatButton(String text,
-          {VoidCallback? onPressed}) =>
-      InkWell(
+  Widget _buildFlatButton(String text, {VoidCallback? onPressed}) => InkWell(
         onTap: onPressed,
         child: FlyText.main35(
           text,
           color: Colors.white.withOpacity(0.6),
         ),
       );
+
   //登录按钮
   Widget _buildLoginButton() {
     return LayoutBuilder(
       builder: (context, parSize) {
-        return _loading == false
-            ? Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: colorLoginPageMain.withOpacity(0.6),
-                ),
-                child: InkWell(
-                  splashColor: Colors.black12,
-                  borderRadius: BorderRadius.circular(100),
-                  onTap: () => _loginHandler(),
-                  child: Container(
-                      height: fontSizeMain40 * 2.8,
-                      width: parSize.maxWidth * 0.5,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: FlyText.title45('登录', color: Colors.white)),
-                ),
-              )
-            : Container(
-                alignment: Alignment.topCenter,
-                height: fontSizeMain40 * 2.8,
-                width: parSize.maxWidth * 0.7,
-                child: loadingAnimationTwoCircles(),
-              );
+        return FlyAnimatedCrossFade(
+          firstChild: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: colorLoginPageMain.withOpacity(0.6),
+            ),
+            child: InkWell(
+              splashColor: Colors.black12,
+              borderRadius: BorderRadius.circular(100),
+              onTap: () => _loginHandler(),
+              child: Container(
+                  height: fontSizeMain40 * 2.8,
+                  width: parSize.maxWidth * 0.5,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: FlyText.title45('登录', color: Colors.white)),
+            ),
+          ),
+          secondChild: loadingAnimationTwoCircles(size: fontSizeMain40 * 2.8),
+          showSecond: _loading,
+        );
       },
     );
   }

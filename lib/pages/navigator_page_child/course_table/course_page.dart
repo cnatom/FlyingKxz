@@ -16,31 +16,31 @@ import 'components/output_ics/output_ics_page.dart';
 import 'components/point_components/point_main.dart';
 
 class CoursePage extends StatefulWidget {
-  const CoursePage({Key key}) : super(key: key);
+  const CoursePage({Key? key}) : super(key: key);
   @override
   CoursePageState createState() => CoursePageState();
 }
 
 class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMixin{
-  CourseProvider courseProvider;
-  ThemeProvider themeProvider;
+  late CourseProvider courseProvider;
+  late ThemeProvider themeProvider;
   GlobalKey<PointMainState> _rightGlobalKey = new GlobalKey<PointMainState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  static PageController coursePageController;
-  int _maxLesson;
+  static late PageController coursePageController;
+  int? _maxLesson;
   int get maxLesson{
     if(_maxLesson==null){
-      if(Prefs.prefs.getInt("maxLessonNum")!=null){
-        _maxLesson = Prefs.prefs.getInt("maxLessonNum");
+      if(Prefs.prefs?.getInt("maxLessonNum")!=null){
+        _maxLesson = Prefs.prefs?.getInt("maxLessonNum");
       }else{
         _maxLesson = 10;
       }
     }
-    return _maxLesson;
+    return _maxLesson!;
   }
   set maxLesson(int value) {
     _maxLesson = value;
-    Prefs.prefs.setInt("maxLessonNum", value);
+    Prefs.prefs?.setInt("maxLessonNum", value);
   }
 
   var lessonTimes = [
@@ -66,11 +66,12 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
 
   // 导入课表
   _setCourse() async {
-    List result = await FlyDialogDIYShow(context, content: ImportSelector(courseProvider: courseProvider,));
-    if(result==null){
+    List? result = await FlyDialogDIYShow(context, content: ImportSelector(courseProvider: courseProvider,));
+    if(result==null || result.isEmpty){
       return;
     }
     if(result[0]=="import" && result[2]==true){
+      showToast('🎉导入成功！');
       if(result[1] == ImportCourseType.YJS){
         maxLesson = 12;
       }
@@ -103,9 +104,9 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
 
   _introduce(){
     String prefsTag = "course_page_init";
-    if(Prefs.prefs.getBool(prefsTag)==null){
+    if(Prefs.prefs?.getBool(prefsTag)==null){
       _setCourse();
-      Prefs.prefs.setBool(prefsTag,true);
+      Prefs.prefs?.setBool(prefsTag,true);
     }
   }
 
@@ -181,7 +182,6 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
   }
 
   PreferredSizeWidget _buildAppBar() {
-    // String defaultText = '第${courseProvider.curWeek}周（1.5.53 Beta）';
     String defaultText = '第${courseProvider.curWeek}周';
     return AppBar(
       systemOverlayStyle: themeProvider.simpleMode
@@ -191,7 +191,7 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
       title: CumtLoginStateText(
         defaultText: defaultText,
         onDirection: (String oldText) {
-          String week = RegExp(r'\d+').stringMatch(oldText);
+          String? week = RegExp(r'\d+').stringMatch(oldText);
           if (week != null && int.parse(week) > courseProvider.curWeek) {
             return StateTextAnimationDirection.up;
           }
@@ -202,12 +202,12 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
         _buildAction(Icons.add,
             onPressed: () => _setCourse()),
         _buildAction(Boxicons.bx_share_alt,onPressed: ()=>_outputIcs()),
-        _buildAction(Boxicons.bx_menu_alt_right, onPressed: () => _rightGlobalKey.currentState.show())
+        _buildAction(Boxicons.bx_menu_alt_right, onPressed: () => _rightGlobalKey.currentState?.show())
       ],
     );
   }
 
-  Widget _buildAction( IconData iconData, {VoidCallback onPressed}) {
+  Widget _buildAction( IconData iconData, {VoidCallback? onPressed}) {
     return IconButton(
       icon: Icon(
         iconData,

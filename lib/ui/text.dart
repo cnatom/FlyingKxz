@@ -73,7 +73,7 @@ class FlyText extends StatelessWidget {
       this.text,{this.letterSpacing,this.fontWeight,this.textAlign,this.maxLine, this.textDecoration, this.autoscaling = false}
       ) : fontSize = fontSizeTipMini25,color = Color(0xff8d8d93);
   final TextAlign? textAlign;
-  final String text;
+  final String? text;
   final double? fontSize;
   final Color? color;
   final int? maxLine;
@@ -90,7 +90,7 @@ class FlyText extends StatelessWidget {
     );
     if(autoscaling){
       return AutoSizeText(
-        text,
+        text??'',
         style: textStyle,
         overflow: TextOverflow.ellipsis,
         textAlign: textAlign,
@@ -99,7 +99,7 @@ class FlyText extends StatelessWidget {
       );
     }else{
       return Text(
-        text,
+        text??'',
         style: textStyle,
         overflow: TextOverflow.ellipsis,
         textAlign: textAlign,

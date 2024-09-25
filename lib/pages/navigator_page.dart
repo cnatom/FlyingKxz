@@ -83,7 +83,11 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
     return Intro(
       padding: const EdgeInsets.all(0),
       borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
-      buttonTextBuilder: (order) => '好的',
+      buttonBuilder: (value){
+        return IntroButtonConfig(
+            text: '好的'
+        );
+      },
       child: FlyNavBackground(
           child: Scaffold(
             backgroundColor: Colors.transparent,

@@ -3,33 +3,33 @@ import 'subcomponents.dart';
 import 'utils.dart' as utils;
 
 class IEvent extends ICalendarElement with EventToDo {
-  IEventStatus status = IEventStatus.CONFIRMED;
+  IEventStatus? status = IEventStatus.CONFIRMED;
   DateTime start;
-  DateTime end;
-  Duration duration;
-  ITimeTransparency transparency = ITimeTransparency.OPAQUE;
+  DateTime? end;
+  Duration? duration;
+  ITimeTransparency? transparency = ITimeTransparency.OPAQUE;
 
-  String location;
-  double lat, lng;
-  List<String> resources;
-  IAlarm alarm;
-  IOrganizer organizer;
-  int priority;
+  String? location;
+  double? lat, lng;
+  List<String>? resources;
+  IAlarm? alarm;
+  IOrganizer? organizer;
+  int? priority;
 
   IEvent({
-    IOrganizer organizer,
-    String uid,
+    IOrganizer? organizer,
+    String? uid,
     this.status,
-    this.start,
+    required this.start,
     this.end,
     this.duration,
-    String summary,
-    String description,
-    List<String> categories,
-    String url,
+    String? summary,
+    String? description,
+    List<String>? categories,
+    String? url,
     IClass classification = IClass.PRIVATE,
-    String comment,
-    IRecurrenceRule rrule,
+    String? comment,
+    IRecurrenceRule? rrule,
     this.transparency,
     this.location,
     this.lat,
@@ -65,11 +65,11 @@ class IEvent extends ICalendarElement with EventToDo {
     }
 
     if (end != null) {
-      out.write('DTEND:${utils.formatDateTime(end)}$CLRF_LINE_DELIMITER');
+      out.write('DTEND:${utils.formatDateTime(end!)}$CLRF_LINE_DELIMITER');
     }
     if (duration != null) {
       out.write(
-          'DURATION:${utils.formatDuration(duration)}$CLRF_LINE_DELIMITER');
+          'DURATION:${utils.formatDuration(duration!)}$CLRF_LINE_DELIMITER');
     }
     if (transparency != null) {
       out.write('TRANSP:$transparency$CLRF_LINE_DELIMITER');

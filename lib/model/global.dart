@@ -31,13 +31,13 @@ void getSchoolYearTerm(){
 
 class Global{
   static ScoreInfo scoreInfo = new ScoreInfo();//成绩信息
-  static List<ExamData> examList = [];//考试列表
+  static List<ExamData?> examList = [];//考试列表
   static BookDetailEntity bookDetailInfo = new BookDetailEntity();
   static DateTime nowDate = DateTime.now(); //当前日期
-  static bool igUpgrade;//是否忽略更新
-  static String curVersion;
+  static bool? igUpgrade;//是否忽略更新
+  static String? curVersion;
   static Future<void> clearPrefsData()async{
-    await Prefs.prefs.clear();
+    await Prefs.prefs?.clear();
     getSchoolYearTerm();
   }
 

@@ -1,17 +1,16 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:flutter_animated_dialog_updated/flutter_animated_dialog.dart';
 import 'package:flying_kxz/ui/config.dart';
 
 import 'text.dart';
-
 void showToast(String text,
-    {String? subTitle,int duration = 3,bool bottom = false}) {
+    {String? subTitle,int duration = 3,bool bottom = false,Alignment? alignment}) {
   BotToast.showSimpleNotification(
     title: text,
     subTitle: subTitle,
-    align: bottom?Alignment(0, 1):Alignment(0, -0.99), // bottom为true时，显示在底部，否则显示在顶部
+    align: alignment??(bottom?Alignment(0, 1):Alignment(0, -0.99)), // bottom为true时，显示在底部，否则显示在顶部
     titleStyle: TextStyle(fontSize: fontSizeMain40),
     hideCloseButton: true,
     borderRadius: borderRadiusValue,

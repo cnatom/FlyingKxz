@@ -50,8 +50,8 @@ class PowerProvider extends ChangeNotifier{
   }
 
   //宿舍楼、宿舍号码
-  late String _powerRoomid;
-  late String _powerBuilding;
+  String? _powerRoomid;
+  String? _powerBuilding;
   String? get powerRoomid => _powerRoomid??Prefs.powerRoomid;
   String? get powerBuilding => _powerBuilding??Prefs.powerBuilding;
   set powerRoomid(String? value) => this._powerRoomid = value??"";
@@ -111,9 +111,9 @@ class PowerProvider extends ChangeNotifier{
         if(show) showToast("$power\n大寝号是6位，区别于小寝号！",duration: 5);
         return false;
       }
-    }on DioError catch (e){
+    }on DioException catch (e){
       if(show){
-        showToast("请求失败:"+e.message+"\n可能未连接校内网",duration: 4);
+        showToast("请求失败:"+(e.message??'')+"\n可能未连接校内网",duration: 4);
         toTipPage();
       }
       Logger.log("Power", "获取,失败",{"building":powerBuilding,"roomid":powerRoomid});

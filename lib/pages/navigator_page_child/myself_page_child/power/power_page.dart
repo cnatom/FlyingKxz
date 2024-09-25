@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/Picker.dart';
+import 'package:flutter_picker_plus/picker.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/power_charge_page.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -27,10 +28,10 @@ class _PowerPageState extends State<PowerPage> {
       new TextEditingController(text: Prefs.powerRoomid ?? '');
   late ThemeProvider themeProvider;
   late PowerProvider powerProvider;
-  late String powerPreviewText;
-  late String powerBuilding;
-  late double powerPercent;
-  late bool powerLoading;
+  String? powerPreviewText;
+  String? powerBuilding;
+  double? powerPercent;
+  bool powerLoading = false;
 
   // 选择宿舍楼
   void _handlePowerPicker() async {
@@ -46,17 +47,7 @@ class _PowerPageState extends State<PowerPage> {
 
   // 跳转充值页面
   void _charge() {
-    FlyDialogDIYShow(context, content: Wrap(
-      runSpacing: spaceCardPaddingTB,
-      children: [
-        FlyText.title45('请在充值页面点击"缴电费"。',maxLine: 10,),
-        // Image.asset("images/powerRechargeHelp.png"),
-        _buildButton("知道啦，前往充值页面↗",onTap: (){
-          launchUrl(
-              Uri.parse("https://yktm.cumt.edu.cn/plat/dating"),mode: LaunchMode.externalApplication);
-        }),
-      ],
-    ));
+    toPowerChargePage(context);
 
   }
 
@@ -71,7 +62,7 @@ class _PowerPageState extends State<PowerPage> {
     powerProvider = Provider.of<PowerProvider>(context, listen: false);
     powerPreviewText =
         context.select((PowerProvider p) => p.previewTextAtDetailPage);
-    powerBuilding = context.select((PowerProvider p) => p.powerBuilding!);
+    powerBuilding = context.select((PowerProvider p) => p.powerBuilding);
     powerPercent = context.select((PowerProvider p) => p.percentAtDetailPage);
     powerLoading = context.select((PowerProvider p) => p.powerLoading);
     return Scaffold(
@@ -260,7 +251,7 @@ class _PowerPageState extends State<PowerPage> {
     );
   }
 
-  Widget _buildPower(String powerBuilding) {
+  Widget _buildPower(String? powerBuilding) {
     return _container(
         title: "绑定信息",
         child: Wrap(runSpacing: spaceCardPaddingTB, children: [

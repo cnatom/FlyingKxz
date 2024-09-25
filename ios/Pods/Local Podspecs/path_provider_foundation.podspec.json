@@ -14,7 +14,7 @@
   "source": {
     "http": "https://github.com/flutter/packages/tree/main/packages/path_provider/path_provider_foundation"
   },
-  "source_files": "Classes/**/*",
+  "source_files": "path_provider_foundation/Sources/path_provider_foundation/**/*.swift",
   "ios": {
     "dependencies": {
       "Flutter": [
@@ -34,9 +34,14 @@
     }
   },
   "platforms": {
-    "ios": "9.0",
-    "osx": "10.11"
+    "ios": "12.0",
+    "osx": "10.14"
   },
   "swift_versions": "5.0",
+  "resource_bundles": {
+    "path_provider_foundation_privacy": [
+      "path_provider_foundation/Sources/path_provider_foundation/Resources/PrivacyInfo.xcprivacy"
+    ]
+  },
   "swift_version": "5.0"
 }

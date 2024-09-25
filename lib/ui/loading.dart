@@ -31,7 +31,7 @@ class _FlyWidgetBuilderState extends State<FlyWidgetBuilder> {
 //     circleValueColor:
 //     AlwaysStoppedAnimation(colorMain));
 
-Widget loadingAnimationTwoCircles({Color color = Colors.greenAccent})=>LoadingAnimationWidget.fourRotatingDots(color: color, size: 200);
+Widget loadingAnimationTwoCircles({Color color = Colors.greenAccent,double size = 200})=>LoadingAnimationWidget.fourRotatingDots(color: color, size: size);
 
 Widget loadingAnimationIOS()=>CupertinoActivityIndicator();
 

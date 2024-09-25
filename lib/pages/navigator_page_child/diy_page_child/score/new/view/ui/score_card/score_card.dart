@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_card/score_rate.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_container.dart';
 import 'package:flying_kxz/ui/animated.dart';
@@ -15,12 +14,12 @@ typedef void ScoreCardRateChange(double rate);
 class ScoreCard extends StatefulWidget {
   final ScoreItem scoreItem;
   final bool showFilterView;
-  final ScoreCardFilterChange onFilterChange;
+  final ScoreCardFilterChange? onFilterChange;
   final bool showRateView;
-  final ScoreCardRateChange onRateChange;
+  final ScoreCardRateChange? onRateChange;
 
   const ScoreCard(
-      {Key key, @required this.scoreItem, this.showFilterView = false,this.showRateView = false,this.onRateChange,this.onFilterChange})
+      {Key? key, required this.scoreItem, this.showFilterView = false,this.showRateView = false,this.onRateChange,this.onFilterChange})
       : super(key: key);
 
   @override
@@ -28,8 +27,8 @@ class ScoreCard extends StatefulWidget {
 }
 
 class _ScoreCardState extends State<ScoreCard> {
-  ThemeProvider themeProvider;
-  Color colorCard;
+  late ThemeProvider themeProvider;
+  late Color colorCard;
   double zongpingDouble = 0.0;
 
   @override
@@ -51,13 +50,13 @@ class _ScoreCardState extends State<ScoreCard> {
 
   void setFilter(bool value) {
     if(widget.onFilterChange!=null){
-      widget.onFilterChange(value);
+      widget.onFilterChange!(value);
     }
   }
 
   void setRate(double rate){
     if(widget.onRateChange!=null){
-      widget.onRateChange(rate);
+      widget.onRateChange!(rate);
     }
   }
 
@@ -159,7 +158,7 @@ class _ScoreCardState extends State<ScoreCard> {
 
   //圆形进度指示器
   Widget progressIndicator(
-      {@required ScoreItem item, Color color = Colors.grey}) {
+      {required ScoreItem item, Color color = Colors.grey}) {
     String text;
     int maxLine;
     if(item.zongping is! num){

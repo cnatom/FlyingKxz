@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/Picker.dart';
+import 'package:flutter_picker_plus/picker.dart';
 import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -87,6 +87,7 @@ class _CumtLoginViewState extends State<CumtLoginView> {
       onTap: onTap,
       child: Text("用户自助服务系统", style: TextStyle(fontSize: fontSizeMain40,
         color: themeProvider.colorNavText,
+        decorationColor: themeProvider.colorNavText,
         decoration: TextDecoration.underline,),),
     );
   }
@@ -97,8 +98,8 @@ class _CumtLoginViewState extends State<CumtLoginView> {
         child: Row(
           children: [
             FlyText.main40(
-              "${cumtLoginAccount.cumtLoginLocation?.name} ${cumtLoginAccount
-                  .cumtLoginMethod?.name}",
+              "${cumtLoginAccount.cumtLoginLocation.name} ${cumtLoginAccount
+                  .cumtLoginMethod.name}",
               color: themeProvider.colorNavText,
             ),
             Icon(

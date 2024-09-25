@@ -17,7 +17,6 @@ import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 import 'Model/global.dart';
-import 'chinese.dart';
 import 'cumt/cumt.dart';
 import 'ui/ui.dart';
 
@@ -30,6 +29,7 @@ void main() {
     if (Prefs.password == null) {
       Global.clearPrefsData();
     }
+    initConfigInfo();
     ThemeProvider.init(); // 初始化主题
     CumtLoginPrefs.init(); //初始化校园网登录模块
     Cumt.getInstance().init(); //初始化爬虫模块
@@ -66,20 +66,30 @@ class MyApp extends StatelessWidget {
           builder: BotToastInit(),
           navigatorObservers: [BotToastNavigatorObserver()],
           //添加国际化
-          localizationsDelegates: [
-            ChineseCupertinoLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            DefaultCupertinoLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          supportedLocales: [
-            const Locale('zh', 'CH'),
-            const Locale('en', 'US'), // English
-            const Locale('zh', 'Hans'), // China
-            const Locale('zh', ''), // China
-          ],
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              const Locale('en', 'US'), // 美国英语
+              const Locale('zh', 'CN'), // 中文简体
+              //其他Locales
+            ],
+          // localizationsDelegates: [
+          //   // ChineseCupertinoLocalizations.delegate,
+          //   GlobalMaterialLocalizations.delegate,
+          //   GlobalWidgetsLocalizations.delegate,
+          //   DefaultCupertinoLocalizations.delegate,
+          //   GlobalMaterialLocalizations.delegate,
+          //   GlobalWidgetsLocalizations.delegate,
+          // ],
+          // supportedLocales: [
+          //   const Locale('zh', 'CH'),
+          //   const Locale('en', 'US'), // English
+          //   const Locale('zh', 'Hans'), // China
+          //   const Locale('zh', ''), // China
+          // ],
           locale: Locale("zh"),
           debugShowCheckedModeBanner: false,
           home: GestureDetector(
@@ -107,7 +117,6 @@ class StartPage extends StatelessWidget {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     Global.curVersion = packageInfo.version;
     //初始化配置（无需context）
-    initConfigInfo();
     deviceWidth = 1080;
     deviceHeight = 1920;
     //宽屏设备时，修改屏幕参考信息

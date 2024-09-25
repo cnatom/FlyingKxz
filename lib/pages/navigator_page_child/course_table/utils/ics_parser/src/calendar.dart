@@ -6,7 +6,7 @@ class ICalendar extends AbstractSerializer {
   String company;
   String product;
   String lang;
-  Duration refreshInterval;
+  Duration? refreshInterval;
 
   List<ICalendarElement> get elements => _elements;
 
@@ -29,7 +29,7 @@ class ICalendar extends AbstractSerializer {
 
     if (refreshInterval != null) {
       out.write(
-          'REFRESH-INTERVAL;VALUE=DURATION:${utils.formatDuration(refreshInterval)}$CLRF_LINE_DELIMITER');
+          'REFRESH-INTERVAL;VALUE=DURATION:${utils.formatDuration(refreshInterval!)}$CLRF_LINE_DELIMITER');
     }
 
     for (ICalendarElement element in _elements) {

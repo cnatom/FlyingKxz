@@ -8,14 +8,14 @@ import '../../../../Model/global.dart';
 
 /// data : [{"local":"博4-C308","time":"2021-01-15(10:15-11:55)","course":"通信原理","type":"2020-2021-1正常考试","year":2021,"month":1,"day":15},{"local":"博4-B103","time":"2020-12-19(10:15-11:55)","course":"数字信号处理","type":"2020-2021-1正常考试","year":2020,"month":12,"day":19},{"local":"博5-C301","time":"2020-11-28(19:00-20:40)","course":"微机原理与应用B","type":"2020-2021-1正常考试","year":2020,"month":11,"day":28},{"local":"博4-C107","time":"2020-11-20(08:00-09:40)","course":"近距离无线通信技术","type":"2020-2021-1正常考试","year":2020,"month":11,"day":20},{"local":"博1-B101","time":"2020-09-11(10:15-11:55)","course":"无线通信基础","type":"2020-2021-1学期初补考","year":2020,"month":9,"day":11}]
 class ExamData {
-  String courseName;
-  String location;
-  String dateTime;
-  int year;
-  int month;
-  int day;
-  bool out = false;
-  bool diy = false;
+  String? courseName;
+  String? location;
+  String? dateTime;
+  int? year;
+  int? month;
+  int? day;
+  bool? out = false;
+  bool? diy = false;
   ExamData({
     this.courseName,
     this.location,
@@ -25,17 +25,17 @@ class ExamData {
     this.day,
     this.diy = false
   }) {
-    year =  year??int.parse(dateTime.substring(0,4));
-    month = month??int.parse(dateTime.substring(5,7));
-    day =  day??int.parse(dateTime.substring(8,10));
-    DateTime examDateTime = DateTime(year, month, day,);
-    int timeLeftInt = examDateTime.difference(Global.nowDate).inDays + 1;
+    year =  year??int.tryParse(dateTime?.substring(0,4)??'');
+    month = month??int.tryParse(dateTime?.substring(5,7)??'');
+    day =  day??int.tryParse(dateTime?.substring(8,10)??'');
+    DateTime examDateTime = DateTime(year??0, month??0, day??0,);
+    int? timeLeftInt = examDateTime.difference(Global.nowDate).inDays + 1;
     if (timeLeftInt < 0) out = true;
   }
-  static String examJsonEncode(List<ExamData> list) {
+  static String? examJsonEncode(List<ExamData?> list) {
     var l = [];
     for (var item in list) {
-      l.add(item.toJson());
+      l.add(item?.toJson());
     }
     return jsonEncode(l);
   }
@@ -107,30 +107,30 @@ class ExamData {
 /// day : 15
 
 // class ExamData {
-//   String _local;
-//   String _time;
-//   String _course;
-//   String _type;
-//   int _year;
-//   int _month;
-//   int _day;
+//   String? _local;
+//   String? _time;
+//   String? _course;
+//   String? _type;
+//   int? _year;
+//   int? _month;
+//   int? _day;
 //
-//   String get local => _local;
-//   String get time => _time;
-//   String get course => _course;
-//   String get type => _type;
-//   int get year => _year;
-//   int get month => _month;
-//   int get day => _day;
+//   String? get local => _local;
+//   String? get time => _time;
+//   String? get course => _course;
+//   String? get type => _type;
+//   int? get year => _year;
+//   int? get month => _month;
+//   int? get day => _day;
 //
 //   ExamData(
-//       {String local,
-//       String time,
-//       String course,
-//       String type,
-//       int year,
-//       int month,
-//       int day}) {
+//       {String? local,
+//       String? time,
+//       String? course,
+//       String? type,
+//       int? year,
+//       int? month,
+//       int? day}) {
 //     _local = local;
 //     _time = time;
 //     _course = course;

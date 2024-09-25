@@ -443,7 +443,7 @@ class _ModalBottomSheetState<T> extends State<_ModalBottomSheet<T>> {
     final String routeLabel = _getRouteLabel(localizations);
 
     return AnimatedBuilder(
-      animation: widget.route!.animation,
+      animation: widget.route!.animation!,
       child: Padding(
         padding: MediaQuery.of(context).viewInsets,
         child: BottomSheet(
@@ -538,7 +538,7 @@ class _ModalBottomSheetRoute<T> extends PopupRoute<T> {
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null);
-    _animationController = transitionAnimationController ?? BottomSheet.createAnimationController(navigator.overlay);
+    _animationController = transitionAnimationController ?? BottomSheet.createAnimationController(navigator!.overlay as TickerProvider);
     return _animationController!;
   }
 

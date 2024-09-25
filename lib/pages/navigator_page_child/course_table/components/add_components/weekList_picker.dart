@@ -88,7 +88,7 @@ class _WeekListPickerState extends State<WeekListPicker> {
       Navigator.of(context).pop(weekList);
     }
   }
-  Widget _buildButton({GestureTapCallback onTap}){
+  Widget _buildButton({GestureTapCallback? onTap}){
     return Center(
       child: FlyTextButton("确定",
         onTap: onTap,),

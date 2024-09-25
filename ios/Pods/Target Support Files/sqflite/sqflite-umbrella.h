@@ -10,6 +10,15 @@
 #endif
 #endif
 
+#import "SqfliteCursor.h"
+#import "SqfliteDarwinDatabase.h"
+#import "SqfliteDarwinDatabaseAdditions.h"
+#import "SqfliteDarwinDatabaseQueue.h"
+#import "SqfliteDarwinDB.h"
+#import "SqfliteDarwinImport.h"
+#import "SqfliteDarwinResultSet.h"
+#import "SqfliteDatabase.h"
+#import "SqfliteImport.h"
 #import "SqfliteOperation.h"
 #import "SqflitePlugin.h"
 

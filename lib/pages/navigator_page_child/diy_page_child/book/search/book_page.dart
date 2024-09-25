@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_easyhub/flutter_easy_hub.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/search/model.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -19,26 +19,26 @@ class BookSearchData {
         this.available,
         this.eCount,
         this.pCount});
-  String name;
-  String author;
-  String publisher;
-  String searchCode;
-  String image;
-  bool available;
-  int eCount;
-  int pCount;
+  String? name;
+  String? author;
+  String? publisher;
+  String? searchCode;
+  String? image;
+  bool? available;
+  int? eCount;
+  int? pCount;
 }
 //跳转到当前页面
-void toBookSearchPage(BuildContext context, {@required String bookName}) {
+void toBookSearchPage(BuildContext context, {required String bookName}) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BookSearchPage(bookName: bookName,)));
 }
 
 
 class BookSearchPage extends StatefulWidget {
-  final String bookName;
+  final String? bookName;
 
-  const BookSearchPage({Key key,@required this.bookName}) : super(key: key);
+  const BookSearchPage({Key? key,required this.bookName}) : super(key: key);
   @override
   _BookSearchPageState createState() => _BookSearchPageState();
 }
@@ -47,28 +47,28 @@ class _BookSearchPageState extends State<BookSearchPage> with AutomaticKeepAlive
   int curPage = 0;//当前页
   int allPage = 0;//总页数
   int row = 20;//单页搜索结果数
-  String curBookName;//当前搜索书籍名称
-  bool loading;//加载动画
+  late String curBookName;//当前搜索书籍名称
+  bool? loading;//加载动画
   bool miniLoading = false;//切换页面时的迷你动画
   FocusNode searchBarFocus = new FocusNode();
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   BookSearchModel model = BookSearchModel();
   initState() {
     super.initState();
     if(widget.bookName != null){
-      curBookName = widget.bookName;
-      getShowBookView(widget.bookName);
+      curBookName = widget.bookName!;
+      getShowBookView(widget.bookName!);
     }
   }
   getShowBookView(String book,{int page = 1})async{
     setState(() {loading = true;});
     if(await model.bookGet(book: book,row: row.toString(),page: page.toString()) != null){
-      allPage = ((model.entity.data.all??0)/row).ceil();
+      allPage = ((model.entity?.data?.all??0)/row).ceil();
       curPage = page;
     }
     setState(() {loading = false;});
   }
-  switchPage({@required int page})async{
+  switchPage({required int page})async{
     setState(() {
       loading = true;
     });
@@ -76,16 +76,16 @@ class _BookSearchPageState extends State<BookSearchPage> with AutomaticKeepAlive
     setState(() {loading = false;});
   }
   Widget bookCard(int curIndex,
-      {@required String name,
-        @required String author,
-        @required String publisher,
-        @required String searchCode,
-        @required String image,
-        @required bool available,
-        @required String eCount,
-        @required String pCount,
-        @required String statusNow}) {
-    int curIndexTemp = curIndex;
+      {required String name,
+        required String author,
+        required String publisher,
+        required String searchCode,
+        required String image,
+        required bool available,
+        required String eCount,
+        required String pCount,
+        required String statusNow}) {
+    int? curIndexTemp = curIndex;
     //右上角 可借/不可借 卡片
     Widget tipCard(bool available) {
       String title = available ? "可借" : "不可借";
@@ -135,7 +135,7 @@ class _BookSearchPageState extends State<BookSearchPage> with AutomaticKeepAlive
                     aspectRatio: 0.618,
                     child: FlyWidgetBuilder(
                       whenFirst: image!='null',
-                      firstChild: Image.network(image,fit: BoxFit.fill,),
+                      firstChild: Image.network(image!,fit: BoxFit.fill,),
                       secondChild: Image.asset("images/bookCover.jpg",fit: BoxFit.fill,),
                     ),
                   ),
@@ -156,7 +156,7 @@ class _BookSearchPageState extends State<BookSearchPage> with AutomaticKeepAlive
                           Row(
                             children: [
                               Expanded(child: FlyText.title45(name, fontWeight: FontWeight.bold,),),
-                              tipCard(available)
+                              tipCard(available!)
                             ],
                           ),
                           FlyText.mainTip35(author,),
@@ -284,19 +284,19 @@ class _BookSearchPageState extends State<BookSearchPage> with AutomaticKeepAlive
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
-              ListView.builder(shrinkWrap: true,physics: NeverScrollableScrollPhysics(),itemCount: model.entity.data.bookList.length,itemBuilder: (context,index){
-                var item = model.entity.data.bookList[index];
+              ListView.builder(shrinkWrap: true,physics: NeverScrollableScrollPhysics(),itemCount: model.entity?.data?.bookList?.length,itemBuilder: (context,index){
+                var item = model.entity?.data?.bookList?[index];
                 return bookCard(index,
-                    name: item.name??"",
-                    author: item.author??"",
-                    publisher: item.publisher??"",
-                    searchCode: item.searchCode??"",
-                    available: item.status??false,
-                    eCount: item.ecount.toString(),
+                    name: item?.name??"",
+                    author: item?.author??"",
+                    publisher: item?.publisher??"",
+                    searchCode: item?.searchCode??"",
+                    available: item?.status??false,
+                    eCount: item!.ecount.toString(),
                     pCount: item.pcount.toString(),
                     image:
-                    item.image!=''?item.image:"",
-                    statusNow: item.statusNow);
+                    item.image!=''?item.image!:"",
+                    statusNow: item.statusNow!);
               }),
               FlyText.mini30(""),
               FlyText.mini30("长按“上一页”按钮可返回首页"),
@@ -331,7 +331,10 @@ class _BookSearchPageState extends State<BookSearchPage> with AutomaticKeepAlive
     themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
-          brightness: Theme.of(context).brightness,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent, // 状态栏背景色
+            statusBarIconBrightness: Brightness.dark, // 状态栏图标颜色
+          ),
           leadingWidth: 0,
           leading: Container(),
           title: Row(

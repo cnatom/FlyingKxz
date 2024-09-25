@@ -3,22 +3,22 @@ import 'package:dio/dio.dart';
 import 'interceptors/log.dart';
 
 class Network {
-  static late Dio _dio;
+  static Dio? _dio;
 
   static Dio get dio {
     if(_dio == null){
       _dio = Dio(BaseOptions(
-      connectTimeout: 5000, receiveTimeout: 5000, sendTimeout: 5000));
-      _dio.interceptors.add(new MyLogInterceptors());
+      connectTimeout: Duration(seconds: 5), receiveTimeout: Duration(seconds: 5), sendTimeout: Duration(seconds: 5)));
+      _dio?.interceptors.add(new MyLogInterceptors());
     }
-    return _dio;
+    return _dio!;
   }
 
   static Future<Response?> get(url, {Map<String, dynamic>? params}) async {
     try {
       Response response = await dio.get(url, queryParameters: params);
       return response;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e.toString());
       return null;
     }
@@ -27,7 +27,7 @@ class Network {
     try {
       Response response = await dio.post(url, data: params);
       return response;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return null;
     }
   }

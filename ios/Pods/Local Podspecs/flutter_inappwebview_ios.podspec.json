@@ -21,7 +21,12 @@
 
     ],
     "OrderedSet": [
-      "~>5.0"
+      "~>6.0.3"
+    ]
+  },
+  "resource_bundles": {
+    "flutter_inappwebview_ios_privacy": [
+      "Resources/PrivacyInfo.xcprivacy"
     ]
   },
   "pod_target_xcconfig": {
@@ -34,14 +39,14 @@
   },
   "swift_versions": "5.0",
   "platforms": {
-    "ios": "11.0"
+    "ios": "12.0"
   },
   "default_subspecs": "Core",
   "subspecs": [
     {
       "name": "Core",
       "platforms": {
-        "ios": "9.0"
+        "ios": "12.0"
       }
     }
   ],

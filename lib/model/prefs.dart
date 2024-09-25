@@ -14,6 +14,8 @@ class Prefs{
   static SharedPreferences? prefs;
   static String _username = 'username';//用户名
   static String _password = 'password4';//密码
+  static String _usernameJw = 'usernameJw';//密码
+  static String _passwordJw = 'passwordJw';//密码
   static String _phone = 'phone';//电话号码
   static String _name = 'name';//姓名
   static String _token = 'NewToken1.2.0';//token信息
@@ -47,6 +49,8 @@ class Prefs{
   static String? get examDataDiy => prefs?.getString(_examDataDiy);
   static String? get username => prefs?.getString(_username);
   static String? get password => prefs?.getString(_password);
+  static String? get usernameJw => prefs?.getString(_usernameJw);
+  static String? get passwordJw => prefs?.getString(_passwordJw);
   static String? get phone => prefs?.getString(_phone);
   static String? get name => prefs?.getString(_name);
   static String? get token => prefs?.getString(_token);
@@ -78,6 +82,8 @@ class Prefs{
   static set examDataDiy(String? value) =>prefs?.setString(_examDataDiy, value!);
   static set username(String? value) =>prefs?.setString(_username, value!);
   static set password(String? value) =>prefs?.setString(_password, value!);
+  static set usernameJw(String? value) =>prefs?.setString(_usernameJw, value!);
+  static set passwordJw(String? value) =>prefs?.setString(_passwordJw, value!);
   static set phone(String? value) =>prefs?.setString(_phone, value!);
   static set name(String? value) =>prefs?.setString(_name, value!);
   static set token(String? value) =>prefs?.setString(_token, value!);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/Picker.dart';
+import 'package:flutter_picker_plus/picker.dart';
 
 import 'text.dart';
 void showPicker(BuildContext context,GlobalKey<ScaffoldState> scaffoldKey,{String? title,required List pickerDatas,required Color colorRight,required PickerConfirmCallback onConfirm,bool isArray = true}) {

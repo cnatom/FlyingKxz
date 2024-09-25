@@ -105,7 +105,7 @@ class _ImportScorePageState extends State<ImportScorePage> {
                     useHybridComposition: true
                 )
             ),
-            initialUrlRequest: URLRequest(url: Uri.parse("http://jwxt.cumt.edu.cn/jwglxt/cjcx/cjcx_cxDgXscj.html?gnmkdm=N305005&layout=default")),
+            initialUrlRequest: URLRequest(url: WebUri("http://jwxt.cumt.edu.cn/jwglxt/cjcx/cjcx_cxDgXscj.html?gnmkdm=N305005&layout=default")),
             onWebViewCreated: (controller){
               _controller = controller;
             },

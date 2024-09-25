@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/util/logger/log.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/output_ics/ics_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_color.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
@@ -27,14 +26,19 @@ class OutputIcsPage extends StatefulWidget {
 }
 
 class _OutputIcsPageState extends State<OutputIcsPage> {
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   List<CourseData> list = [];
   bool outLoading = false;
   @override
   void initState() {
     super.initState();
     list.addAll(widget.courseList);
-    list.sort((a, b) => a.title.compareTo(b.title));
+    list.sort((a, b) {
+      if(a.title!=null && b.title!=null){
+        return a.title!.compareTo(b.title!);
+      }
+      return 1;
+    });
   }
   //删除临时课程
   del(int index){
@@ -52,7 +56,7 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
       String dataPath = await courseToIcs(list);
       Map<String ,dynamic> map = Map();
       map["myfile"] = await MultipartFile.fromFile(dataPath,filename: "${Prefs.username}.ics");
-      var res = await Dio().post('https://user.kxz.atcumt.com/ics/upload',data: FormData.fromMap(map),options: Options(sendTimeout: 3000,receiveTimeout: 3000,));
+      var res = await Dio().post('https://user.kxz.atcumt.com/ics/upload',data: FormData.fromMap(map),options: Options(sendTimeout: Duration(seconds: 3),receiveTimeout: Duration(seconds: 3),));
       if(res.statusCode==200){
         showToast('同步成功！');
         Prefs.courseIcsDate = DateTime.now().toString();
@@ -62,7 +66,7 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
         showToast('同步失败${res.statusCode}');
         return;
       }
-    }on DioError catch(e){
+    }on DioException catch(e){
       showToast('同步失败，请检查网络连接！');
       return;
     }
@@ -99,7 +103,7 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
     Map<String ,dynamic> map = Map();
     map["myfile"] = await MultipartFile.fromFile(dataPath,filename: "${Prefs.username}.ics");
     try{
-      var res = await Dio().post('https://user.kxz.atcumt.com/ics/upload',data: FormData.fromMap(map),options: Options(sendTimeout: 3000,receiveTimeout: 3000,));
+      var res = await Dio().post('https://user.kxz.atcumt.com/ics/upload',data: FormData.fromMap(map),options: Options(sendTimeout: Duration(seconds: 3),receiveTimeout: Duration(seconds: 3),));
       if(res.statusCode==200){
         Prefs.courseIcsUrl = 'https://user.kxz.atcumt.com/ics/download/${Prefs.username}.ics';
         Prefs.courseIcsDate = DateTime.now().toString();
@@ -113,9 +117,14 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
             UniversalPlatform.isAndroid?FlyText.main40('请用"系统日历"打开下载的文件',maxLine: 3,):
             Container(),
             FlyText.miniTip30('您课表文件的订阅网址：',maxLine: 3,),
-            FlyTextButton(Prefs.courseIcsUrl,onTap: (){
-              Clipboard.setData(ClipboardData(text: Prefs.courseIcsUrl));
-              showToast('已复制链接');
+            FlyTextButton(Prefs.courseIcsUrl!,onTap: (){
+              if(Prefs.courseIcsUrl!=null){
+                Clipboard.setData(ClipboardData(text: Prefs.courseIcsUrl!));
+                showToast('已复制链接');
+              } else {
+                showToast('复制链接失败，请重试');
+              }
+
             },maxLine: 10,),
 
             UniversalPlatform.isAndroid?
@@ -125,7 +134,7 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
         ));
         Logger.log("OutputIcs", "导出至日历,成功",{});
         Future.delayed(Duration(seconds: 5),(){
-          launchUrl(Uri.parse(Prefs.courseIcsUrl));
+          launchUrl(Uri.parse(Prefs.courseIcsUrl!));
         });
       }else{
         showToast('导出失败${res.toString()}');
@@ -149,7 +158,7 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
     String data = await courseToIcs(list);
     if(data!=''){
       showToast('成功生成课表文件，分享出去吧～');
-      Share.shareFiles(['$data'],);
+      Share.shareXFiles([XFile(data)],);
       Logger.log("OutputIcs", "以文件分享,成功",{});
     }else{
       showToast('文件生成失败');
@@ -191,9 +200,13 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FlyText.miniTip30('当前课表订阅网址(点击复制链接)',maxLine: 3,),
-          FlyTextButton(Prefs.courseIcsUrl,onTap: (){
-            Clipboard.setData(ClipboardData(text: Prefs.courseIcsUrl));
-            showToast('已复制链接');
+          FlyTextButton(Prefs.courseIcsUrl!,onTap: (){
+            if(Prefs.courseIcsUrl!=null){
+              Clipboard.setData(ClipboardData(text: Prefs.courseIcsUrl!));
+              showToast('已复制链接');
+            } else {
+              showToast("复制失败，请重试");
+            }
           },maxLine: 10,),
           FlyText.miniTip30('更新时间:${Prefs.courseIcsDate}\n点击右上角按钮，刷新服务器课表数据',maxLine: 3,),
         ],
@@ -268,7 +281,7 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
       ),
     );
   }
-  Widget _container({Widget child}){
+  Widget _container({Widget? child}){
     return FlyContainer(
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB, spaceCardPaddingRL, spaceCardPaddingTB),
       margin: EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB, spaceCardMarginRL, 0),
@@ -311,9 +324,9 @@ class _OutputIcsPageState extends State<OutputIcsPage> {
                     padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, spaceCardPaddingTB, spaceCardPaddingRL, spaceCardPaddingTB),
                     child: Column(
                       children: [
-                        list[i].location!=''?rowKbContent('地点', list[i].location):Container(),
-                        list[i].teacher!=''?rowKbContent('老师', list[i].teacher):Container(),
-                        list[i].credit!=''?rowKbContent('学分', list[i].credit):Container(),
+                        list[i].location!=''?rowKbContent('地点', list[i].location!):Container(),
+                        list[i].teacher!=''?rowKbContent('老师', list[i].teacher!):Container(),
+                        list[i].credit!=''?rowKbContent('学分', list[i].credit!):Container(),
                         rowKbContent('周次', CourseData.weekListToString(list[i].weekList)),
                         rowKbContent('节次', '星期${list[i].weekNum}  第${list[i].lessonNum}小节  持续${list[i].durationNum}小节')
                       ],

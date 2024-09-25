@@ -24,7 +24,7 @@ class SchoolBusPage extends StatefulWidget {
 
 class _SchoolBusPageState extends State<SchoolBusPage>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
 
   final String dialogContentNorth = "【北线停靠站】\n\n"
       "「文昌校区」：\n中心区、网络大讲堂（原电教馆)站；\n\n"
@@ -137,8 +137,8 @@ class _SchoolBusPageState extends State<SchoolBusPage>
                       ),
                     ),
                   ),
-                  child: FlyText.mainTip40("生效日期：2024.2.26 - 2024.7.14")),
-              SizedBox(height: ScreenUtil.bottomBarHeight,)
+                  child: FlyText.mainTip40("生效日期：2024.8.31 - 2025.1.19")),
+              SizedBox(height: ScreenUtil().bottomBarHeight,)
             ],
           ),
         );
@@ -146,7 +146,7 @@ class _SchoolBusPageState extends State<SchoolBusPage>
     );
   }
 
-  Widget buildRouteTitle({@required String title, String dialogContent}) {
+  Widget buildRouteTitle({required String? title, String? dialogContent}) {
     return InkWell(
       onTap: () {
         if (dialogContent != null) {
@@ -191,7 +191,7 @@ class BusTimeListView extends StatefulWidget {
 }
 
 class _BusTimeListViewState extends State<BusTimeListView> {
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
 
   bool checkTime(String timeStr) {
     // 当前时间

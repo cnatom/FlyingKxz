@@ -1,7 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/util/logger/log.dart';
@@ -17,9 +16,9 @@ class ExamAddView extends StatefulWidget {
 class _ExamAddViewState extends State<ExamAddView> {
   TextEditingController courseController = new TextEditingController();
   TextEditingController localController = new TextEditingController();
-  DateTime date;//日期
-  DateTime startTime;//开始时间
-  DateTime endTime;//结束时间
+  DateTime? date;//日期
+  DateTime? startTime;//开始时间
+  DateTime? endTime;//结束时间
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +50,7 @@ class _ExamAddViewState extends State<ExamAddView> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               date==null?FlyText.mainTip40('未选择',):
-                              FlyText.main40("${date.year}-${date.month}-${date.day}")
+                              FlyText.main40("${date?.year}-${date?.month}-${date?.day}")
                               ,
                               Icon(Icons.keyboard_arrow_right_rounded,)
                             ],
@@ -72,7 +71,7 @@ class _ExamAddViewState extends State<ExamAddView> {
     );
   }
   Widget inputBar(String hintText,TextEditingController controller,
-      {FormFieldSetter<String> onSaved,bool autofocus = false}){
+      {FormFieldSetter<String>? onSaved,bool autofocus = false}){
     return Container(
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
       decoration: BoxDecoration(
@@ -112,10 +111,10 @@ class _ExamAddViewState extends State<ExamAddView> {
     var newCountDownInfo = ExamData(
         courseName: courseController.text,
         location: localController.text,
-        dateTime: "${date.year}-${date.month}-${date.day}",
-        year: date.year,
-        month: date.month,
-        day: date.day,
+        dateTime: "${date?.year}-${date?.month}-${date?.day}",
+        year: date?.year,
+        month: date?.month,
+        day: date?.day,
         diy: true
     );
     Global.examList.add(newCountDownInfo);

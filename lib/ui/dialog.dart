@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/ui/text.dart';
 import 'package:flying_kxz/ui/toast.dart';
 
 import 'config.dart';
 
-Future<String> FlyDialogInputShow(BuildContext context,
+Future<String?> FlyDialogInputShow(BuildContext context,
     {String hintText = '请在此填写',
     VoidCallback? onPressedYes,
     int maxLines = 12,
@@ -72,8 +71,38 @@ Future<dynamic> FlyDialogDIYShow(BuildContext context,
     builder: (context) => AlertDialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10))),
-      content: content ,
+      content: content,
       actions: actions,
+    ),
+  );
+}
+
+Future<bool?> showDialogConfirm(BuildContext context,{required String title,VoidCallback? onConfirm,VoidCallback? onCancel}) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10))),
+      content: FlyText.main40(title,maxLine: 100,),
+      actions: <Widget>[
+        TextButton(
+          onPressed: (){
+            if (onConfirm!=null){
+              onConfirm();
+            }
+            Navigator.of(context).pop(true);
+          },
+          child: FlyText.main40('确定',color: colorMain),),
+        TextButton(
+          onPressed: (){
+            if(onCancel!=null){
+              onCancel();
+            }
+            Navigator.of(context).pop(false);
+          },
+          child: FlyText.mainTip40('取消',),
+        ),
+      ],
     ),
   );
 }

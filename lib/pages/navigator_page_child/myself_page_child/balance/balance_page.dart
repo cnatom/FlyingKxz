@@ -30,14 +30,12 @@ class _BalancePageState extends State<BalancePage> {
         content: Wrap(
           runSpacing: spaceCardPaddingTB,
           children: [
+            FlyTitle("充值方法"),
             FlyText.title45(
-              '请在充值页面点击"充值"。',
+              '中国银行APP ->\n生活 ->\n更多 ->\n乐知校园',
               maxLine: 10,
             ),
             // Image.asset("images/balanceRechargeHelp.png"),
-            _buildButton("知道啦，前往充值页面↗", onTap: () {
-              launchUrl(Uri.parse("https://yktm.cumt.edu.cn/plat/dating"),mode: LaunchMode.externalApplication);
-            }),
           ],
         ));
   }
@@ -131,9 +129,9 @@ class _BalancePageState extends State<BalancePage> {
         balanceProvider.detailEntity != null
             ? ListView.builder(
           physics: NeverScrollableScrollPhysics(),
-                itemCount: balanceProvider.detailEntity.length,
+                itemCount: balanceProvider.detailEntity!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  var item = balanceProvider.detailEntity[index];
+                  var item = balanceProvider.detailEntity![index];
                   return _buildDetailItem(item['title'], item['time'],
                       item['change'], item['balance']);
                 },

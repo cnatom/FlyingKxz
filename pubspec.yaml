@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.5.79
+version: 1.6.0
 
 environment:
   sdk: ">=2.12.0 <3.10.0"
@@ -27,58 +27,62 @@ dependencies:
   photo_view: any
   cached_network_image: any
 #  flutter_swiper: any
-  dio: ^4.0.0
-  badges: ^2.0.1
+  dio: ^5.7.0
+  badges: ^3.1.2
 #  flutter_page_indicator:
   sliding_up_panel: any
   flutter_staggered_animations: ^1.0.0
-  bot_toast: any
+  bot_toast: ^4.1.3 # toast
 #  toast: any
   universal_platform: any
   provider: any
   shared_preferences: any
 #  flutter_easyhub: any
   loading_animation_widget: ^1.2.1
-  flutter_picker: any
+#  flutter_picker: any
   flutter_feather_icons: any
   outline_material_icons: any
   fluttericon: any
   flutter_datetime_picker: any
   flutter_native_splash: any
   package_info: any
-  flutter_xupdate: any
+#  flutter_xupdate: any
   url_launcher: any
   path_provider: any
-  flutter_screenutil: any #lutter_screenutil: ^5.9.0
+  flutter_screenutil: ^5.5.4 #lutter_screenutil: ^5.9.0
   date_format: any
   material_design_icons_flutter: any
   flutter_boxicons: any
   evil_icons_flutter: any
-  flutter_animated_dialog: any
+  flutter_animated_dialog_updated:
+    git:
+      url: https://github.com/cnatom/flutter_animated_dialog.git
   eva_icons_flutter: any
   community_material_icon: any
   flutter_sticky_header: any
   device_preview: any
   image_picker: any
-  image_crop: any
+#  image_crop: any
   left_scroll_actions: any
-  dio_cookie_manager: ^2.0.0
-  image_gallery_saver: any
+  dio_cookie_manager: ^3.1.1
+#  image_gallery_saver: any
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: any
-  webview_flutter: ^2.0.4
+  webview_flutter: ^4.9.0
   percent_indicator: ^4.2.2
-  share_plus: ^2.1.4
+  share_plus: ^10.0.2
+  flutter_picker_plus: ^1.3.0
   html: ^0.15.4 # html爬虫
-  line_awesome_flutter: ^1.0.1
-  flutter_inappwebview: ^5.3.2
+  line_awesome_flutter: ^3.0.1
+  flutter_inappwebview: ^6.1.0
 #  ical: ^0.2.2 # 课表导出到日历
+  nanoid2: ^2.0.1 # 擦ical的屁股
   flutter_intro: ^3.0.2 #引导页
-  connectivity_plus: ^3.0.6 #检测wifi或者流量，用于校园网自动登录
+  connectivity_plus: ^6.0.5 #检测wifi或者流量，用于校园网自动登录
   synchronized: ^3.0.0 # 加锁防止校园网自动登录多次执行
   auto_size_text: ^3.0.0 # 自动调整字体大小
-  flutter_js: ^0.6.0 # js调用，用于密码加密
+  flutter_js: ^0.8.1 # js调用，用于密码加密
 
 dev_dependencies:
   flutter_test:

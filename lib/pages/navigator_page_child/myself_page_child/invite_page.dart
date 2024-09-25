@@ -72,7 +72,7 @@ class _InvitePageState extends State<InvitePage> {
                       width: ScreenUtil().setSp(35),
                     ),
                     Text(
-                      "分享App",
+                      "联系我们",
                       style: TextStyle(
                         fontSize: fontSizeTitle45,
                         fontWeight: FontWeight.bold,
@@ -80,7 +80,7 @@ class _InvitePageState extends State<InvitePage> {
                     ),
                   ],
                 ),
-                FlyText.miniTip30("点击分享"),
+                FlyText.miniTip30("点击卡片复制"),
               ],
             ),
             Container(), Container(),

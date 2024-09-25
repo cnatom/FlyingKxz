@@ -1,14 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/prefs.dart';
-import '../../../../../ui/toast.dart';
-
 class CourseDatePicker{
   Future<String> show(BuildContext context) async {
     try{
       Locale myLocale = Localizations.localeOf(context);
-      DateTime date = await showDatePicker(
+      DateTime? date = await showDatePicker(
         helpText: "选择开学日期（第一周第一天的日期）",
         context: context,
         initialDate: DateTime.now(),

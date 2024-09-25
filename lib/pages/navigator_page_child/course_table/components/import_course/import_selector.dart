@@ -13,7 +13,7 @@ import 'import_page.dart';
 
 class ImportSelector extends StatefulWidget {
   final CourseProvider courseProvider;
-  ImportSelector({Key key,@required this.courseProvider}) : super(key: key);
+  ImportSelector({Key? key,required this.courseProvider}) : super(key: key);
 
   @override
   State<ImportSelector> createState() => _ImportSelectorState();
@@ -21,22 +21,21 @@ class ImportSelector extends StatefulWidget {
 
 class _ImportSelectorState extends State<ImportSelector> {
 
-  CourseProvider courseProvider;
+  late CourseProvider courseProvider;
 
-  void importCourse({@required ImportCourseType type})async{
+  void importCourse({required ImportCourseType type})async{
     bool ok = false;
-    List<dynamic> list = await Navigator.of(context)
+    List<dynamic>? list = await Navigator.of(context)
         .push(CupertinoPageRoute(builder: (context) => ImportPage(importType: type,)));
-    ok = list!=null?true:false;
-    courseProvider.handleCourseList(list);
+    ok = list!=null&&list.isNotEmpty?true:false;
     if(ok){
-      showToast("🎉成功导入！");
+      courseProvider.handleCourseList(list);
     }
     Navigator.of(context).pop(["import",type,ok]);
   }
 
   void addCourse() async {
-    List<CourseData> newCourseDataList;
+    List<CourseData>? newCourseDataList;
     newCourseDataList = await showFlyModalBottomSheet(
       context: context,
       isScrollControlled: false,
@@ -93,7 +92,7 @@ class _ImportSelectorState extends State<ImportSelector> {
   }
 
   Widget button(String title,
-      {GestureTapCallback onTap, Color color,IconData iconData,bool solid = true}) {
+      {GestureTapCallback? onTap, Color? color,IconData? iconData,bool solid = true}) {
     if(color == null){
       color = colorMain;
     }

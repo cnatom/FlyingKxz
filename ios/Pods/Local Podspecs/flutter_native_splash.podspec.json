@@ -23,6 +23,11 @@
   "platforms": {
     "ios": "9.0"
   },
+  "resource_bundles": {
+    "flutter_native_splash_privacy": [
+      "Resources/PrivacyInfo.xcprivacy"
+    ]
+  },
   "pod_target_xcconfig": {
     "DEFINES_MODULE": "YES",
     "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "i386"

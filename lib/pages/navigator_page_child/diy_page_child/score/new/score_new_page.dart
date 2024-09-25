@@ -58,9 +58,9 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
     // 初始化成绩数据
     String? scoreList = ScorePrefs.scoreList;
     if(scoreList == null) return;
-    List<Map<String,dynamic>> list = jsonDecode(scoreList);
-    list = list.map((e) => e).toList();
-    scoreProvider.setAndCalScoreList(list);
+    List<dynamic> list = jsonDecode(scoreList);
+    list = list.map((e) => e as Map<String,dynamic>).toList();
+    scoreProvider.setAndCalScoreList(list as List<Map<String, dynamic>>);
     // 初始化导入时间
     if(ScorePrefs.scoreImportTime != null){
       scoreProvider.importTime = ScorePrefs.scoreImportTime!;
@@ -69,7 +69,7 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
 
   // 导入成绩
   _import() async {
-    List<Map<String, dynamic>> result = await Navigator.push(context,
+    List<Map<String, dynamic>>? result = await Navigator.push(context,
         CupertinoPageRoute(builder: (context) => ImportScoreNewPage()));
     if (result == null || result.isEmpty) return;
     scoreProvider.setAndCalScoreList(result);
@@ -144,7 +144,7 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
         ? Container()
         : Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginTB),
-            child: FlyText.miniTip30("导入时间：" + scoreProvider.importTime),
+            child: FlyText.miniTip30("导入时间：" + scoreProvider.importTime!),
           );
   }
 

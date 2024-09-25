@@ -13,20 +13,20 @@ class IJournalStatus {
 }
 
 class IJournal extends ICalendarElement {
-  IJournalStatus status;
+  IJournalStatus? status;
   DateTime start;
   IJournal({
     this.status,
-    this.start,
-    IOrganizer organizer,
-    String uid,
-    String summary,
-    String description,
-    List<String> categories,
-    String url,
+    required this.start,
+    IOrganizer? organizer,
+    String? uid,
+    String? summary,
+    String? description,
+    List<String>? categories,
+    String? url,
     IClass classification = IClass.PRIVATE,
-    String comment,
-    IRecurrenceRule rrule,
+    String? comment,
+    IRecurrenceRule? rrule,
   }) : super(
           organizer: organizer,
           uid: uid,

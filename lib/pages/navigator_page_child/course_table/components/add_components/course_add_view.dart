@@ -20,12 +20,12 @@ class _CourseAddViewState extends State<CourseAddView> {
   List<String> lessonStrList = ["未选择"];
   List<String> weekStrList = ["未选择"];
   //需要返回的数据
-  String title;
-  String location;
-  String teacher;
+  String? title;
+  String? location;
+  String? teacher;
 
   List<CourseData> courseDataList = [new CourseData()];
-  int durationNum;
+  int? durationNum;
   @override
   Widget build(BuildContext context) {
     return FlyBottomSheetScaffold(context,
@@ -183,7 +183,7 @@ class _CourseAddViewState extends State<CourseAddView> {
   }
 
   Widget inputBar(String hintText,TextEditingController controller,
-      {FormFieldSetter<String> onSaved,bool autofocus = false,int maxLines = 1}){
+      {FormFieldSetter<String>? onSaved,bool autofocus = false,int maxLines = 1}){
     return Container(
       padding: EdgeInsets.fromLTRB(spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
       decoration: BoxDecoration(

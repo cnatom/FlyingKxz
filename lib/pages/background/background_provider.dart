@@ -12,13 +12,13 @@ class BackgroundProvider extends ChangeNotifier {
   // static String _backgroundImagePrefsStr = "background_image2";
   static String _backgroundImagePrefsStr = "background_image3";
 
-  static String backgroundPath;
+  static String? backgroundPath;
 
-  Directory documentDirectory;
+  late Directory documentDirectory;
 
   String get getBackgroundPath {
     if (backgroundPath == null) {
-      String prefsPath = Prefs.prefs.getString(_backgroundImagePrefsStr);
+      String? prefsPath = Prefs.prefs?.getString(_backgroundImagePrefsStr);
       if (prefsPath != null) {
         documentDirectory = Directory("${documentDirectory.path}/background/");
         if(documentDirectory.existsSync()){
@@ -36,7 +36,7 @@ class BackgroundProvider extends ChangeNotifier {
         backgroundPath = "images/background.png";
       }
     }
-    return backgroundPath;
+    return backgroundPath!;
   }
 
   Future<void> precacheBackground(BuildContext context)async{
@@ -59,11 +59,11 @@ class BackgroundProvider extends ChangeNotifier {
 
   void setBackgroundImage() async {
     try{
-      XFile pickedImage = await _pickImage();
+      XFile? pickedImage = await _pickImage();
       if (pickedImage != null) {
         String imagePath = await _copyImageToStorage(pickedImage.path);
         backgroundPath = imagePath;
-        Prefs.prefs.setString(_backgroundImagePrefsStr, imagePath);
+        Prefs.prefs?.setString(_backgroundImagePrefsStr, imagePath);
         showToast("🎉更换成功！");
         notifyListeners();
       }
@@ -114,7 +114,7 @@ class BackgroundProvider extends ChangeNotifier {
     }
   }
 
-  Future<XFile> _pickImage() async {
+  Future<XFile?> _pickImage() async {
     final imagePicker = ImagePicker();
     try {
       final pickedImage =

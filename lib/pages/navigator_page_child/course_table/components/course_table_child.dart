@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_color.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
@@ -17,8 +17,8 @@ class CourseTableChild extends StatefulWidget {
 }
 
 class _CourseTableChildState extends State<CourseTableChild> {
-  double unitHeight;
-  double unitWidth;
+  late double unitHeight;
+  late double unitWidth;
   List<Widget> cards = [];
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _CourseTableChildState extends State<CourseTableChild> {
 
 
 class CourseCard extends StatefulWidget {
-  final CourseData courseData;
+  final CourseData? courseData;
   final double unitHeight;
   final double unitWidth;
   final List<CourseData> clickData;
@@ -58,15 +58,15 @@ class CourseCard extends StatefulWidget {
 }
 
 class _CourseCardState extends State<CourseCard> {
-  CourseProvider courseProvider;
-  ThemeProvider themeProvider;
-  Color cardColor;
-  bool isRepeat;
+  late CourseProvider courseProvider;
+  late ThemeProvider themeProvider;
+  late Color cardColor;
+  late bool isRepeat;
   @override
   Widget build(BuildContext context) {
     courseProvider = Provider.of<CourseProvider>(context);
     themeProvider = Provider.of<ThemeProvider>(context);
-    cardColor = CourseColor.fromStr(widget.courseData.title.toString());
+    cardColor = CourseColor.fromStr(widget.courseData?.title.toString());
     isRepeat = false;
     if(widget.clickData.length!=1){
       isRepeat = true;
@@ -98,9 +98,9 @@ class _CourseCardState extends State<CourseCard> {
   }
   
   Widget _buildCard(){
-    double top = (widget.courseData.lessonNum-1)*widget.unitHeight;
-    double left = (widget.courseData.weekNum-1)*widget.unitWidth;
-    double height = widget.unitHeight*widget.courseData.durationNum;
+    double top = (widget.courseData!.lessonNum!-1)*widget.unitHeight;
+    double left = (widget.courseData!.weekNum!-1)*widget.unitWidth;
+    double height = widget.unitHeight*widget.courseData!.durationNum!;
     return Positioned(
       top:top,
       left:left,
@@ -127,9 +127,9 @@ class _CourseCardState extends State<CourseCard> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildCardText(isRepeat?"重叠课":widget.courseData.title, fontSizeTip33),
+        _buildCardText(isRepeat?"重叠课":widget.courseData!.title!, fontSizeTip33),
         SizedBox(height: ScreenUtil().setSp(10),),
-        _buildCardText(isRepeat?"点击查看":widget.courseData.location, fontSizeTipMini25)
+        _buildCardText(isRepeat?"点击查看":widget.courseData!.location!, fontSizeTipMini25)
       ],
     );
   }
@@ -201,12 +201,12 @@ class _CourseCardState extends State<CourseCard> {
                     fontSizeTitle45 * 0.8),
                 child: Column(
                   children: [
-                    courseData.location!=''?rowKbContent('地点', courseData.location):Container(),
-                    courseData.teacher!=''?rowKbContent('老师', courseData.teacher):Container(),
-                    courseData.remark!=''?rowKbContent('备注', courseData.remark):Container(),
-                    courseData.credit!=''?rowKbContent('学分', courseData.credit):Container(),
+                    courseData.location!=''?rowKbContent('地点', courseData.location!):Container(),
+                    courseData.teacher!=''?rowKbContent('老师', courseData.teacher!):Container(),
+                    courseData.remark!=''?rowKbContent('备注', courseData.remark!):Container(),
+                    courseData.credit!=''?rowKbContent('学分', courseData.credit!):Container(),
                     rowKbContent('周次', CourseData.weekListToString(courseData.weekList)),
-                    isRepeat?rowKbContent('节次', "${courseData.lessonNum}-${courseData.lessonNum+courseData.durationNum-1}"):Container(),
+                    isRepeat?rowKbContent('节次', "${courseData.lessonNum}-${courseData.lessonNum!+courseData.durationNum!-1}"):Container(),
                   ],
                 ),
               )
@@ -230,29 +230,19 @@ class _CourseCardState extends State<CourseCard> {
 
   }
   Future<bool> _willDel(CourseData courseData)async{
-    bool result;
-    result =  await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10))),
-        content: FlyText.main40('课程「${widget.courseData.title}」的第${CourseData.weekListToString(courseData.weekList)}周的卡片会被删除。\n\n确定删除此课程?',maxLine: 100,),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: FlyText.main40('确定',color: colorMain),),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: FlyText.mainTip40('取消',),
-          ),
-        ],
-      ),
+    bool? result;
+    result =  await showDialogConfirm(context,
+      title: '课程「${widget.courseData!.title}」的第${CourseData.weekListToString(courseData.weekList)}周的卡片会被删除。\n\n确定删除此课程?',
+      onConfirm: ()=> Navigator.of(context).pop(true),
+      onCancel: ()=> Navigator.of(context).pop(false)
     );
     if(result == null) return false;
     return result;
   }
+
+
   Widget _buildCardText(String text,double sp){
-    int maxLines = widget.courseData.durationNum==1?1:3;
+    int maxLines = widget.courseData!.durationNum==1?1:3;
     return Text(
       text,
       style: TextStyle(

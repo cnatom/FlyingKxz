@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
@@ -23,12 +22,12 @@ class ExamView extends StatefulWidget {
 }
 
 class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
-  Timer timer;
+  Timer? timer;
   bool show = false;
   int countdownTime = 0;
   List<ExamData> examCurList = [];
   List<ExamData> examOutList = [];
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   @override
   void initState() {
     super.initState();
@@ -50,7 +49,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
     }
     Prefs.examData = ExamData.examJsonEncode(Global.examList);
     examOutList.clear();
-    examCurList = _parseToCurList(Global.examList);
+    examCurList = _parseToCurList(Global.examList.cast<ExamData>());
     setState(() {});
     showToast('导入成功');
     Logger.log('Exam', '导入,成功',{'info':importList});
@@ -58,21 +57,21 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
   List<ExamData> _parseToCurList(List<ExamData> examList,){
     List<ExamData> result = [];
     for(var item in examList){
-      if(item.out){
+      if(item.out!=null){
         examOutList.add(item);
       }else{
         result.add(item);
       }
     }
     result.sort((a,b){
-      return DateTime(a.year,a.month,a.day).compareTo(DateTime(b.year,b.month,b.day));
+      return DateTime(a.year??0,a.month??0,a.day??0).compareTo(DateTime(b.year??0,b.month??0,b.day??0));
     });
     return result;
   }
   _init()async{
     if(Prefs.examData!=null){
-      Global.examList = ExamData.examJsonDecode(Prefs.examData);
-      examCurList = _parseToCurList(Global.examList);
+      Global.examList = ExamData.examJsonDecode(Prefs.examData??'');
+      examCurList = _parseToCurList(Global.examList.cast<ExamData>());
       setState(() {});
     }
   }
@@ -89,7 +88,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
       },
     );
     examOutList.clear();
-    examCurList = _parseToCurList(Global.examList);
+    examCurList = _parseToCurList(Global.examList.cast<ExamData>());
     setState(() {
     });
   }
@@ -143,7 +142,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
     );
   }
 
-  InkWell _buildActionIconButton(IconData iconData,{GestureTapCallback onTap}) {
+  InkWell _buildActionIconButton(IconData iconData,{GestureTapCallback? onTap}) {
     return InkWell(
               onTap: onTap,
               child: Icon(iconData,size: fontSizeMain40*1.5,color: themeProvider.colorNavText.withOpacity(0.5),),);
@@ -166,7 +165,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
       ),
     );
   }
-  Widget flyTContainer({Widget child,List<Widget> action}){
+  Widget flyTContainer({Widget? child,List<Widget>? action}){
     return FlyContainer(
       transValue: themeProvider.transCard*0.6,
         child: Column(
@@ -180,7 +179,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
                   FlyText.main35('考试倒计时',color: themeProvider.colorNavText.withOpacity(0.5),),
                   Wrap(
                     spacing: 15,
-                    children: action,
+                    children: action??[],
                   )
                 ],
               ),
@@ -191,12 +190,12 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
         ));
   }
 
-  Widget examCard(String courseName,String location,String dateTime,int year,int month,int day,{bool outView = false}){
+  Widget examCard(String? courseName,String? location,String? dateTime,int? year,int? month,int? day,{bool outView = false}){
     Color colorCardText;
     Color colorLine;
     double percent;
     //计算剩余天数
-    DateTime examDateTime = DateTime(year,month,day,);
+    DateTime examDateTime = DateTime(year??0,month??0,day??0,);
     int timeLeftInt = examDateTime.difference(Global.nowDate).inDays+1;
     String timeLeft = timeLeftInt.toString();
     percent = timeLeftInt/30.0;
@@ -337,7 +336,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
   //     ),
   //   );
   // }
-  Widget outView(List<ExamData> list){
+  Widget outView(List<ExamData?> list){
     return AnimatedCrossFade(
       firstCurve: Curves.easeOutCubic,
       secondCurve: Curves.easeOutCubic,
@@ -353,7 +352,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
       crossFadeState: show?CrossFadeState.showSecond:CrossFadeState.showFirst,
     );
   }
-  Widget curView(List<ExamData> list, {bool outView = false}){
+  Widget curView(List<ExamData?> list, {bool outView = false}){
 
     return Column(
       children: list.map((item){
@@ -363,7 +362,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
             //获取索引
             int delIndex = -1;
             for(int i = 0;i<list.length;i++){
-              if(list[i].courseName==item.courseName&&list[i].location==item.location){
+              if(list[i]?.courseName==item?.courseName&&list[i]?.location==item?.location){
                 delIndex = i;
                 break;
               }
@@ -378,12 +377,11 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
             setState(() {
             });
             //存储
-            Global.examList = examCurList+examOutList;
-            Prefs.examData = ExamData.examJsonEncode(Global.examList);
-            Logger.log('Exam', '删除考试',{'courseName':item.courseName});
+            Prefs.examData = ExamData.examJsonEncode(examCurList+examOutList);
+            Logger.log('Exam', '删除考试',{'courseName':item?.courseName});
           }
     },
-        child: examCard(item.courseName, item.location, item.dateTime, item.year, item.month, item.day,outView: outView),
+        child: examCard(item?.courseName, item?.location, item?.dateTime, item?.year, item?.month, item?.day,outView: outView),
         );
       }).toList(),
     );

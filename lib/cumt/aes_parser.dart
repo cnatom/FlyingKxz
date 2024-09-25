@@ -1,6 +1,4 @@
 import 'package:flutter_js/flutter_js.dart';
-import 'dart:ffi';
-import 'package:ffi/ffi.dart';
 
 
 String pwdAes(String password, String salt) {

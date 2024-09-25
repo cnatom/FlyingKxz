@@ -65,7 +65,7 @@ class BalanceProvider extends ChangeNotifier {
       //通知页面刷新
       notifyListeners();
       return true;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       Logger.log('Balance', '余额,失败', {'cardNum': cardNum, 'balance': balance});
       cumt.isLogin = false; // 将模拟登录的锁关闭
       return getBalance(count: count - 1); // 递归进行网络请求
@@ -74,7 +74,11 @@ class BalanceProvider extends ChangeNotifier {
 
   //校园卡流水
   Future<bool> getBalanceHistory(BuildContext context,
-      {bool showToasts = false}) async {
+      {bool showToasts = false,int count = 2}) async {
+    if (count==0) {
+      if(showToasts) showToast("获取历史消费信息失败，请尝试下滑刷新");
+      return false;
+    }
     cumt.dio.options.headers['Synjones-Auth'] = this._auth;
     var res = await cumt.dio.get(urls[BalanceRequestType.BalanceHis]);
     cumt.dio.options.headers.remove("Synjones-Auth");
@@ -96,14 +100,14 @@ class BalanceProvider extends ChangeNotifier {
       }catch (e){
         print(e.toString());
         l1 = [];
-        if(showToasts) showToast("解析Response失败，请尝试下滑刷新\n${e.toString()}");
+        return getBalanceHistory(context,count: count-1);
       }
       detailEntity = l1;
       getBalanceHisDate = DateTime.now().toString().substring(0, 16);
       notifyListeners();
       await Logger.log("Balance", "历史,成功", {
         "timeKey": DateTime.now().toString(),
-        "info": jsonEncode(detailEntity.toList())
+        "info": jsonEncode(detailEntity?.toList())
       });
       return true;
     } on DioError catch (e) {
@@ -188,7 +192,7 @@ class BalanceProvider extends ChangeNotifier {
     _balance = value;
   }
 
-  set detailEntity(List value) {
+  set detailEntity(List? value) {
     Prefs.balanceHis = jsonEncode(value);
     _detailEntity = value;
   }
@@ -217,11 +221,11 @@ class BalanceProvider extends ChangeNotifier {
     return _balance!;
   }
 
-  List get detailEntity {
+  List? get detailEntity {
     if (_detailEntity == null && Prefs.balanceHis != null) {
       _detailEntity = jsonDecode(Prefs.balanceHis!);
     }
-    return _detailEntity!;
+    return _detailEntity;
   }
 
   String get getBalanceDate {

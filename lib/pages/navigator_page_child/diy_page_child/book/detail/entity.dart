@@ -3,14 +3,14 @@
 /// data : [{"bookcode":"0010563662T","location":"南湖校区-南湖社科图书阅览室Ⅱ","current":"丢失"},{"bookcode":"0010598926/","location":"文昌校区-未改造图书","current":"在架"},{"bookcode":"0020680167U","location":"文昌校区-未改造图书","current":"在架"},{"bookcode":"0010062591O","location":"南湖校区-南湖社科图书阅览室Ⅱ","current":"丢失"},{"bookcode":"0010050796S","location":"南湖密集书库-南湖密集书库Ⅰ","current":"在架"},{"bookcode":"0010075556T","location":"南湖校区-南湖社科图书阅览室Ⅱ","current":"丢失"},null]
 
 class BookDetailEntity {
-  int status;
-  String msg;
-  List<Data> data;
+  int? status;
+  String? msg;
+  List<Data>? data;
 
   BookDetailEntity({
-      this.status, 
-      this.msg, 
-      this.data});
+    this.status,
+    this.msg,
+    this.data});
 
   BookDetailEntity.fromJson(dynamic json) {
     status = json["status"];
@@ -18,7 +18,7 @@ class BookDetailEntity {
     if (json["data"] != null) {
       data = [];
       json["data"].forEach((v) {
-        data.add(Data.fromJson(v));
+        data?.add(Data.fromJson(v));
       });
     }
   }
@@ -28,7 +28,7 @@ class BookDetailEntity {
     map["status"] = status;
     map["msg"] = msg;
     if (data != null) {
-      map["data"] = data.map((v) => v.toJson()).toList();
+      map["data"] = data?.map((v) => v.toJson()).toList();
     }
     return map;
   }
@@ -40,9 +40,9 @@ class BookDetailEntity {
 /// current : "丢失"
 
 class Data {
-  String bookcode;
-  String location;
-  String current;
+  String? bookcode;
+  String? location;
+  String? current;
 
   Data({
       this.bookcode, 

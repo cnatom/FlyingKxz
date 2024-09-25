@@ -123,7 +123,7 @@ class _ScoreRateViewState extends State<ScoreRateView> {
     );
   }
 
-  Widget buildChip({Widget child, GestureTapCallback onTap, int index}) {
+  Widget buildChip({required Widget child,GestureTapCallback? onTap, required int index}) {
     return Expanded(
         child: AnimatedSwitcher(
           duration: Duration(milliseconds: 200),
@@ -151,7 +151,7 @@ class _ScoreRateViewState extends State<ScoreRateView> {
 class NonZeroDigitInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    final double intValue = double.tryParse(newValue.text);
+    final double? intValue = double.tryParse(newValue.text);
     if (intValue == null || intValue < 0) {
       return oldValue;
     }

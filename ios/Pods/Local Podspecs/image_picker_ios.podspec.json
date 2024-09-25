@@ -15,19 +15,23 @@
     "http": "https://github.com/flutter/packages/tree/main/packages/image_picker_ios"
   },
   "documentation_url": "https://pub.dev/packages/image_picker_ios",
-  "source_files": "Classes/**/*.{h,m}",
-  "public_header_files": "Classes/**/*.h",
-  "module_map": "Classes/ImagePickerPlugin.modulemap",
+  "source_files": "image_picker_ios/Sources/image_picker_ios/**/*.{h,m}",
+  "public_header_files": "image_picker_ios/Sources/image_picker_ios/**/*.h",
+  "module_map": "image_picker_ios/Sources/image_picker_ios/include/ImagePickerPlugin.modulemap",
   "dependencies": {
     "Flutter": [
 
     ]
   },
   "platforms": {
-    "ios": "9.0"
+    "ios": "12.0"
   },
   "pod_target_xcconfig": {
-    "DEFINES_MODULE": "YES",
-    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "i386"
+    "DEFINES_MODULE": "YES"
+  },
+  "resource_bundles": {
+    "image_picker_ios_privacy": [
+      "image_picker_ios/Sources/image_picker_ios/Resources/PrivacyInfo.xcprivacy"
+    ]
   }
 }

@@ -21,14 +21,14 @@ toNewBookPage(BuildContext context) {
 }
 
 class NewBookPage extends StatefulWidget {
-  const NewBookPage({Key key}) : super(key: key);
+  const NewBookPage({Key? key}) : super(key: key);
 
   @override
   State<NewBookPage> createState() => _NewBookPageState();
 }
 
 class _NewBookPageState extends State<NewBookPage> with SingleTickerProviderStateMixin{
-  TabController tabController;
+  late TabController tabController;
   @override
   void initState() {
     super.initState();
@@ -57,7 +57,7 @@ class _NewBookPageState extends State<NewBookPage> with SingleTickerProviderStat
   }
 
   Widget buildSearchBar(BuildContext context,
-      {ValueChanged<String> onSubmitted}) {
+      {ValueChanged<String>? onSubmitted}) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
