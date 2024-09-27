@@ -44,14 +44,14 @@ class CumtLogin {
   //自动登录
   static Future<String> autoLogin({required CumtLoginAccount account}) async {
     final connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult.contains(ConnectivityResult.wifi)) {
       if (!account.isEmpty) {
         var res = await login(account: account);
         return res;
       }else{
         return "账号为空";
       }
-    } else if (connectivityResult == ConnectivityResult.mobile) {
+    } else if (connectivityResult.contains(ConnectivityResult.mobile)) {
       return CumtLoginResult.MOBILE_ERROR;
     } else {
       return CumtLoginResult.NOT_OPEN_NETWORK;

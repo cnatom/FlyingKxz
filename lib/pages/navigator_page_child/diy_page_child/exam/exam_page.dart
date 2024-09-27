@@ -13,9 +13,6 @@ import 'package:flying_kxz/ui/ui.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../ui/sheet.dart';
-import '../../../navigator_page.dart';
-
 class ExamView extends StatefulWidget {
   @override
   _ExamViewState createState() => _ExamViewState();
@@ -57,7 +54,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
   List<ExamData> _parseToCurList(List<ExamData> examList,){
     List<ExamData> result = [];
     for(var item in examList){
-      if(item.out!=null){
+      if(item.out==true){
         examOutList.add(item);
       }else{
         result.add(item);

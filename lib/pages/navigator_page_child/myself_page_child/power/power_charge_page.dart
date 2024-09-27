@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flying_kxz/ui/toast.dart';
 import 'package:flying_kxz/ui/webview_inapp.dart';
@@ -48,38 +49,21 @@ class _PowerChargePageState extends State<PowerChargePage> {
     })();
   ''');
             if (ok == true) {
-              showToast('🎉跳转成功！正在填充房间号……');
+              showToast('🎉跳转成功！正在复制房间号……');
             } else {
               showToast('跳转失败，请在页面上点击“缴电费”');
             }
           });
         }
         if(url.rawValue.contains("https://yktm.cumt.edu.cn/web/common/checkEle.html")){
-          if (Prefs.powerRoomid != null) {
-            Future.delayed(Duration(seconds: 2),()async{
-              var result = await _controller.evaluateJavascript(
-                  source: '''
-    (function() {
-      var element = document.getElementById('inputroomid');
-      if (element) {
-        element.value = '${Prefs.powerRoomid}';
-        return true;
-      } else {
-        return false;
-      }
-    })();
-  '''
-              );
-
-              if (result == true) {
-                // 执行成功后的回调
-                showToast('🎉房间号已成功填充，感谢支持～');
-              } else {
-                // 执行失败的回调
-                showToast('填充失败，请检查房间号输入框是否存在');
-              }
-            });
-          }
+          Future.delayed(Duration(seconds: 1),(){
+            if (Prefs.powerRoomid != null) {
+              Clipboard.setData(ClipboardData(text: "${Prefs.powerRoomid}"));
+              showToast("已复制房间号到您的粘贴板中：\n${Prefs.powerRoomid}",duration: 5);
+            }else {
+              showToast("您未在矿小助中填写过房间号，请手动填写",duration: 5);
+            }
+          });
         }
       },
     );

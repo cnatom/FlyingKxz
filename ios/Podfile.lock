@@ -14,10 +14,6 @@ PODS:
     - Flutter
   - flutter_native_splash (0.0.1):
     - Flutter
-  - image_crop (0.0.1):
-    - Flutter
-  - image_gallery_saver (2.0.2):
-    - Flutter
   - image_picker_ios (0.0.1):
     - Flutter
   - OrderedSet (6.0.3)
@@ -46,8 +42,6 @@ DEPENDENCIES:
   - flutter_inappwebview_ios (from `.symlinks/plugins/flutter_inappwebview_ios/ios`)
   - flutter_js (from `.symlinks/plugins/flutter_js/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
-  - image_crop (from `.symlinks/plugins/image_crop/ios`)
-  - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -72,10 +66,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_js/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
-  image_crop:
-    :path: ".symlinks/plugins/image_crop/ios"
-  image_gallery_saver:
-    :path: ".symlinks/plugins/image_gallery_saver/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   package_info:
@@ -99,8 +89,6 @@ SPEC CHECKSUMS:
   flutter_inappwebview_ios: 6f63631e2c62a7c350263b13fa5427aedefe81d4
   flutter_js: 95929d4e146e8ceb1c8e1889d8c2065c5d840076
   flutter_native_splash: edf599c81f74d093a4daf8e17bd7a018854bc778
-  image_crop: e0a67085d3ebf3cf46ca46d61c53a082507b0bc3
-  image_gallery_saver: cb43cc43141711190510e92c460eb1655cd343cb
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   OrderedSet: e539b66b644ff081c73a262d24ad552a69be3a94
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62

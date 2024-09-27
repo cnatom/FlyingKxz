@@ -61,9 +61,15 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           navigatorKey: FlyNavigatorPageState.navigatorKey,
           themeMode: themeProvider.themeMode,
-          theme: FlyThemes.lightTheme,
-          darkTheme: FlyThemes.darkTheme,
-          builder: BotToastInit(),
+          theme: FlyThemes.lightThemeTest(themeProvider),
+          darkTheme: FlyThemes.darkThemeTest(themeProvider),
+          builder: (context, child) {
+            child = BotToastInit()(context, child);
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)), // 固定字体缩放比例
+              child: child,
+            );
+          },
           navigatorObservers: [BotToastNavigatorObserver()],
           //添加国际化
             localizationsDelegates: [
@@ -76,20 +82,6 @@ class MyApp extends StatelessWidget {
               const Locale('zh', 'CN'), // 中文简体
               //其他Locales
             ],
-          // localizationsDelegates: [
-          //   // ChineseCupertinoLocalizations.delegate,
-          //   GlobalMaterialLocalizations.delegate,
-          //   GlobalWidgetsLocalizations.delegate,
-          //   DefaultCupertinoLocalizations.delegate,
-          //   GlobalMaterialLocalizations.delegate,
-          //   GlobalWidgetsLocalizations.delegate,
-          // ],
-          // supportedLocales: [
-          //   const Locale('zh', 'CH'),
-          //   const Locale('en', 'US'), // English
-          //   const Locale('zh', 'Hans'), // China
-          //   const Locale('zh', ''), // China
-          // ],
           locale: Locale("zh"),
           debugShowCheckedModeBanner: false,
           home: GestureDetector(

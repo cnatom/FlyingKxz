@@ -1,6 +1,0 @@
-framework module image_crop {
-  umbrella header "image_crop-umbrella.h"
-
-  export *
-  module * { export * }
-}

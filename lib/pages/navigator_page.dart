@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
@@ -80,21 +79,12 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
   Widget build(BuildContext context) {
     super.build(context);
     themeProvider = Provider.of<ThemeProvider>(context);
-    return Intro(
-      padding: const EdgeInsets.all(0),
-      borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
-      buttonBuilder: (value){
-        return IntroButtonConfig(
-            text: '好的'
-        );
-      },
-      child: FlyNavBackground(
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: _buildBody(),
-            bottomNavigationBar: _buildBottomNavigationBar(),
-          )),
-    );
+    return FlyNavBackground(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: _buildBody(),
+          bottomNavigationBar: _buildBottomNavigationBar(),
+        ));
   }
 
   BottomNavigationBar _buildBottomNavigationBar() {
@@ -109,8 +99,8 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
         selectedFontSize: fontSizeTip33,
         unselectedFontSize: fontSizeTip33,
         selectedItemColor:
-            themeProvider.simpleMode ? themeProvider.colorMain : null,
-        unselectedItemColor: themeProvider.simpleMode ? Colors.black45 : null,
+            themeProvider.simpleMode | themeProvider.darkMode ? themeProvider.colorMain : null,
+        unselectedItemColor: themeProvider.simpleMode | themeProvider.darkMode ? Colors.grey : null,
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed);
   }

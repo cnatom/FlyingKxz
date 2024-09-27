@@ -14,8 +14,8 @@ class ExamData {
   int? year;
   int? month;
   int? day;
-  bool? out = false;
-  bool? diy = false;
+  bool out = false;
+  bool diy = false;
   ExamData({
     this.courseName,
     this.location,

@@ -235,7 +235,7 @@ class Cumt {
           options: Options(followRedirects: false));
 
       return true;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return false;
     }
   }

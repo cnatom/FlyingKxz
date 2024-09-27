@@ -12,16 +12,18 @@ import '../../../../../util/logger/log.dart';
 import '../../utils/course_data.dart';
 import '../add_components/course_add_view.dart';
 import 'import_page.dart';
+import 'import_selector_arrow.dart';
 
-class ImportSelector extends StatefulWidget {
+class ImportSelectorNew extends StatefulWidget {
   final CourseProvider courseProvider;
-  ImportSelector({Key? key,required this.courseProvider}) : super(key: key);
+  final void Function(Object? object) onImport;
+  ImportSelectorNew({Key? key,required this.courseProvider,required this.onImport}) : super(key: key);
 
   @override
-  State<ImportSelector> createState() => _ImportSelectorState();
+  State<ImportSelectorNew> createState() => _ImportSelectorNewState();
 }
 
-class _ImportSelectorState extends State<ImportSelector> {
+class _ImportSelectorNewState extends State<ImportSelectorNew> {
   late ThemeProvider themeProvider;
   late CourseProvider courseProvider;
 
@@ -33,7 +35,7 @@ class _ImportSelectorState extends State<ImportSelector> {
     if(ok){
       courseProvider.handleCourseList(list);
     }
-    Navigator.of(context).pop(["import",type,ok]);
+    widget.onImport(["import",type,ok]);
   }
 
   void addCourse() async {
@@ -55,7 +57,6 @@ class _ImportSelectorState extends State<ImportSelector> {
     showToast("🎉添加成功！");
     Logger.log("Course", "添加,成功",
         {'info': newCourseDataList.map((e) => e.toJson()).toList()});
-    Navigator.of(context).pop();
   }
 
 
@@ -69,28 +70,37 @@ class _ImportSelectorState extends State<ImportSelector> {
     }
     courseProvider.setAdmissionDateTime(dateTime);
     showToast("🎉日期选择成功！");
-    Navigator.of(context).pop(["date",true]);
+    widget.onImport(["date",true]);
   }
 
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     courseProvider = widget.courseProvider;
-    return Wrap(
-      runSpacing: spaceCardMarginTB,
-      children: [
-        FlyTitle("调整课表",verticalBarColor: themeProvider.colorMain,),
+    return CustomPaint(
+      child: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(borderRadiusValue),
+            bottomRight: Radius.circular(borderRadiusValue),
+            bottomLeft: Radius.circular(borderRadiusValue),
+          ),
+        ),
+        child: Wrap(
+          runSpacing: spaceCardMarginTB,
+          children: [
+            button("导入本科课表",iconData: Icons.cloud_download_outlined,onTap: ()=>importCourse(type: ImportCourseType.BK)),
+            button("导入研究生课表",iconData: Icons.cloud_download_outlined,onTap: ()=>importCourse(type: ImportCourseType.YJS)),
+            button("添加自定义课程",iconData: Icons.add,solid: false,onTap: ()=>addCourse()),
+            Divider(height: 5,),
+            button("修改课表日期",iconData: Icons.date_range,solid: false,onTap: ()=>selectDate(context)),
 
-        Divider(height: 5,color: Colors.transparent,),
-        button("导入本科课表",iconData: Icons.cloud_download_outlined,onTap: ()=>importCourse(type: ImportCourseType.BK)),
-        button("导入研究生课表",iconData: Icons.cloud_download_outlined,onTap: ()=>importCourse(type: ImportCourseType.YJS)),
-        button("添加自定义课程",iconData: Icons.add,solid: false,onTap: ()=>addCourse()),
-        Divider(height: 5,),
-        button("修改课表日期",iconData: Icons.date_range,solid: false,onTap: ()=>selectDate(context)),
-        Divider(height: 0,),
-        FlyText.miniTip30("👍[桌面小组件]点击右上角分享按钮去看看吧\n👏[自动登录校园网]点击\"我的\"页面查看\n😉[回到本周]按钮是可以拖动的",maxLine: 100,),
-
-      ],
+          ],
+        ),
+      ),
+      painter: ImportSelectorArrow(Theme.of(context).cardColor),
     );
   }
 
@@ -101,7 +111,7 @@ class _ImportSelectorState extends State<ImportSelector> {
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-          border: solid?null:Border.all(color: themeProvider.colorMain,width: 1.5),
+            border: solid?null:Border.all(color: themeProvider.colorMain,width: 1.5),
             borderRadius: BorderRadius.circular(borderRadiusValue),
             color: solid?themeProvider.colorMain:Colors.transparent),
         child: Row(

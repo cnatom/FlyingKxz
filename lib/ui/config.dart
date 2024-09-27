@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'text.dart';
 void initConfigInfo(){
   colorMain = Color(0xff00c5a8);
-  colorSecond = Color(0xFF33CC99).withAlpha(255);
   colorMainText = Color.fromARGB(255, 0, 0, 0);
   colorMainTextWhite = Colors.white;
   colorIconBackground = Color.fromARGB(255, 244,245,249);
@@ -52,7 +51,6 @@ late double deviceHeight;
 
 //色彩管理
 late Color colorMain;
-late Color colorSecond;
 late Color colorMainText;
 late Color colorMainTextWhite;
 late Color colorIconBackground;

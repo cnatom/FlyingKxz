@@ -21,7 +21,6 @@ class _CumtLoginViewState extends State<CumtLoginView> {
   final TextEditingController _passwordController = TextEditingController();
   late ThemeProvider themeProvider;
   CumtLoginAccount cumtLoginAccount = CumtLoginAccount();
-  CumtLogin cumtLogin = CumtLogin();
 
   @override
   void initState() {

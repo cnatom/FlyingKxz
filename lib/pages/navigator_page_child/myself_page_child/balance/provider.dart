@@ -100,7 +100,9 @@ class BalanceProvider extends ChangeNotifier {
       }catch (e){
         print(e.toString());
         l1 = [];
-        return getBalanceHistory(context,count: count-1);
+        Future.delayed(Duration(milliseconds: 300),(){
+          return getBalanceHistory(context,count: count-1);
+        });
       }
       detailEntity = l1;
       getBalanceHisDate = DateTime.now().toString().substring(0, 16);
@@ -110,7 +112,7 @@ class BalanceProvider extends ChangeNotifier {
         "info": jsonEncode(detailEntity?.toList())
       });
       return true;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (showToasts) showToast("获取校园卡流水失败\n ${e.message.toString()}");
       return false;
     }

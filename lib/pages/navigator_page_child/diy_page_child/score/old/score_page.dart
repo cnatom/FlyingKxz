@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
@@ -20,12 +19,7 @@ void toScorePage(BuildContext context) {
   Navigator.push(
       context,
       CupertinoPageRoute(
-          builder: (context) => Intro(
-              padding: const EdgeInsets.all(0),
-              borderRadius:
-                  BorderRadius.all(Radius.circular(borderRadiusValue)),
-              buttonTextBuilder: (order) => '好的',
-              child: ScorePage())));
+          builder: (context) => ScorePage()));
   Logger.log('Score', '进入',{});
 }
 
@@ -136,14 +130,6 @@ class _ScorePageState extends State<ScorePage>
     setState(() {});
   }
 
-  _introduce(BuildContext context){
-    String prefsTag = "score_page_introduce";
-    if(Prefs.prefs?.getBool(prefsTag)==null){
-      Intro.of(context).start();
-      Prefs.prefs?.setBool(prefsTag, true);
-    }
-  }
-
   _showHelp() {
     FlyDialogDIYShow(context,
         content: Wrap(
@@ -173,11 +159,7 @@ class _ScorePageState extends State<ScorePage>
     return Scaffold(
       key: scaffoldKey,
       appBar: FlyAppBar(context, '成绩（需内网或VPN）', actions: [
-        IntroStepBuilder(
-          order: 4,
-          text: '在这里设置"优秀""良好"等评级的具体成绩',
-          builder: (context,key) =>_buildActionIconButton(Icons.settings,key: key,onPressed: ()=>_toSetPage())
-        ),
+        _buildActionIconButton(Icons.settings,onPressed: ()=>_toSetPage()),
         _buildActionIconButton(Icons.help_outline,onPressed: ()=>_showHelp())
       ]),
       body: Column(
@@ -238,51 +220,43 @@ class _ScorePageState extends State<ScorePage>
 
   Widget _searchBarButton(String title, String content,
       {GestureTapCallback? onTap}) {
-    return IntroStepBuilder(
-      order: 1,
-      text: "从教务系统导入成绩",
-      onWidgetLoad: ()=>_introduce(context),
-      builder: (context,key) {
-        return Container(
-          key: key,
-          child: Material(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(borderRadiusValue),
-            child: InkWell(
-              splashColor: Colors.black12,
-              borderRadius: BorderRadius.circular(10),
-              highlightColor: Colors.black12,
-              onTap: onTap,
-              child: Container(
-                height: fontSizeMini38 * 3.5,
-                padding: EdgeInsets.fromLTRB(
-                    spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+    return Container(
+      child: Material(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(borderRadiusValue),
+        child: InkWell(
+          splashColor: Colors.black12,
+          borderRadius: BorderRadius.circular(10),
+          highlightColor: Colors.black12,
+          onTap: onTap,
+          child: Container(
+            height: fontSizeMini38 * 3.5,
+            padding: EdgeInsets.fromLTRB(
+                spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        FlyText.main35(
-                          title,
-                        ),
-                        FlyText.miniTip30(
-                          content,
-                        ),
-                      ],
+                    FlyText.main35(
+                      title,
                     ),
-                    Icon(
-                      Icons.cloud_download_outlined,
-                    )
+                    FlyText.miniTip30(
+                      content,
+                    ),
                   ],
                 ),
-              ),
+                Icon(
+                  Icons.cloud_download_outlined,
+                )
+              ],
             ),
           ),
-        );
-      }
+        ),
+      ),
     );
   }
 
@@ -425,19 +399,9 @@ class _ScorePageState extends State<ScorePage>
               children: [
                 Builder(builder: (context){
                   if(showFilter) return selectAllChip();
-                  return IntroStepBuilder(
-                    order: 2,
-                    text: "查看具体的平时分与考试分",
-                    builder: (context,key) {
-                      return expandChip(key: key);
-                    }
-                  );
+                  return expandChip();
                 }),
-                IntroStepBuilder(
-                  order: 3,
-                  text: "如果某些学科成绩不计入加权\n点击这里将其筛选吧",
-                  builder: (context,key) => filterChip(key: key)
-                ),
+                filterChip(),
               ],
             ),
           )

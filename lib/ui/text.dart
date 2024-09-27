@@ -110,7 +110,7 @@ class FlyText extends StatelessWidget {
 }
 
 
-Widget FlyTitle(String title,{Color textColor = Colors.black}) => Container(
+Widget FlyTitle(String title,{Color? verticalBarColor,Color textColor = Colors.black}) => Container(
   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
   child: Row(
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,7 +118,7 @@ Widget FlyTitle(String title,{Color textColor = Colors.black}) => Container(
       Container(
         width: fontSizeMini38/4,
         height: fontSizeTitle45,
-        decoration: BoxDecoration(color: colorSecond,borderRadius: BorderRadius.circular(borderRadiusValue)),
+        decoration: BoxDecoration(color: verticalBarColor??colorMain,borderRadius: BorderRadius.circular(borderRadiusValue)),
       ),
       SizedBox(width: ScreenUtil().setSp(35),),
       Text(

@@ -87,7 +87,6 @@ class _ImportPageState extends State<ImportPage> {
   void dispose() {
     super.dispose();
     InAppWebViewController.clearAllCache();
-    _controller.dispose();
   }
 
   @override

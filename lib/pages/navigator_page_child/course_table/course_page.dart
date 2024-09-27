@@ -1,50 +1,70 @@
 //主页
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_course/import_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_course/import_selector.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_course/import_selector_new.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/components/state_text.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 import '../../../Model/prefs.dart';
+import '../myself_page_child/aboutus/components/custom_shape.dart';
 import 'components/back_curWeek.dart';
 import 'components/course_table_child.dart';
+import 'components/import_course/import_selector_arrow.dart';
 import 'components/output_ics/output_ics_page.dart';
 import 'components/point_components/point_main.dart';
 
 class CoursePage extends StatefulWidget {
   const CoursePage({Key? key}) : super(key: key);
+
   @override
   CoursePageState createState() => CoursePageState();
 }
 
-class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMixin{
+class CoursePageState extends State<CoursePage>
+    with AutomaticKeepAliveClientMixin {
   late CourseProvider courseProvider;
   late ThemeProvider themeProvider;
+  final OverlayPortalController overlayPortalController =
+      OverlayPortalController();
   GlobalKey<PointMainState> _rightGlobalKey = new GlobalKey<PointMainState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   static late PageController coursePageController;
+  final GlobalKey<PopupMenuButtonState> _popupMenuKey = GlobalKey(); // 用于打开PopupMenuButton
   int? _maxLesson;
-  int get maxLesson{
-    if(_maxLesson==null){
-      if(Prefs.prefs?.getInt("maxLessonNum")!=null){
+
+  void _openPopupMenu() {
+    final dynamic popupMenuState = _popupMenuKey.currentState;
+    popupMenuState.showButtonMenu();
+  }
+
+  int get maxLesson {
+    if (_maxLesson == null) {
+      if (Prefs.prefs?.getInt("maxLessonNum") != null) {
         _maxLesson = Prefs.prefs?.getInt("maxLessonNum");
-      }else{
+      } else {
         _maxLesson = 10;
       }
     }
     return _maxLesson!;
   }
+
   set maxLesson(int value) {
     _maxLesson = value;
     Prefs.prefs?.setInt("maxLessonNum", value);
   }
 
   var lessonTimes = [
-    ["08:00", "08:50",],
+    [
+      "08:00",
+      "08:50",
+    ],
     ["08:55", "09:45"],
     ["10:15", "11:05"],
     ["11:10", "12:00"],
@@ -57,56 +77,63 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
     ["20:50", "21:40"],
     ["21:45", "22:35"],
   ];
+
   //导出ICS课表文件
   _outputIcs() {
     Navigator.of(context).push(CupertinoPageRoute(
         builder: (context) => OutputIcsPage(courseProvider.infoByCourse)));
   }
 
-
-  // 导入课表
-  _setCourse() async {
-    List? result = await FlyDialogDIYShow(context, content: ImportSelector(courseProvider: courseProvider,));
-    if(result==null || result.isEmpty){
-      return;
-    }
-    if(result[0]=="import" && result[2]==true){
-      showToast('🎉导入成功！');
-      if(result[1] == ImportCourseType.YJS){
-        maxLesson = 12;
-      }
-      if(result[1] == ImportCourseType.BK){
-        maxLesson = 10;
-      }
-      Future.delayed(Duration(seconds: 1),(){
-        _changePageWithAnimation(0);
-      });
-    }
-    if(result[0]=="date"){
-      Future.delayed(Duration(seconds: 1),(){
-        _changePageWithAnimation(0);
-      });
-    }
-
+  _showDialogForSetCourse()async{
+    List? result = await FlyDialogDIYShow(context,
+        content: ImportSelector(
+          courseProvider: courseProvider,
+        ));
+    this._setCourse(result);
   }
 
-  _changePageWithAnimation(int page){
+  // 导入课表
+  _setCourse(List? result) async {
+    if (result == null || result.isEmpty) {
+      return;
+    }
+    if (result[0] == "import" && result[2] == true) {
+      showToast('🎉导入成功！');
+      if (result[1] == ImportCourseType.YJS) {
+        maxLesson = 12;
+      }
+      if (result[1] == ImportCourseType.BK) {
+        maxLesson = 10;
+      }
+      Future.delayed(Duration(seconds: 1), () {
+        _changePageWithAnimation(0);
+      });
+    }
+    if (result[0] == "date") {
+      Future.delayed(Duration(seconds: 1), () {
+        _changePageWithAnimation(0);
+      });
+    }
+  }
+
+  _changePageWithAnimation(int page) {
     coursePageController.animateToPage(
       page,
       curve: Curves.easeOutQuint,
       duration: Duration(seconds: 1),
     );
   }
+
   // 回到本周
   _backToCurWeek() {
     _changePageWithAnimation(courseProvider.initialWeek - 1);
   }
 
-  _introduce(){
+  _introduce() {
     String prefsTag = "course_page_init";
-    if(Prefs.prefs?.getBool(prefsTag)==null){
-      _setCourse();
-      Prefs.prefs?.setBool(prefsTag,true);
+    if (Prefs.prefs?.getBool(prefsTag) == null) {
+      _openPopupMenu();
+      Prefs.prefs?.setBool(prefsTag, true);
     }
   }
 
@@ -118,13 +145,12 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create:(_)=> CourseProvider()),
+        ChangeNotifierProvider(create: (_) => CourseProvider()),
       ],
       builder: (context, _) {
         courseProvider = Provider.of<CourseProvider>(context);
@@ -199,15 +225,50 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
         },
       ),
       actions: [
-        _buildAction(Icons.add,
-            onPressed: () => _setCourse()),
-        _buildAction(Boxicons.bx_share_alt,onPressed: ()=>_outputIcs()),
-        _buildAction(Boxicons.bx_menu_alt_right, onPressed: () => _rightGlobalKey.currentState?.show())
+        _buildPopupAction(Icons.add,
+            child: ImportSelectorNew(
+              onImport: (result){
+                this._setCourse(result as List?);
+              },
+              courseProvider: courseProvider,
+            )),
+        _buildAction(Boxicons.bx_share_alt, onPressed: () => _outputIcs()),
+        _buildAction(Boxicons.bx_menu_alt_right,
+            onPressed: () => _rightGlobalKey.currentState?.show())
       ],
     );
   }
 
-  Widget _buildAction( IconData iconData, {VoidCallback? onPressed}) {
+  Widget _buildPopupAction(IconData iconData, {Widget? child}) {
+    return PopupMenuButton(
+      key: _popupMenuKey,
+      popUpAnimationStyle: AnimationStyle(
+        duration: Duration(milliseconds: 200),
+        reverseDuration: Duration(milliseconds: 200),
+      ),
+      menuPadding: EdgeInsets.all(0),
+      padding: EdgeInsets.all(0),
+      color: Colors.transparent,
+      iconColor: themeProvider.colorNavText,
+      shadowColor: Colors.black,
+      icon: Icon(
+        iconData,
+        color: themeProvider.colorNavText,
+      ),
+      elevation: 0,
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3), // 设置模糊程度
+            child: child,
+          ),
+        ),
+      ],
+      offset: Offset(-5, kToolbarHeight),
+    );
+  }
+
+  Widget _buildAction(IconData iconData, {VoidCallback? onPressed}) {
     return IconButton(
       icon: Icon(
         iconData,
@@ -256,10 +317,15 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
               children.add(Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                      color: isToday?themeProvider.colorMain.withOpacity(0.1):Colors.transparent,
+                      color: isToday
+                          ? themeProvider.colorMain.withOpacity(0.1)
+                          : Colors.transparent,
                       border: Border(
                           top: BorderSide(
-                              width: 5, color: isToday?themeProvider.colorMain:Colors.transparent))),
+                              width: 5,
+                              color: isToday
+                                  ? themeProvider.colorMain
+                                  : Colors.transparent))),
                   child: _buildTopItem(weeks[i], subDates[i]),
                 ),
               ));
@@ -272,7 +338,6 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
       ],
     );
   }
-
 
   Widget _buildTopItem(String week, DateTime subDate) {
     return Column(
@@ -389,8 +454,8 @@ class CoursePageState extends State<CoursePage> with AutomaticKeepAliveClientMix
         double height = parSize.maxHeight;
         double width = parSize.maxWidth;
         for (int i = 1; i <= 22; i++) {
-          children
-              .add(new CourseTableChild(courseProvider.info[i], width, height,maxLesson*1.0));
+          children.add(new CourseTableChild(
+              courseProvider.info[i], width, height, maxLesson * 1.0));
         }
 
         return PageView(

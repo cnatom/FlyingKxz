@@ -135,14 +135,12 @@ class CourseProvider extends ChangeNotifier{
     if(courseData1.title==courseData2.title&&
     courseData1.lessonNum==courseData2.lessonNum&&
     courseData1.weekNum==courseData2.weekNum){
-      debugPrint(courseData1.title!+"==="+courseData2.title!);
       return true;
     }
     return false;
   }
   //课程列表打包存储到本地
   _savePrefs(){
-    debugPrint("@savePrefs");
     var result = [];
     for(CourseData courseData in infoByCourse){
       result.add(courseData.toJson());

@@ -225,7 +225,6 @@ class _CourseCardState extends State<CourseCard> {
   void _delCourse(CourseData delCourseData)async{
     if(await _willDel(delCourseData)){
       courseProvider.del(delCourseData);
-      Navigator.of(context).pop();
     }
 
   }
