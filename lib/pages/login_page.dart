@@ -307,12 +307,12 @@ class _LoginPageState extends State<LoginPage> {
         SizedBox(
           height: spaceCardMarginTB,
         ),
-        _buildFlatButton("ICP备案号：苏ICP备2023008273号-2A", onPressed: () {
+        _buildFlatButton("ICP备案号：鲁ICP备2024109602号-1A", onPressed: () {
           Navigator.push(
               context,
               CupertinoPageRoute(
                   builder: (context) => FlyWebView(
-                        title: "ICP备案号：苏ICP备2023008273号-2A",
+                        title: "ICP备案号：鲁ICP备2024109602号-1A",
                         initialUrl: "https://beian.miit.gov.cn",
                       )));
         }),

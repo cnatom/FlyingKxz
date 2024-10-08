@@ -227,9 +227,7 @@ class CoursePageState extends State<CoursePage>
       actions: [
         _buildPopupAction(Icons.add,
             child: ImportSelectorNew(
-              onImport: (result){
-                this._setCourse(result as List?);
-              },
+              onImport: (result)=> this._setCourse(result as List?),
               courseProvider: courseProvider,
             )),
         _buildAction(Boxicons.bx_share_alt, onPressed: () => _outputIcs()),

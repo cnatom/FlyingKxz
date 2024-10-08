@@ -117,7 +117,7 @@ class _MyselfPageState extends State<MyselfPage>
           crossAxisAlignment:WrapCrossAlignment.center,
           children: [
             Container(),
-            _miniTextButton(title: "ICP备案号：苏ICP备2023008273号-2A",url: "https://beian.miit.gov.cn"),
+            _miniTextButton(title: "ICP备案号：鲁ICP备2024109602号-1A",url: "https://beian.miit.gov.cn"),
             _miniTextButton(title: "隐私政策",url: "https://kxz.atcumt.com/privacy.html"),
           ],
         ),

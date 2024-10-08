@@ -82,7 +82,7 @@ class _ImportScoreNewPageState extends State<ImportScoreNewPage> {
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     return FlyWebViewInApp(
-        url: "http://jwxt.cumt.edu.cn/jwglxt/cjcx/cjcx_cxDgXscj.html?gnmkdm=N305005&layout=default",
+        initialUrl: "http://jwxt.cumt.edu.cn/jwglxt/cjcx/cjcx_cxDgXscj.html?gnmkdm=N305005&layout=default",
         title: "矿大教务",
       autoLogin: true,
       actions: [

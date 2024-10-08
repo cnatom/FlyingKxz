@@ -79,7 +79,7 @@ class _ImportExamPageState extends State<ImportExamPage> {
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     return FlyWebViewInApp(
-        url: "http://jwxt.cumt.edu.cn/jwglxt/kwgl/kscx_cxXsksxxIndex.html?gnmkdm=N358105&layout=default",
+        initialUrl: "http://jwxt.cumt.edu.cn/jwglxt/kwgl/kscx_cxXsksxxIndex.html?gnmkdm=N358105&layout=default",
         title: "矿大教务",
       autoLogin: true,
       actions: [

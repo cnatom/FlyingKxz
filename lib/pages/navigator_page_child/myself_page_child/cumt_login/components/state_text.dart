@@ -31,6 +31,7 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
   CumtLoginAccount account = CumtLoginAccount();
   late AnimationController _controller;
   late Animation<double> _animation;
+  bool loginLock = false;
   StateTextAnimationDirection direction = StateTextAnimationDirection.down;
   @override
   void didUpdateWidget(covariant CumtLoginStateText oldWidget) {
@@ -65,6 +66,8 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
   }
 
   void autoLogin() async {
+    if (loginLock) return;
+    loginLock = true;
     if (account.isEmpty) {
       _controller.forward();
       return;
@@ -81,6 +84,7 @@ class CumtLoginStateTextState extends State<CumtLoginStateText>
     refreshText(res);
     await Future.delayed(Duration(milliseconds: 600));
     refreshText(widget.defaultText);
+    loginLock = false;
   }
 
   @override

@@ -31,7 +31,7 @@ class _ImportPageState extends State<ImportPage> {
   double progress = 0.0;
   var urlMap = {
     ImportCourseType.BK:
-        "http://jwxt.cumt.edu.cn/jwglxt/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N253508&layout=default",
+        "http://jwxt.cumt.edu.cn/jwglxt/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N2151&layout=default",
     ImportCourseType.YJS: "http://yjsxt.cumt.edu.cn/",
   };
   bool loadingWeb = true;
@@ -93,7 +93,7 @@ class _ImportPageState extends State<ImportPage> {
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     return FlyWebViewInApp(
-        url: urlMap[widget.importType]!,
+        initialUrl: urlMap[widget.importType]!,
         title: "矿大教务系统",
         autoLogin: true,
         actions: [

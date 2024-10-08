@@ -26,7 +26,7 @@ class _PowerChargePageState extends State<PowerChargePage> {
   @override
   Widget build(BuildContext context) {
     return FlyWebViewInApp(
-      url:
+      initialUrl:
           "https://authserver.cumt.edu.cn/authserver/login?service=https%3A%2F%2Fyktm.cumt.edu.cn%2Fberserker-auth%2Fcas%2Flogin%2Fwisedu%3FtargetUrl%3Dhttps%3A%2F%2Fyktm.cumt.edu.cn%2Fplat%2F%3Fname%3DloginTransit",
       title: "电费充值",
       autoLogin: true,

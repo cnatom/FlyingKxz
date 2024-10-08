@@ -15,7 +15,7 @@ class FlyWebViewAction {
 }
 
 class FlyWebViewInApp extends StatefulWidget {
-  final String url;
+  final String initialUrl;
   final String title;
   final bool? autoLogin;
   final List<FlyWebViewAction>? actions;
@@ -28,7 +28,7 @@ class FlyWebViewInApp extends StatefulWidget {
 
   const FlyWebViewInApp({
     Key? key,
-    required this.url,
+    required this.initialUrl,
     required this.title,
     this.stackChildren = const <Widget>[],
     this.onLoadStart,
@@ -69,7 +69,7 @@ class _FlyWebViewState extends State<FlyWebViewInApp> {
                   await InAppWebViewController.clearAllCache();
                   await _deleteAllCookies();
                   await controller.loadUrl(
-                      urlRequest: URLRequest(url: WebUri(widget.url)));
+                      urlRequest: URLRequest(url: WebUri(widget.initialUrl)));
                 }),
             if (widget.actions != null)
               for (var action in widget.actions!)
@@ -93,7 +93,7 @@ class _FlyWebViewState extends State<FlyWebViewInApp> {
         alignment: Alignment.center,
         children: [
           InAppWebView(
-            initialUrlRequest: URLRequest(url: WebUri(widget.url)),
+            initialUrlRequest: URLRequest(url: WebUri(widget.initialUrl)),
             onWebViewCreated: (InAppWebViewController controller) {
               if (widget.onWebViewCreated != null) {
                 widget.onWebViewCreated!(controller);
