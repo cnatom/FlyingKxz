@@ -359,7 +359,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
             //获取索引
             int delIndex = -1;
             for(int i = 0;i<list.length;i++){
-              if(list[i]?.courseName==item?.courseName&&list[i]?.location==item?.location){
+              if(list[i]?.courseName==item?.courseName&&list[i]?.location==item?.location&&list[i]?.dateTime==item?.dateTime){
                 delIndex = i;
                 break;
               }
@@ -375,6 +375,7 @@ class _ExamViewState extends State<ExamView> with AutomaticKeepAliveClientMixin{
             });
             //存储
             Prefs.examData = ExamData.examJsonEncode(examCurList+examOutList);
+            Global.examList = examCurList+examOutList;
             Logger.log('Exam', '删除考试',{'courseName':item?.courseName});
           }
     },
