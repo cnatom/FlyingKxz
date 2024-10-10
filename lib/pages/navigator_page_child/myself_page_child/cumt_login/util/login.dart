@@ -14,6 +14,7 @@ class CumtLoginResult {
   static const String LOGIN_LIMIT_EXCEEDED = '您的登陆超限';
   static const String WRONG_USERNAME_OR_PASSWORD = '用户名或密码错误';
   static const String UNKNOWN_ERROR = '未知错误';
+  static const String TIMEOUT_ERROR = '登录超时';
   static const String NETWORK_ERROR = '登录失败';
   static const String MOBILE_ERROR = '正在通过流量连接';
   static const String NOT_OPEN_NETWORK = '未打开网络';
@@ -105,8 +106,14 @@ class CumtLogin {
         account.refreshAccountPrefs();
       }
       return result;
-    } catch (e) {
-      return CumtLoginResult.NETWORK_ERROR;
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        return CumtLoginResult.TIMEOUT_ERROR;
+      }else{
+        return CumtLoginResult.NETWORK_ERROR;
+      }
     }
   }
 }
