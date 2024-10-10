@@ -18,6 +18,6 @@ class SchoolCalendarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlyWebView(title: "校历",initialUrl: "https://www.cumt.edu.cn/21738/list.htm",);
+    return FlyWebView(title: "校历",initialUrl: "https://www.cumt.edu.cn/ggfw/xnxl.htm",);
   }
 }

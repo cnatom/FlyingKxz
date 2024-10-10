@@ -1,12 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_intro/flutter_intro.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/Model/global.dart';
 import 'package:flying_kxz/Model/prefs.dart';
-import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/old/score_info.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/old/score_map.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -14,7 +10,6 @@ import 'package:flying_kxz/util/util.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-
 import 'import_score_page.dart';
 import 'score_set_page.dart';
 
@@ -24,12 +19,7 @@ void toScorePage(BuildContext context) {
   Navigator.push(
       context,
       CupertinoPageRoute(
-          builder: (context) => Intro(
-              padding: const EdgeInsets.all(0),
-              borderRadius:
-                  BorderRadius.all(Radius.circular(borderRadiusValue)),
-              buttonTextBuilder: (order) => '好的',
-              child: ScorePage())));
+          builder: (context) => ScorePage()));
   Logger.log('Score', '进入',{});
 }
 
@@ -42,24 +32,23 @@ class _ScorePageState extends State<ScorePage>
     with AutomaticKeepAliveClientMixin {
   ScrollController controller = new ScrollController();
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  String jiaquanTotal; //总加权
-  String jidianTotal; //总绩点
+  String? jiaquanTotal; //总加权
+  String? jidianTotal; //总绩点
 
-  List<bool> scoreFilter; //true为计入总分 false不计入总分
+  List<bool> scoreFilter = []; //true为计入总分 false不计入总分
   bool makeupFilter = false;
   bool showFilter = false; //是否启动筛选
   bool scoreDetailAllExpand = false; //是否全部展开闭合
-  List<CrossFadeState> scoreDetailCrossFadeState = new List(); //控制详细列表的展开闭合
+  List<CrossFadeState> scoreDetailCrossFadeState = []; //控制详细列表的展开闭合
   bool selectAll = true;
   double opacityFloatButton = 0.0; //是否显示回到顶部按钮
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   var topCrossFadeState = CrossFadeState.showFirst;
   Color selectedMainColor = colorMainText;
 
   @override
   void initState() {
     super.initState();
-    scoreFilter = [];
     ScoreMap.init();
   }
 
@@ -89,7 +78,7 @@ class _ScorePageState extends State<ScorePage>
     scoreDetailCrossFadeState.clear();
     scoreFilter.clear();
     //添加开展动画控制器 并 计算总加权和总绩点
-    for (int i = 0; i < Global.scoreInfo.data.length; i++) {
+    for (int i = 0; i < Global.scoreInfo.data!.length; i++) {
       scoreFilter.add(true);
       scoreDetailCrossFadeState.add(CrossFadeState.showFirst);
     }
@@ -106,11 +95,11 @@ class _ScorePageState extends State<ScorePage>
     double xfcjSum = 0; //学分*成绩的和
     double xfSum = 0; //学分的和
     try {
-      for (int i = 0; i < Global.scoreInfo.data.length; i++) {
-        var cur = Global.scoreInfo.data[i];
-        String zongping = cur.zongping;
-        String jidian = cur.jidian;
-        String xuefen = cur.xuefen;
+      for (int i = 0; i < Global.scoreInfo.data!.length; i++) {
+        var cur = Global.scoreInfo.data![i];
+        String zongping = cur.zongping!;
+        String jidian = cur.jidian!;
+        String xuefen = cur.xuefen!;
         if (!isNumeric(zongping)) {
           if (ScoreMap.data[zongping] != null) {
             jidian = ScoreMap.data[zongping]['jidian'] ?? 'null';
@@ -139,14 +128,6 @@ class _ScorePageState extends State<ScorePage>
         .push(CupertinoPageRoute(builder: (context) => ScoreSetPage()));
     _calcuTotalScore();
     setState(() {});
-  }
-
-  _introduce(BuildContext context){
-    String prefsTag = "score_page_introduce";
-    if(Prefs.prefs.getBool(prefsTag)==null){
-      Intro.of(context).start();
-      Prefs.prefs.setBool(prefsTag, true);
-    }
   }
 
   _showHelp() {
@@ -178,11 +159,7 @@ class _ScorePageState extends State<ScorePage>
     return Scaffold(
       key: scaffoldKey,
       appBar: FlyAppBar(context, '成绩（需内网或VPN）', actions: [
-        IntroStepBuilder(
-          order: 4,
-          text: '在这里设置"优秀""良好"等评级的具体成绩',
-          builder: (context,key) =>_buildActionIconButton(Icons.settings,key: key,onPressed: ()=>_toSetPage())
-        ),
+        _buildActionIconButton(Icons.settings,onPressed: ()=>_toSetPage()),
         _buildActionIconButton(Icons.help_outline,onPressed: ()=>_showHelp())
       ]),
       body: Column(
@@ -231,7 +208,7 @@ class _ScorePageState extends State<ScorePage>
         );
   }
 
-  IconButton _buildActionIconButton(IconData iconData, {Key key,VoidCallback onPressed}) {
+  IconButton _buildActionIconButton(IconData iconData, {Key? key,VoidCallback? onPressed}) {
     return IconButton(
       key: key,
           icon: Icon(
@@ -242,59 +219,51 @@ class _ScorePageState extends State<ScorePage>
   }
 
   Widget _searchBarButton(String title, String content,
-      {GestureTapCallback onTap}) {
-    return IntroStepBuilder(
-      order: 1,
-      text: "从教务系统导入成绩",
-      onWidgetLoad: ()=>_introduce(context),
-      builder: (context,key) {
-        return Container(
-          key: key,
-          child: Material(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(borderRadiusValue),
-            child: InkWell(
-              splashColor: Colors.black12,
-              borderRadius: BorderRadius.circular(10),
-              highlightColor: Colors.black12,
-              onTap: onTap,
-              child: Container(
-                height: fontSizeMini38 * 3.5,
-                padding: EdgeInsets.fromLTRB(
-                    spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+      {GestureTapCallback? onTap}) {
+    return Container(
+      child: Material(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(borderRadiusValue),
+        child: InkWell(
+          splashColor: Colors.black12,
+          borderRadius: BorderRadius.circular(10),
+          highlightColor: Colors.black12,
+          onTap: onTap,
+          child: Container(
+            height: fontSizeMini38 * 3.5,
+            padding: EdgeInsets.fromLTRB(
+                spaceCardPaddingRL, 0, spaceCardPaddingRL, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        FlyText.main35(
-                          title,
-                        ),
-                        FlyText.miniTip30(
-                          content,
-                        ),
-                      ],
+                    FlyText.main35(
+                      title,
                     ),
-                    Icon(
-                      Icons.cloud_download_outlined,
-                    )
+                    FlyText.miniTip30(
+                      content,
+                    ),
                   ],
                 ),
-              ),
+                Icon(
+                  Icons.cloud_download_outlined,
+                )
+              ],
             ),
           ),
-        );
-      }
+        ),
+      ),
     );
   }
 
   //总绩点 + 展开闭合组件
   Widget topArea() {
     //展开闭合组件
-    Widget expandChip({Key key}) {
+    Widget expandChip({Key? key}) {
       return InkWell(
         key: key,
         onTap: () {
@@ -325,7 +294,7 @@ class _ScorePageState extends State<ScorePage>
       );
     }
 
-    Widget filterChip({Key key}) {
+    Widget filterChip({Key? key}) {
       return InkWell(
         key: key,
         onTap: () {
@@ -392,8 +361,8 @@ class _ScorePageState extends State<ScorePage>
                       "加权：",
                     ),
                     Text(
-                      jiaquanTotal != null && jiaquanTotal != 'NaN'
-                          ? jiaquanTotal
+                      jiaquanTotal != null && jiaquanTotal! != 'NaN'
+                          ? jiaquanTotal!
                           : "00.00",
                       style: TextStyle(
                           color: themeProvider.colorMain,
@@ -409,8 +378,8 @@ class _ScorePageState extends State<ScorePage>
                       "绩点：",
                     ),
                     Text(
-                      jidianTotal != null && jiaquanTotal != 'NaN'
-                          ? jidianTotal
+                      jidianTotal != null && jiaquanTotal! != 'NaN'
+                          ? jidianTotal!
                           : "0.00",
                       style: TextStyle(
                           color: themeProvider.colorMain,
@@ -430,19 +399,9 @@ class _ScorePageState extends State<ScorePage>
               children: [
                 Builder(builder: (context){
                   if(showFilter) return selectAllChip();
-                  return IntroStepBuilder(
-                    order: 2,
-                    text: "查看具体的平时分与考试分",
-                    builder: (context,key) {
-                      return expandChip(key: key);
-                    }
-                  );
+                  return expandChip();
                 }),
-                IntroStepBuilder(
-                  order: 3,
-                  text: "如果某些学科成绩不计入加权\n点击这里将其筛选吧",
-                  builder: (context,key) => filterChip(key: key)
-                ),
+                filterChip(),
               ],
             ),
           )
@@ -452,7 +411,7 @@ class _ScorePageState extends State<ScorePage>
   }
 
   //判断String是否是纯数字
-  bool isNumeric(String s) {
+  bool isNumeric(String? s) {
     if (s == null) {
       return false;
     }
@@ -467,7 +426,7 @@ class _ScorePageState extends State<ScorePage>
     String jidian = '0',
     String zongping = '0',
     String type = '',
-    List<ScoreDetail> scoreDetail,
+    List<ScoreDetail>? scoreDetail,
   }) {
     //卡片主题色
     Color colorCard;
@@ -697,15 +656,15 @@ class _ScorePageState extends State<ScorePage>
     return Container(
       margin: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginTB),
       child: ListView.builder(
-          itemCount: Global.scoreInfo.data.length,
+          itemCount: Global.scoreInfo.data!.length,
           itemBuilder: (context, index) {
-            var item = Global.scoreInfo.data[index];
+            var item = Global.scoreInfo.data![index];
             return scoreCard(
               _crossFadeStateIndex++,
-              courseName: item.courseName,
-              xuefen: item.xuefen,
+              courseName: item.courseName??'',
+              xuefen: item.xuefen??'',
               jidian: item.jidian.toString(),
-              zongping: item.zongping,
+              zongping: item.zongping??'',
               type: item.type ?? '',
               scoreDetail: item.scoreDetail,
             );
@@ -733,7 +692,7 @@ class _ScorePageState extends State<ScorePage>
   Widget curView() {
     Widget child = nullView();
     if (Global.scoreInfo.data != null) {
-      child = Global.scoreInfo.data.isEmpty ? infoEmptyView() : infoView();
+      child = Global.scoreInfo.data!.isEmpty ? infoEmptyView() : infoView();
     }
     return child;
   }

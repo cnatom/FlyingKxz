@@ -5,12 +5,12 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../../ui/ui.dart';
 class PowerCircularView extends StatelessWidget {
   const PowerCircularView({
-    Key key,
-    @required this.powerPercent,
-    @required this.themeProvider,
+    Key? key,
+    required this.powerPercent,
+    required this.themeProvider,
   }) : super(key: key);
 
-  final double powerPercent;
+  final double? powerPercent;
   final ThemeProvider themeProvider;
 
   @override
@@ -19,7 +19,7 @@ class PowerCircularView extends StatelessWidget {
       radius: MediaQuery.of(context).size.width/6,
       lineWidth: 13.0,
       animation: true,
-      percent: powerPercent,
+      percent: powerPercent??0,
       backgroundColor: Theme.of(context).disabledColor,
       center: Icon(EvaIcons.flash,size: MediaQuery.of(context).size.width/10,color: themeProvider.colorMain,),
       circularStrokeCap: CircularStrokeCap.round,

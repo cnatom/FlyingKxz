@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page.dart';
@@ -32,7 +31,7 @@ class BottomNavigationBarModel {
 
 //底部导航栏页面,位于子页面的顶端
 class FlyNavigatorPage extends StatefulWidget {
-  const FlyNavigatorPage({Key key}) : super(key: key);
+  const FlyNavigatorPage({Key? key}) : super(key: key);
 
   @override
   State<FlyNavigatorPage> createState() => FlyNavigatorPageState();
@@ -44,7 +43,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
     with AutomaticKeepAliveClientMixin,WidgetsBindingObserver{
   int _currentIndex = 0; //数组索引，通过改变索引值改变视图
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
 
 
   @override
@@ -78,18 +77,14 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     themeProvider = Provider.of<ThemeProvider>(context);
-    return Intro(
-      padding: const EdgeInsets.all(0),
-      borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
-      buttonTextBuilder: (order) => '好的',
-      child: FlyNavBackground(
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: _buildBody(),
-            bottomNavigationBar: _buildBottomNavigationBar(),
-          )),
-    );
+    return FlyNavBackground(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: _buildBody(),
+          bottomNavigationBar: _buildBottomNavigationBar(),
+        ));
   }
 
   BottomNavigationBar _buildBottomNavigationBar() {
@@ -104,8 +99,8 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
         selectedFontSize: fontSizeTip33,
         unselectedFontSize: fontSizeTip33,
         selectedItemColor:
-            themeProvider.simpleMode ? themeProvider.colorMain : null,
-        unselectedItemColor: themeProvider.simpleMode ? Colors.black45 : null,
+            themeProvider.simpleMode | themeProvider.darkMode ? themeProvider.colorMain : null,
+        unselectedItemColor: themeProvider.simpleMode | themeProvider.darkMode ? Colors.grey : null,
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed);
   }
@@ -128,7 +123,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
   }
 
   BottomNavigationBarItem _buildBottomNavigationItem(String title, IconData iconData,
-      {double size}){
+      {double? size}){
     return BottomNavigationBarItem(
         label: title,
         icon: Icon(

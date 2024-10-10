@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/aboutus/about_detail.dart';
 import 'package:flying_kxz/ui/ui.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'model/detail_info.dart';
@@ -22,11 +23,11 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-
-
+  late ThemeProvider themeProvider;
 
   @override
   Widget build(BuildContext context) {
+    themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -139,20 +140,16 @@ class _AboutPageState extends State<AboutPage> {
                                     "https://github.com/cnatom/FlyingKxz"));
                               })
                         ]),
-                        Column(
-                          children: [
-                            SizedBox(
-                              height: fontSizeMini38 * 2,
-                            ),
-                            FlyTitle('你的支持是我们用爱发电最大的动力！'),
-                            Wrap(
-                              children: [_buildImage('images/help.png')],
-                            ),
-                            SizedBox(
-                              height: 300,
-                            )
-                          ],
-                        ),
+                        _buildUnit("你的支持是我们用爱发电最大的动力！", "", children: [
+                          Column(
+                            children: [
+                              _buildImage('images/help.png'),
+                              SizedBox(
+                                height: 300,
+                              )
+                            ],
+                          )
+                        ]),
                       ]),
                 ),
               ),
@@ -197,11 +194,11 @@ class _AboutPageState extends State<AboutPage> {
 
   Widget _buildButton(
       {int type = 0,
-        @required String title,
-        String imageResource,
-        @required subTitle,
-        String qqNumber,
-        GestureTapCallback onTap}) {
+        required String title,
+        String? imageResource,
+        required subTitle,
+        String? qqNumber,
+        GestureTapCallback? onTap}) {
     return Container(
       width: ScreenUtil().setWidth(deviceWidth / 2) - spaceCardPaddingTB / 2,
       padding: EdgeInsets.fromLTRB(spaceCardPaddingTB / 2, spaceCardPaddingTB,
@@ -209,7 +206,7 @@ class _AboutPageState extends State<AboutPage> {
       child: InkWell(
         onTap: onTap == null
             ? () {
-          Clipboard.setData(ClipboardData(text: qqNumber));
+          Clipboard.setData(ClipboardData(text: qqNumber!));
           showToast("已复制QQ号至剪切板", duration: 1);
         }
             : onTap,
@@ -231,7 +228,7 @@ class _AboutPageState extends State<AboutPage> {
                         : "http://p.qlogo.cn/gh/$qqNumber/$qqNumber/640/",
                     fit: BoxFit.cover,
                   )
-                      : Image.asset(imageResource),
+                      : Image.asset(imageResource!),
                 ),
               ),
               SizedBox(
@@ -252,7 +249,7 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
   Widget _buildUnit(String title, String subTitle,
-      {@required List<Widget> children}) {
+      {required List<Widget> children}) {
     return Column(
       children: [
         Padding(
@@ -261,7 +258,7 @@ class _AboutPageState extends State<AboutPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              FlyTitle(title),
+              FlyTitle(title,verticalBarColor: themeProvider.colorMain),
               FlyText.miniTip30(subTitle),
             ],
           ),

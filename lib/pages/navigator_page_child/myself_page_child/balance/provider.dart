@@ -17,12 +17,12 @@ enum BalanceRequestType { Balance, BalanceHis }
 
 class BalanceProvider extends ChangeNotifier {
   Cumt cumt = Cumt.getInstance();
-  String _cardNum; // 卡号
-  String _balance; // 余额
-  List _detailEntity; // 校园卡流水
-  String _getBalanceDate; // 上次成功获取校园卡余额的时间
-  String _getBalanceHisDate; //上次成功获取校园卡流水的时间
-  String _auth;
+  String? _cardNum; // 卡号
+  String? _balance; // 余额
+  List? _detailEntity; // 校园卡流水
+  String? _getBalanceDate; // 上次成功获取校园卡余额的时间
+  String? _getBalanceHisDate; //上次成功获取校园卡流水的时间
+  String? _auth;
 
   Map<BalanceRequestType, dynamic> urls = {
     BalanceRequestType.Balance:'https://yktm.cumt.edu.cn/berserker-app/ykt/tsm/getCampusCards?synAccessSource=pc',
@@ -65,7 +65,7 @@ class BalanceProvider extends ChangeNotifier {
       //通知页面刷新
       notifyListeners();
       return true;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       Logger.log('Balance', '余额,失败', {'cardNum': cardNum, 'balance': balance});
       cumt.isLogin = false; // 将模拟登录的锁关闭
       return getBalance(count: count - 1); // 递归进行网络请求
@@ -74,7 +74,11 @@ class BalanceProvider extends ChangeNotifier {
 
   //校园卡流水
   Future<bool> getBalanceHistory(BuildContext context,
-      {bool showToasts = false}) async {
+      {bool showToasts = false,int count = 2}) async {
+    if (count==0) {
+      if(showToasts) showToast("获取历史消费信息失败，请尝试下滑刷新");
+      return false;
+    }
     cumt.dio.options.headers['Synjones-Auth'] = this._auth;
     var res = await cumt.dio.get(urls[BalanceRequestType.BalanceHis]);
     cumt.dio.options.headers.remove("Synjones-Auth");
@@ -96,17 +100,19 @@ class BalanceProvider extends ChangeNotifier {
       }catch (e){
         print(e.toString());
         l1 = [];
-        if(showToasts) showToast("解析Response失败，请尝试下滑刷新\n${e.toString()}");
+        Future.delayed(Duration(milliseconds: 300),(){
+          return getBalanceHistory(context,count: count-1);
+        });
       }
       detailEntity = l1;
       getBalanceHisDate = DateTime.now().toString().substring(0, 16);
       notifyListeners();
       await Logger.log("Balance", "历史,成功", {
         "timeKey": DateTime.now().toString(),
-        "info": jsonEncode(detailEntity.toList())
+        "info": jsonEncode(detailEntity?.toList())
       });
       return true;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (showToasts) showToast("获取校园卡流水失败\n ${e.message.toString()}");
       return false;
     }
@@ -188,7 +194,7 @@ class BalanceProvider extends ChangeNotifier {
     _balance = value;
   }
 
-  set detailEntity(List value) {
+  set detailEntity(List? value) {
     Prefs.balanceHis = jsonEncode(value);
     _detailEntity = value;
   }
@@ -203,7 +209,7 @@ class BalanceProvider extends ChangeNotifier {
         _cardNum = "000000";
       }
     }
-    return _cardNum;
+    return _cardNum!;
   }
 
   String get balance {
@@ -214,12 +220,12 @@ class BalanceProvider extends ChangeNotifier {
         _balance = "0.0";
       }
     }
-    return _balance;
+    return _balance!;
   }
 
-  List get detailEntity {
+  List? get detailEntity {
     if (_detailEntity == null && Prefs.balanceHis != null) {
-      _detailEntity = jsonDecode(Prefs.balanceHis);
+      _detailEntity = jsonDecode(Prefs.balanceHis!);
     }
     return _detailEntity;
   }
@@ -232,7 +238,7 @@ class BalanceProvider extends ChangeNotifier {
         _getBalanceDate = "……";
       }
     }
-    return _getBalanceDate;
+    return _getBalanceDate!;
   }
 
   String get getBalanceHisDate {
@@ -243,6 +249,6 @@ class BalanceProvider extends ChangeNotifier {
         _getBalanceHisDate = "……";
       }
     }
-    return _getBalanceHisDate;
+    return _getBalanceHisDate!;
   }
 }

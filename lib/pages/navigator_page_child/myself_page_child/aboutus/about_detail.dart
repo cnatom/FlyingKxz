@@ -17,7 +17,7 @@ void toAboutDetailPage(BuildContext context,String qqNumber,DetailInfo info) {
 class AboutDetail extends StatelessWidget {
   DetailInfo detailInfo;
   String qqNumber;
-  AboutDetail({@required this.detailInfo,@required this.qqNumber, Key key}) : super(key: key);
+  AboutDetail({required this.detailInfo,required this.qqNumber, Key? key}) : super(key: key);
   EdgeInsets margin = EdgeInsets.fromLTRB(spaceCardMarginRL, spaceCardMarginTB,
       spaceCardMarginRL, spaceCardMarginTB);
 

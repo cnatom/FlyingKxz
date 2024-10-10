@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:flying_kxz/Model/prefs.dart';
 
 class ScoreMap{
-  static Map<String,dynamic> data;
-  static Map<String,dynamic> _default;
+  static late Map<String,dynamic> data;
+  static late Map<String,dynamic> _default;
   static init(){
     _default = {
       "免修":{"jidian":"5.0", "zongping":"100"},
@@ -21,7 +21,7 @@ class ScoreMap{
       "缓考":{"jidian":"0.0", "zongping":"0"},
     };
     if(Prefs.scoreMap!=null){
-      data = jsonDecode(Prefs.scoreMap);
+      data = jsonDecode(Prefs.scoreMap!);
     }else{
       data = _default;
       saveFromMap(data);

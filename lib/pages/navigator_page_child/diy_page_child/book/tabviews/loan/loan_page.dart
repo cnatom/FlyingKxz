@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/spider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/tabviews/loan/entity/loan_entity.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/tabviews/loan/entity/renew_entity.dart';
@@ -15,9 +15,9 @@ import 'package:provider/provider.dart';
 import '../../../../../../ui/ui.dart';
 
 class LoanPage extends StatefulWidget {
-  final LoanType loanType;
+  final LoanType? loanType;
 
-  const LoanPage({Key key, this.loanType}) : super(key: key);
+  const LoanPage({Key? key, this.loanType}) : super(key: key);
 
   @override
   State<LoanPage> createState() => _LoanPageState();
@@ -26,8 +26,8 @@ class LoanPage extends StatefulWidget {
 class _LoanPageState extends State<LoanPage>
     with AutomaticKeepAliveClientMixin {
   LoanModel loanModel = LoanModel();
-  var futureBuilderFunc;
-  ThemeProvider themeProvider;
+  late var futureBuilderFunc;
+  late ThemeProvider themeProvider;
   initState() {
     super.initState();
     futureBuilderFunc = loanModel.getData(context, widget.loanType);
@@ -38,14 +38,14 @@ class _LoanPageState extends State<LoanPage>
   Widget build(BuildContext context) {
     super.build(context);
     themeProvider = Provider.of<ThemeProvider>(context);
-    return FutureBuilder<MapEntry<List<String>, LoanEntity>>(
+    return FutureBuilder<MapEntry<List<String?>, LoanEntity?>?>(
         future: futureBuilderFunc,
         builder: (BuildContext context,
-            AsyncSnapshot<MapEntry<List<String>, LoanEntity>> snapshot) {
+            AsyncSnapshot<MapEntry<List<String?>, LoanEntity?>?> snapshot) {
           if (snapshot.hasData) {
-            var searchResult = loanModel.loanEntity.data.searchResult;
+            var searchResult = loanModel.loanEntity?.data?.searchResult;
             var coverUrls = loanModel.coverUrls;
-            if (searchResult.isEmpty) {
+            if (searchResult!.isEmpty) {
               return Center(
                 child: widget.loanType==LoanType.loanCur?Text("当前没有借阅"):Text("借阅历史为空"),
               );
@@ -69,12 +69,12 @@ class _LoanPageState extends State<LoanPage>
                                 var item = searchResult[index];
                                 var coverUrl = coverUrls[index];
                                 return buildBookCard(
-                                    title: item.title,
-                                    author: item.author,
-                                    barcode: item.barcode,
-                                    loanDate: item.loanDate,
+                                    title: item?.title,
+                                    author: item?.author,
+                                    barcode: item?.barcode,
+                                    loanDate: item?.loanDate,
                                     coverUrl: coverUrl,
-                                    normReturnDate: item.normReturnDate);
+                                    normReturnDate: item?.normReturnDate);
                               },
                               itemCount: searchResult.length,
                             )
@@ -115,7 +115,7 @@ class _LoanPageState extends State<LoanPage>
           ],
         ),
 
-        ...dialogInfo.resultList.map((e) => Padding(
+        ...?dialogInfo.resultList?.map((e) => Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
@@ -129,12 +129,12 @@ class _LoanPageState extends State<LoanPage>
     setState(() {});
   }
   Widget buildBookCard(
-      {@required String title,
-      @required String author,
-      @required String barcode,
-      @required String normReturnDate,
-      @required String loanDate,
-      @required String coverUrl}) {
+      {required String? title,
+      required String? author,
+      required String? barcode,
+      required String? normReturnDate,
+      required String? loanDate,
+      required String? coverUrl}) {
     return FlyContainer(
       backgroundColor: Theme.of(context).cardColor,
       margin: EdgeInsets.symmetric(vertical: spaceCardMarginTB / 2),
@@ -194,8 +194,8 @@ class _LoanPageState extends State<LoanPage>
 }
 
 class RenewButton extends StatefulWidget {
-  final GestureTapCallback onTap;
-  const RenewButton({Key key, this.onTap}) : super(key: key);
+  final Future<void> Function()? onTap;
+  const RenewButton({Key? key, this.onTap}) : super(key: key);
 
   @override
   State<RenewButton> createState() => _RenewButtonState();
@@ -216,7 +216,9 @@ class _RenewButtonState extends State<RenewButton> {
           setState(() {
             loading = true;
           });
-          await widget.onTap();
+          if(widget.onTap!=null){
+            widget.onTap!();
+          }
           setState(() {
             loading = false;
           });

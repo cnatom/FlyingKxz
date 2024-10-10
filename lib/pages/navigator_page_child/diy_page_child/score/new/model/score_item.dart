@@ -1,20 +1,20 @@
 import 'score_new_map.dart';
 
 class ScoreItem {
-  String _courseName; // 课程名
-  double _xuefen; // 学分
-  double _jidian; // 绩点
+  late String _courseName; // 课程名
+  late double _xuefen; // 学分
+  late double _jidian; // 绩点
   dynamic _zongping; // 总评
-  String _type; // 考试类型
+  late String _type; // 考试类型
   bool _includeWeighting = true; // 是否计入加权，ture为计入
   double _rate = 1.0; // 加权倍率
 
   ScoreItem(
-      {String courseName,
-      double xuefen,
-      double jidian,
+      {required String courseName,
+      required double xuefen,
+      required double jidian,
       dynamic zongping,
-      String type}) {
+      required String type}) {
     this._courseName = courseName;
     this._xuefen = xuefen;
     this._jidian = jidian;

@@ -14,7 +14,7 @@
   "source": {
     "http": "https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences_foundation"
   },
-  "source_files": "Classes/**/*",
+  "source_files": "shared_preferences_foundation/Sources/shared_preferences_foundation/**/*.swift",
   "ios": {
     "dependencies": {
       "Flutter": [
@@ -30,8 +30,8 @@
     }
   },
   "platforms": {
-    "ios": "9.0",
-    "osx": "10.11"
+    "ios": "12.0",
+    "osx": "10.14"
   },
   "pod_target_xcconfig": {
     "DEFINES_MODULE": "YES"
@@ -41,5 +41,10 @@
     "LD_RUNPATH_SEARCH_PATHS": "/usr/lib/swift"
   },
   "swift_versions": "5.0",
+  "resource_bundles": {
+    "shared_preferences_foundation_privacy": [
+      "shared_preferences_foundation/Sources/shared_preferences_foundation/Resources/PrivacyInfo.xcprivacy"
+    ]
+  },
   "swift_version": "5.0"
 }

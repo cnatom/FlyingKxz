@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +14,7 @@ class _LessonWeekNumPickerState extends State<LessonWeekNumPicker> {
   int lessonNum = 1;
   int duration = 1;
   int step = 0;
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   PageController controller = PageController();
   void _switchStep() {
     if (step == 0) {
@@ -122,7 +122,7 @@ class _LessonWeekNumPickerState extends State<LessonWeekNumPicker> {
     );
   }
 
-  bool check({int lesson, int dur}) {
+  bool check({int? lesson, int? dur}) {
     if (lesson == null) lesson = lessonNum;
     if (dur == null) dur = duration;
     if (lesson + dur - 1 > 10) {

@@ -21,13 +21,13 @@ class CumtLoginResult {
 
 class CumtLogin {
   static Dio dio = Dio(
-    BaseOptions(connectTimeout: 1000, sendTimeout: 1000, receiveTimeout: 1000),
+    BaseOptions(connectTimeout: Duration(seconds: 1), sendTimeout: Duration(seconds: 1), receiveTimeout: Duration(seconds: 1)),
   );
 
   /// 注销
-  static Future<String> logout({@required CumtLoginAccount account}) async {
+  static Future<String> logout({required CumtLoginAccount account}) async {
     try {
-      String url = account.cumtLoginLocation?.logoutUrl;
+      String? url = account.cumtLoginLocation.logoutUrl;
       //配置dio信息
       Response res = await dio.get(url);
       //Json解码为Map
@@ -42,16 +42,16 @@ class CumtLogin {
   }
 
   //自动登录
-  static Future<String> autoLogin({@required CumtLoginAccount account}) async {
+  static Future<String> autoLogin({required CumtLoginAccount account}) async {
     final connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult.contains(ConnectivityResult.wifi)) {
       if (!account.isEmpty) {
         var res = await login(account: account);
         return res;
       }else{
         return "账号为空";
       }
-    } else if (connectivityResult == ConnectivityResult.mobile) {
+    } else if (connectivityResult.contains(ConnectivityResult.mobile)) {
       return CumtLoginResult.MOBILE_ERROR;
     } else {
       return CumtLoginResult.NOT_OPEN_NETWORK;
@@ -90,7 +90,7 @@ class CumtLogin {
   }
 
   /// 登录
-  static Future<String> login({@required CumtLoginAccount account}) async {
+  static Future<String> login({required CumtLoginAccount account}) async {
     try {
       String url = account.cumtLoginLocation.loginUrl(
           account.username, account.password, account.cumtLoginMethod);

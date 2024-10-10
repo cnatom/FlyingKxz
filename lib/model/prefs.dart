@@ -11,9 +11,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Prefs{
 
-  static SharedPreferences prefs;
+  static SharedPreferences? prefs;
   static String _username = 'username';//用户名
   static String _password = 'password4';//密码
+  static String _usernameJw = 'usernameJw';//密码
+  static String _passwordJw = 'passwordJw';//密码
   static String _phone = 'phone';//电话号码
   static String _name = 'name';//姓名
   static String _token = 'NewToken1.2.0';//token信息
@@ -44,67 +46,71 @@ class Prefs{
   static String _courseIcsDate = "courseIcsDate";//订阅日历url
 
 
-  static String get examDataDiy => prefs.getString(_examDataDiy);
-  static String get username => prefs.getString(_username);
-  static String get password => prefs.getString(_password);
-  static String get phone => prefs.getString(_phone);
-  static String get name => prefs.getString(_name);
-  static String get token => prefs.getString(_token);
-  static String get college => prefs.getString(_college);
-  static String get className => prefs.getString(_className);
-  static double get power => prefs.getDouble(_power);
-  static double get powerMax => prefs.getDouble(_powerMax);
-  static String get powerBuilding => prefs.getString(_powerBuilding);
-  static String get powerRoomid => prefs.getString(_powerRoomid);
-  static String get powerRequestDate => prefs.getString(_powerRequestDate);
-  static String get balance => prefs.getString(_balance);
-  static String get balanceHis => prefs.getString(_balanceHis);
-  static String get balanceRequestDate => prefs.getString(_balanceRequestDate);
-  static String get balanceRequestHisDate => prefs.getString(_balanceRequestHisDate);
-  static String get cardNum => prefs.getString(_cardNum);
-  static String get rank => prefs.getString(_rank);
-  static String get courseData => prefs.getString(_courseData);
-  static String get examData => prefs.getString(_examData);
-  static String get schoolYear => prefs.getString(_schoolYear);
-  static String get schoolTerm => prefs.getString(_schoolTerm);
-  static String get admissionDate=> prefs.getString(_admissionDate);
-  static String get themeData => prefs.getString(_themeData);
-  static bool get visitor => prefs.getBool(_visitor);
-  static String get timesMap => prefs.getString(_timesMap);
-  static String get scoreMap => prefs.getString(_scoreMap);
-  static String get courseIcsUrl => prefs.getString(_courseIcsUrl);
-  static String get courseIcsDate => prefs.getString(_courseIcsDate);
+  static String? get examDataDiy => prefs?.getString(_examDataDiy);
+  static String? get username => prefs?.getString(_username);
+  static String? get password => prefs?.getString(_password);
+  static String? get usernameJw => prefs?.getString(_usernameJw);
+  static String? get passwordJw => prefs?.getString(_passwordJw);
+  static String? get phone => prefs?.getString(_phone);
+  static String? get name => prefs?.getString(_name);
+  static String? get token => prefs?.getString(_token);
+  static String? get college => prefs?.getString(_college);
+  static String? get className => prefs?.getString(_className);
+  static double? get power => prefs?.getDouble(_power);
+  static double? get powerMax => prefs?.getDouble(_powerMax);
+  static String? get powerBuilding => prefs?.getString(_powerBuilding);
+  static String? get powerRoomid => prefs?.getString(_powerRoomid);
+  static String? get powerRequestDate => prefs?.getString(_powerRequestDate);
+  static String? get balance => prefs?.getString(_balance);
+  static String? get balanceHis => prefs?.getString(_balanceHis);
+  static String? get balanceRequestDate => prefs?.getString(_balanceRequestDate);
+  static String? get balanceRequestHisDate => prefs?.getString(_balanceRequestHisDate);
+  static String? get cardNum => prefs?.getString(_cardNum);
+  static String? get rank => prefs?.getString(_rank);
+  static String? get courseData => prefs?.getString(_courseData);
+  static String? get examData => prefs?.getString(_examData);
+  static String? get schoolYear => prefs?.getString(_schoolYear);
+  static String? get schoolTerm => prefs?.getString(_schoolTerm);
+  static String? get admissionDate=> prefs?.getString(_admissionDate);
+  static String? get themeData => prefs?.getString(_themeData);
+  static bool? get visitor => prefs?.getBool(_visitor);
+  static String? get timesMap => prefs?.getString(_timesMap);
+  static String? get scoreMap => prefs?.getString(_scoreMap);
+  static String? get courseIcsUrl => prefs?.getString(_courseIcsUrl);
+  static String? get courseIcsDate => prefs?.getString(_courseIcsDate);
 
-  static set examDataDiy(String value) =>prefs.setString(_examDataDiy, value);
-  static set username(String value) =>prefs.setString(_username, value);
-  static set password(String value) =>prefs.setString(_password, value);
-  static set phone(String value) =>prefs.setString(_phone, value);
-  static set name(String value) =>prefs.setString(_name, value);
-  static set token(String value) =>prefs.setString(_token, value);
-  static set college(String value) =>prefs.setString(_college, value);
-  static set className(String value) =>prefs.setString(_className, value);
-  static set power(double value) =>prefs.setDouble(_power, value);
-  static set powerMax(double value) =>prefs.setDouble(_powerMax, value);
-  static set powerRoomid(String value) =>prefs.setString(_powerRoomid, value);
-  static set powerBuilding(String value) =>prefs.setString(_powerBuilding, value);
-  static set powerRequestDate(String value) =>prefs.setString(_powerRequestDate, value);
-  static set balance(String value) =>prefs.setString(_balance, value);
-  static set balanceHis(String value) =>prefs.setString(_balanceHis, value);
-  static set balanceRequestDate(String value) =>prefs.setString(_balanceRequestDate, value);
-  static set balanceRequestHisDate(String value) =>prefs.setString(_balanceRequestHisDate, value);
-  static set cardNum(String value) =>prefs.setString(_cardNum, value);
-  static set rank(String value) =>prefs.setString(_rank, value);
-  static set courseData(String value) =>prefs.setString(_courseData, value);
-  static set examData(String value) =>prefs.setString(_examData, value);
-  static set schoolYear(String value) =>prefs.setString(_schoolYear, value);
-  static set schoolTerm(String value) =>prefs.setString(_schoolTerm, value);
-  static set admissionDate(String value) =>prefs.setString(_admissionDate, value);
-  static set themeData(String value) =>prefs.setString(_themeData, value);
-  static set visitor(bool value) =>prefs.setBool(_visitor, value);
-  static set timesMap(String value) =>prefs.setString(_timesMap, value);
-  static set scoreMap(String value) =>prefs.setString(_scoreMap, value);
-  static set courseIcsUrl(String value) =>prefs.setString(_courseIcsUrl, value);
-  static set courseIcsDate(String value) =>prefs.setString(_courseIcsDate, value);
+  static set examDataDiy(String? value) =>prefs?.setString(_examDataDiy, value!);
+  static set username(String? value) =>prefs?.setString(_username, value!);
+  static set password(String? value) =>prefs?.setString(_password, value!);
+  static set usernameJw(String? value) =>prefs?.setString(_usernameJw, value!);
+  static set passwordJw(String? value) =>prefs?.setString(_passwordJw, value!);
+  static set phone(String? value) =>prefs?.setString(_phone, value!);
+  static set name(String? value) =>prefs?.setString(_name, value!);
+  static set token(String? value) =>prefs?.setString(_token, value!);
+  static set college(String? value) =>prefs?.setString(_college, value!);
+  static set className(String? value) =>prefs?.setString(_className, value!);
+  static set power(double? value) =>prefs?.setDouble(_power, value!);
+  static set powerMax(double? value) =>prefs?.setDouble(_powerMax, value!);
+  static set powerRoomid(String? value) =>prefs?.setString(_powerRoomid, value!);
+  static set powerBuilding(String? value) =>prefs?.setString(_powerBuilding, value!);
+  static set powerRequestDate(String? value) =>prefs?.setString(_powerRequestDate, value!);
+  static set balance(String? value) =>prefs?.setString(_balance, value!);
+  static set balanceHis(String? value) =>prefs?.setString(_balanceHis, value!);
+  static set balanceRequestDate(String? value) =>prefs?.setString(_balanceRequestDate, value!);
+  static set balanceRequestHisDate(String? value) =>prefs?.setString(_balanceRequestHisDate, value!);
+  static set cardNum(String? value) =>prefs?.setString(_cardNum, value!);
+  static set rank(String? value) =>prefs?.setString(_rank, value!);
+  static set courseData(String? value) =>prefs?.setString(_courseData, value!);
+  static set examData(String? value) =>prefs?.setString(_examData, value!);
+  static set schoolYear(String? value) =>prefs?.setString(_schoolYear, value!);
+  static set schoolTerm(String? value) =>prefs?.setString(_schoolTerm, value!);
+  static set admissionDate(String? value) =>prefs?.setString(_admissionDate, value!);
+  static set themeData(String? value) =>prefs?.setString(_themeData, value!);
+  static set visitor(bool? value) =>prefs?.setBool(_visitor, value!);
+  static set timesMap(String? value) =>prefs?.setString(_timesMap, value!);
+  static set scoreMap(String? value) =>prefs?.setString(_scoreMap, value!);
+  static set courseIcsUrl(String? value) =>prefs?.setString(_courseIcsUrl, value!);
+  static set courseIcsDate(String? value) =>prefs?.setString(_courseIcsDate, value!);
 
   static Future<void> init()async{
     prefs = await SharedPreferences.getInstance();
@@ -132,9 +138,9 @@ class Prefs{
 static void _initAdmissionDate(){
     if(Prefs.admissionDate==null){
       if(schoolTerm == '2'){
-        Prefs.admissionDate = (int.parse(schoolYear)+1).toString()+'-03-01';
+        Prefs.admissionDate = (int.parse(schoolYear!)+1).toString()+'-03-01';
       }else{
-        Prefs.admissionDate = schoolYear+'-09-01';
+        Prefs.admissionDate = (schoolYear! + '-09-01')!;
       }
     }
 }

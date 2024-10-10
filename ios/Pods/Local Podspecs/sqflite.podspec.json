@@ -1,8 +1,8 @@
 {
   "name": "sqflite",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "summary": "SQLite plugin.",
-  "description": "Accss SQLite database.",
+  "description": "Access SQLite database.",
   "homepage": "https://github.com/tekartik/sqflite",
   "license": {
     "file": "../LICENSE"
@@ -15,19 +15,31 @@
   },
   "source_files": "Classes/**/*",
   "public_header_files": "Classes/**/*.h",
-  "dependencies": {
-    "Flutter": [
+  "ios": {
+    "dependencies": {
+      "Flutter": [
 
-    ],
-    "FMDB": [
-      ">= 2.7.5"
-    ]
+      ]
+    }
+  },
+  "osx": {
+    "dependencies": {
+      "FlutterMacOS": [
+
+      ]
+    }
   },
   "platforms": {
-    "ios": "9.0"
+    "ios": "12.0",
+    "osx": "10.14"
   },
   "pod_target_xcconfig": {
     "DEFINES_MODULE": "YES",
-    "VALID_ARCHS[sdk=iphonesimulator*]": "x86_64"
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "i386"
+  },
+  "resource_bundles": {
+    "sqflite_darwin_privacy": [
+      "Resources/PrivacyInfo.xcprivacy"
+    ]
   }
 }

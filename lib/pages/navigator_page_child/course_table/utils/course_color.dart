@@ -20,8 +20,8 @@ class CourseColor{
     }
   }
   //CourseColor.fromStr("English")返回English的色彩
-  static Color fromStr(String str){
-    if(str==null) return c[0];
-    return c[str];
+  static Color fromStr(String? str){
+    if(str==null) return c[0]!;
+    return c[str]!;
   }
 }

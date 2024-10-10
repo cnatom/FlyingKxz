@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/book/tabviews/library/model.dart';
 
 class MyLibraryPage extends StatefulWidget {
-  const MyLibraryPage({Key key}) : super(key: key);
+  const MyLibraryPage({Key? key}) : super(key: key);
 
   @override
   State<MyLibraryPage> createState() => _MyLibraryPageState();

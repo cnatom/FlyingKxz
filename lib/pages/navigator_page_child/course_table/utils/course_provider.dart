@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/course_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/bean.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 
 import '../../../../util/util.dart';
@@ -18,14 +17,14 @@ import '../../../../util/util.dart';
  */
 class CourseProvider extends ChangeNotifier{
   // ignore: deprecated_member_use
-  var info = new List<List<CourseData>>(26);
+  var info = List<List<CourseData>>.generate(26, (index) => []);
   // ignore: deprecated_member_use
-  var infoByCourse = new List<CourseData>();
-  var pointArray = new List(26);
-  int curWeek;
-  int initialWeek;
-  DateTime curMondayDate;
-  DateTime admissionDate;
+  var infoByCourse = <CourseData>[];
+  var pointArray = List.generate(26, (index) => []);
+  late int curWeek;
+  late int initialWeek;
+  late DateTime curMondayDate;
+  late DateTime admissionDate;
   DateTime get getCurMondayDate=>curMondayDate??DateTime(2020,9,7);
   List get getPointArray => pointArray;
   CourseProvider(){
@@ -44,7 +43,6 @@ class CourseProvider extends ChangeNotifier{
     }
   }
   handleCourseList(List<dynamic> list) {
-    if(list==null)return;
     _initData();
     initDateTime();
     List loggerInfo = []; // 用于记录日志
@@ -61,7 +59,7 @@ class CourseProvider extends ChangeNotifier{
       infoByCourse.add(courseData);
       for(int week in item['weekList']){
         info[week].add(courseData);
-        pointArray[week][courseData.lessonNum~/2+1][courseData.weekNum]++;
+        pointArray[week][courseData.lessonNum!~/2+1][courseData.weekNum]++;
       }
       loggerInfo.add({
         "title":courseData.title,
@@ -89,9 +87,9 @@ class CourseProvider extends ChangeNotifier{
   /// )
   void add(CourseData newCourseData){
     infoByCourse.add(newCourseData);
-    for(int week in newCourseData.weekList){
+    for(int week in newCourseData.weekList!){
       info[week].add(newCourseData);
-      pointArray[week][newCourseData.lessonNum~/2+1][newCourseData.weekNum]++;
+      pointArray[week][newCourseData.lessonNum!~/2+1][newCourseData.weekNum]++;
     }
     _savePrefs();
     notifyListeners();
@@ -104,11 +102,11 @@ class CourseProvider extends ChangeNotifier{
         infoByCourse.removeAt(i--);
       }
     }
-    for(var week in delCourseData.weekList){
+    for(var week in delCourseData.weekList!){
       for(int i = 0;i<info[week].length;i++){
         if(_equal(info[week][i], delCourseData)){
           info[week].removeAt(i--);
-          pointArray[week][delCourseData.lessonNum~/2+1][delCourseData.weekNum]--;
+          pointArray[week][delCourseData.lessonNum!~/2+1][delCourseData.weekNum]--;
         }
       }
     }
@@ -130,21 +128,19 @@ class CourseProvider extends ChangeNotifier{
     }
     initialWeek = curWeek;
     CoursePageState.coursePageController.dispose();
-    CoursePageState.coursePageController = new PageController(initialPage: curWeek-1,);
+    CoursePageState.coursePageController = new PageController(initialPage: curWeek!-1,);
     notifyListeners();
   }
   bool _equal(CourseData courseData1,CourseData courseData2){
     if(courseData1.title==courseData2.title&&
     courseData1.lessonNum==courseData2.lessonNum&&
     courseData1.weekNum==courseData2.weekNum){
-      debugPrint(courseData1.title+"==="+courseData2.title);
       return true;
     }
     return false;
   }
   //课程列表打包存储到本地
   _savePrefs(){
-    debugPrint("@savePrefs");
     var result = [];
     for(CourseData courseData in infoByCourse){
       result.add(courseData.toJson());
@@ -153,13 +149,13 @@ class CourseProvider extends ChangeNotifier{
   }
   //Prefs列表-> info,pointArray,infoByCourse
   _handlePrefs(){
-    List courseList = jsonDecode(Prefs.courseData);
+    List courseList = jsonDecode(Prefs.courseData??'');
     for(Map courseMap in courseList){
       CourseData courseData = CourseData.fromJson(courseMap);
       infoByCourse.add(courseData);
-      for(int week in courseData.weekList){
+      for(int week in courseData.weekList!){
         info[week].add(courseData);
-        pointArray[week][courseData.lessonNum~/2+1][courseData.weekNum]++;
+        pointArray[week][courseData.lessonNum!~/2+1][courseData.weekNum]++;
       }
     }
   }
@@ -186,8 +182,8 @@ class CourseProvider extends ChangeNotifier{
       }
       Prefs.admissionDate = admissionDateStr;
     }
-    admissionDate = DateTime.parse(Prefs.admissionDate);
-    var difference = DateTime.now().difference(admissionDate);
+    admissionDate = DateTime.parse(Prefs.admissionDate??'');
+    var difference = DateTime.now().difference(admissionDate!);
     curWeek = difference.inDays~/7 + 1;
     if(curWeek<=0||curWeek>22) curWeek = 1;
     initialWeek = curWeek;
@@ -213,7 +209,7 @@ class CourseProvider extends ChangeNotifier{
   //用于周次转换
   //"5周"->[5]    "5-12周(单)"->[5, 7, 9, 11]   "13-18周(双)"->[14, 16, 18]   "11-14周"->[11, 12, 13, 14]
   List<int> _strWeekToList(String week) {
-    List<int> weekList = new List();
+    List<int> weekList = <int>[];
     if (week.contains("单")) {
       week = week.replaceAll("周(单)", "");
       List temp = week.split('-');

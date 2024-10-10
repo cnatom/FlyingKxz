@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/ui/ui.dart';
+import 'package:flying_kxz/ui/webview_inapp.dart';
 import '../../../../util/logger/log.dart';
 
 void toBusImagePage(BuildContext context) {
@@ -14,6 +15,6 @@ void toBusImagePage(BuildContext context) {
 class SchoolCalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FlyWebView(title: "校车时刻",initialUrl: "https://www.cumt.edu.cn/ggfw/list.htm",);
+    return FlyWebViewInApp(title: "校车时刻",initialUrl: "https://www.cumt.edu.cn/ggfw/xcsk.htm",);
   }
 }

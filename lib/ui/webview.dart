@@ -7,22 +7,41 @@ import 'appbar.dart';
 import 'config.dart';
 
 class FlyWebView extends StatefulWidget {
-  final String title;
+  final String? title;
   final String initialUrl;
   final bool check;//是否检测内网连接
-  const FlyWebView({Key key, this.title, this.initialUrl, this.check = false}) : super(key: key);
+  const FlyWebView({Key? key, this.title,required this.initialUrl, this.check = false}) : super(key: key);
   @override
   _FlyWebViewState createState() => _FlyWebViewState();
 }
 
 class _FlyWebViewState extends State<FlyWebView> {
   double progress = 0;
+  late WebViewController _controller;
   @override
   void initState() {
     super.initState();
     if(widget.check){
       check();
     }
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (value){
+            setState(() {
+              progress = value/100.0;
+            });
+          },
+          onPageStarted: (start){
+            start.toString();
+          },
+          onPageFinished: (finish){
+            debugPrint(finish.toString());
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(widget.initialUrl));
   }
   check()async{
     if(!await Cumt.checkConnect()){
@@ -41,21 +60,7 @@ class _FlyWebViewState extends State<FlyWebView> {
             valueColor: new AlwaysStoppedAnimation<Color>(colorMain),
           ),
         ),),
-      body: WebView(
-        initialUrl: widget.initialUrl??"",
-        javascriptMode: JavascriptMode.unrestricted,
-        onProgress: (value){
-          setState(() {
-            progress = value/100.0;
-          });
-        },
-        onPageStarted: (start){
-          start.toString();
-        },
-        onPageFinished: (finish){
-          debugPrint(finish.toString());
-        },
-      ),
+      body: WebViewWidget(controller: _controller),
     );
   }
 }

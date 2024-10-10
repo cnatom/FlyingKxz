@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/cumt/cumt_format.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/model/score_new_map.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -17,8 +17,8 @@ class ScoreSetNewPage extends StatefulWidget {
 }
 
 class _ScoreSetNewPageState extends State<ScoreSetNewPage> {
-  ThemeProvider themeProvider;
-  Map<String,dynamic> data;
+  late ThemeProvider themeProvider;
+  late Map<String,dynamic> data;
 
 
   @override
@@ -99,19 +99,19 @@ class _ScoreSetNewPageState extends State<ScoreSetNewPage> {
 }
 
 class ScoreSetView extends StatefulWidget {
-  final String k;
+  final String? k;
   final Map<String,dynamic> data;
-  ScoreSetView({this.k,this.data,});
+  ScoreSetView({this.k,required this.data,});
   @override
   _ScoreSetViewState createState() => _ScoreSetViewState();
 }
 
 class _ScoreSetViewState extends State<ScoreSetView> {
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   TextEditingController controller0 = new TextEditingController();
   TextEditingController controller1 = new TextEditingController();
   TextEditingController controller2 = new TextEditingController();
-  Map<String,dynamic> data;
+  late Map<String,dynamic> data;
   ok(){
     String zongping = controller1.text;
     String jidian = controller2.text;
@@ -210,7 +210,7 @@ class _ScoreSetViewState extends State<ScoreSetView> {
               Row(
                 mainAxisAlignment: widget.k!=null?MainAxisAlignment.spaceAround:MainAxisAlignment.center,
                 children: [
-                  widget.k!=null?IconButton(icon: Icon(Icons.delete_outline_rounded,color: Colors.red.withOpacity(0.8),size: 30,), onPressed: ()=>delete(widget.k)):Container(),
+                  widget.k!=null?IconButton(icon: Icon(Icons.delete_outline_rounded,color: Colors.red.withOpacity(0.8),size: 30,), onPressed: ()=>delete(widget.k!)):Container(),
                   IconButton(icon: Icon(Icons.check,color: themeProvider.colorMain,size: 30,), onPressed: ()=>widget.k==null?add():ok()),
                 ],
               )
@@ -221,7 +221,7 @@ class _ScoreSetViewState extends State<ScoreSetView> {
     );
   }
   Widget inputBar(BuildContext context,String hintText, TextEditingController controller,
-      {FormFieldSetter<String> onSaved,EdgeInsetsGeometry padding,bool obscureText = false,TextAlign textAlign = TextAlign.center}) =>
+      {FormFieldSetter<String>? onSaved,EdgeInsetsGeometry? padding,bool obscureText = false,TextAlign textAlign = TextAlign.center}) =>
       Container(
         padding: padding,
         decoration: BoxDecoration(

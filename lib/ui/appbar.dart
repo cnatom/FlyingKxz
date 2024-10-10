@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'text.dart';
 
 //白色背景AppBar(子页面AppBar)
-Widget FlyAppBar(BuildContext context, String title,
-        {PreferredSizeWidget bottom,
-        List<Widget> actions,
-        Widget titleWidget}) =>
+AppBar FlyAppBar(BuildContext context, String title,
+        {PreferredSizeWidget? bottom,
+        List<Widget>? actions,
+        Widget? titleWidget}) =>
     AppBar(
       systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
       actions: actions,

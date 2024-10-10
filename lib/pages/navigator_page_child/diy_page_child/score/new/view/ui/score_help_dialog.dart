@@ -3,7 +3,7 @@ import '../../../../../../../ui/text.dart';
 
 
 class ScoreHelpDialog extends StatelessWidget {
-  const ScoreHelpDialog({Key key});
+  const ScoreHelpDialog({Key? key});
 
   @override
   Widget build(BuildContext context) {

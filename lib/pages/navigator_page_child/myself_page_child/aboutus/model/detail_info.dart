@@ -4,7 +4,7 @@ import '../components/received_message_screen.dart';
 import 'link_card.dart';
 
 class DetailInfo{
-  List<Widget> info;
+  late List<Widget> info;
   DetailInfo.mjt(){
     info = [
       ReceivedMessageScreen(message: "👋你好呀～"),

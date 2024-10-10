@@ -6,19 +6,19 @@ import 'package:flutter/cupertino.dart';
 /// errorCode : null
 /// data : {"result":{"19107065 帝制的终结":"未达到允许续借日期"},"fail":1,"success":0}
 class RenewDialogInfo {
-  final String title;
-  List<String> resultList = [];
+  final String? title;
+  List<String>? resultList = [];
 
-  RenewDialogInfo({@required this.title, this.resultList});
+  RenewDialogInfo({required this.title, this.resultList});
 }
 
 class RenewEntity {
   RenewEntity({
-    bool success,
-    String message,
-    int errCode,
-    dynamic errorCode,
-    Data data,
+    bool? success,
+    String? message,
+    int? errCode,
+    dynamic? errorCode,
+    Data? data,
   }) {
     _success = success;
     _message = message;
@@ -35,18 +35,18 @@ class RenewEntity {
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
-  bool _success;
-  String _message;
-  int _errCode;
+  bool? _success;
+  String? _message;
+  int? _errCode;
   dynamic _errorCode;
-  Data _data;
+  Data? _data;
 
   RenewEntity copyWith({
-    bool success,
-    String message,
-    int errCode,
+    bool? success,
+    String? message,
+    int? errCode,
     dynamic errorCode,
-    Data data,
+    Data? data,
   }) =>
       RenewEntity(
         success: success ?? _success,
@@ -56,15 +56,15 @@ class RenewEntity {
         data: data ?? _data,
       );
 
-  bool get success => _success;
+  bool? get success => _success;
 
-  String get message => _message;
+  String? get message => _message;
 
-  int get errCode => _errCode;
+  int? get errCode => _errCode;
 
   dynamic get errorCode => _errorCode;
 
-  Data get data => _data;
+  Data? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -73,7 +73,7 @@ class RenewEntity {
     map['errCode'] = _errCode;
     map['errorCode'] = _errorCode;
     if (_data != null) {
-      map['data'] = _data.toJson();
+      map['data'] = _data?.toJson();
     }
     return map;
   }
@@ -85,9 +85,9 @@ class RenewEntity {
 
 class Data {
   Data({
-    Map<String, dynamic> result,
-    int fail,
-    int success,
+    Map<String, dynamic>? result,
+    int? fail,
+    int? success,
   }) {
     _result = result;
     _fail = fail;
@@ -100,14 +100,14 @@ class Data {
     _success = json['success'];
   }
 
-  Map<String, dynamic> _result;
-  int _fail;
-  int _success;
+  Map<String, dynamic>? _result;
+  int? _fail;
+  int? _success;
 
-  Data copyWith({
-    Map<String, dynamic> result,
-    int fail,
-    int success,
+  Data? copyWith({
+    Map<String, dynamic>? result,
+    int? fail,
+    int? success,
   }) =>
       Data(
         result: result ?? _result,
@@ -115,13 +115,13 @@ class Data {
         success: success ?? _success,
       );
 
-  Map<String, dynamic> get result => _result;
+  Map<String, dynamic>? get result => _result;
 
-  int get fail => _fail;
+  int? get fail => _fail;
 
-  int get success => _success;
+  int? get success => _success;
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic>? toJson() {
     final map = <String, dynamic>{};
     map['result'] = _result;
     map['fail'] = _fail;

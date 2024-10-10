@@ -10,27 +10,27 @@ import 'package:flying_kxz/ui/ui.dart';
 import '../../../../../util/logger/log.dart';
 import 'entity.dart';
 //跳转到当前页面
-void toBookDetailPage(BuildContext context,String url,String bookName) {
+void toBookDetailPage(BuildContext context,String? url,String? bookName) {
   Navigator.push(
       context, CupertinoPageRoute(builder: (context) => BookDetailPage(url: url,bookName: bookName,)));
   Logger.log('Book', '查看图书详情',{"bookName":bookName});
 
 }
 class BookDetailPage extends StatefulWidget {
-  final String url;
-  final String bookName;
-  BookDetailPage({@required this.url,@required this.bookName});
+  final String? url;
+  final String? bookName;
+  BookDetailPage({required this.url,required this.bookName});
   @override
   _BookDetailPageState createState() => _BookDetailPageState();
 }
 
 class _BookDetailPageState extends State<BookDetailPage>{
   bool loading = true;
-  void getBookDetail({@required String url})async{
+  void getBookDetail({required String? url})async{
     Response res;
     Dio dio = Dio();
     //配置dio信息
-    res = await dio.get(url,);
+    res = await dio.get(url!,);
     //Json解码为Map
     Map<String,dynamic> map = jsonDecode(res.toString());
     if (map['status']==200) {
@@ -43,7 +43,7 @@ class _BookDetailPageState extends State<BookDetailPage>{
 
     });
   }
-  Widget rowContentDetail(String bookCode,String location,String current){
+  Widget rowContentDetail(String? bookCode,String? location,String? current){
     return Container(
       padding: EdgeInsets.fromLTRB(0, spaceCardPaddingTB/1.5, 0, spaceCardPaddingTB/1.5),
       color:Colors.grey.withAlpha(5),
@@ -77,7 +77,7 @@ class _BookDetailPageState extends State<BookDetailPage>{
   //内容
   Widget infoListWidget(){
     return Column(
-      children: Global.bookDetailInfo.data.map((item){
+      children: Global.bookDetailInfo.data!.map((item){
         return rowContentDetail(item.bookcode, item.location, item.current);
       }).toList(),
     );
@@ -92,7 +92,7 @@ class _BookDetailPageState extends State<BookDetailPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FlyAppBar(context, widget.bookName),
+      appBar: FlyAppBar(context, widget.bookName??''),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(

@@ -9,10 +9,10 @@ import 'custom_shape.dart';
 
 class ReceivedMessageScreen extends StatelessWidget {
   final String message;
-  AboutLinkModel linkModel;
+  AboutLinkModel? linkModel;
   ReceivedMessageScreen({
-    Key key,
-    @required this.message,
+    Key? key,
+    required this.message,
     this.linkModel
   }) : super(key: key);
 
@@ -48,7 +48,7 @@ class ReceivedMessageScreen extends StatelessWidget {
                     linkModel!=null?Column(
                       children: [
                         SizedBox(height: spaceCardPaddingTB,),
-                        _linkView(context,linkModel),
+                        _linkView(context,linkModel!),
                       ],
                     ):Container()
                   ],

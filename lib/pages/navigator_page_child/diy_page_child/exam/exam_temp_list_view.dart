@@ -4,8 +4,8 @@ import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
 class ExamTempListView extends StatefulWidget {
-  List<Map<String, dynamic>> list;
-  ExamTempListView({this.list});
+  List<Map<String, dynamic>>? list;
+  ExamTempListView({required this.list});
   @override
   _ExamTempListViewState createState() => _ExamTempListViewState();
 }
@@ -13,12 +13,12 @@ class ExamTempListView extends StatefulWidget {
 class _ExamTempListViewState extends State<ExamTempListView> {
   List<Map<String, dynamic>> pre = [];
   List<Map<String, dynamic>> cur = [];
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   @override
   void initState() {
     super.initState();
-    pre.addAll(widget.list);
-    cur.addAll(widget.list);
+    pre.addAll(widget.list as Iterable<Map<String, dynamic>>);
+    cur.addAll(widget.list as Iterable<Map<String, dynamic>>);
   } //结束时间
   _clear(){
     setState(() {

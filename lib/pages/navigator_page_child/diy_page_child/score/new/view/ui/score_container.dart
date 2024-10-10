@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import '../../../../../../../ui/ui.dart';
 
 class ScoreContainer extends StatelessWidget {
-  const ScoreContainer({Key key,this.child,this.padding,this.color});
+  const ScoreContainer({Key? key,required this.child,this.padding,this.color});
 
   final Widget child;
-  final EdgeInsetsGeometry padding;
-  final Color color;
+  final EdgeInsetsGeometry? padding;
+  final Color? color;
 
 
   @override

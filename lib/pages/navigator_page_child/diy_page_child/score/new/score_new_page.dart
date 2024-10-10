@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/import_score_new_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/utils/score_sort.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/import_button.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/ui/score_card/score_card.dart';
 import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/view/score_filter_console.dart';
@@ -24,15 +23,15 @@ void toScoreNewPage(BuildContext context) {
 }
 
 class ScoreNewPage extends StatefulWidget {
-  const ScoreNewPage({Key key});
+  const ScoreNewPage({Key? key});
 
   @override
   State<ScoreNewPage> createState() => _ScoreNewPageState();
 }
 
 class _ScoreNewPageState extends State<ScoreNewPage> {
-  ThemeProvider themeProvider;
-  ScoreProvider scoreProvider;
+  late ThemeProvider themeProvider;
+  late ScoreProvider scoreProvider;
 
   @override
   void initState() {
@@ -51,26 +50,26 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
   // 存储导入时间
   _saveImportTime(){
     ScorePrefs.scoreImportTime = DateTime.now().toString().substring(0, 16);
-    scoreProvider.importTime = ScorePrefs.scoreImportTime;
+    scoreProvider.importTime = ScorePrefs.scoreImportTime!;
   }
 
   // 从本地初始化数据
   _initScoreFromLocal(){
     // 初始化成绩数据
-    String scoreList = ScorePrefs.scoreList;
+    String? scoreList = ScorePrefs.scoreList;
     if(scoreList == null) return;
     List<dynamic> list = jsonDecode(scoreList);
     list = list.map((e) => e as Map<String,dynamic>).toList();
-    scoreProvider.setAndCalScoreList(list);
+    scoreProvider.setAndCalScoreList(list as List<Map<String, dynamic>>);
     // 初始化导入时间
     if(ScorePrefs.scoreImportTime != null){
-      scoreProvider.importTime = ScorePrefs.scoreImportTime;
+      scoreProvider.importTime = ScorePrefs.scoreImportTime!;
     }
   }
 
   // 导入成绩
   _import() async {
-    List<Map<String, dynamic>> result = await Navigator.push(context,
+    List<Map<String, dynamic>>? result = await Navigator.push(context,
         CupertinoPageRoute(builder: (context) => ImportScoreNewPage()));
     if (result == null || result.isEmpty) return;
     scoreProvider.setAndCalScoreList(result);
@@ -145,7 +144,7 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
         ? Container()
         : Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 0, spaceCardMarginTB),
-            child: FlyText.miniTip30("导入时间：" + scoreProvider.importTime),
+            child: FlyText.miniTip30("导入时间：" + scoreProvider.importTime!),
           );
   }
 
@@ -190,7 +189,7 @@ class _ScoreNewPageState extends State<ScoreNewPage> {
     ),
   );
 
-  Widget buildAppBar(BuildContext context) {
+  AppBar buildAppBar(BuildContext context) {
     return FlyAppBar(context, '成绩（需内网或VPN）');
   }
 

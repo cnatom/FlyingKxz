@@ -12,26 +12,41 @@
     "Flutter Community Team": "authors@fluttercommunity.dev"
   },
   "source": {
-    "http": "https://github.com/fluttercommunity/plus_plugins"
+    "http": "https://github.com/fluttercommunity/plus_plugins/tree/main/packages/connectivity_plus"
   },
   "documentation_url": "https://pub.dev/packages/connectivity_plus",
-  "source_files": "Classes/**/*",
-  "public_header_files": "Classes/**/*.h",
-  "dependencies": {
-    "Flutter": [
+  "source_files": [
+    "Classes/**/*"
+  ],
+  "public_header_files": [
+    "Classes/**/*.h"
+  ],
+  "ios": {
+    "dependencies": {
+      "Flutter": [
 
-    ],
-    "ReachabilitySwift": [
+      ]
+    },
+    "resource_bundles": {
+      "connectivity_plus_privacy": [
+        "PrivacyInfo.xcprivacy"
+      ]
+    }
+  },
+  "osx": {
+    "dependencies": {
+      "FlutterMacOS": [
 
-    ]
+      ]
+    }
   },
   "platforms": {
-    "ios": "9.0"
+    "ios": "12.0",
+    "osx": "10.14"
   },
   "swift_versions": "5.0",
   "pod_target_xcconfig": {
-    "DEFINES_MODULE": "YES",
-    "VALID_ARCHS[sdk=iphonesimulator*]": "x86_64"
+    "DEFINES_MODULE": "YES"
   },
   "swift_version": "5.0"
 }

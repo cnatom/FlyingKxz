@@ -45,12 +45,12 @@ class _PrivacyState extends State<Privacy> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             FlyTextButton('暂不使用',color: Colors.black.withOpacity(0.5),onTap: (){
-              Prefs.prefs.setBool('privacy', false);
+              Prefs.prefs?.setBool('privacy', false);
               Navigator.of(context).pop(false);
             },),
             Container(),
             FlyTextButton('同意',onTap: (){
-              Prefs.prefs.setBool('privacy', true);
+              Prefs.prefs?.setBool('privacy', true);
               Navigator.of(context).pop(true);
             },)
 

@@ -4,14 +4,14 @@ import '../../../../../../../ui/ui.dart';
 
 class ScoreImportButton extends StatelessWidget {
   ScoreImportButton({
-    Key key,
-    @required this.context,
-    @required this.onTap,
+    Key? key,
+    required this.context,
+    required this.onTap,
   }) : super(key: key);
 
   final BuildContext context;
   final GestureTapCallback onTap;
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class ScoreImportButton extends StatelessWidget {
     );
   }
 
-  Widget buildContainer({Widget child}) {
+  Widget buildContainer({required Widget child}) {
     return Container(
       margin: EdgeInsets.fromLTRB(spaceCardMarginRL*3, spaceCardMarginTB, spaceCardMarginRL*3, MediaQuery.of(context).padding.bottom),
       padding: EdgeInsets.symmetric(vertical: spaceCardPaddingTB*1.5),

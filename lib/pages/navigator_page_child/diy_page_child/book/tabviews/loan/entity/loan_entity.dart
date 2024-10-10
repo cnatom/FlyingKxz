@@ -6,11 +6,11 @@
 
 class LoanEntity {
   LoanEntity({
-    bool success,
-    String message,
-    int errCode,
+    bool? success,
+    String? message,
+    int? errCode,
     dynamic errorCode,
-    Data data,}){
+    Data? data,}){
     _success = success;
     _message = message;
     _errCode = errCode;
@@ -25,27 +25,27 @@ class LoanEntity {
     _errorCode = json['errorCode'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
-  bool _success;
-  String _message;
-  int _errCode;
+  bool? _success;
+  String? _message;
+  int? _errCode;
   dynamic _errorCode;
-  Data _data;
-  LoanEntity copyWith({  bool success,
-    String message,
-    int errCode,
+  Data? _data;
+  LoanEntity copyWith({  bool? success,
+    String? message,
+    int? errCode,
     dynamic errorCode,
-    Data data,
+    Data? data,
   }) => LoanEntity(  success: success ?? _success,
     message: message ?? _message,
     errCode: errCode ?? _errCode,
     errorCode: errorCode ?? _errorCode,
     data: data ?? _data,
   );
-  bool get success => _success;
-  String get message => _message;
-  int get errCode => _errCode;
+  bool? get success => _success;
+  String? get message => _message;
+  int? get errCode => _errCode;
   dynamic get errorCode => _errorCode;
-  Data get data => _data;
+  Data? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -54,7 +54,7 @@ class LoanEntity {
     map['errCode'] = _errCode;
     map['errorCode'] = _errorCode;
     if (_data != null) {
-      map['data'] = _data.toJson();
+      map['data'] = _data?.toJson();
     }
     return map;
   }
@@ -66,8 +66,8 @@ class LoanEntity {
 
 class Data {
   Data({
-    List<SearchResult> searchResult,
-    int numFound,}){
+    List<SearchResult>? searchResult,
+    int? numFound,}){
     _searchResult = searchResult;
     _numFound = numFound;
   }
@@ -76,25 +76,25 @@ class Data {
     if (json['searchResult'] != null) {
       _searchResult = [];
       json['searchResult'].forEach((v) {
-        _searchResult.add(SearchResult.fromJson(v));
+        _searchResult?.add(SearchResult.fromJson(v));
       });
     }
     _numFound = json['numFound'];
   }
-  List<SearchResult> _searchResult;
-  int _numFound;
-  Data copyWith({  List<SearchResult> searchResult,
-    int numFound,
+  List<SearchResult>? _searchResult;
+  int? _numFound;
+  Data? copyWith({  List<SearchResult>? searchResult,
+    int? numFound,
   }) => Data(  searchResult: searchResult ?? _searchResult,
     numFound: numFound ?? _numFound,
   );
-  List<SearchResult> get searchResult => _searchResult;
-  int get numFound => _numFound;
+  List<SearchResult?>? get searchResult => _searchResult;
+  int? get numFound => _numFound;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (_searchResult != null) {
-      map['searchResult'] = _searchResult.map((v) => v.toJson()).toList();
+      map['searchResult'] = _searchResult?.map((v) => v.toJson()).toList();
     }
     map['numFound'] = _numFound;
     return map;
@@ -125,26 +125,26 @@ class Data {
 
 class SearchResult {
   SearchResult({
-    int recordId,
-    int loanId,
-    String title,
-    String author,
-    String publisher,
-    String isbn,
-    String publishYear,
-    String loanDate,
-    String normReturnDate,
-    String returnDate,
-    String locationName,
-    String phyLibName,
+    int? recordId,
+    int? loanId,
+    String? title,
+    String? author,
+    String? publisher,
+    String? isbn,
+    String? publishYear,
+    String? loanDate,
+    String? normReturnDate,
+    String? returnDate,
+    String? locationName,
+    String? phyLibName,
     dynamic loanType,
     dynamic docAbstract,
-    String barcode,
-    String docCode,
+    String? barcode,
+    String? docCode,
     dynamic campusId,
     dynamic campusName,
-    String curLibName,
-    String curLocationName,}){
+    String? curLibName,
+    String? curLocationName,}){
     _recordId = recordId;
     _loanId = loanId;
     _title = title;
@@ -189,46 +189,46 @@ class SearchResult {
     _curLibName = json['curLibName'];
     _curLocationName = json['curLocationName'];
   }
-  int _recordId;
-  int _loanId;
-  String _title;
-  String _author;
-  String _publisher;
-  String _isbn;
-  String _publishYear;
-  String _loanDate;
-  String _normReturnDate;
-  String _returnDate;
-  String _locationName;
-  String _phyLibName;
+  int? _recordId;
+  int? _loanId;
+  String? _title;
+  String? _author;
+  String? _publisher;
+  String? _isbn;
+  String? _publishYear;
+  String? _loanDate;
+  String? _normReturnDate;
+  String? _returnDate;
+  String? _locationName;
+  String? _phyLibName;
   dynamic _loanType;
   dynamic _docAbstract;
-  String _barcode;
-  String _docCode;
+  String? _barcode;
+  String? _docCode;
   dynamic _campusId;
   dynamic _campusName;
-  String _curLibName;
-  String _curLocationName;
-  SearchResult copyWith({  int recordId,
-    int loanId,
-    String title,
-    String author,
-    String publisher,
-    String isbn,
-    String publishYear,
-    String loanDate,
-    String normReturnDate,
-    String returnDate,
-    String locationName,
-    String phyLibName,
+  String? _curLibName;
+  String? _curLocationName;
+  SearchResult copyWith({  int? recordId,
+    int? loanId,
+    String? title,
+    String? author,
+    String? publisher,
+    String? isbn,
+    String? publishYear,
+    String? loanDate,
+    String? normReturnDate,
+    String? returnDate,
+    String? locationName,
+    String? phyLibName,
     dynamic loanType,
     dynamic docAbstract,
-    String barcode,
-    String docCode,
+    String? barcode,
+    String? docCode,
     dynamic campusId,
     dynamic campusName,
-    String curLibName,
-    String curLocationName,
+    String? curLibName,
+    String? curLocationName,
   }) => SearchResult(  recordId: recordId ?? _recordId,
     loanId: loanId ?? _loanId,
     title: title ?? _title,
@@ -250,26 +250,26 @@ class SearchResult {
     curLibName: curLibName ?? _curLibName,
     curLocationName: curLocationName ?? _curLocationName,
   );
-  int get recordId => _recordId;
-  int get loanId => _loanId;
-  String get title => _title;
-  String get author => _author;
-  String get publisher => _publisher;
-  String get isbn => _isbn;
-  String get publishYear => _publishYear;
-  String get loanDate => _loanDate;
-  String get normReturnDate => _normReturnDate;
-  String get returnDate => _returnDate;
-  String get locationName => _locationName;
-  String get phyLibName => _phyLibName;
+  int? get recordId => _recordId;
+  int? get loanId => _loanId;
+  String? get title => _title;
+  String? get author => _author;
+  String? get publisher => _publisher;
+  String? get isbn => _isbn;
+  String? get publishYear => _publishYear;
+  String? get loanDate => _loanDate;
+  String? get normReturnDate => _normReturnDate;
+  String? get returnDate => _returnDate;
+  String? get locationName => _locationName;
+  String? get phyLibName => _phyLibName;
   dynamic get loanType => _loanType;
   dynamic get docAbstract => _docAbstract;
-  String get barcode => _barcode;
-  String get docCode => _docCode;
+  String? get barcode => _barcode;
+  String? get docCode => _docCode;
   dynamic get campusId => _campusId;
   dynamic get campusName => _campusName;
-  String get curLibName => _curLibName;
-  String get curLocationName => _curLocationName;
+  String? get curLibName => _curLibName;
+  String? get curLocationName => _curLocationName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

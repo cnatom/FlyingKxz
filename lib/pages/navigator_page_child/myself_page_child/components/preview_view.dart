@@ -7,11 +7,11 @@ import '../../../../ui/text.dart';
 import '../../../../ui/container.dart';
 
 class PreviewView extends StatelessWidget {
-  GestureTapCallback onTap;
+  GestureTapCallback? onTap;
   IconData iconData;
   String title;
   String subText;
-  PreviewView(this.title,this.subText,this.iconData,{Key key,this.onTap}) : super(key: key);
+  PreviewView(this.title,this.subText,this.iconData,{Key? key,this.onTap}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);

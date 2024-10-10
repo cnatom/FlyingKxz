@@ -4,11 +4,11 @@ import 'package:flying_kxz/Model/prefs.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 class BackCurWeekButton extends StatefulWidget {
-  final GestureTapCallback onTap;
-  final bool show;
+  final GestureTapCallback? onTap;
+  final bool? show;
   const BackCurWeekButton({
-    Key key,
-    @required this.themeProvider, this.onTap, this.show,
+    Key? key,
+    required this.themeProvider, this.onTap, this.show,
   }) : super(key: key);
 
   final ThemeProvider themeProvider;
@@ -18,14 +18,14 @@ class BackCurWeekButton extends StatefulWidget {
 }
 
 class _BackCurWeekButtonState extends State<BackCurWeekButton> {
-  double _dy;
+  double? _dy;
   String prefsStr = "BackToCurWeek";
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   _initHisLoc(){
-    _dy = Prefs.prefs.getDouble(prefsStr);
+    _dy = Prefs.prefs?.getDouble(prefsStr);
     if(_dy==null){
-      _dy = ScreenUtil.bottomBarHeight+ScreenUtil().setHeight(deviceHeight/2);
-      Prefs.prefs.setDouble(prefsStr, _dy);
+      _dy = ScreenUtil().bottomBarHeight+ScreenUtil().setHeight(deviceHeight/2);
+      Prefs.prefs?.setDouble(prefsStr, _dy!);
     }
   }
   @override
@@ -39,12 +39,12 @@ class _BackCurWeekButtonState extends State<BackCurWeekButton> {
     themeProvider = Provider.of<ThemeProvider>(context);
     return TweenAnimationBuilder(
       duration: Duration(seconds: 1),
-      tween: Tween(end: widget.show?0.0:1.0),
+      tween: Tween(end: (widget.show==false || widget.show == null)?1.0:0.0),
       curve: Curves.easeOutQuint,
-      builder: (BuildContext context, Object value, Widget child) {
+      builder: (BuildContext context, double value, Widget? child) {
         return Positioned(
           right: double.parse(value.toString())*(-50.0),
-          top: _dy-ScreenUtil.statusBarHeight-kToolbarHeight,
+          top: _dy!-ScreenUtil().statusBarHeight-kToolbarHeight,
           child: Opacity(
             opacity: 1.0-value,
             child: Draggable(
@@ -53,20 +53,22 @@ class _BackCurWeekButtonState extends State<BackCurWeekButton> {
                 child: _buildBackButton(context),
                 childWhenDragging: Container(),
                 onDraggableCanceled: (Velocity velocity, Offset offset) {
-                  if(_dy > offset.dy-10 && _dy < offset.dy+10){
-                    widget.onTap();
+                  if(_dy! > offset.dy-10 && _dy! < offset.dy+10){
+                    if(widget.onTap!=null){
+                      widget.onTap!();
+                    }
                     return;
                   }
                   setState(() {
                     _dy = offset.dy;
-                    if(_dy<120){
+                    if(_dy!<120){
                       _dy = 120;
-                    }else if(_dy>MediaQuery.of(context).size.height-100){
+                    }else if(_dy!>MediaQuery.of(context).size.height-100){
                       _dy = MediaQuery.of(context).size.height-100;
                     }
 
                   });
-                  Prefs.prefs.setDouble(prefsStr, _dy);
+                  Prefs.prefs?.setDouble(prefsStr, _dy!);
 
                 }
             ),

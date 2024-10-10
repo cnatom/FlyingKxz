@@ -8,14 +8,14 @@ import 'package:provider/provider.dart';
 class PointArray extends StatefulWidget {
   final Color colorFirst;
   final Color colorSecond;
-  PointArray({Key key, this.colorFirst, this.colorSecond}):super(key: key);
+  PointArray({Key? key, required this.colorFirst, required this.colorSecond}):super(key: key);
   @override
   _PointArrayState createState() => _PointArrayState();
 }
 
 class _PointArrayState extends State<PointArray> {
-  double widgetWidth;//容器边长
-  CourseProvider courseProvider;
+  late double widgetWidth;//容器边长
+  late CourseProvider courseProvider;
   @override
   Widget build(BuildContext context) {
     this.widgetWidth = MediaQuery.of(context).size.height/50;

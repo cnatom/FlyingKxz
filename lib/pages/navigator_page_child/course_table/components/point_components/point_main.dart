@@ -6,24 +6,24 @@ import 'package:flying_kxz/ui/ui.dart';
 import 'package:provider/provider.dart';
 
 class PointMain extends StatefulWidget {
-  PointMain({Key key}):super(key:key);
+  PointMain({Key? key}):super(key:key);
   @override
   PointMainState createState() => PointMainState();
 }
 
 class PointMainState extends State<PointMain> {
-  ThemeProvider themeProvider;
-  CourseProvider courseProvider;
+  late ThemeProvider themeProvider;
+  late CourseProvider courseProvider;
   bool showRight = false;
   GlobalKey<PointMatrixState> pointAreaKey = new GlobalKey<PointMatrixState>();
   show(){
     showRight = !showRight;
     setState(() {
     });
-    pointAreaKey.currentState.changeWeekOffset(courseProvider.curWeek);
+    pointAreaKey.currentState?.changeWeekOffset(courseProvider.curWeek);
   }
   initScroll(){
-    pointAreaKey.currentState.changeWeekOffset(courseProvider.initialWeek);
+    pointAreaKey.currentState?.changeWeekOffset(courseProvider.initialWeek);
   }
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/Picker.dart';
+import 'package:flutter_picker_plus/picker.dart';
 
 import 'text.dart';
-void showPicker(BuildContext context,GlobalKey scaffoldKey,{String title,@required List pickerDatas,@required Color colorRight,@required PickerConfirmCallback onConfirm,bool isArray = true}) {
+void showPicker(BuildContext context,GlobalKey<ScaffoldState> scaffoldKey,{String? title,required List pickerDatas,required Color colorRight,required PickerConfirmCallback onConfirm,bool isArray = true}) {
   var picker = new Picker(
       textStyle: TextStyle(fontSize: fontSizeMain40,color: Theme.of(context).primaryColor),
       backgroundColor: Theme.of(context).cardColor,
@@ -14,5 +13,5 @@ void showPicker(BuildContext context,GlobalKey scaffoldKey,{String title,@requir
       cancelText: '取消',
       cancelTextStyle: TextStyle(fontSize: fontSizeMain40,color: Colors.grey),
       onConfirm: onConfirm);
-  picker.show(scaffoldKey.currentState);
+  picker.show(scaffoldKey.currentState!);
 }

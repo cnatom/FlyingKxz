@@ -9,7 +9,7 @@ import 'navigator_page.dart';
 
 //跳转到当前页面
 void toTipPage() {
-  FlyNavigatorPageState.navigatorKey.currentState.push(CupertinoPageRoute(builder: (BuildContext context)=>TipPage()));
+  FlyNavigatorPageState.navigatorKey.currentState?.push(CupertinoPageRoute(builder: (BuildContext context)=>TipPage()));
 }
 class TipPage extends StatefulWidget {
   @override

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'text.dart';
 void initConfigInfo(){
   colorMain = Color(0xff00c5a8);
-  colorSecond = Color(0xFF33CC99).withAlpha(255);
   colorMainText = Color.fromARGB(255, 0, 0, 0);
   colorMainTextWhite = Colors.white;
   colorIconBackground = Color.fromARGB(255, 244,245,249);
@@ -47,23 +46,22 @@ void initConfigInfo(){
       color: Colors.black12.withAlpha(10)
   );
 }
-double deviceWidth;
-double deviceHeight;
+late double deviceWidth;
+late double deviceHeight;
 
 //色彩管理
-Color colorMain;
-Color colorSecond;
-Color colorMainText;
-Color colorMainTextWhite;
-Color colorIconBackground;
-Color colorShadow;
-Color scaffoldBackgroundColor;
-Color colorPageBackground;
-Color colorLoginPageMain;
+late Color colorMain;
+late Color colorMainText;
+late Color colorMainTextWhite;
+late Color colorIconBackground;
+late Color colorShadow;
+late Color scaffoldBackgroundColor;
+late Color colorPageBackground;
+late Color colorLoginPageMain;
 
-List<Color> colorLessonCard;
-List<Color> colorFuncButton;
-List<Color> colorExamCard;
+late List<Color> colorLessonCard;
+late List<Color> colorFuncButton;
+late List<Color> colorExamCard;
 
 
 
@@ -75,8 +73,8 @@ Icon FlyIconRightGreyArrow({Color color = Colors.white})=> Icon(
 
 
 //容器圆角值
-double borderRadiusValue;
+late double borderRadiusValue;
 
 //阴影
-BoxShadow boxShadowMain;
+late BoxShadow boxShadowMain;
 

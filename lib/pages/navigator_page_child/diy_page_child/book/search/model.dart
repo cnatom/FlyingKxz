@@ -6,12 +6,12 @@ import 'package:flying_kxz/util/util.dart';
 import 'entity.dart';
 
 class BookSearchModel {
-  BookSearchEntity entity;
+  BookSearchEntity? entity;
 
-  Future<BookSearchEntity> bookGet(
-      {@required String book,
-      @required String page,
-      @required String row}) async {
+  Future<BookSearchEntity?> bookGet(
+      {required String book,
+      required String page,
+      required String row}) async {
     try {
       //配置dio信息
       var res = await Network.get(
@@ -19,8 +19,8 @@ class BookSearchModel {
         params: {"book": book, "page": page, "row": row},
       );
       //Json解码为Map
-      entity = BookSearchEntity.fromJson(res.data as Map<String, dynamic>);
-      Logger.log("Book", "查询", {"book":book,"page":page,"result":res.data as Map<String, dynamic>});
+      entity = BookSearchEntity.fromJson(res?.data as Map<String, dynamic>);
+      Logger.log("Book", "查询", {"book":book,"page":page,"result":res?.data as Map<String, dynamic>});
       return entity;
     } catch (e) {
       print(e.toString());

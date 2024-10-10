@@ -1,20 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flying_kxz/util/logger/log.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/ui/ui.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class InvitePage extends StatefulWidget {
-  @override
-  _InvitePageState createState() => _InvitePageState();
-}
-
-class _InvitePageState extends State<InvitePage> {
+class InvitePage extends StatelessWidget {
   Widget button(String title,
-      {GestureTapCallback onTap, String imageAsset, Color color,IconData iconData}) {
+      {GestureTapCallback? onTap, String? imageAsset, Color? color,IconData? iconData}) {
     Widget leadingIcon = Icon(Icons.ac_unit, color: Colors.white);
     if(imageAsset!=null){
       leadingIcon = Image.asset(
@@ -73,7 +67,7 @@ class _InvitePageState extends State<InvitePage> {
                       width: ScreenUtil().setSp(35),
                     ),
                     Text(
-                      "分享App",
+                      "联系我们",
                       style: TextStyle(
                         fontSize: fontSizeTitle45,
                         fontWeight: FontWeight.bold,
@@ -81,7 +75,7 @@ class _InvitePageState extends State<InvitePage> {
                     ),
                   ],
                 ),
-                FlyText.miniTip30("点击分享"),
+                FlyText.miniTip30("点击卡片复制"),
               ],
             ),
             Container(), Container(),
@@ -92,15 +86,21 @@ class _InvitePageState extends State<InvitePage> {
               Logger.log("Invite", "分享", {"type": "官网"});
             }),
             //分享群号
-            button("QQ群号",color: Colors.blue,iconData: MdiIcons.qqchat,onTap: (){
-              Clipboard.setData(ClipboardData(text: "957634136"));
-              showToast("已复制到粘贴板，快分享给好友吧~");
-              Logger.log("Invite", "分享", {"type": "QQ群"});
-            }),
+            buildQQCard(title: "QQ交流群-1群", qqNumber: '839372371'),
+            buildQQCard(title: "QQ交流群-2群", qqNumber: '957634136'),
+            buildQQCard(title: "QQ交流群-3群", qqNumber: '238908591'),
             Container()
           ],
         ),
       ],
     );
+  }
+
+  Widget buildQQCard({required String title, required String qqNumber}) {
+    return button(title,color: Colors.blue,iconData: MdiIcons.qqchat,onTap: (){
+      Clipboard.setData(ClipboardData(text: qqNumber));
+      showToast("已复制到粘贴板，快分享给好友吧~");
+      Logger.log("Invite", "分享", {"type": "QQ群"});
+    });
   }
 }

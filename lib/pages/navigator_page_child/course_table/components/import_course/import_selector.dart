@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_course/course_date_picker.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:flying_kxz/ui/text.dart';
+import 'package:flying_kxz/ui/theme.dart';
+import 'package:provider/provider.dart';
 import '../../../../../ui/config.dart';
 import '../../../../../ui/sheet.dart';
 import '../../../../../ui/toast.dart';
@@ -13,30 +15,29 @@ import 'import_page.dart';
 
 class ImportSelector extends StatefulWidget {
   final CourseProvider courseProvider;
-  ImportSelector({Key key,@required this.courseProvider}) : super(key: key);
+  ImportSelector({Key? key,required this.courseProvider}) : super(key: key);
 
   @override
   State<ImportSelector> createState() => _ImportSelectorState();
 }
 
 class _ImportSelectorState extends State<ImportSelector> {
+  late ThemeProvider themeProvider;
+  late CourseProvider courseProvider;
 
-  CourseProvider courseProvider;
-
-  void importCourse({@required ImportCourseType type})async{
+  void importCourse({required ImportCourseType type})async{
     bool ok = false;
-    List<dynamic> list = await Navigator.of(context)
+    List<dynamic>? list = await Navigator.of(context)
         .push(CupertinoPageRoute(builder: (context) => ImportPage(importType: type,)));
-    ok = list!=null?true:false;
-    courseProvider.handleCourseList(list);
+    ok = list!=null&&list.isNotEmpty?true:false;
     if(ok){
-      showToast("🎉成功导入！");
+      courseProvider.handleCourseList(list);
     }
     Navigator.of(context).pop(["import",type,ok]);
   }
 
   void addCourse() async {
-    List<CourseData> newCourseDataList;
+    List<CourseData>? newCourseDataList;
     newCourseDataList = await showFlyModalBottomSheet(
       context: context,
       isScrollControlled: false,
@@ -73,11 +74,12 @@ class _ImportSelectorState extends State<ImportSelector> {
 
   @override
   Widget build(BuildContext context) {
+    themeProvider = Provider.of<ThemeProvider>(context);
     courseProvider = widget.courseProvider;
     return Wrap(
       runSpacing: spaceCardMarginTB,
       children: [
-        FlyTitle("调整课表"),
+        FlyTitle("调整课表",verticalBarColor: themeProvider.colorMain,),
 
         Divider(height: 5,color: Colors.transparent,),
         button("导入本科课表",iconData: Icons.cloud_download_outlined,onTap: ()=>importCourse(type: ImportCourseType.BK)),
@@ -93,27 +95,24 @@ class _ImportSelectorState extends State<ImportSelector> {
   }
 
   Widget button(String title,
-      {GestureTapCallback onTap, Color color,IconData iconData,bool solid = true}) {
-    if(color == null){
-      color = colorMain;
-    }
+      {GestureTapCallback? onTap,IconData? iconData,bool solid = true}) {
     return InkWell(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-          border: solid?null:Border.all(color: color,width: 1.5),
+          border: solid?null:Border.all(color: themeProvider.colorMain,width: 1.5),
             borderRadius: BorderRadius.circular(borderRadiusValue),
-            color: solid?color:Colors.transparent),
+            color: solid?themeProvider.colorMain:Colors.transparent),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(iconData, color: solid?Colors.white:color),
+            Icon(iconData, color: solid?Colors.white:themeProvider.colorMain),
             SizedBox(
               width: 5,
             ),
-            FlyText.main40(title, color: solid?Colors.white:color,fontWeight: solid?FontWeight.bold:null,),
+            FlyText.main40(title, color: solid?Colors.white:themeProvider.colorMain,fontWeight: solid?FontWeight.bold:null,),
           ],
         ),
       ),

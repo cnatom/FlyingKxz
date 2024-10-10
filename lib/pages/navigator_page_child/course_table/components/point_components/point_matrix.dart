@@ -10,21 +10,20 @@ import '../../course_page.dart';
 import '../../utils/course_provider.dart';
 
 class PointMatrix extends StatefulWidget {
-  final BuildContext context;
-  PointMatrix({Key key, this.context}):super(key: key);
+  PointMatrix({Key? key}):super(key: key);
   @override
   PointMatrixState createState() => PointMatrixState();
 
 }
 class PointMatrixState extends State<PointMatrix> {
-  CourseProvider courseProvider;
-  ThemeProvider themeProvider;
+  late CourseProvider courseProvider;
+  late ThemeProvider themeProvider;
   ScrollController scrollController = new ScrollController();
   ///格子高度
-  double gridHeight;
-  double gridWidth;
-  List<CourseData> dl;
-  ThemeData themeData;
+  late double gridHeight;
+  late double gridWidth;
+  late List<CourseData> dl;
+  late ThemeData themeData;
 
   @override
   void initState() {

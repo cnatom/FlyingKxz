@@ -5,7 +5,6 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyhub/flutter_easy_hub.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:flying_kxz/Model/prefs.dart';
@@ -16,13 +15,10 @@ import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_log
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/app_upgrade.dart';
 import 'package:flying_kxz/pages/login_page.dart';
-import 'package:flying_kxz/pages/navigator_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/balance/preview.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/invite_page.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/components/preview.dart';
 import 'package:flying_kxz/ui/ui.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
@@ -33,16 +29,16 @@ import 'myself_page_child/cumt_login/cumtLogin_view.dart';
 import 'myself_page_child/power/utils/provider.dart';
 
 class MyselfPage extends StatefulWidget {
-  const MyselfPage({Key key}) : super(key: key);
+  const MyselfPage({Key? key}) : super(key: key);
   @override
   _MyselfPageState createState() => _MyselfPageState();
 }
 
 class _MyselfPageState extends State<MyselfPage>
     with AutomaticKeepAliveClientMixin {
-  ThemeProvider themeProvider;
-  BackgroundProvider backgroundProvider;
-  Cumt cumt; // 用于网络请求
+  late ThemeProvider themeProvider;
+  late BackgroundProvider backgroundProvider;
+  late Cumt cumt; // 用于网络请求
   @override
   void initState() {
     super.initState();
@@ -54,14 +50,14 @@ class _MyselfPageState extends State<MyselfPage>
   void _signOut() async {
     Logger.log("Myself", "退出登录", {});
     BookSpider.dispose();
-    await Future.wait([cumt.clearCookie(),Prefs.prefs.clear(),cumt.init()]);
+    await Future.wait<dynamic>([cumt.clearCookie(),Prefs.prefs!.clear(),cumt.init()]);
     toLoginPage(context);
   }
 
 
 
   Future<void> _feedback() async {
-    String text = await FlyDialogInputShow(context,
+    String? text = await FlyDialogInputShow(context,
         hintText:
             "感谢您提出宝贵的建议，这对我们非常重要！\n*｡٩(ˊᗜˋ*)و*｡\n\n(也可以留下您的联系方式，方便我们及时联络您)",
         confirmText: "发送",
@@ -121,7 +117,7 @@ class _MyselfPageState extends State<MyselfPage>
           crossAxisAlignment:WrapCrossAlignment.center,
           children: [
             Container(),
-            _miniTextButton(title: "ICP备案号：苏ICP备2023008273号-2A",url: "https://beian.miit.gov.cn"),
+            _miniTextButton(title: "ICP备案号：鲁ICP备2024109602号-1A",url: "https://beian.miit.gov.cn"),
             _miniTextButton(title: "隐私政策",url: "https://kxz.atcumt.com/privacy.html"),
           ],
         ),
@@ -135,7 +131,7 @@ class _MyselfPageState extends State<MyselfPage>
     );
   }
 
-  Widget _myselfScaffold({@required List<Widget> children}) {
+  Widget _myselfScaffold({required List<Widget> children}) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: PreferredSize(
@@ -199,9 +195,9 @@ class _MyselfPageState extends State<MyselfPage>
   }
 
   Widget _myselfIconTitleButton(
-      {@required IconData icon,
-      @required String title,
-      GestureTapCallback onTap,
+      {required IconData icon,
+      required String title,
+      GestureTapCallback? onTap,
       bool loading = false}) {
     return InkWell(
       onTap: onTap,
@@ -238,7 +234,7 @@ class _MyselfPageState extends State<MyselfPage>
     );
   }
 
-  Widget _miniTextButton({@required String title,@required String url}) {
+  Widget _miniTextButton({required String title,required String url}) {
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -284,14 +280,14 @@ class _MyselfPageState extends State<MyselfPage>
           title: '关于我们',
           onTap: () => toAboutPage(context)),
       //反馈与建议
-      _myselfIconTitleButton(
-          icon: Icons.feedback_outlined,
-          title: '反馈与建议',
-          onTap: () => _feedback()),
+      // _myselfIconTitleButton(
+      //     icon: Icons.feedback_outlined,
+      //     title: '反馈与建议',
+      //     onTap: () => _feedback()),
       //分享App
       _myselfIconTitleButton(
-          icon: Icons.share_outlined,
-          title: '分享App',
+          icon: Icons.feedback_outlined,
+          title: '联系我们',
           onTap: () => FlyDialogDIYShow(context, content: InvitePage())),
       UniversalPlatform.isIOS
           ? Container()
@@ -420,7 +416,7 @@ class _MyselfPageState extends State<MyselfPage>
   }
 
   Widget _buildDiyButton(String title,
-      {@required Widget child, GestureTapCallback onTap}) {
+      {required Widget child, GestureTapCallback? onTap}) {
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -445,11 +441,11 @@ class _MyselfPageState extends State<MyselfPage>
     );
   }
 
-  Widget _buildSwitch(bool value, {@required ValueChanged<bool> onChanged}) {
+  Widget _buildSwitch(bool value, {required ValueChanged<bool> onChanged}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Switch(
+        Switch.adaptive(
           activeColor: themeProvider.colorMain,
           value: value,
           onChanged: onChanged,
@@ -461,7 +457,7 @@ class _MyselfPageState extends State<MyselfPage>
   Widget _buildSliver(double value,
       {double max = 1.0,
       double min = 0.0,
-      @required ValueChanged<double> onChanged}) {
+      required ValueChanged<double> onChanged}) {
     return Slider(
       inactiveColor: Theme.of(context).unselectedWidgetColor,
       activeColor: themeProvider.colorMain,
@@ -598,11 +594,11 @@ class _MyselfPageState extends State<MyselfPage>
 }
 
 class HeaderWelcomeText extends StatefulWidget {
-  final String title;
+  final String? title;
   final String name;
-  final TextStyle style;
+  final TextStyle? style;
   HeaderWelcomeText({
-    Key key,this.title,@required this.name,this.style
+    Key? key,this.title,required this.name,this.style
   }) : super(key: key);
 
 
@@ -611,7 +607,7 @@ class HeaderWelcomeText extends StatefulWidget {
 }
 
 class _HeaderWelcomeTextState extends State<HeaderWelcomeText> {
-  String name;
+  late String name;
 
   @override
   void initState() {
@@ -644,17 +640,16 @@ class _HeaderWelcomeTextState extends State<HeaderWelcomeText> {
 }
 
 class FlyFlexibleButton extends StatefulWidget {
-  final Widget secondChild;
+  final Widget? secondChild;
   final String title;
-  final IconData icon;
-  final String previewStr;
-  final GestureTapCallback onTap;
-  final void Function(BuildContext context) onStart; // 打开前的操作，只会执行一次
+  final IconData? icon;
+  final String? previewStr;
+  final GestureTapCallback? onTap;
+  final void Function(BuildContext context)? onStart; // 打开前的操作，只会执行一次
 
   const FlyFlexibleButton(
-      {Key key,
+      {Key? key, required this.title,
       this.secondChild,
-      this.title,
       this.icon,
       this.previewStr,
       this.onTap,
@@ -668,7 +663,7 @@ class FlyFlexibleButton extends StatefulWidget {
 class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
   bool showSecond = false;
   double opacity = 0;
-  ThemeProvider themeProvider;
+  late ThemeProvider themeProvider;
   bool onStarted = false; //是否执行过onStart
   @override
   Widget build(BuildContext context) {
@@ -725,7 +720,7 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
         onTap: widget.onTap ??
             () {
               if(onStarted==false&&widget.onStart!=null){
-                widget.onStart(context);
+                widget.onStart!(context);
                 onStarted = true;
               }
               setState(() {
@@ -765,7 +760,7 @@ class _FlyFlexibleButtonState extends State<FlyFlexibleButton> {
                         children: [
                           widget.previewStr != null
                               ? FlyText.main35(
-                                  widget.previewStr,
+                                  widget.previewStr!,
                                   color: themeProvider.colorNavText
                                       .withOpacity(0.5),
                                 )

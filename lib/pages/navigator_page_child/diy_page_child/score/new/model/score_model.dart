@@ -2,10 +2,10 @@ import 'package:flying_kxz/pages/navigator_page_child/diy_page_child/score/new/u
 import 'score_item.dart';
 
 class ScoreModel{
-  List<ScoreItem> _scoreList; //成绩列表
-  double _jiaquanTotal; //加权总分
-  double _jidianTotal; //绩点总分
-  ScoreSort _scoreSort;
+  late List<ScoreItem> _scoreList; //成绩列表
+  late double _jiaquanTotal; //加权总分
+  late double _jidianTotal; //绩点总分
+  late ScoreSort _scoreSort;
 
   ScoreModel(){
     _scoreList = [];
@@ -47,7 +47,7 @@ class ScoreModel{
     _calculate(_scoreList);
   }
 
-  bool isNull() => _scoreList == null || _scoreList.isEmpty;
+  bool isNull() => _scoreList.isEmpty;
 
   int get scoreListLength => _scoreList.length;
 

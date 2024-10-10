@@ -8,24 +8,24 @@ class CumtFormat{
   static String courseHtmlToDate(String html){
     try{
       String result;
-      String year,term;
+      String? year,term;
       var document = parser.parse(html);
-      var table = document.body.querySelector('h6[class="pull-left"]');
+      var table = document.body?.querySelector('h6[class="pull-left"]');
       //提取学期
       RegExp expTerm = new RegExp(r".*学年第(.*)学期");
-      if(expTerm.hasMatch(table.text)){
-        term = expTerm.firstMatch(table.text).group(1);
+      if(expTerm.hasMatch(table!.text)){
+        term = expTerm.firstMatch(table.text)!.group(1)!;
       }
       //提取学年
       RegExp expYear = new RegExp(r"(.*)-");
       if(expYear.hasMatch(table.text)){
-        year = expYear.firstMatch(table.text).group(1);
+        year = expYear.firstMatch(table.text)!.group(1)!;
       }
       //判断开学时间
       if(term=='1'){
         result = '$year-09-07';
       }else{
-        result = '${int.parse(year)+1}-03-01';
+        result = '${int.parse(year!)+1}-03-01';
       }
       return result;
     }catch(e){
@@ -33,7 +33,7 @@ class CumtFormat{
     }
   }
 
-  static List<dynamic> _htmlToListBK(String html){
+  static List<dynamic>? _htmlToListBK(String html){
     try{
       var result = [];
       String title;//语文
@@ -48,42 +48,42 @@ class CumtFormat{
       List<int> lesson = [];
       Map<String,String> map = new Map<String,String>();
       var document = parser.parse(html);
-      var table = document.body.querySelector("#kbgrid_table_0");
-      Element temp1;
+      var table = document.body?.querySelector("#kbgrid_table_0");
+      Element? temp1;
       List<Element> temp2;
       for(int r = 1;r<=12;r++){
         for(int c = 1;c<=7;c++){
-          temp1 = table.querySelector('td[id="$c-$r"]');
+          temp1 = table?.querySelector('td[id="$c-$r"]');
           if(temp1!=null&&temp1.text!=''){
             temp2 = temp1.children;
             try{
               for(var temp3 in temp2){
                 try{
-                  title = temp3.querySelector('span[class="title"]').text;
+                  title = temp3.querySelector('span[class="title"]')!.text;
                 }catch(e){
-                  title = temp3.querySelector('u[class="title showJxbtkjl"]').text;
+                  title = temp3.querySelector('u[class="title showJxbtkjl"]')!.text;
                 }
                 try{
-                  location = temp3.querySelector('span[title="上课地点"]').parent.text;
+                  location = temp3.querySelector('span[title="上课地点"]')!.parent!.text;
                 }catch(e){
                   location = '';
                 }
                 try{
-                  teacher = temp3.querySelector('span[title="教师 "]').parent.text;
+                  teacher = temp3.querySelector('span[title="教师 "]')!.parent!.text;
                 }catch(e){
                   try{
-                    teacher = temp3.querySelector('span[title="教师"]').parent.text;
+                    teacher = temp3.querySelector('span[title="教师"]')!.parent!.text;
                   }
                   catch(e){
                     teacher = '';
                   }
                 }
                 try{
-                  credit = temp3.querySelector('span[title="学分"]').parent.text;
+                  credit = temp3.querySelector('span[title="学分"]')!.parent!.text;
                 }catch(e){
                   credit = '';
                 }
-                String lessonWeek = temp3.querySelector('span[title="节/周"]').parent.text;
+                String lessonWeek = temp3.querySelector('span[title="节/周"]')!.parent!.text;
                 lessonWeek = lessonWeek.replaceAll("？", "");
                 duration = _getDuration(lessonWeek);
                 lesson = _getLesson(lessonWeek);
@@ -96,10 +96,10 @@ class CumtFormat{
                     var key = '$lessonNum-$durationNum';
                     if(map[key]==null){
                       map[key] = title;
-                    }else if(map[key].contains(title)){
+                    }else if(map[key]!.contains(title)){
                       break;
                     }else{
-                      map[key]+=' '+title;
+                      map[key] = (map[key] ?? '') + ' ' + title;
                     }
                   }
                   result.add({
@@ -117,6 +117,7 @@ class CumtFormat{
               }
             }catch(e){
               print(e.toString());
+              return null;
             }
           }
         }
@@ -139,12 +140,12 @@ class CumtFormat{
 
     return count;
   }
-  static List<dynamic> _htmlToListYJS(String html){
+  static List<dynamic>? _htmlToListYJS(String html){
     try{
       var result = [];
-      String title;//语文
-      String location;//博五
-      String teacher;//张三
+      String? title;//语文
+      String? location;//博五
+      String? teacher;//张三
       List<int> weekList = [];//几周有这些课
       int weekNum;//星期几
       int lessonNum;//第几节课
@@ -153,9 +154,9 @@ class CumtFormat{
       List<int> lesson = [];
       Map<String,String> map = new Map<String,String>();
       var document = parser.parse(html);
-      var table = document.body.querySelector("table[class='Grid_Line']").querySelector("tbody");
-      var tableLineList = table.children.toList();
-      tableLineList = tableLineList.where((element) => element.text!='\n').skip(1).toList();
+      var table = document.body?.querySelector("table[class='Grid_Line']")?.querySelector("tbody");
+      var tableLineList = table?.children.toList();
+      tableLineList = tableLineList?.where((element) => element.text!='\n').skip(1).toList();
 
       var lessonWeekMatrix = List<List<int>>.generate(13, (_) => List<int>.generate(8, (_) => 0));
 
@@ -180,7 +181,7 @@ class CumtFormat{
       }
 
       lessonNum = 1;
-      for (var tableLine in tableLineList){
+      for (var tableLine in tableLineList!){
         if(tableLine.text == '\n'){
           continue;
         }
@@ -192,19 +193,19 @@ class CumtFormat{
           if(cell.text.trim().isNotEmpty){
             var cel = cell.text.split('；');
             for (var ce in cel){
-              title = RegExp(r'(.*?)\s*｛').firstMatch(ce).group(1).trim();
-              durationNum = int.parse(cell.attributes['rowspan']);
-              var ce_temp = RegExp(r'｛(.*?)｝').firstMatch(ce).group(1).trim();
-              for(var c in ce_temp.split(']、')){
+              title = RegExp(r'(.*?)\s*｛').firstMatch(ce)?.group(1)?.trim();
+              durationNum = int.parse(cell.attributes['rowspan']!);
+              var ce_temp = RegExp(r'｛(.*?)｝').firstMatch(ce)?.group(1)?.trim();
+              for(var c in ce_temp!.split(']、')){
                 c = c+']';
-                weekList = _convertWeeksToList(RegExp(r'(.*?)\[').firstMatch(c).group(1).trim());
+                weekList = _convertWeeksToList(RegExp(r'(.*?)\[').firstMatch(c)!.group(1)!.trim());
                 try {
-                  teacher = RegExp(r'教师:(.*?)(?=,|])').firstMatch(c).group(1).trim();
+                  teacher = RegExp(r'教师:(.*?)(?=,|])').firstMatch(c)!.group(1)!.trim();
                 } catch (e) {
                   teacher = null;
                 }
                 try{
-                  location = RegExp(r'地点:(.*?)\]').firstMatch(ce).group(1).trim();
+                  location = RegExp(r'地点:(.*?)\]').firstMatch(ce)!.group(1)!.trim();
                 }catch(e){
                   location = null;
                 }
@@ -247,15 +248,15 @@ class CumtFormat{
     }
   }
   //课表HTML->List<CourseData>
-  static List<dynamic> courseHtmlToList(String html,ImportCourseType type){
+  static List<dynamic>? courseHtmlToList(String html,ImportCourseType type){
     switch(type){
       case ImportCourseType.BK: {
         return _htmlToListBK(html);
       }
-      case ImportCourseType.YJS:
+      case ImportCourseType.YJS:{
         return _htmlToListYJS(html);
+      }
     }
-    return null;
   }
 
   // "10-13周"->[10, 11, 12, 13] "2-5、7-10周"->[2, 3, 4, 5, 7, 8, 9, 10] "4-6双周"->[4,6]
@@ -269,7 +270,7 @@ class CumtFormat{
         // 将区间分割为起始周和结束周
         List<String> rangeParts = range.split('-');
         int startWeek = int.parse(rangeParts[0]);
-        int endWeek;
+        int? endWeek;
         try{
           endWeek = int.parse(rangeParts[1].replaceAll("周",""));
           // 将连续周数添加到列表中
@@ -287,7 +288,7 @@ class CumtFormat{
             isEven = false;
           }
           // 将连续周数添加到列表中
-          for (int i = startWeek; i <= endWeek; i++) {
+          for (int i = startWeek; i <= endWeek!; i++) {
             if (isEven && i % 2 == 0) {
               weeksList.add(i);
             } else if (!isEven && i % 2 == 1) {
@@ -319,13 +320,13 @@ class CumtFormat{
     RegExp expLesson = new RegExp(r"[(](.*)[)]");
     List<int> lessonNum = [];
     if(expLesson.hasMatch(s)){
-      String durationStr = expLesson.firstMatch(s).group(1);
+      String? durationStr = expLesson.firstMatch(s)?.group(1);
       //1-2节,7-8节
-      var b = durationStr.split(',');
+      var b = durationStr!.split(',');
       for(var item in b){
         expLesson = new RegExp(r"(.*)[节]");
         if(expLesson.hasMatch(item)){
-          item = expLesson.firstMatch(item).group(1);
+          item = expLesson.firstMatch(item)!.group(1)!;
           var d = item.split('-');
           lessonNum.add(int.parse(d[0]));
         }
@@ -339,13 +340,13 @@ class CumtFormat{
     RegExp expLesson = new RegExp(r"[(](.*)[)]");
     List<int> durationNum = [];
     if(expLesson.hasMatch(s)){
-      String durationStr = expLesson.firstMatch(s).group(1);
+      String? durationStr = expLesson.firstMatch(s)!.group(1);
       //1-2节,7-8节
-      var b = durationStr.split(',');
+      var b = durationStr!.split(',');
       for(var item in b){
         expLesson = new RegExp(r"(.*)[节]");
         if(expLesson.hasMatch(item)){
-          item = expLesson.firstMatch(item).group(1);
+          item = expLesson.firstMatch(item)!.group(1)!;
           var d = item.split('-');
           if(d.length==1){
             durationNum.add(1);
@@ -360,25 +361,25 @@ class CumtFormat{
   // 1-3节 -> durationNum:3
   static int _getDurationNum(String s){
     RegExp expLesson = new RegExp(r"[(](.*?)节[)]");
-    int durationNum;
+    int? durationNum;
     if(expLesson.hasMatch(s)){
-      String durationStr = expLesson.firstMatch(s).group(1);
-      var d = durationStr.split('-');
+      String? durationStr = expLesson.firstMatch(s)!.group(1);
+      var d = durationStr!.split('-');
       if(d.length==1){
         durationNum = 1;
       }else{
         durationNum = int.parse(d[1])-int.parse(d[0])+1;
       }
     }
-    return durationNum;
+    return durationNum!;
   }
 //用于周次转换
 //"5周"->[5]    "5-12周(单)"->[5, 7, 9, 11]   "13-18周(双)"->[14, 16, 18]   "11-14周"->[11, 12, 13, 14]
   static List<int> _getWeekList(String s) {
     RegExp expWeek = new RegExp(r"[)](.*)");
-    String week = expWeek.firstMatch(s).group(1);
+    String? week = expWeek.firstMatch(s)!.group(1);
     List<int> weekList = [];
-    var list = week.split(',');
+    var list = week!.split(',');
     for(var week in list){
       if (week.contains("单")) {
         week = week.replaceAll("(单)", "").replaceAll("周", "");
@@ -412,47 +413,51 @@ class CumtFormat{
   }
 
   //考试
-  static List<Map<String,dynamic>> parseExam(String html){
-    List<Map<String,dynamic>> result = [];
-    String courseName;
-    String location;
-    String dateTime;
-    var document = parser.parse(html);
-    var table = document.body.querySelector(r'tbody');
-    for(int i = 1;i<table.children.length;i++){
-      var cur = table.children[i];
-      courseName = cur.querySelector('td[aria-describedby="tabGrid_kcmc"]').innerHtml;
-      location = cur.querySelector('td[aria-describedby="tabGrid_cdmc"]').innerHtml;
-      dateTime = cur.querySelector('td[aria-describedby="tabGrid_kssj"]').innerHtml;
-      result.add({
-        'courseName':courseName,
-        'location':location,
-        'dateTime':dateTime
-      });
+  static List<Map<String,dynamic>>? parseExam(String html){
+    try{
+      List<Map<String,dynamic>> result = [];
+      String courseName;
+      String location;
+      String dateTime;
+      var document = parser.parse(html);
+      var table = document.body!.querySelector(r'tbody');
+      for(int i = 1;i<table!.children.length;i++){
+        var cur = table.children[i];
+        courseName = cur.querySelector('td[aria-describedby="tabGrid_kcmc"]')!.innerHtml;
+        location = cur.querySelector('td[aria-describedby="tabGrid_cdmc"]')!.innerHtml;
+        dateTime = cur.querySelector('td[aria-describedby="tabGrid_kssj"]')!.innerHtml;
+        result.add({
+          'courseName':courseName,
+          'location':location,
+          'dateTime':dateTime
+        });
+      }
+      return result;
+    }catch(e){
+      return null;
     }
-    return result;
   }
   //成绩（包括补考无明细）
-  static List<Map<String,dynamic>> parseScoreAll(String html){
+  static List<Map<String,dynamic>>? parseScoreAll(String html){
     List<Map<String,dynamic>> result = [];
 
-    String courseName;//语文
-    String xuefen;//学分
-    String jidian;//绩点
-    String zongping;//总评
-    String type;//正常考试
+    String? courseName;//语文
+    String? xuefen;//学分
+    String? jidian;//绩点
+    String? zongping;//总评
+    String? type;//正常考试
 
     var document = parser.parse(html);
-    var table = document.body.querySelector("tbody");
-    if(table.children==null) return null;
-    for(int i = 1;i<table.children.length;i++){
+    var table = document.body?.querySelector("tbody");
+    if(table?.children==null) return null;
+    for(int i = 1;i<table!.children.length;i++){
       var cur = table.children[i];
-      courseName = cur.querySelector(r'td[aria-describedby="tabGrid_kcmc"]').innerHtml;
-      xuefen = cur.querySelector(r'td[aria-describedby="tabGrid_xf"]').innerHtml;
-      jidian = cur.querySelector(r'td[aria-describedby="tabGrid_jd"]').innerHtml;
-      zongping = cur.querySelector(r'td[aria-describedby="tabGrid_cj"]').innerHtml;
-      type = cur.querySelector(r'td[aria-describedby="tabGrid_ksxz"]').innerHtml;
-
+      courseName = cur.querySelector(r'td[aria-describedby="tabGrid_kcmc"]')?.innerHtml;
+      xuefen = cur.querySelector(r'td[aria-describedby="tabGrid_xf"]')?.innerHtml;
+      jidian = cur.querySelector(r'td[aria-describedby="tabGrid_jd"]')?.innerHtml;
+      zongping = cur.querySelector(r'td[aria-describedby="tabGrid_cj"]')?.innerHtml;
+      type = cur.querySelector(r'td[aria-describedby="tabGrid_ksxz"]')?.innerHtml;
+      if(courseName==null||xuefen==null||jidian==null||zongping==null||type==null) continue;
       result.add({
         "courseName": courseName,
         "xuefen": xuefen,
@@ -587,7 +592,7 @@ class CumtFormat{
       'data':bklt
     };
   }
-  static bool isNumeric(String s) {
+  static bool isNumeric(String? s) {
     if (s == null) {
       return false;
     }

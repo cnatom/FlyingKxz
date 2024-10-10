@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/Picker.dart';
+import 'package:flutter_picker_plus/picker.dart';
 import 'package:flying_kxz/Model/prefs.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/power_charge_page.dart';
 import 'package:flying_kxz/util/logger/log.dart';
 import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/power/utils/provider.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -25,12 +26,12 @@ class _PowerPageState extends State<PowerPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _powerRoomidController =
       new TextEditingController(text: Prefs.powerRoomid ?? '');
-  ThemeProvider themeProvider;
-  PowerProvider powerProvider;
-  String powerPreviewText;
-  String powerBuilding;
-  double powerPercent;
-  bool powerLoading;
+  late ThemeProvider themeProvider;
+  late PowerProvider powerProvider;
+  String? powerPreviewText;
+  String? powerBuilding;
+  double? powerPercent;
+  bool powerLoading = false;
 
   // 选择宿舍楼
   void _handlePowerPicker() async {
@@ -46,17 +47,7 @@ class _PowerPageState extends State<PowerPage> {
 
   // 跳转充值页面
   void _charge() {
-    FlyDialogDIYShow(context, content: Wrap(
-      runSpacing: spaceCardPaddingTB,
-      children: [
-        FlyText.title45('请在充值页面点击"缴电费"。',maxLine: 10,),
-        // Image.asset("images/powerRechargeHelp.png"),
-        _buildButton("知道啦，前往充值页面↗",onTap: (){
-          launchUrl(
-              Uri.parse("https://yktm.cumt.edu.cn/plat/dating"),mode: LaunchMode.externalApplication);
-        }),
-      ],
-    ));
+    toPowerChargePage(context);
 
   }
 
@@ -140,7 +131,7 @@ class _PowerPageState extends State<PowerPage> {
     );
   }
 
-  InkWell _buildButton(String title, {bool primer = true,GestureTapCallback onTap}) {
+  InkWell _buildButton(String title, {bool primer = true,GestureTapCallback? onTap}) {
     Color borderColor = primer?Colors.transparent:themeProvider.colorMain;
     Color textColor = primer?Colors.white:themeProvider.colorMain;
     Color backgroundColor = primer?themeProvider.colorMain:Colors.transparent;
@@ -164,7 +155,7 @@ class _PowerPageState extends State<PowerPage> {
   }
 
   Widget _buildDiyButton(String title,
-      {@required Widget child, GestureTapCallback onTap}) {
+      {required Widget child, GestureTapCallback? onTap}) {
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -190,7 +181,7 @@ class _PowerPageState extends State<PowerPage> {
   }
 
   Widget _buildPreviewButton(String title, String previewStr,
-      {GestureTapCallback onTap}) {
+      {GestureTapCallback? onTap}) {
     return _buildDiyButton(title,
         onTap: onTap,
         child: Row(
@@ -217,7 +208,7 @@ class _PowerPageState extends State<PowerPage> {
         child: _buildInputBar("输入大寝室号(如 M2B421 )", _powerRoomidController));
   }
 
-  Widget _container({@required String title, @required Widget child}) {
+  Widget _container({required String title, required Widget child}) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadiusValue),
@@ -260,7 +251,7 @@ class _PowerPageState extends State<PowerPage> {
     );
   }
 
-  Widget _buildPower(String powerBuilding) {
+  Widget _buildPower(String? powerBuilding) {
     return _container(
         title: "绑定信息",
         child: Wrap(runSpacing: spaceCardPaddingTB, children: [

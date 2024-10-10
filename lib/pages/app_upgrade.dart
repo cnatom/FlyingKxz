@@ -25,7 +25,7 @@ void checkUpgrade(BuildContext context, {bool auto = true}) async {
     print(map.toString());
     if (map['status'] == 200) {
       if (map['check'] == true) {
-        if(auto==true && Prefs.prefs.getString("ignore_version_url")==map['apkUrl']){
+        if(auto==true && Prefs.prefs?.getString("ignore_version_url")==map['apkUrl']){
           return;
         }else{
           updateAlert(context, {
@@ -61,7 +61,7 @@ class UpgradeDialog extends StatefulWidget {
   final bool isForceUpdate; // 是否强制更新
   final String updateUrl; // 更新的url（安装包下载地址）
 
-  UpgradeDialog(this.data, this.isForceUpdate, {this.updateUrl});
+  UpgradeDialog(this.data, this.isForceUpdate, {required this.updateUrl});
 
   @override
   _UpgradeDialogState createState() => _UpgradeDialogState();
@@ -115,7 +115,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
                       child:
                           _buildButton("忽略该版本", prime: false, onTap: () async {
                     if (await _willIgnore(context)) {
-                      Prefs.prefs.setString(prefsIgnore, widget.updateUrl);
+                      Prefs.prefs?.setString(prefsIgnore, widget.updateUrl);
                       Navigator.of(context).pop();
                     }
                   })),
@@ -162,7 +162,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
   }
 
   Widget _buildButton(String title,
-      {bool prime = true, GestureTapCallback onTap}) {
+      {bool prime = true, GestureTapCallback? onTap}) {
     return InkWell(
       child: Container(
         padding: EdgeInsets.all(10),
