@@ -118,6 +118,18 @@ class _StartPageState extends State<StartPage> {
     // 获取当前App版本
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     Global.curVersion = packageInfo.version;
+    // 缓存壁纸
+    await backgroundProvider.precacheBackground(context);
+    // 选择跳转
+    if (Prefs.password != null) {
+      return FlyNavigatorPage();
+    } else {
+      Global.clearPrefsData();
+      return LoginPage();
+    }
+  }
+
+  initWithContext(BuildContext context){
     //初始化配置（无需context）
     deviceWidth = 1080;
     deviceHeight = 1920;
@@ -129,17 +141,7 @@ class _StartPageState extends State<StartPage> {
     }
     //初始化参考屏幕信息
     ScreenUtil.init(context, designSize: Size(deviceWidth, deviceHeight));
-    //初始化配置
     initSize();
-    // 缓存壁纸
-    await backgroundProvider.precacheBackground(context);
-    // 选择跳转
-    if (Prefs.password != null) {
-      return FlyNavigatorPage();
-    } else {
-      Global.clearPrefsData();
-      return LoginPage();
-    }
   }
 
   @override
@@ -157,6 +159,7 @@ class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     backgroundProvider = Provider.of<BackgroundProvider>(context);
+    initWithContext(context);
     return child;
   }
 }
