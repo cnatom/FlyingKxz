@@ -15,10 +15,10 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.6.12
+version: 1.6.13
 
 environment:
-  sdk: ">=2.12.0 <3.10.0"
+  sdk: ">=2.15.0 <3.10.0"
 dependencies:
   flutter_localizations: # 添加国际化
     sdk: flutter # 添加
@@ -32,7 +32,7 @@ dependencies:
   flutter_staggered_animations: ^1.0.0
   bot_toast: ^4.1.3 # toast
   universal_platform: any
-  provider: any
+  provider: ^6.1.2
   shared_preferences: any
   loading_animation_widget: ^1.2.1
   flutter_feather_icons: any
@@ -70,7 +70,7 @@ dependencies:
   nanoid2: ^2.0.1 # 擦ical的屁股
 #  flutter_intro: ^3.0.2 #引导页
   connectivity_plus: ^6.0.5 #检测wifi或者流量，用于校园网自动登录
-  synchronized: ^3.0.0 # 加锁防止校园网自动登录多次执行
+  synchronized: ^3.3.0+3 # 加锁防止校园网自动登录多次执行
   auto_size_text: ^3.0.0 # 自动调整字体大小
   flutter_js: ^0.8.1 # js调用，用于密码加密
 

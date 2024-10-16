@@ -99,12 +99,22 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class StartPage extends StatelessWidget {
-  StartPage({Key? key}) : super(key: key);
+class StartPage extends StatefulWidget {
+  const StartPage({Key? key}) : super(key: key);
 
+  @override
+  State<StartPage> createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
   late BackgroundProvider backgroundProvider;
 
-  Future<void> initFunc(BuildContext context) async {
+  Widget child = Scaffold(
+    backgroundColor: Colors.white,
+    body: Container(),
+  );
+
+  Future<Widget> initFunc(BuildContext context) async {
     // 获取当前App版本
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     Global.curVersion = packageInfo.version;
@@ -125,24 +135,28 @@ class StartPage extends StatelessWidget {
     await backgroundProvider.precacheBackground(context);
     // 选择跳转
     if (Prefs.password != null) {
-      toNavigatorPage(context);
+      return FlyNavigatorPage();
     } else {
       Global.clearPrefsData();
-      toLoginPage(context);
+      return LoginPage();
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      initFunc(context).then((value) {
+        setState(() {
+          child = value;
+        });
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     backgroundProvider = Provider.of<BackgroundProvider>(context);
-    return FutureBuilder(
-      future: initFunc(context),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return Scaffold(
-          backgroundColor: Colors.white,
-          body: Container(),
-        );
-      }
-    );
+    return child;
   }
 }

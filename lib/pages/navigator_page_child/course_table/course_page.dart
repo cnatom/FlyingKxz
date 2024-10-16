@@ -1,22 +1,21 @@
 //主页
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_course/import_page.dart';
-import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_course/import_selector.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/import_course/import_selector_new.dart';
-import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/components/state_text.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/animated_state_text_provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
+import 'package:flying_kxz/pages/navigator_page_child/myself_page_child/cumt_login/util/util.dart';
 import 'package:flying_kxz/ui/ui.dart';
+import 'package:flying_kxz/util/logger/log.dart';
 import 'package:provider/provider.dart';
 import '../../../Model/prefs.dart';
-import '../myself_page_child/aboutus/components/custom_shape.dart';
+import 'components/animated_state_text.dart';
 import 'components/back_curWeek.dart';
 import 'components/course_table_child.dart';
-import 'components/import_course/import_selector_arrow.dart';
 import 'components/output_ics/output_ics_page.dart';
 import 'components/point_components/point_main.dart';
 
@@ -28,15 +27,17 @@ class CoursePage extends StatefulWidget {
 }
 
 class CoursePageState extends State<CoursePage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
   late CourseProvider courseProvider;
   late ThemeProvider themeProvider;
+  late AnimatedStateTextProvider stateTextProvider;
   final OverlayPortalController overlayPortalController =
       OverlayPortalController();
   GlobalKey<PointMainState> _rightGlobalKey = new GlobalKey<PointMainState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   static late PageController coursePageController;
-  final GlobalKey<PopupMenuButtonState> _popupMenuKey = GlobalKey(); // 用于打开PopupMenuButton
+  final GlobalKey<PopupMenuButtonState> _popupMenuKey =
+      GlobalKey(); // 用于打开PopupMenuButton
   int? _maxLesson;
 
   void _openPopupMenu() {
@@ -60,11 +61,8 @@ class CoursePageState extends State<CoursePage>
     Prefs.prefs?.setInt("maxLessonNum", value);
   }
 
-  var lessonTimes = [
-    [
-      "08:00",
-      "08:50",
-    ],
+  final lessonTimes = [
+    ["08:00", "08:50"],
     ["08:55", "09:45"],
     ["10:15", "11:05"],
     ["11:10", "12:00"],
@@ -82,14 +80,6 @@ class CoursePageState extends State<CoursePage>
   _outputIcs() {
     Navigator.of(context).push(CupertinoPageRoute(
         builder: (context) => OutputIcsPage(courseProvider.infoByCourse)));
-  }
-
-  _showDialogForSetCourse()async{
-    List? result = await FlyDialogDIYShow(context,
-        content: ImportSelector(
-          courseProvider: courseProvider,
-        ));
-    this._setCourse(result);
   }
 
   // 导入课表
@@ -127,9 +117,11 @@ class CoursePageState extends State<CoursePage>
   // 回到本周
   _backToCurWeek() {
     _changePageWithAnimation(courseProvider.initialWeek - 1);
+    stateTextProvider.changeWeek(courseProvider.initialWeek);
   }
 
-  _introduce() {
+  // 第一次使用时弹出课表导入菜单
+  _firstUse() {
     String prefsTag = "course_page_init";
     if (Prefs.prefs?.getBool(prefsTag) == null) {
       _openPopupMenu();
@@ -137,12 +129,50 @@ class CoursePageState extends State<CoursePage>
     }
   }
 
+  Future<void> cumtAutoLogin() async {
+    CumtLoginAccount _account = CumtLoginAccount();
+    if (_account.isEmpty) {
+      return;
+    }
+    stateTextProvider.updateText("正在登录校园网");
+    String res = await CumtLogin.autoLogin(account: _account);
+    Logger.log("CumtLogin", "自动登录", {
+      "username": _account.username,
+      "method": _account.cumtLoginMethod.name,
+      "location": _account.cumtLoginLocation.name,
+      "result": res
+    });
+    await Future.delayed(Duration(milliseconds: 600));
+    stateTextProvider.updateText(res);
+    await Future.delayed(Duration(milliseconds: 600));
+    stateTextProvider.restoreText();
+  }
+
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _introduce();
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp){
+      _firstUse();
+      cumtAutoLogin();
     });
+  }
+
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      stateTextProvider.restoreDirection();
+      cumtAutoLogin();
+    }
   }
 
   @override
@@ -151,14 +181,16 @@ class CoursePageState extends State<CoursePage>
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CourseProvider()),
+        ChangeNotifierProvider(create: (_) => AnimatedStateTextProvider()),
       ],
       builder: (context, _) {
         courseProvider = Provider.of<CourseProvider>(context);
         themeProvider = Provider.of<ThemeProvider>(context);
+        stateTextProvider = Provider.of<AnimatedStateTextProvider>(context);
         coursePageController = PageController(
           initialPage: courseProvider.curWeek - 1,
         );
-
+        stateTextProvider.init(initWeek: courseProvider.curWeek);
         return Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.transparent,
@@ -208,26 +240,20 @@ class CoursePageState extends State<CoursePage>
   }
 
   PreferredSizeWidget _buildAppBar() {
-    String defaultText = '第${courseProvider.curWeek}周';
     return AppBar(
       systemOverlayStyle: themeProvider.simpleMode
           ? SystemUiOverlayStyle.dark
           : SystemUiOverlayStyle.light,
       backgroundColor: Colors.transparent,
-      title: CumtLoginStateText(
-        defaultText: defaultText,
-        onDirection: (String oldText) {
-          String? week = RegExp(r'\d+').stringMatch(oldText);
-          if (week != null && int.parse(week) > courseProvider.curWeek) {
-            return StateTextAnimationDirection.up;
-          }
-          return StateTextAnimationDirection.down;
-        },
+      title: AnimatedStateText(
+        text: stateTextProvider.stateText,
+        direction: stateTextProvider.direction,
+        textColor: themeProvider.colorNavText,
       ),
       actions: [
         _buildPopupAction(Icons.add,
             child: ImportSelectorNew(
-              onImport: (result)=> this._setCourse(result as List?),
+              onImport: (result) => this._setCourse(result as List?),
               courseProvider: courseProvider,
             )),
         _buildAction(Boxicons.bx_share_alt, onPressed: () => _outputIcs()),
@@ -461,6 +487,7 @@ class CoursePageState extends State<CoursePage>
           controller: coursePageController,
           onPageChanged: (value) {
             courseProvider.changeWeek(value + 1);
+            stateTextProvider.changeWeek(courseProvider.curWeek);
           },
           scrollDirection: Axis.vertical,
           children: children,

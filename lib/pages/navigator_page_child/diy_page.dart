@@ -16,6 +16,7 @@ import 'diy_page_child/exam/exam_page.dart';
 import 'diy_page_child/score/new/score_new_page.dart';
 import 'diy_page_child/score/old/score_page.dart';
 class DiyPage extends StatefulWidget {
+  const DiyPage({Key? key}) : super(key: key);
   @override
   _DiyPageState createState() => _DiyPageState();
 }
@@ -114,7 +115,6 @@ class _DiyPageState extends State<DiyPage> with AutomaticKeepAliveClientMixin,Si
 
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 

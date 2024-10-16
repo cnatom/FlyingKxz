@@ -16,9 +16,8 @@ import 'navigator_page_child/course_table/course_page.dart';
 
 //跳转到当前页面
 void toNavigatorPage(BuildContext context) {
-  Navigator.of(context).pushAndRemoveUntil(
-      FadeTransitionRouter(FlyNavigatorPage(), milliseconds: 500),
-      (route) => route == null);
+  Navigator.of(context).pushReplacement(
+      FadeTransitionRouter(FlyNavigatorPage(), milliseconds: 500));
 }
 
 // 底部Navigator按钮数据类
@@ -40,7 +39,7 @@ class FlyNavigatorPage extends StatefulWidget {
 var navigatorPageController = PageController(initialPage: 0);
 
 class FlyNavigatorPageState extends State<FlyNavigatorPage>
-    with AutomaticKeepAliveClientMixin,WidgetsBindingObserver{
+    with WidgetsBindingObserver{
   int _currentIndex = 0; //数组索引，通过改变索引值改变视图
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   late ThemeProvider themeProvider;
@@ -62,7 +61,7 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
   /// 生命周期回调
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.inactive) {
+    if (state == AppLifecycleState.resumed) {
       navigatorPageController.jumpToPage(0);
     }
   }
@@ -77,7 +76,6 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     themeProvider = Provider.of<ThemeProvider>(context);
     return FlyNavBackground(
         child: Scaffold(
@@ -109,9 +107,9 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
     return PageView(
       physics: NeverScrollableScrollPhysics(),
       children: [
-        CoursePage(),
-        DiyPage(),
-        MyselfPage(),
+        const CoursePage(),
+        const DiyPage(),
+        const MyselfPage(),
       ],
       controller: navigatorPageController,
       onPageChanged: (int index) {
@@ -131,8 +129,5 @@ class FlyNavigatorPageState extends State<FlyNavigatorPage>
           size: size,
         ));
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
 

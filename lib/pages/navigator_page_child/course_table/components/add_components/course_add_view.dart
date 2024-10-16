@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/components/add_components/weekList_picker.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/ui/ui.dart';
+import 'package:provider/provider.dart';
 
 import 'lessonWeekNum_picker.dart';
 
@@ -57,7 +58,7 @@ class _CourseAddViewState extends State<CourseAddView> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         courseDataList.length>1?IconButton(icon: Icon(Icons.remove,), onPressed: ()=>_subDate()):Container(),
-        IconButton(icon: Icon(Icons.add), onPressed: ()=>_addDate()),
+        IconButton(icon: Icon(Icons.add,color: Theme.of(context).iconTheme.color,), onPressed: ()=>_addDate()),
       ],
     );
   }

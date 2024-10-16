@@ -38,39 +38,34 @@ class _BackCurWeekButtonState extends State<BackCurWeekButton> {
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
     return TweenAnimationBuilder(
-      duration: Duration(seconds: 1),
+      duration: Duration(milliseconds: 400),
       tween: Tween(end: (widget.show==false || widget.show == null)?1.0:0.0),
-      curve: Curves.easeOutQuint,
+      curve: Curves.easeInOutCubic,
       builder: (BuildContext context, double value, Widget? child) {
         return Positioned(
           right: double.parse(value.toString())*(-50.0),
           top: _dy!-ScreenUtil().statusBarHeight-kToolbarHeight,
           child: Opacity(
             opacity: 1.0-value,
-            child: Draggable(
-                axis: Axis.vertical,
-                feedback: _buildBackButton(context,drag: true),
-                child: _buildBackButton(context),
-                childWhenDragging: Container(),
-                onDraggableCanceled: (Velocity velocity, Offset offset) {
-                  if(_dy! > offset.dy-10 && _dy! < offset.dy+10){
-                    if(widget.onTap!=null){
-                      widget.onTap!();
-                    }
-                    return;
+            child: GestureDetector(
+              onTap: widget.onTap,
+              child: Draggable(
+                  axis: Axis.vertical,
+                  feedback: _buildBackButton(context,drag: true),
+                  child: _buildBackButton(context),
+                  childWhenDragging: Container(),
+                  onDraggableCanceled: (Velocity velocity, Offset offset) {
+                    setState(() {
+                      _dy = offset.dy;
+                      if(_dy!<120){
+                        _dy = 120;
+                      }else if(_dy!>MediaQuery.of(context).size.height-100){
+                        _dy = MediaQuery.of(context).size.height-100;
+                      }
+                    });
+                    Prefs.prefs?.setDouble(prefsStr, _dy!);
                   }
-                  setState(() {
-                    _dy = offset.dy;
-                    if(_dy!<120){
-                      _dy = 120;
-                    }else if(_dy!>MediaQuery.of(context).size.height-100){
-                      _dy = MediaQuery.of(context).size.height-100;
-                    }
-
-                  });
-                  Prefs.prefs?.setDouble(prefsStr, _dy!);
-
-                }
+              ),
             ),
           ),
         );

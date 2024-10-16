@@ -1,6 +1,8 @@
 
 //单个点阵组件
 import 'package:flutter/material.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/components/animated_state_text.dart';
+import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/animated_state_text_provider.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_data.dart';
 import 'package:flying_kxz/pages/navigator_page_child/course_table/utils/course_provider.dart';
 import 'package:flying_kxz/ui/ui.dart';
@@ -60,6 +62,7 @@ class PointMatrixState extends State<PointMatrix> {
   }
   void handleCurWeekChange(int week){
     courseProvider.changeWeek(week);
+    Provider.of<AnimatedStateTextProvider>(context,listen: false).changeWeek(week);
     CoursePageState.coursePageController.jumpToPage(week-1,);
   }
   Widget _buildColumn(){

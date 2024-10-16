@@ -196,6 +196,9 @@ class FlyThemes {
         //文字主色
         primaryColor: Colors.white,
         useMaterial3: false,
+        iconTheme: IconThemeData(
+          color: Colors.white
+        ),
         //子页面背景色
         scaffoldBackgroundColor: Colors.black,
         //输入框色彩
@@ -204,6 +207,8 @@ class FlyThemes {
         unselectedWidgetColor: Color(0xff6C6C6C).withOpacity(0.5),
         //卡片色彩
         cardColor: Color(0xff151517),
+        // 弹窗背景色
+        dialogBackgroundColor: Color(0xff151517),
         //指示器色彩
         indicatorColor: Colors.white,
         //输入指示器颜色
@@ -242,67 +247,15 @@ class FlyThemes {
         )
     );
   }
-  static final darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    //弹窗背景色
-    dialogTheme: DialogTheme(backgroundColor: Color(0xff1c1c1e)),
-    //按钮按下的色彩
-    splashColor: Colors.transparent,
-    highlightColor: Colors.transparent,
-    //文字主色
-    primaryColor: Colors.white,
-    useMaterial3: false,
-    //子页面背景色
-    scaffoldBackgroundColor: Colors.black,
-    //输入框色彩
-    disabledColor: Color(0xff6C6C6C).withOpacity(0.7),
-    //未选中项色彩
-    unselectedWidgetColor: Color(0xff6C6C6C).withOpacity(0.5),
-    //卡片色彩
-    cardColor: Color(0xff151517),
-    //指示器色彩
-    indicatorColor: Colors.white,
-    //输入指示器颜色
-    textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white),
-    //Chip未选中色彩
-    canvasColor: Color(0xff6C6C6C).withOpacity(0.5),
-    appBarTheme: AppBarTheme(
-      //控制系统顶栏文字色
-      systemOverlayStyle: SystemUiOverlayStyle.light,
-      //AppBar阴影大小
-      elevation: 0,
-      color: Colors.black,
-    ),
-    //chip按钮主题
-    chipTheme: ChipThemeData(
-      //选中项背景色彩，两个最好是一样
-      selectedColor: colorMain,
-      secondarySelectedColor: colorMain,
-      //选中项文字色彩
-      labelStyle: TextStyle(color: Colors.white54),
-      //未选中项背景色彩
-      disabledColor: Color(0xff6C6C6C).withOpacity(0.5),
-      //未选中项文字色彩
-      secondaryLabelStyle: TextStyle(color: Colors.white),
-      //暂时没啥用的参数，但不能没有
-      brightness: Brightness.dark,
-      padding: EdgeInsets.all(4.0),
-      shape: StadiumBorder(),
-
-      backgroundColor: Colors.transparent,
-    ),
-    colorScheme: ColorScheme.dark(
-        primary: colorMain,
-        secondary: colorMain,
-      surface: Colors.black,
-    )
-  );
   static ThemeData lightThemeTest(ThemeProvider themeProvider){
     return ThemeData(
       splashColor: Colors.transparent,
       dialogTheme: DialogTheme(backgroundColor: Colors.white),
       highlightColor: Colors.transparent,
       useMaterial3: false,
+      iconTheme: IconThemeData(
+          color: Colors.black
+      ),
       //子页面背景色
       scaffoldBackgroundColor: Color(0xfff2f5f7),
       //文字主色
@@ -324,6 +277,8 @@ class FlyThemes {
       ),
       //卡片背景
       cardColor: Colors.white,
+      // 弹窗背景色
+      dialogBackgroundColor: Colors.white,
       //指示器颜色
       textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.black),
       colorScheme: ColorScheme.light(
@@ -337,44 +292,4 @@ class FlyThemes {
           .copyWith(surface: Color(0xfff2f5f7).withOpacity(0)),
     );
   }
-  static final diyTheme =
-      ThemeData(scaffoldBackgroundColor: Colors.transparent);
-  static final lightTheme = ThemeData(
-    splashColor: Colors.transparent,
-    dialogTheme: DialogTheme(backgroundColor: Colors.white),
-    highlightColor: Colors.transparent,
-    useMaterial3: false,
-    //子页面背景色
-    scaffoldBackgroundColor: Color(0xfff2f5f7),
-    //文字主色
-    primaryColor: Colors.black,
-    //输入框色彩
-    disabledColor: Color(0xffecedef),
-    //未选中项色彩
-    unselectedWidgetColor: Color(0xff6C6C6C).withOpacity(0.5),
-    //底部导航栏
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        unselectedItemColor: Colors.white.withOpacity(0.5), //底部导航蓝未选中色
-        selectedItemColor: Colors.white),
-    appBarTheme: AppBarTheme(
-      //控制系统顶栏文字色
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
-      //AppBar阴影大小
-      elevation: 0,
-      color: Colors.transparent,
-    ),
-    //卡片背景
-    cardColor: Colors.white,
-    //指示器颜色
-    textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.black),
-    colorScheme: ColorScheme.light(
-        primary: colorMain,
-        secondary: colorMain,
-        surface: Color(0xfff2f5f7)
-    )
-        .copyWith(
-          secondary: Colors.white,
-        )
-        .copyWith(surface: Color(0xfff2f5f7).withOpacity(0)),
-  );
 }
